@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  
+  <title><![CDATA[Hexo]]></title>
+  
+  <link href="/atom.xml" rel="self"/>
+  <link href="http://yoursite.com//"/>
+  <updated>2015-02-04T14:38:52.000Z</updated>
+  <id>http://yoursite.com//</id>
+  
+  <author>
+    <name><![CDATA[John Doe]]></name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Hello World]]></title>
+    <link href="http://yoursite.com/2015/07/17/hello-world/"/>
+    <id>http://yoursite.com/2015/07/17/hello-world/</id>
+    <published>2015-07-17T13:06:00.000Z</published>
+    <updated>2015-02-04T14:38:52.000Z</updated>
+    <content type="html"><![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">trobuleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
+<h2 id="Quick_Start">Quick Start</h2><h3 id="Create_a_new_post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
+<h3 id="Run_server">Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
+<h3 id="Generate_static_files">Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
+<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[念念不忘]]></title>
+    <link href="http://yoursite.com/2014/10/28/%E5%BF%B5%E5%BF%B5%E4%B8%8D%E5%BF%98/"/>
+    <id>http://yoursite.com/2014/10/28/念念不忘/</id>
+    <published>2014-10-28T12:19:18.000Z</published>
+    <updated>2014-10-28T12:56:27.000Z</updated>
+    <content type="html"><![CDATA[<p>大连的冬天如期而至，时光匆匆…实习也马上就要进入第三个月，依然想要去南方…<br>过去的两个月，重新投入到 web 前端开发的怀抱，有种好久不见，你依然美丽的感觉。但是问题依旧是有的，幸好也会感觉到自己确确实实在进步。工作之余的生活特别规律，每天和 Q 一起或蹭网，或乱逛，或购物，偶尔也约上迪迪一起吃喝玩乐。<br>今天开始了写 jQuery 插件的征途，这个还是下一篇再说吧。［：）…］</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>大连的冬天如期而至，时光匆匆…实习也马上就要进入第三个月，依然想要去南方…<br>过去的两个月，重新投入到 web 前端开发的怀抱，有种好久不见，你依然美丽的感觉。但是问题依旧是有的，幸好也会感觉到自己确确实实在进步。工作之余的生活特别规律，每天和 Q 一起或蹭网，或乱逛，]]>
+    </summary>
+    
+      <category term="思考" scheme="http://yoursite.com/tags/%E6%80%9D%E8%80%83/"/>
+    
+      <category term="生活" scheme="http://yoursite.com/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+      <category term="生活" scheme="http://yoursite.com/categories/%E7%94%9F%E6%B4%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Dream Mark的前世今生]]></title>
+    <link href="http://yoursite.com/2014/07/01/dream-mark%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/"/>
+    <id>http://yoursite.com/2014/07/01/dream-mark的前世今生/</id>
+    <published>2014-07-01T15:28:10.000Z</published>
+    <updated>2014-07-20T02:09:55.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="DreamMark_的前世">DreamMark 的前世</h2><p>DreamMark的的简介永远都是 <em>Mark our dream.</em> </p>
+<p>起初，这源于一次激烈的讨论。“生活并不平淡，可很多东西就是记不住”，“我们大概需要借助纸和笔”，“可是，铭心的自然忘不了，其它又记了干嘛”，差一点，就再也没有然后了。“不一样的，记住可以是为了记忆，也可以是提醒”，“做梦！哪有那么神奇。”，“嗯！那就做梦吧！”，“……”。</p>
+<p>于是，我们决定 <em>mark our dream</em> 。让梦境和梦想，为记忆添上那么一点儿不同的东西。</p>
+<a id="more"></a>
+<h2 id="DreamMark_的今生">DreamMark 的今生</h2><p>半个月，每天约 3 小时，我们完成了 DreamMark 最初版的开发。</p>
+<p>DreamMark 支持两种模式：</p>
+<blockquote>
+<p>涂鸦 —- 给你一个画板，你可以绘出你的梦<br>拼图 —- 场景 + 人物 + 情节 + 其它 = 你的梦</p>
+</blockquote>
+<p>DreamMark 学会了走路，但还走的不漂亮。无论是设计还是代码，我们会努力做到更好。</p>
+<h2 id="DreamMark_相关">DreamMark 相关</h2><p>所有图片均由 <a href="http://chiakiq.com/" target="_blank" rel="external">晴</a> 原创。<br>使用 <a href="https://www.parse.com/" target="_blank" rel="external">Parse</a> 提供后台服务。<br>更新在 <a href="https://github.com/Ckitakishi/DreamMark" target="_blank" rel="external">这里</a>。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="DreamMark_的前世">DreamMark 的前世</h2><p>DreamMark的的简介永远都是 <em>Mark our dream.</em> </p>
+<p>起初，这源于一次激烈的讨论。“生活并不平淡，可很多东西就是记不住”，“我们大概需要借助纸和笔”，“可是，铭心的自然忘不了，其它又记了干嘛”，差一点，就再也没有然后了。“不一样的，记住可以是为了记忆，也可以是提醒”，“做梦！哪有那么神奇。”，“嗯！那就做梦吧！”，“……”。</p>
+<p>于是，我们决定 <em>mark our dream</em> 。让梦境和梦想，为记忆添上那么一点儿不同的东西。</p>]]>
+    
+    </summary>
+    
+      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+    
+      <category term="编程" scheme="http://yoursite.com/tags/%E7%BC%96%E7%A8%8B/"/>
+    
+      <category term="作品" scheme="http://yoursite.com/categories/%E4%BD%9C%E5%93%81/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[与 Swift 共舞]]></title>
+    <link href="http://yoursite.com/2014/06/03/%E4%B8%8E-swift-%E5%85%B1%E8%88%9E/"/>
+    <id>http://yoursite.com/2014/06/03/与-swift-共舞/</id>
+    <published>2014-06-03T15:22:50.000Z</published>
+    <updated>2014-06-10T13:54:47.000Z</updated>
+    <content type="html"><![CDATA[<h4 id="不知道现在说与Swift共舞会不会太乐观，一门新语言的诞生，惊喜的同时充满太多未知。迫不及待的下载了Xcode_6，感受Swift带来的新气象。然而很不幸的是，第一次使用playground模拟器就挂了…不过语法真的是很符合我的胃口，对我来说，自然是又像C#，又像Javascript啦~很期待接下来的学习。">不知道现在说与Swift共舞会不会太乐观，一门新语言的诞生，惊喜的同时充满太多未知。迫不及待的下载了Xcode 6，感受Swift带来的新气象。然而很不幸的是，第一次使用playground模拟器就挂了…不过语法真的是很符合我的胃口，对我来说，自然是又像C#，又像Javascript啦~很期待接下来的学习。</h4><h4 id="希望今后，这篇文章能够持续写下去，期待与Swift共舞。">希望今后，这篇文章能够持续写下去，期待与Swift共舞。</h4>]]></content>
+    <summary type="html">
+    <![CDATA[<h4 id="不知道现在说与Swift共舞会不会太乐观，一门新语言的诞生，惊喜的同时充满太多未知。迫不及待的下载了Xcode_6，感受Swift带来的新气象。然而很不幸的是，第一次使用playground模拟器就挂了…不过语法真的是很符合我的胃口，对我来说，自然是又像C#，又像]]>
+    </summary>
+    
+      <category term="编程" scheme="http://yoursite.com/tags/%E7%BC%96%E7%A8%8B/"/>
+    
+      <category term="iOS" scheme="http://yoursite.com/categories/iOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Meziriac的砝码问题]]></title>
+    <link href="http://yoursite.com/2014/04/12/meziriac%E7%9A%84%E7%A0%9D%E7%A0%81%E9%97%AE%E9%A2%98/"/>
+    <id>http://yoursite.com/2014/04/12/meziriac的砝码问题/</id>
+    <published>2014-04-12T15:46:04.000Z</published>
+    <updated>2014-04-14T15:14:58.000Z</updated>
+    <content type="html"><![CDATA[<h4 id="在回学校的车上人超多，默默的在想砝码的那道题。下午那道题答的实在是…图样图森破…">在回学校的车上人超多，默默的在想砝码的那道题。下午那道题答的实在是…图样图森破…</h4><pre><code><span class="attribute">题目大概是:
+一个商去买钻石，所有钻石都&lt;</span>=<span class="string">40g，他只带四个砝码和一个天平，请问四个砝码分别是多重的？</span>
+</code></pre><a id="more"></a>
+<h4 id="在车上时，考虑了四个数字加减可能出现数据数量，超过40个妥妥的，嘿嘿，使用暴力穷举？不过那时只能靠想了，设四个数为a,b,c,d，其中组合的最大值a+b+c+d=40，最小是可能就是a-b-c-d,不能等于1，就假设等于2吧，然后求出四个数分别是，4，7，8，21。可惜在1-20中，16无法出现…-再一次感觉到自己弱爆了。">在车上时，考虑了四个数字加减可能出现数据数量，超过40个妥妥的，嘿嘿，使用暴力穷举？不过那时只能靠想了，设四个数为a,b,c,d，其中组合的最大值a+b+c+d=40，最小是可能就是a-b-c-d,不能等于1，就假设等于2吧，然后求出四个数分别是，4，7，8，21。可惜在1-20中，16无法出现….再一次感觉到自己弱爆了。</h4><h4 id="现在，除了穷举，还可以有以下方法。">现在，除了穷举，还可以有以下方法。</h4><pre><code>方法一：可以考虑三进制，把0，1，2转化为-1，0，1就可以很好的表示砝码的问题了。
+方法二：（可以理解为由小及大么）<span class="number">1是1；1，3</span>可以组成<span class="number">1-4；1，3</span>，9可以组成<span class="number">1-13；1，3</span>，9，27可以组成1-40。
+</code></pre><h4 id="觉得现在的思考能力真心还不如以前了，还是应该多思考些问题才好T_T。">觉得现在的思考能力真心还不如以前了，还是应该多思考些问题才好T_T。</h4>]]></content>
+    <summary type="html">
+    <![CDATA[<h4 id="在回学校的车上人超多，默默的在想砝码的那道题。下午那道题答的实在是…图样图森破…">在回学校的车上人超多，默默的在想砝码的那道题。下午那道题答的实在是…图样图森破…</h4><pre><code><span class="attribute">题目大概是:
+一个商去买钻石，所有钻石都&lt;</span>=<span class="string">40g，他只带四个砝码和一个天平，请问四个砝码分别是多重的？</span>
+</code></pre>]]>
+    
+    </summary>
+    
+      <category term="思考" scheme="http://yoursite.com/tags/%E6%80%9D%E8%80%83/"/>
+    
+      <category term="数学" scheme="http://yoursite.com/tags/%E6%95%B0%E5%AD%A6/"/>
+    
+      <category term="编程" scheme="http://yoursite.com/tags/%E7%BC%96%E7%A8%8B/"/>
+    
+      <category term="数学" scheme="http://yoursite.com/categories/%E6%95%B0%E5%AD%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[诞生日]]></title>
+    <link href="http://yoursite.com/2014/04/03/%E8%AF%9E%E7%94%9F%E6%97%A5/"/>
+    <id>http://yoursite.com/2014/04/03/诞生日/</id>
+    <published>2014-04-03T11:28:07.000Z</published>
+    <updated>2014-04-03T12:41:20.000Z</updated>
+    <content type="html"><![CDATA[<h4 id="人间四月天，转眼又一年。还没等到大连的莺飞草长，就已经迈过了二十一的坎，生日快乐~(*^^)v_—关于生日，记忆中大概只有美好吧~">人间四月天，转眼又一年。还没等到大连的莺飞草长，就已经迈过了二十一的坎，生日快乐~(*^^)v   —关于生日，记忆中大概只有美好吧~</h4><h4 id="小时候，每年生日都会拍一张照片，记录成长；小学时，生日是全班同学的聚会，一起玩整整一晚上，在烧烤摊high完才各回各家。中学时，每一年的生日都有父母相伴，生日礼物开始不再是文具；不得不提的高三，我们会为每一位同学庆祝生日，终生难忘。">小时候，每年生日都会拍一张照片，记录成长；小学时，生日是全班同学的聚会，一起玩整整一晚上，在烧烤摊high完才各回各家。中学时，每一年的生日都有父母相伴，生日礼物开始不再是文具；不得不提的高三，我们会为每一位同学庆祝生日，终生难忘。</h4><a id="more"></a>
+<h4 id="今年生日前一直向晴吐槽，说自己慢慢不年轻了……晴表示巨无语。有时候会为大学的某些阶段没有珍惜时光感到遗憾，尤其是在参加阿里的笔试后，凄惨的处女笔。。。发自内心的说，这是一个很珍贵的年纪，能够比过几年更快的更有精力的学习一些东西，也能够参透一些曾经不懂的东西。">今年生日前一直向<a href="chiakiq.com">晴</a>吐槽，说自己慢慢不年轻了……晴表示巨无语。有时候会为大学的某些阶段没有珍惜时光感到遗憾，尤其是在参加阿里的笔试后，凄惨的处女笔。。。发自内心的说，这是一个很珍贵的年纪，能够比过几年更快的更有精力的学习一些东西，也能够参透一些曾经不懂的东西。</h4><h4 id="感谢祝福我的大家，么么哒~爸妈今年送了一支LAMY_Safari_和一块表，很喜欢，很惊喜。还有晴的礼物们，瞬间提升文艺程度！还有收到书，拜仁周边啦~~什么的~都很符合我的口味。">感谢祝福我的大家，么么哒~爸妈今年送了一支LAMY Safari 和一块表，很喜欢，很惊喜。还有晴的礼物们，瞬间提升文艺程度！还有收到书，拜仁周边啦~~什么的~都很符合我的口味。</h4><hr>
+<h4 id="不曾忘记初心，无论如何，我都会一直为之努力。">不曾忘记初心，无论如何，我都会一直为之努力。</h4>]]></content>
+    <summary type="html">
+    <![CDATA[<h4 id="人间四月天，转眼又一年。还没等到大连的莺飞草长，就已经迈过了二十一的坎，生日快乐~(*^^)v_—关于生日，记忆中大概只有美好吧~">人间四月天，转眼又一年。还没等到大连的莺飞草长，就已经迈过了二十一的坎，生日快乐~(*^^)v   —关于生日，记忆中大概只有美好吧~</h4><h4 id="小时候，每年生日都会拍一张照片，记录成长；小学时，生日是全班同学的聚会，一起玩整整一晚上，在烧烤摊high完才各回各家。中学时，每一年的生日都有父母相伴，生日礼物开始不再是文具；不得不提的高三，我们会为每一位同学庆祝生日，终生难忘。">小时候，每年生日都会拍一张照片，记录成长；小学时，生日是全班同学的聚会，一起玩整整一晚上，在烧烤摊high完才各回各家。中学时，每一年的生日都有父母相伴，生日礼物开始不再是文具；不得不提的高三，我们会为每一位同学庆祝生日，终生难忘。</h4>]]>
+    
+    </summary>
+    
+      <category term="喜悦" scheme="http://yoursite.com/tags/%E5%96%9C%E6%82%A6/"/>
+    
+      <category term="生活" scheme="http://yoursite.com/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+      <category term="生活" scheme="http://yoursite.com/categories/%E7%94%9F%E6%B4%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[UIKit Dynamics--iOS7]]></title>
+    <link href="http://yoursite.com/2014/03/22/uikit-dynamics--ios7/"/>
+    <id>http://yoursite.com/2014/03/22/uikit-dynamics--ios7/</id>
+    <published>2014-03-22T14:17:38.000Z</published>
+    <updated>2014-06-04T14:18:39.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="Dynamic_Items:">Dynamic Items:</h2><h4 id="UIDynamicItem_Protocol是13年的WWDC新增加的。">UIDynamicItem Protocol是13年的WWDC新增加的。</h4><a id="more"></a>
+<p> <a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIDynamicItem_Protocol/Reference/Reference.html" target="_blank" rel="external">Apple Library相关的</a></p>
+<h4 id="UIKit_Dynamics的焦点都是关于items之间相互的作用及其动画。有一个要求，为了在一个item上使用dynamic_behavior，item必须满足UIDynamicItem协议。该协议定义了三个重要的属性，bounds，center，transform。bounds属性是readonly的,center,transform属性是read/write的，center需要更新动画的进度,transform属性返回一个CGAffineTransform的对象。">UIKit Dynamics的焦点都是关于items之间相互的作用及其动画。有一个要求，为了在一个item上使用dynamic behavior，item必须满足<code>UIDynamicItem</code>协议。该协议定义了三个重要的属性，<code>bounds</code>，<code>center</code>，<code>transform</code>。<code>bounds</code>属性是readonly的,<code>center</code>,<code>transform</code>属性是read/write的，<code>center</code>需要更新动画的进度,<code>transform</code>属性返回一个<code>CGAffineTransform</code>的对象。</h4><h4 id="从iOS7开始，默认的只有UIView和UICollectionViewLayoutAttributes类可实现该协议。但是，仍然可以自己创建类去实现之。">从iOS7开始，默认的只有<code>UIView</code>和<code>UICollectionViewLayoutAttributes</code>类可实现该协议。但是，仍然可以自己创建类去实现之。</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property(nonatomic, readonly) CGRect bounds&#10;@property(nonatomic, readwrite) CGPoint center&#10;@property(nonatomic, readwrite) CGAffineTransform transform</span><br></pre></td></tr></table></figure>
+<h2 id="Dynamic_Behaviors">Dynamic Behaviors</h2><h4 id="在UIKit_Dynamics中，一个Dynamic_Behavior模拟的是真实世界的物理行为。包含以下六个类：">在UIKit Dynamics中，一个Dynamic Behavior模拟的是真实世界的物理行为。包含以下六个类：</h4><ul>
+<li>UIAttachmentBehavior</li>
+<li>UICollisionBehavior</li>
+<li>UIGravityBehavior</li>
+<li>UIPushBehavior</li>
+<li>UISnapBehavior</li>
+<li>UIDynamicItemBehavior </li>
+</ul>
+<h4 id="前五个分别是—附着、碰撞、重力、推力、捕捉。_最后一个不是一个具体的行为，但是也很有用~按我的理解就是可以设置一个物体的本质属性，不依赖于外界而存在的。">前五个分别是—附着、碰撞、重力、推力、捕捉。 最后一个不是一个具体的行为，但是也很有用~按我的理解就是可以设置一个物体的本质属性，不依赖于外界而存在的。</h4><h4 id="最近写代码用到UIDynamicItemBehavior，感觉太棒了！">最近写代码用到UIDynamicItemBehavior，感觉太棒了！</h4><ul>
+<li>allowsRotation 是否可以旋转；默认YES；</li>
+<li>density 密度；默认1.0;</li>
+<li>elasticity 弹性系数；默认0.0；</li>
+<li>friction 摩擦系数；默认0.0；</li>
+<li>resistance 阻力；默认0.0；</li>
+</ul>
+<h4 id="当时想要让一个球能够一开始就有方向有速度的运动，以下两个函数不能再赞，很简便。">当时想要让一个球能够一开始就有方向有速度的运动，以下两个函数不能再赞，很简便。</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"> &#8211; addAngularVelocity(CGFloat):forItem(id[UIDynamicItem])//&#35774;&#32622;&#35282;&#36895;&#24230;&#10; &#8211; addLinearVelocity(CGPoint):forItem(id[UIDynamicItem])//&#35774;&#32622;&#32447;&#36895;&#24230;&#10;//angularResistance&#35282;&#24230;&#38459;&#21147;&#31995;&#25968;</span><br></pre></td></tr></table></figure>
+<h2 id="UIDynamicAnimator">UIDynamicAnimator</h2><h4 id="UIDynamicBehavior需要添加到animator上才能发生作用；">UIDynamicBehavior需要添加到animator上才能发生作用；</h4><h2 id="ReferenceView">ReferenceView</h2><h4 id="等同于力学参考系。">等同于力学参考系。</h4>]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="Dynamic_Items:">Dynamic Items:</h2><h4 id="UIDynamicItem_Protocol是13年的WWDC新增加的。">UIDynamicItem Protocol是13年的WWDC新增加的。</h4>]]>
+    
+    </summary>
+    
+      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+    
+      <category term="思考" scheme="http://yoursite.com/tags/%E6%80%9D%E8%80%83/"/>
+    
+      <category term="iOS" scheme="http://yoursite.com/categories/iOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[短途骑行]]></title>
+    <link href="http://yoursite.com/2014/01/21/%E7%9F%AD%E9%80%94%E9%AA%91%E8%A1%8C/"/>
+    <id>http://yoursite.com/2014/01/21/短途骑行/</id>
+    <published>2014-01-21T14:46:43.000Z</published>
+    <updated>2014-01-27T08:13:11.000Z</updated>
+    <content type="html"><![CDATA[<h4 id="昨日这个冬天的第三场雪悄然而至，今天早上大雾一场，下午居然天晴了。">昨日这个冬天的第三场雪悄然而至，今天早上大雾一场，下午居然天晴了。</h4><h4 id="前几天入了13款merida的duke_500,对于我这种菜鸟来说，实在是很给力了。假期抓紧时间骑。高中时对大学的憧憬之一就是可以在校园以骑行为交通方式，结果软院全是楼梯。。泪奔。">前几天入了13款merida的duke 500,对于我这种菜鸟来说，实在是很给力了。假期抓紧时间骑。高中时对大学的憧憬之一就是可以在校园以骑行为交通方式，结果软院全是楼梯。。泪奔。</h4><a id="more"></a>
+<h4 id="参数如下，正在研究ing。">参数如下，正在研究ing。</h4><pre><code>【颜色】 白色、白蓝色、红色、黑色、白/红色
+【车架尺寸】：<span class="number">26</span>X15/<span class="number">17</span>/<span class="number">19</span> 
+【车架】：MERIDA专利TFS铝合金车架&lt;带 flex stay 技术----蛙腿&gt;
+【前叉】：三托XCT <span class="literal">V4</span>铝合金避震前叉
+【车匣】: 日本SHIMANO M375碟刹
+【链条】：KMC，HG40防锈链条
+【手把】：X-mission
+【副把】：ALLOY SAND-<span class="keyword">BLACK
+</span>【竖管】：ALLOY SAND-<span class="keyword">BLACK
+</span>【碗组】：VP-A42E
+【花鼓】：久裕快拆铝合金碟刹花鼓
+【车圈】：美利达铝合金车圈
+【轮胎】：CST <span class="number">26</span>X1.<span class="number">95</span>
+【坐管】：<span class="number">30</span>.<span class="number">8</span>D ALLOY SAND-<span class="keyword">BLACK
+</span>【脚踏】：VP-<span class="number">988</span>A ALLOY
+【飞轮】：SHIMANO HG20-<span class="number">8</span>S <span class="number">11</span>-<span class="number">30</span>T
+【前后变速器】：SHIMANO ACERA M310/M360
+【变速控制杆】：SHIMANO EF51
+【变速级别】：SHIMANO <span class="number">24</span>速
+【齿盘曲柄】：美利达 <span class="number">42</span>-<span class="number">32</span>-<span class="number">22</span>T
+</code></pre><h4 id="趁着下午天晴，就和爸爸一起去骑车了，妈妈驾车跟随（虽然一直觉得我以后没车也可，但是今天觉得车的重要性有时是存在的）">趁着下午天晴，就和爸爸一起去骑车了，妈妈驾车跟随（虽然一直觉得我以后没车也可，但是今天觉得车的重要性有时是存在的）</h4><h4 id="晒图两张~">晒图两张~</h4><p><img src="http://ckitakishi.com/image/20140121.jpg" alt="20140121"><br><img src="http://ckitakishi.com/image/201401212.jpg" alt="201401212"></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h4 id="昨日这个冬天的第三场雪悄然而至，今天早上大雾一场，下午居然天晴了。">昨日这个冬天的第三场雪悄然而至，今天早上大雾一场，下午居然天晴了。</h4><h4 id="前几天入了13款merida的duke_500,对于我这种菜鸟来说，实在是很给力了。假期抓紧时间骑。高中时对大学的憧憬之一就是可以在校园以骑行为交通方式，结果软院全是楼梯。。泪奔。">前几天入了13款merida的duke 500,对于我这种菜鸟来说，实在是很给力了。假期抓紧时间骑。高中时对大学的憧憬之一就是可以在校园以骑行为交通方式，结果软院全是楼梯。。泪奔。</h4>]]>
+    
+    </summary>
+    
+      <category term="假期" scheme="http://yoursite.com/tags/%E5%81%87%E6%9C%9F/"/>
+    
+      <category term="自行车" scheme="http://yoursite.com/tags/%E8%87%AA%E8%A1%8C%E8%BD%A6/"/>
+    
+      <category term="生活" scheme="http://yoursite.com/categories/%E7%94%9F%E6%B4%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[假期来了]]></title>
+    <link href="http://yoursite.com/2014/01/17/%E5%81%87%E6%9C%9F%E6%9D%A5%E4%BA%86/"/>
+    <id>http://yoursite.com/2014/01/17/假期来了/</id>
+    <published>2014-01-17T13:21:11.000Z</published>
+    <updated>2014-01-17T15:15:10.000Z</updated>
+    <content type="html"><![CDATA[<h4 id="回家就快要一周了。">回家就快要一周了。</h4>]]></content>
+    <summary type="html">
+    <![CDATA[<h4 id="回家就快要一周了。">回家就快要一周了。</h4>]]>
+    </summary>
+    
+      <category term="mia" scheme="http://yoursite.com/tags/mia/"/>
+    
+      <category term="假期" scheme="http://yoursite.com/tags/%E5%81%87%E6%9C%9F/"/>
+    
+      <category term="生活" scheme="http://yoursite.com/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+      <category term="生活" scheme="http://yoursite.com/categories/%E7%94%9F%E6%B4%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[遇到的一些问题与解决办法]]></title>
+    <link href="http://yoursite.com/2014/01/06/%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/"/>
+    <id>http://yoursite.com/2014/01/06/遇到的一些问题与解决办法/</id>
+    <published>2014-01-06T14:30:51.000Z</published>
+    <updated>2014-01-07T06:23:13.000Z</updated>
+    <content type="html"><![CDATA[<h4 id="一直有些博客写记录的习惯，但是越来越觉得定制的博客们很多时候无法满足需求，本来打算使用ghost，新生的力量总是值得期待，但是突然之间它就被墙了…了解了一些框架，选择了hexo,打开主页的瞬间就认定它了。hexo由Node-js驱动，迅速，简洁。">一直有些博客写记录的习惯，但是越来越觉得定制的博客们很多时候无法满足需求，本来打算使用ghost，新生的力量总是值得期待，但是突然之间它就被墙了…了解了一些框架，选择了<a href="http://zespia.tw/hexo/" target="_blank" rel="external">hexo</a>,打开主页的瞬间就认定它了。hexo由Node.js驱动，迅速，简洁。</h4><h4 id="这两天也遇到了一些问题，简单的记录下来。">这两天也遇到了一些问题，简单的记录下来。</h4><a id="more"></a>
+<h2 id="1-无法成功deploy">1.无法成功deploy</h2><h4 id="此时已经完成了node-js的安装，并在github创建了名为username-github-io的repository。部署完成之后，">此时已经完成了<a href="http://nodejs.org/" target="_blank" rel="external">node.js</a>的安装，并在<a href="https://github.com/" target="_blank" rel="external">github</a>创建了名为username.github.io的repository。部署完成之后，</h4><p>  hexo generate<br>  hexo server  </p>
+<h4 id="此时已经可以通过localhost:4000查看页面，landscape的主题觉得很深沉。">此时已经可以通过localhost:4000查看页面，landscape的主题觉得很深沉。</h4><pre><code><span class="title">hexo</span> deploy
+</code></pre><h4 id="竟然没有成功。出现了好几个fetal:……，提示文件不存在。赶紧关掉bash，用管理员权限打开，终于没有fetal了。windows总是这样…-就在我得意的笑时，仔细一看，艾玛，竟然没有成功push到github。搜索良久，猜想也许是重装系统后ssh_key出问题，重新生成了一个，依然未能解决。看到有网友说github名字有大写可能导致问题，一想自己的名儿，于是contact了github的工作人员，人家很快回邮件，开头就是NO！往来了两封邮件，查看密钥可用性，以及我的命令和错误。结果第二天，就好了……是的，就好了。个人认为可能真的和ssh_key有关吧。">竟然没有成功。出现了好几个fetal:……，提示文件不存在。赶紧关掉bash，用管理员权限打开，终于没有fetal了。windows总是这样…..就在我得意的笑时，仔细一看，艾玛，竟然没有成功push到github。搜索良久，猜想也许是重装系统后ssh key出问题，重新生成了一个，依然未能解决。看到有网友说github名字有大写可能导致问题，一想自己的名儿，于是contact了github的工作人员，人家很快回邮件，开头就是NO！往来了两封邮件，查看密钥可用性，以及我的命令和错误。结果第二天，就好了……是的，就好了。个人认为可能真的和ssh key有关吧。</h4><h2 id="2-ico图标的添加">2.ico图标的添加</h2><h4 id="关于小图标的添加，参考了zippera所写。">关于小图标的添加，参考了<a href="http://zipperary.com/2013/05/30/hexo-guide-4/" target="_blank" rel="external">zippera</a>所写。</h4><figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;% <span class="keyword">if</span> (config.root)&#123; %&gt;</span><br><span class="line">  &lt;link <span class="variable">href=</span><span class="string">"/favicon.ico"</span> <span class="variable">rel=</span><span class="string">"shortcut icon"</span> <span class="variable">type=</span><span class="string">"image/x-icon"</span> /&gt; <span class="comment">#这段是faviconer提供的通用代码。</span></span><br><span class="line">&lt;% &#125; %&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="我的做法是直接将以上代码添加到head-ejs">我的做法是直接将以上代码添加到head.ejs</h4><h4 id="感谢Qing设计的A，B图标,在自己在操作过程中，只能在localhost查看到图标。查看了github的repo，发现反复deploy_B图标但是依然存在的是A图标，纠其原因，放弃A图标之后缓存还在。查看了文档，根目录下的db-json即为缓存，删除之，重新deploy，就成功了。">感谢<a href="http://chiakiq.com/" target="_blank" rel="external">Qing</a>设计的A，B图标,在自己在操作过程中，只能在localhost查看到图标。查看了github的repo，发现反复deploy B图标但是依然存在的是A图标，纠其原因，放弃A图标之后缓存还在。查看了文档，根目录下的<strong>db.json</strong>即为缓存，删除之，重新deploy，就成功了。</h4><h4 id="此后，如果由于缓存而导致的无法更新内容，删除db-json即可。">此后，如果由于缓存而导致的无法更新内容，删除<strong>db.json</strong>即可。</h4><h2 id="3-域名的解析">3.域名的解析</h2><h4 id="选择了DNSPod解析域名，添加A记录时，记录值填了个二级域名的ip，坐等~吃过饭后依然不行，参考了一些人的经历，又添加了一条A记录，ip写了pages-github-com_的ip:204-232-175-78；很奇怪，自己ping的ip地址是一个澳大利亚的地址103-*。经过一番折腾，验证了204-232-175-78和ping的ip地址都是可以用的。而且感觉后者更快。">选择了<a href="https://www.dnspod.cn/" target="_blank" rel="external">DNSPod</a>解析域名，添加A记录时，记录值填了个二级域名的ip，坐等~吃过饭后依然不行，参考了一些人的经历，又添加了一条A记录，ip写了pages.github.com 的ip:204.232.175.78；很奇怪，自己ping的ip地址是一个澳大利亚的地址103.<strong><em>.</em></strong>.<em>*</em>。经过一番折腾，验证了204.232.175.78和ping的ip地址都是可以用的。而且感觉后者更快。</h4><h2 id="4-hexo_generate_无法解析">4.hexo generate 无法解析</h2><h4 id="在本文修改再提交时又遇到问题，hexo_g出现了debug">在本文修改再提交时又遇到问题，hexo g出现了debug</h4><pre><code><span class="string">rawMessage:</span> <span class="string">'Unable to parse.'</span>,
+<span class="string">parsedLine:</span> <span class="number">8</span>,
+<span class="string">snippet:</span> <span class="string">'  hexo generate '</span>,
+<span class="string">parsedFile:</span> <span class="literal">null</span>,
+<span class="string">message:</span> <span class="string">'Unable to parse.'</span>,
+<span class="string">domain:</span> 
+{ <span class="string">domain:</span> <span class="literal">null</span>,
+<span class="label"> _events:</span> { <span class="string">error:</span> [Function] },
+<span class="label"> _maxListeners:</span> <span class="number">10</span>,
+<span class="label"> members:</span> [],
+<span class="label"> _disposed:</span> <span class="literal">true</span> },
+<span class="string">domainThrown:</span> <span class="literal">true</span> }
+</code></pre><p>去查看了hexo项目的<a href="https://github.com/tommy351/hexo/issues?page=1&amp;state=open" target="_blank" rel="external">Issues</a>，有人遇到类似的一些问题，原因是markdown语法不太对，发现是因为汉字之间用了“——”。</p>
+<hr>
+<h2 id="(*^^)v路漫漫其修远兮，吾将上下而求索。">(*^^)v路漫漫其修远兮，吾将上下而求索。</h2>]]></content>
+    <summary type="html">
+    <![CDATA[<h4 id="一直有些博客写记录的习惯，但是越来越觉得定制的博客们很多时候无法满足需求，本来打算使用ghost，新生的力量总是值得期待，但是突然之间它就被墙了…了解了一些框架，选择了hexo,打开主页的瞬间就认定它了。hexo由Node-js驱动，迅速，简洁。">一直有些博客写记录的习惯，但是越来越觉得定制的博客们很多时候无法满足需求，本来打算使用ghost，新生的力量总是值得期待，但是突然之间它就被墙了…了解了一些框架，选择了<a href="http://zespia.tw/hexo/">hexo</a>,打开主页的瞬间就认定它了。hexo由Node.js驱动，迅速，简洁。</h4><h4 id="这两天也遇到了一些问题，简单的记录下来。">这两天也遇到了一些问题，简单的记录下来。</h4>]]>
+    
+    </summary>
+    
+      <category term="github" scheme="http://yoursite.com/tags/github/"/>
+    
+      <category term="hexo" scheme="http://yoursite.com/tags/hexo/"/>
+    
+      <category term="hexo" scheme="http://yoursite.com/categories/hexo/"/>
+    
+  </entry>
+  
+</feed>
