@@ -1,46 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   
-  <title><![CDATA[Hexo]]></title>
-  
+  <title><![CDATA[LUMINOUS]]></title>
+  <subtitle><![CDATA[大概，就是为梦想而活]]></subtitle>
   <link href="/atom.xml" rel="self"/>
-  <link href="http://yoursite.com//"/>
-  <updated>2015-02-04T14:38:52.000Z</updated>
-  <id>http://yoursite.com//</id>
+  <link href="http://ckitakishi.com//"/>
+  <updated>2014-10-28T12:56:27.000Z</updated>
+  <id>http://ckitakishi.com//</id>
   
   <author>
-    <name><![CDATA[John Doe]]></name>
+    <name><![CDATA[Chen]]></name>
     
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title><![CDATA[Hello World]]></title>
-    <link href="http://yoursite.com/2015/07/17/hello-world/"/>
-    <id>http://yoursite.com/2015/07/17/hello-world/</id>
-    <published>2015-07-17T13:06:00.000Z</published>
-    <updated>2015-02-04T14:38:52.000Z</updated>
-    <content type="html"><![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">trobuleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start">Quick Start</h2><h3 id="Create_a_new_post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server">Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files">Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io]]>
-    </summary>
-    
-  </entry>
-  
-  <entry>
     <title><![CDATA[念念不忘]]></title>
-    <link href="http://yoursite.com/2014/10/28/%E5%BF%B5%E5%BF%B5%E4%B8%8D%E5%BF%98/"/>
-    <id>http://yoursite.com/2014/10/28/念念不忘/</id>
+    <link href="http://ckitakishi.com/2014/10/28/%E5%BF%B5%E5%BF%B5%E4%B8%8D%E5%BF%98/"/>
+    <id>http://ckitakishi.com/2014/10/28/念念不忘/</id>
     <published>2014-10-28T12:19:18.000Z</published>
     <updated>2014-10-28T12:56:27.000Z</updated>
     <content type="html"><![CDATA[<p>大连的冬天如期而至，时光匆匆…实习也马上就要进入第三个月，依然想要去南方…<br>过去的两个月，重新投入到 web 前端开发的怀抱，有种好久不见，你依然美丽的感觉。但是问题依旧是有的，幸好也会感觉到自己确确实实在进步。工作之余的生活特别规律，每天和 Q 一起或蹭网，或乱逛，或购物，偶尔也约上迪迪一起吃喝玩乐。<br>今天开始了写 jQuery 插件的征途，这个还是下一篇再说吧。［：）…］</p>
@@ -49,18 +27,18 @@
     <![CDATA[<p>大连的冬天如期而至，时光匆匆…实习也马上就要进入第三个月，依然想要去南方…<br>过去的两个月，重新投入到 web 前端开发的怀抱，有种好久不见，你依然美丽的感觉。但是问题依旧是有的，幸好也会感觉到自己确确实实在进步。工作之余的生活特别规律，每天和 Q 一起或蹭网，或乱逛，]]>
     </summary>
     
-      <category term="思考" scheme="http://yoursite.com/tags/%E6%80%9D%E8%80%83/"/>
+      <category term="思考" scheme="http://ckitakishi.com/tags/%E6%80%9D%E8%80%83/"/>
     
-      <category term="生活" scheme="http://yoursite.com/tags/%E7%94%9F%E6%B4%BB/"/>
+      <category term="生活" scheme="http://ckitakishi.com/tags/%E7%94%9F%E6%B4%BB/"/>
     
-      <category term="生活" scheme="http://yoursite.com/categories/%E7%94%9F%E6%B4%BB/"/>
+      <category term="生活" scheme="http://ckitakishi.com/categories/%E7%94%9F%E6%B4%BB/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Dream Mark的前世今生]]></title>
-    <link href="http://yoursite.com/2014/07/01/dream-mark%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/"/>
-    <id>http://yoursite.com/2014/07/01/dream-mark的前世今生/</id>
+    <link href="http://ckitakishi.com/2014/07/01/dream-mark%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/"/>
+    <id>http://ckitakishi.com/2014/07/01/dream-mark的前世今生/</id>
     <published>2014-07-01T15:28:10.000Z</published>
     <updated>2014-07-20T02:09:55.000Z</updated>
     <content type="html"><![CDATA[<h2 id="DreamMark_的前世">DreamMark 的前世</h2><p>DreamMark的的简介永远都是 <em>Mark our dream.</em> </p>
@@ -82,18 +60,18 @@
     
     </summary>
     
-      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+      <category term="iOS" scheme="http://ckitakishi.com/tags/iOS/"/>
     
-      <category term="编程" scheme="http://yoursite.com/tags/%E7%BC%96%E7%A8%8B/"/>
+      <category term="编程" scheme="http://ckitakishi.com/tags/%E7%BC%96%E7%A8%8B/"/>
     
-      <category term="作品" scheme="http://yoursite.com/categories/%E4%BD%9C%E5%93%81/"/>
+      <category term="作品" scheme="http://ckitakishi.com/categories/%E4%BD%9C%E5%93%81/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[与 Swift 共舞]]></title>
-    <link href="http://yoursite.com/2014/06/03/%E4%B8%8E-swift-%E5%85%B1%E8%88%9E/"/>
-    <id>http://yoursite.com/2014/06/03/与-swift-共舞/</id>
+    <link href="http://ckitakishi.com/2014/06/03/%E4%B8%8E-swift-%E5%85%B1%E8%88%9E/"/>
+    <id>http://ckitakishi.com/2014/06/03/与-swift-共舞/</id>
     <published>2014-06-03T15:22:50.000Z</published>
     <updated>2014-06-10T13:54:47.000Z</updated>
     <content type="html"><![CDATA[<h4 id="不知道现在说与Swift共舞会不会太乐观，一门新语言的诞生，惊喜的同时充满太多未知。迫不及待的下载了Xcode_6，感受Swift带来的新气象。然而很不幸的是，第一次使用playground模拟器就挂了…不过语法真的是很符合我的胃口，对我来说，自然是又像C#，又像Javascript啦~很期待接下来的学习。">不知道现在说与Swift共舞会不会太乐观，一门新语言的诞生，惊喜的同时充满太多未知。迫不及待的下载了Xcode 6，感受Swift带来的新气象。然而很不幸的是，第一次使用playground模拟器就挂了…不过语法真的是很符合我的胃口，对我来说，自然是又像C#，又像Javascript啦~很期待接下来的学习。</h4><h4 id="希望今后，这篇文章能够持续写下去，期待与Swift共舞。">希望今后，这篇文章能够持续写下去，期待与Swift共舞。</h4>]]></content>
@@ -101,16 +79,16 @@
     <![CDATA[<h4 id="不知道现在说与Swift共舞会不会太乐观，一门新语言的诞生，惊喜的同时充满太多未知。迫不及待的下载了Xcode_6，感受Swift带来的新气象。然而很不幸的是，第一次使用playground模拟器就挂了…不过语法真的是很符合我的胃口，对我来说，自然是又像C#，又像]]>
     </summary>
     
-      <category term="编程" scheme="http://yoursite.com/tags/%E7%BC%96%E7%A8%8B/"/>
+      <category term="编程" scheme="http://ckitakishi.com/tags/%E7%BC%96%E7%A8%8B/"/>
     
-      <category term="iOS" scheme="http://yoursite.com/categories/iOS/"/>
+      <category term="iOS" scheme="http://ckitakishi.com/categories/iOS/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Meziriac的砝码问题]]></title>
-    <link href="http://yoursite.com/2014/04/12/meziriac%E7%9A%84%E7%A0%9D%E7%A0%81%E9%97%AE%E9%A2%98/"/>
-    <id>http://yoursite.com/2014/04/12/meziriac的砝码问题/</id>
+    <link href="http://ckitakishi.com/2014/04/12/meziriac%E7%9A%84%E7%A0%9D%E7%A0%81%E9%97%AE%E9%A2%98/"/>
+    <id>http://ckitakishi.com/2014/04/12/meziriac的砝码问题/</id>
     <published>2014-04-12T15:46:04.000Z</published>
     <updated>2014-04-14T15:14:58.000Z</updated>
     <content type="html"><![CDATA[<h4 id="在回学校的车上人超多，默默的在想砝码的那道题。下午那道题答的实在是…图样图森破…">在回学校的车上人超多，默默的在想砝码的那道题。下午那道题答的实在是…图样图森破…</h4><pre><code><span class="attribute">题目大概是:
@@ -126,20 +104,20 @@
     
     </summary>
     
-      <category term="思考" scheme="http://yoursite.com/tags/%E6%80%9D%E8%80%83/"/>
+      <category term="思考" scheme="http://ckitakishi.com/tags/%E6%80%9D%E8%80%83/"/>
     
-      <category term="数学" scheme="http://yoursite.com/tags/%E6%95%B0%E5%AD%A6/"/>
+      <category term="数学" scheme="http://ckitakishi.com/tags/%E6%95%B0%E5%AD%A6/"/>
     
-      <category term="编程" scheme="http://yoursite.com/tags/%E7%BC%96%E7%A8%8B/"/>
+      <category term="编程" scheme="http://ckitakishi.com/tags/%E7%BC%96%E7%A8%8B/"/>
     
-      <category term="数学" scheme="http://yoursite.com/categories/%E6%95%B0%E5%AD%A6/"/>
+      <category term="数学" scheme="http://ckitakishi.com/categories/%E6%95%B0%E5%AD%A6/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[诞生日]]></title>
-    <link href="http://yoursite.com/2014/04/03/%E8%AF%9E%E7%94%9F%E6%97%A5/"/>
-    <id>http://yoursite.com/2014/04/03/诞生日/</id>
+    <link href="http://ckitakishi.com/2014/04/03/%E8%AF%9E%E7%94%9F%E6%97%A5/"/>
+    <id>http://ckitakishi.com/2014/04/03/诞生日/</id>
     <published>2014-04-03T11:28:07.000Z</published>
     <updated>2014-04-03T12:41:20.000Z</updated>
     <content type="html"><![CDATA[<h4 id="人间四月天，转眼又一年。还没等到大连的莺飞草长，就已经迈过了二十一的坎，生日快乐~(*^^)v_—关于生日，记忆中大概只有美好吧~">人间四月天，转眼又一年。还没等到大连的莺飞草长，就已经迈过了二十一的坎，生日快乐~(*^^)v   —关于生日，记忆中大概只有美好吧~</h4><h4 id="小时候，每年生日都会拍一张照片，记录成长；小学时，生日是全班同学的聚会，一起玩整整一晚上，在烧烤摊high完才各回各家。中学时，每一年的生日都有父母相伴，生日礼物开始不再是文具；不得不提的高三，我们会为每一位同学庆祝生日，终生难忘。">小时候，每年生日都会拍一张照片，记录成长；小学时，生日是全班同学的聚会，一起玩整整一晚上，在烧烤摊high完才各回各家。中学时，每一年的生日都有父母相伴，生日礼物开始不再是文具；不得不提的高三，我们会为每一位同学庆祝生日，终生难忘。</h4><a id="more"></a>
@@ -150,18 +128,18 @@
     
     </summary>
     
-      <category term="喜悦" scheme="http://yoursite.com/tags/%E5%96%9C%E6%82%A6/"/>
+      <category term="喜悦" scheme="http://ckitakishi.com/tags/%E5%96%9C%E6%82%A6/"/>
     
-      <category term="生活" scheme="http://yoursite.com/tags/%E7%94%9F%E6%B4%BB/"/>
+      <category term="生活" scheme="http://ckitakishi.com/tags/%E7%94%9F%E6%B4%BB/"/>
     
-      <category term="生活" scheme="http://yoursite.com/categories/%E7%94%9F%E6%B4%BB/"/>
+      <category term="生活" scheme="http://ckitakishi.com/categories/%E7%94%9F%E6%B4%BB/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[UIKit Dynamics--iOS7]]></title>
-    <link href="http://yoursite.com/2014/03/22/uikit-dynamics--ios7/"/>
-    <id>http://yoursite.com/2014/03/22/uikit-dynamics--ios7/</id>
+    <link href="http://ckitakishi.com/2014/03/22/uikit-dynamics--ios7/"/>
+    <id>http://ckitakishi.com/2014/03/22/uikit-dynamics--ios7/</id>
     <published>2014-03-22T14:17:38.000Z</published>
     <updated>2014-06-04T14:18:39.000Z</updated>
     <content type="html"><![CDATA[<h2 id="Dynamic_Items:">Dynamic Items:</h2><h4 id="UIDynamicItem_Protocol是13年的WWDC新增加的。">UIDynamicItem Protocol是13年的WWDC新增加的。</h4><a id="more"></a>
@@ -189,18 +167,18 @@
     
     </summary>
     
-      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+      <category term="iOS" scheme="http://ckitakishi.com/tags/iOS/"/>
     
-      <category term="思考" scheme="http://yoursite.com/tags/%E6%80%9D%E8%80%83/"/>
+      <category term="思考" scheme="http://ckitakishi.com/tags/%E6%80%9D%E8%80%83/"/>
     
-      <category term="iOS" scheme="http://yoursite.com/categories/iOS/"/>
+      <category term="iOS" scheme="http://ckitakishi.com/categories/iOS/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[短途骑行]]></title>
-    <link href="http://yoursite.com/2014/01/21/%E7%9F%AD%E9%80%94%E9%AA%91%E8%A1%8C/"/>
-    <id>http://yoursite.com/2014/01/21/短途骑行/</id>
+    <link href="http://ckitakishi.com/2014/01/21/%E7%9F%AD%E9%80%94%E9%AA%91%E8%A1%8C/"/>
+    <id>http://ckitakishi.com/2014/01/21/短途骑行/</id>
     <published>2014-01-21T14:46:43.000Z</published>
     <updated>2014-01-27T08:13:11.000Z</updated>
     <content type="html"><![CDATA[<h4 id="昨日这个冬天的第三场雪悄然而至，今天早上大雾一场，下午居然天晴了。">昨日这个冬天的第三场雪悄然而至，今天早上大雾一场，下午居然天晴了。</h4><h4 id="前几天入了13款merida的duke_500,对于我这种菜鸟来说，实在是很给力了。假期抓紧时间骑。高中时对大学的憧憬之一就是可以在校园以骑行为交通方式，结果软院全是楼梯。。泪奔。">前几天入了13款merida的duke 500,对于我这种菜鸟来说，实在是很给力了。假期抓紧时间骑。高中时对大学的憧憬之一就是可以在校园以骑行为交通方式，结果软院全是楼梯。。泪奔。</h4><a id="more"></a>
@@ -231,18 +209,18 @@
     
     </summary>
     
-      <category term="假期" scheme="http://yoursite.com/tags/%E5%81%87%E6%9C%9F/"/>
+      <category term="假期" scheme="http://ckitakishi.com/tags/%E5%81%87%E6%9C%9F/"/>
     
-      <category term="自行车" scheme="http://yoursite.com/tags/%E8%87%AA%E8%A1%8C%E8%BD%A6/"/>
+      <category term="自行车" scheme="http://ckitakishi.com/tags/%E8%87%AA%E8%A1%8C%E8%BD%A6/"/>
     
-      <category term="生活" scheme="http://yoursite.com/categories/%E7%94%9F%E6%B4%BB/"/>
+      <category term="生活" scheme="http://ckitakishi.com/categories/%E7%94%9F%E6%B4%BB/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[假期来了]]></title>
-    <link href="http://yoursite.com/2014/01/17/%E5%81%87%E6%9C%9F%E6%9D%A5%E4%BA%86/"/>
-    <id>http://yoursite.com/2014/01/17/假期来了/</id>
+    <link href="http://ckitakishi.com/2014/01/17/%E5%81%87%E6%9C%9F%E6%9D%A5%E4%BA%86/"/>
+    <id>http://ckitakishi.com/2014/01/17/假期来了/</id>
     <published>2014-01-17T13:21:11.000Z</published>
     <updated>2014-01-17T15:15:10.000Z</updated>
     <content type="html"><![CDATA[<h4 id="回家就快要一周了。">回家就快要一周了。</h4>]]></content>
@@ -250,20 +228,20 @@
     <![CDATA[<h4 id="回家就快要一周了。">回家就快要一周了。</h4>]]>
     </summary>
     
-      <category term="mia" scheme="http://yoursite.com/tags/mia/"/>
+      <category term="mia" scheme="http://ckitakishi.com/tags/mia/"/>
     
-      <category term="假期" scheme="http://yoursite.com/tags/%E5%81%87%E6%9C%9F/"/>
+      <category term="假期" scheme="http://ckitakishi.com/tags/%E5%81%87%E6%9C%9F/"/>
     
-      <category term="生活" scheme="http://yoursite.com/tags/%E7%94%9F%E6%B4%BB/"/>
+      <category term="生活" scheme="http://ckitakishi.com/tags/%E7%94%9F%E6%B4%BB/"/>
     
-      <category term="生活" scheme="http://yoursite.com/categories/%E7%94%9F%E6%B4%BB/"/>
+      <category term="生活" scheme="http://ckitakishi.com/categories/%E7%94%9F%E6%B4%BB/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[遇到的一些问题与解决办法]]></title>
-    <link href="http://yoursite.com/2014/01/06/%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/"/>
-    <id>http://yoursite.com/2014/01/06/遇到的一些问题与解决办法/</id>
+    <link href="http://ckitakishi.com/2014/01/06/%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/"/>
+    <id>http://ckitakishi.com/2014/01/06/遇到的一些问题与解决办法/</id>
     <published>2014-01-06T14:30:51.000Z</published>
     <updated>2014-01-07T06:23:13.000Z</updated>
     <content type="html"><![CDATA[<h4 id="一直有些博客写记录的习惯，但是越来越觉得定制的博客们很多时候无法满足需求，本来打算使用ghost，新生的力量总是值得期待，但是突然之间它就被墙了…了解了一些框架，选择了hexo,打开主页的瞬间就认定它了。hexo由Node-js驱动，迅速，简洁。">一直有些博客写记录的习惯，但是越来越觉得定制的博客们很多时候无法满足需求，本来打算使用ghost，新生的力量总是值得期待，但是突然之间它就被墙了…了解了一些框架，选择了<a href="http://zespia.tw/hexo/" target="_blank" rel="external">hexo</a>,打开主页的瞬间就认定它了。hexo由Node.js驱动，迅速，简洁。</h4><h4 id="这两天也遇到了一些问题，简单的记录下来。">这两天也遇到了一些问题，简单的记录下来。</h4><a id="more"></a>
@@ -290,11 +268,11 @@
     
     </summary>
     
-      <category term="github" scheme="http://yoursite.com/tags/github/"/>
+      <category term="github" scheme="http://ckitakishi.com/tags/github/"/>
     
-      <category term="hexo" scheme="http://yoursite.com/tags/hexo/"/>
+      <category term="hexo" scheme="http://ckitakishi.com/tags/hexo/"/>
     
-      <category term="hexo" scheme="http://yoursite.com/categories/hexo/"/>
+      <category term="hexo" scheme="http://ckitakishi.com/categories/hexo/"/>
     
   </entry>
   
