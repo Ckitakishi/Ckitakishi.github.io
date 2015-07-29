@@ -1,0 +1,98 @@
+#cover {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  background: url("images/banner.jpg");
+  z-index: 1;
+}
+.profile {
+  width: 400px;
+  color: white;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  font-family: roboto, "Helvetica Neue", Helvetica, Arial, sans-serif, "冬青黑体", "微软雅黑", "宋体";
+}
+.profile h2 {
+  font-size: 2em;
+}
+.profile p {
+  margin: 1em;
+  font-size: 1.4em;
+}
+.profile img {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  margin: 2em auto 1em;
+  border: 3px solid #ffffff;
+  border-radius: 50px;
+}
+.topline {
+  display: -webkit-flex;
+  display: flex;
+}
+.topline > li {
+  -webkit-flex: 1;
+  flex: 1;
+  height: 8px;
+}
+.topline > li:nth-child(1) {
+  background-color: rgba(5, 178, 173, 0.6);
+  border-top-left-radius: 8px;
+}
+.topline > li:nth-child(2) {
+  background-color: rgba(255, 45, 119, 0.6);
+}
+.topline > li:nth-child(3) {
+  background-color: rgba(255, 179, 2, 0.6);
+}
+.topline > li:nth-child(4) {
+  background-color: rgba(4, 144, 243, 0.6);
+  border-top-right-radius: 8px;
+}
+.profile-links {
+  display: -webkit-flex;
+  display: flex;
+}
+.homepage-link,
+.github-link,
+.twitter-link,
+.mail-link {
+  -webkit-flex: 1;
+  flex: 1;
+  padding: 1em;
+  cursor: pointer;
+}
+.homepage-link a,
+.github-link a,
+.twitter-link a,
+.mail-link a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.4em;
+}
+.homepage-link {
+  background-color: rgba(5, 178, 173, 0.6);
+  border-bottom-left-radius: 8px;
+}
+.github-link {
+  background-color: rgba(255, 45, 119, 0.6);
+}
+.twitter-link {
+  background-color: rgba(255, 179, 2, 0.6);
+}
+.mail-link {
+  background-color: rgba(4, 144, 243, 0.6);
+  border-bottom-right-radius: 8px;
+}
+.mail-link a {
+  font-size: 1.2em;
+}

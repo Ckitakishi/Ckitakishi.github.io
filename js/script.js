@@ -119,7 +119,7 @@
     setTimeout(function(){
       isMobileNavAnim = false;
     }, mobileNavAnimDuration);
-  }
+  };
 
   $('#main-nav-toggle').on('click', function(){
     if (isMobileNavAnim) return;
@@ -134,4 +134,5 @@
 
     $container.removeClass('mobile-nav-on');
   });
+
 })(jQuery);
