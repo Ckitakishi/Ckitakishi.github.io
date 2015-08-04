@@ -5,7 +5,7 @@
   <subtitle><![CDATA[大概，就是为梦想而活]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://ckitakishi.com//"/>
-  <updated>2015-07-31T16:02:58.000Z</updated>
+  <updated>2015-08-04T15:45:21.000Z</updated>
   <id>http://ckitakishi.com//</id>
   
   <author>
@@ -16,12 +16,43 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[轻图像工具－LightImage]]></title>
+    <link href="http://ckitakishi.com/2015/08/01/%E8%BD%BB%E5%9B%BE%E5%83%8F%E5%B7%A5%E5%85%B7%EF%BC%8DLightImage/"/>
+    <id>http://ckitakishi.com/2015/08/01/轻图像工具－LightImage/</id>
+    <published>2015-08-01T08:58:35.000Z</published>
+    <updated>2015-08-04T15:45:21.000Z</updated>
+    <content type="html"><![CDATA[<p>LightImage 是我的毕业设计项目，但是至今暂时还是一个残次成品，仍需大力的改善。初衷是开发一款轻量级的图像处理工具，后续又扩展了简易的图像分析和像素画绘制等功能。</p>
+<p>答辩完后就一直想把一个多月开发过程中的心得和遇到的有意思的问题记录下来。想从三个部分来说一说～</p>
+<a id="more"></a>
+<h2 id="绘画">绘画</h2><h2 id="图像分析">图像分析</h2><h2 id="图像处理">图像处理</h2><ul>
+<li><a href="https://lightimage.herokuapp.com" target="_blank" rel="external">Test it</a> </li>
+<li><a href="https://github.com/Ckitakishi/LightImage" target="_blank" rel="external">Github</a></li>
+</ul>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>LightImage 是我的毕业设计项目，但是至今暂时还是一个残次成品，仍需大力的改善。初衷是开发一款轻量级的图像处理工具，后续又扩展了简易的图像分析和像素画绘制等功能。</p>
+<p>答辩完后就一直想把一个多月开发过程中的心得和遇到的有意思的问题记录下来。想从三个部分来说一说～</p>]]>
+    
+    </summary>
+    
+      <category term="web" scheme="http://ckitakishi.com/tags/web/"/>
+    
+      <category term="图像" scheme="http://ckitakishi.com/tags/%E5%9B%BE%E5%83%8F/"/>
+    
+      <category term="编程" scheme="http://ckitakishi.com/tags/%E7%BC%96%E7%A8%8B/"/>
+    
+      <category term="项目集" scheme="http://ckitakishi.com/categories/%E9%A1%B9%E7%9B%AE%E9%9B%86/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[说说过去这半年]]></title>
     <link href="http://ckitakishi.com/2015/07/31/%E8%AF%B4%E8%AF%B4%E8%BF%87%E5%8E%BB%E8%BF%99%E5%8D%8A%E5%B9%B4/"/>
     <id>http://ckitakishi.com/2015/07/31/说说过去这半年/</id>
     <published>2015-07-31T15:58:17.000Z</published>
-    <updated>2015-07-31T16:02:58.000Z</updated>
+    <updated>2015-08-01T09:11:22.000Z</updated>
     <content type="html"><![CDATA[<p>过去这半年，说实话过的蛮不错。确定了工作，结束了实习，带着不舍顺利毕业，毕业旅行。每一件事都那么难忘。</p>
+<a id="more"></a>
 <p>年初，犹豫和纠结最终还是没能阻挡一个小小的梦想，决定去霓虹工作。大三以前还信誓旦旦的说过就算去日本也只可能是旅行，亲爱的日语老师们估计怎么也想不到当年那个日语下手的学生尽然要去工作了～</p>
 <p>四月底，结束了八个月的实习，最想说的是感谢，身边的人都充满了正能量。最幸福的是开发主线由 iOS 重新回到了 web 前端开发，框架开发，新产品研发，案件对应…。</p>
 <p>六月底，毕业设计 [<a href="https://lightimage.herokuapp.com" target="_blank" rel="external">lightimage</a>] 和学位授予为大学划上了句号，带着满满的祝福和好几十G的毕业照跟最爱的 DUT 说再见了。</p>
@@ -29,13 +60,13 @@
 <p>窗外大雨滂沱，赶在七月的尾巴，流水账一样的梳理了这半年来的发生的事情和心情。我就要带着梦想重新起航啦～</p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>过去这半年，说实话过的蛮不错。确定了工作，结束了实习，带着不舍顺利毕业，毕业旅行。每一件事都那么难忘。</p>
-<p>年初，犹豫和纠结最终还是没能阻挡一个小小的梦想，决定去霓虹工作。大三以前还信誓旦旦的说过就算去日本也只可能是旅行，亲爱的日语老师们估计怎么也想不到当年那个日]]>
+    <![CDATA[<p>过去这半年，说实话过的蛮不错。确定了工作，结束了实习，带着不舍顺利毕业，毕业旅行。每一件事都那么难忘。</p>]]>
+    
     </summary>
     
       <category term="随笔" scheme="http://ckitakishi.com/tags/%E9%9A%8F%E7%AC%94/"/>
     
-      <category term="生活" scheme="http://ckitakishi.com/categories/%E7%94%9F%E6%B4%BB/"/>
+      <category term="浮生记" scheme="http://ckitakishi.com/categories/%E6%B5%AE%E7%94%9F%E8%AE%B0/"/>
     
   </entry>
   
@@ -44,7 +75,7 @@
     <link href="http://ckitakishi.com/2014/10/28/%E5%BF%B5%E5%BF%B5%E4%B8%8D%E5%BF%98/"/>
     <id>http://ckitakishi.com/2014/10/28/念念不忘/</id>
     <published>2014-10-28T12:19:18.000Z</published>
-    <updated>2014-10-28T12:56:27.000Z</updated>
+    <updated>2015-08-01T09:11:41.000Z</updated>
     <content type="html"><![CDATA[<p>大连的冬天如期而至，时光匆匆…实习也马上就要进入第三个月，依然想要去南方…<br>过去的两个月，重新投入到 web 前端开发的怀抱，有种好久不见，你依然美丽的感觉。但是问题依旧是有的，幸好也会感觉到自己确确实实在进步。工作之余的生活特别规律，每天和 Q 一起或蹭网，或乱逛，或购物，偶尔也约上迪迪一起吃喝玩乐。<br>今天开始了写 jQuery 插件的征途，这个还是下一篇再说吧。［：）…］</p>
 ]]></content>
     <summary type="html">
@@ -55,7 +86,7 @@
     
       <category term="生活" scheme="http://ckitakishi.com/tags/%E7%94%9F%E6%B4%BB/"/>
     
-      <category term="生活" scheme="http://ckitakishi.com/categories/%E7%94%9F%E6%B4%BB/"/>
+      <category term="浮生记" scheme="http://ckitakishi.com/categories/%E6%B5%AE%E7%94%9F%E8%AE%B0/"/>
     
   </entry>
   
@@ -64,7 +95,7 @@
     <link href="http://ckitakishi.com/2014/07/01/dream-mark%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/"/>
     <id>http://ckitakishi.com/2014/07/01/dream-mark的前世今生/</id>
     <published>2014-07-01T15:28:10.000Z</published>
-    <updated>2014-07-20T02:09:55.000Z</updated>
+    <updated>2015-08-01T09:21:50.000Z</updated>
     <content type="html"><![CDATA[<h2 id="DreamMark_的前世">DreamMark 的前世</h2><p>DreamMark的的简介永远都是 <em>Mark our dream.</em> </p>
 <p>起初，这源于一次激烈的讨论。“生活并不平淡，可很多东西就是记不住”，“我们大概需要借助纸和笔”，“可是，铭心的自然忘不了，其它又记了干嘛”，差一点，就再也没有然后了。“不一样的，记住可以是为了记忆，也可以是提醒”，“做梦！哪有那么神奇。”，“嗯！那就做梦吧！”，“……”。</p>
 <p>于是，我们决定 <em>mark our dream</em> 。让梦境和梦想，为记忆添上那么一点儿不同的东西。</p>
@@ -88,7 +119,7 @@
     
       <category term="编程" scheme="http://ckitakishi.com/tags/%E7%BC%96%E7%A8%8B/"/>
     
-      <category term="作品" scheme="http://ckitakishi.com/categories/%E4%BD%9C%E5%93%81/"/>
+      <category term="项目集" scheme="http://ckitakishi.com/categories/%E9%A1%B9%E7%9B%AE%E9%9B%86/"/>
     
   </entry>
   
@@ -114,7 +145,7 @@
     <link href="http://ckitakishi.com/2014/04/12/meziriac%E7%9A%84%E7%A0%9D%E7%A0%81%E9%97%AE%E9%A2%98/"/>
     <id>http://ckitakishi.com/2014/04/12/meziriac的砝码问题/</id>
     <published>2014-04-12T15:46:04.000Z</published>
-    <updated>2014-04-14T15:14:58.000Z</updated>
+    <updated>2015-08-01T09:06:16.000Z</updated>
     <content type="html"><![CDATA[<h4 id="在回学校的车上人超多，默默的在想砝码的那道题。下午那道题答的实在是…图样图森破…">在回学校的车上人超多，默默的在想砝码的那道题。下午那道题答的实在是…图样图森破…</h4><pre><code><span class="attribute">题目大概是:
 一个商去买钻石，所有钻石都&lt;</span>=<span class="string">40g，他只带四个砝码和一个天平，请问四个砝码分别是多重的？</span>
 </code></pre><a id="more"></a>
@@ -134,7 +165,7 @@
     
       <category term="编程" scheme="http://ckitakishi.com/tags/%E7%BC%96%E7%A8%8B/"/>
     
-      <category term="数学" scheme="http://ckitakishi.com/categories/%E6%95%B0%E5%AD%A6/"/>
+      <category term="思考" scheme="http://ckitakishi.com/categories/%E6%80%9D%E8%80%83/"/>
     
   </entry>
   
@@ -143,12 +174,18 @@
     <link href="http://ckitakishi.com/2014/04/03/%E8%AF%9E%E7%94%9F%E6%97%A5/"/>
     <id>http://ckitakishi.com/2014/04/03/诞生日/</id>
     <published>2014-04-03T11:28:07.000Z</published>
-    <updated>2014-04-03T12:41:20.000Z</updated>
-    <content type="html"><![CDATA[<h4 id="人间四月天，转眼又一年。还没等到大连的莺飞草长，就已经迈过了二十一的坎，生日快乐~(*^^)v_—关于生日，记忆中大概只有美好吧~">人间四月天，转眼又一年。还没等到大连的莺飞草长，就已经迈过了二十一的坎，生日快乐~(*^^)v   —关于生日，记忆中大概只有美好吧~</h4><h4 id="小时候，每年生日都会拍一张照片，记录成长；小学时，生日是全班同学的聚会，一起玩整整一晚上，在烧烤摊high完才各回各家。中学时，每一年的生日都有父母相伴，生日礼物开始不再是文具；不得不提的高三，我们会为每一位同学庆祝生日，终生难忘。">小时候，每年生日都会拍一张照片，记录成长；小学时，生日是全班同学的聚会，一起玩整整一晚上，在烧烤摊high完才各回各家。中学时，每一年的生日都有父母相伴，生日礼物开始不再是文具；不得不提的高三，我们会为每一位同学庆祝生日，终生难忘。</h4><a id="more"></a>
-<h4 id="今年生日前一直向晴吐槽，说自己慢慢不年轻了……晴表示巨无语。有时候会为大学的某些阶段没有珍惜时光感到遗憾，尤其是在参加阿里的笔试后，凄惨的处女笔。。。发自内心的说，这是一个很珍贵的年纪，能够比过几年更快的更有精力的学习一些东西，也能够参透一些曾经不懂的东西。">今年生日前一直向<a href="chiakiq.com">晴</a>吐槽，说自己慢慢不年轻了……晴表示巨无语。有时候会为大学的某些阶段没有珍惜时光感到遗憾，尤其是在参加阿里的笔试后，凄惨的处女笔。。。发自内心的说，这是一个很珍贵的年纪，能够比过几年更快的更有精力的学习一些东西，也能够参透一些曾经不懂的东西。</h4><h4 id="感谢祝福我的大家，么么哒~爸妈今年送了一支LAMY_Safari_和一块表，很喜欢，很惊喜。还有晴的礼物们，瞬间提升文艺程度！还有收到书，拜仁周边啦~~什么的~都很符合我的口味。">感谢祝福我的大家，么么哒~爸妈今年送了一支LAMY Safari 和一块表，很喜欢，很惊喜。还有晴的礼物们，瞬间提升文艺程度！还有收到书，拜仁周边啦~~什么的~都很符合我的口味。</h4><hr>
-<h4 id="不曾忘记初心，无论如何，我都会一直为之努力。">不曾忘记初心，无论如何，我都会一直为之努力。</h4>]]></content>
+    <updated>2015-08-01T09:12:29.000Z</updated>
+    <content type="html"><![CDATA[<p>人间四月天，转眼又一年。还没等到大连的莺飞草长，就已经迈过了二十一的坎，生日快乐~(*^^)v   —关于生日，记忆中大概只有美好吧~</p>
+<p>小时候，每年生日都会拍一张照片，记录成长；小学时，生日是全班同学的聚会，一起玩整整一晚上，在烧烤摊high完才各回各家。中学时，每一年的生日都有父母相伴，生日礼物开始不再是文具；不得不提的高三，我们会为每一位同学庆祝生日，终生难忘。</p>
+<a id="more"></a>
+<p>今年生日前一直向<a href="chiakiq.com">晴</a>吐槽，说自己慢慢不年轻了……晴表示巨无语。有时候会为大学的某些阶段没有珍惜时光感到遗憾，尤其是在参加阿里的笔试后，凄惨的处女笔。。。发自内心的说，这是一个很珍贵的年纪，能够比过几年更快的更有精力的学习一些东西，也能够参透一些曾经不懂的东西。</p>
+<p>感谢祝福我的大家，么么哒~爸妈今年送了一支LAMY Safari 和一块表，很喜欢，很惊喜。还有晴的礼物们，瞬间提升文艺程度！还有收到书，拜仁周边啦~~什么的~都很符合我的口味。</p>
+<hr>
+<p>不曾忘记初心，无论如何，我都会一直为之努力。</p>
+]]></content>
     <summary type="html">
-    <![CDATA[<h4 id="人间四月天，转眼又一年。还没等到大连的莺飞草长，就已经迈过了二十一的坎，生日快乐~(*^^)v_—关于生日，记忆中大概只有美好吧~">人间四月天，转眼又一年。还没等到大连的莺飞草长，就已经迈过了二十一的坎，生日快乐~(*^^)v   —关于生日，记忆中大概只有美好吧~</h4><h4 id="小时候，每年生日都会拍一张照片，记录成长；小学时，生日是全班同学的聚会，一起玩整整一晚上，在烧烤摊high完才各回各家。中学时，每一年的生日都有父母相伴，生日礼物开始不再是文具；不得不提的高三，我们会为每一位同学庆祝生日，终生难忘。">小时候，每年生日都会拍一张照片，记录成长；小学时，生日是全班同学的聚会，一起玩整整一晚上，在烧烤摊high完才各回各家。中学时，每一年的生日都有父母相伴，生日礼物开始不再是文具；不得不提的高三，我们会为每一位同学庆祝生日，终生难忘。</h4>]]>
+    <![CDATA[<p>人间四月天，转眼又一年。还没等到大连的莺飞草长，就已经迈过了二十一的坎，生日快乐~(*^^)v   —关于生日，记忆中大概只有美好吧~</p>
+<p>小时候，每年生日都会拍一张照片，记录成长；小学时，生日是全班同学的聚会，一起玩整整一晚上，在烧烤摊high完才各回各家。中学时，每一年的生日都有父母相伴，生日礼物开始不再是文具；不得不提的高三，我们会为每一位同学庆祝生日，终生难忘。</p>]]>
     
     </summary>
     
@@ -156,7 +193,7 @@
     
       <category term="生活" scheme="http://ckitakishi.com/tags/%E7%94%9F%E6%B4%BB/"/>
     
-      <category term="生活" scheme="http://ckitakishi.com/categories/%E7%94%9F%E6%B4%BB/"/>
+      <category term="浮生记" scheme="http://ckitakishi.com/categories/%E6%B5%AE%E7%94%9F%E8%AE%B0/"/>
     
   </entry>
   
@@ -165,7 +202,7 @@
     <link href="http://ckitakishi.com/2014/03/22/uikit-dynamics--ios7/"/>
     <id>http://ckitakishi.com/2014/03/22/uikit-dynamics--ios7/</id>
     <published>2014-03-22T14:17:38.000Z</published>
-    <updated>2014-06-04T14:18:39.000Z</updated>
+    <updated>2015-08-01T09:22:03.000Z</updated>
     <content type="html"><![CDATA[<h2 id="Dynamic_Items:">Dynamic Items:</h2><h4 id="UIDynamicItem_Protocol是13年的WWDC新增加的。">UIDynamicItem Protocol是13年的WWDC新增加的。</h4><a id="more"></a>
 <p> <a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIDynamicItem_Protocol/Reference/Reference.html" target="_blank" rel="external">Apple Library相关的</a></p>
 <h4 id="UIKit_Dynamics的焦点都是关于items之间相互的作用及其动画。有一个要求，为了在一个item上使用dynamic_behavior，item必须满足UIDynamicItem协议。该协议定义了三个重要的属性，bounds，center，transform。bounds属性是readonly的,center,transform属性是read/write的，center需要更新动画的进度,transform属性返回一个CGAffineTransform的对象。">UIKit Dynamics的焦点都是关于items之间相互的作用及其动画。有一个要求，为了在一个item上使用dynamic behavior，item必须满足<code>UIDynamicItem</code>协议。该协议定义了三个重要的属性，<code>bounds</code>，<code>center</code>，<code>transform</code>。<code>bounds</code>属性是readonly的,<code>center</code>,<code>transform</code>属性是read/write的，<code>center</code>需要更新动画的进度,<code>transform</code>属性返回一个<code>CGAffineTransform</code>的对象。</h4><h4 id="从iOS7开始，默认的只有UIView和UICollectionViewLayoutAttributes类可实现该协议。但是，仍然可以自己创建类去实现之。">从iOS7开始，默认的只有<code>UIView</code>和<code>UICollectionViewLayoutAttributes</code>类可实现该协议。但是，仍然可以自己创建类去实现之。</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property(nonatomic, readonly) CGRect bounds&#10;@property(nonatomic, readwrite) CGPoint center&#10;@property(nonatomic, readwrite) CGAffineTransform transform</span><br></pre></td></tr></table></figure>
@@ -193,7 +230,7 @@
     
       <category term="iOS" scheme="http://ckitakishi.com/tags/iOS/"/>
     
-      <category term="思考" scheme="http://ckitakishi.com/tags/%E6%80%9D%E8%80%83/"/>
+      <category term="编程" scheme="http://ckitakishi.com/tags/%E7%BC%96%E7%A8%8B/"/>
     
       <category term="iOS" scheme="http://ckitakishi.com/categories/iOS/"/>
     
@@ -204,7 +241,7 @@
     <link href="http://ckitakishi.com/2014/01/21/%E7%9F%AD%E9%80%94%E9%AA%91%E8%A1%8C/"/>
     <id>http://ckitakishi.com/2014/01/21/短途骑行/</id>
     <published>2014-01-21T14:46:43.000Z</published>
-    <updated>2014-01-27T08:13:11.000Z</updated>
+    <updated>2015-08-01T09:11:48.000Z</updated>
     <content type="html"><![CDATA[<h4 id="昨日这个冬天的第三场雪悄然而至，今天早上大雾一场，下午居然天晴了。">昨日这个冬天的第三场雪悄然而至，今天早上大雾一场，下午居然天晴了。</h4><h4 id="前几天入了13款merida的duke_500,对于我这种菜鸟来说，实在是很给力了。假期抓紧时间骑。高中时对大学的憧憬之一就是可以在校园以骑行为交通方式，结果软院全是楼梯。。泪奔。">前几天入了13款merida的duke 500,对于我这种菜鸟来说，实在是很给力了。假期抓紧时间骑。高中时对大学的憧憬之一就是可以在校园以骑行为交通方式，结果软院全是楼梯。。泪奔。</h4><a id="more"></a>
 <h4 id="参数如下，正在研究ing。">参数如下，正在研究ing。</h4><pre><code>【颜色】 白色、白蓝色、红色、黑色、白/红色
 【车架尺寸】：<span class="number">26</span>X15/<span class="number">17</span>/<span class="number">19</span> 
@@ -237,7 +274,7 @@
     
       <category term="自行车" scheme="http://ckitakishi.com/tags/%E8%87%AA%E8%A1%8C%E8%BD%A6/"/>
     
-      <category term="生活" scheme="http://ckitakishi.com/categories/%E7%94%9F%E6%B4%BB/"/>
+      <category term="浮生记" scheme="http://ckitakishi.com/categories/%E6%B5%AE%E7%94%9F%E8%AE%B0/"/>
     
   </entry>
   
@@ -246,19 +283,17 @@
     <link href="http://ckitakishi.com/2014/01/17/%E5%81%87%E6%9C%9F%E6%9D%A5%E4%BA%86/"/>
     <id>http://ckitakishi.com/2014/01/17/假期来了/</id>
     <published>2014-01-17T13:21:11.000Z</published>
-    <updated>2014-01-17T15:15:10.000Z</updated>
+    <updated>2015-08-01T09:20:06.000Z</updated>
     <content type="html"><![CDATA[<h4 id="回家就快要一周了。">回家就快要一周了。</h4>]]></content>
     <summary type="html">
     <![CDATA[<h4 id="回家就快要一周了。">回家就快要一周了。</h4>]]>
     </summary>
     
-      <category term="mia" scheme="http://ckitakishi.com/tags/mia/"/>
-    
       <category term="假期" scheme="http://ckitakishi.com/tags/%E5%81%87%E6%9C%9F/"/>
     
       <category term="生活" scheme="http://ckitakishi.com/tags/%E7%94%9F%E6%B4%BB/"/>
     
-      <category term="生活" scheme="http://ckitakishi.com/categories/%E7%94%9F%E6%B4%BB/"/>
+      <category term="浮生记" scheme="http://ckitakishi.com/categories/%E6%B5%AE%E7%94%9F%E8%AE%B0/"/>
     
   </entry>
   
