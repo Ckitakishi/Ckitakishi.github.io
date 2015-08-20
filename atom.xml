@@ -5,7 +5,7 @@
   <subtitle><![CDATA[大概，就是为梦想而活]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://ckitakishi.com//"/>
-  <updated>2015-08-07T15:51:36.000Z</updated>
+  <updated>2015-08-20T15:49:41.000Z</updated>
   <id>http://ckitakishi.com//</id>
   
   <author>
@@ -20,15 +20,19 @@
     <link href="http://ckitakishi.com/2015/08/01/%E8%BD%BB%E5%9B%BE%E5%83%8F%E5%B7%A5%E5%85%B7%EF%BC%8DLightImage/"/>
     <id>http://ckitakishi.com/2015/08/01/轻图像工具－LightImage/</id>
     <published>2015-08-01T08:58:35.000Z</published>
-    <updated>2015-08-07T15:51:36.000Z</updated>
+    <updated>2015-08-20T15:49:41.000Z</updated>
     <content type="html"><![CDATA[<p>LightImage 是我的毕业设计项目，但是至今暂时还是一个残次成品，仍需大力的改善。初衷是开发一款轻量级的图像处理工具，后续又扩展了简易的图像分析和像素画绘制等功能。</p>
 <p>项目主要基于 HTML5 中的 Canvas 开发，当提及 Canvas 的时候，常常还会提到 SVG。Canvas 只能通过脚本驱动，适合像素级的图形问题处理；相比较而言 SVG 的驱动方式更加灵活，XML、CSS等都可，所以处理图形是通过元素。对于本项目而言，Canvas 是不二的选择。</p>
 <a id="more"></a>
-<p>答辩完后就一直想把一个多月开发过程中的心得和遇到的有意思的问题记录下来。想从三个部分来说一说～</p>
-<h2 id="绘画">绘画</h2><p>关于这个部分，细节的部分集中于事件处理，例如笔迹离开和进入画布需要绑定 mouseleave 和 mouseenter 事件。</p>
-<h2 id="图像分析">图像分析</h2><h2 id="图像处理">图像处理</h2><ul>
-<li><a href="https://lightimage.herokuapp.com" target="_blank" rel="external">Tye it</a> </li>
+<p>项目使用了框架 Vue.js，结合曾经完成的一个数据量较大的应用来看，很优雅，很轻量，很灵活，调试也很棒，不过也遇到一些需要仔细思考的问题，生命周期，路由，页面重载等等。</p>
+<p>答辩完后就一直想把一个多月开发过程中的心得和遇到的有意思的问题记录下来。下面还想从三个部分来说一说～</p>
+<h2 id="绘画">绘画</h2><p>关于这个部分，细节的部分集中于事件处理，例如笔迹离开和进入画布需要绑定 mouseleave 和 mouseenter 事件。想要说一说的是，这里添加了我很喜欢的像素画绘制，通过倍率来模拟不同格子数的像素画布，尝试过使用单个像素放大但并适用。未来计划新增的功能包括自定义像素数量，以及添加多张画布组成动画。在这里不得不提给我带来深刻影响的像素动画作品们 <a href="http://1041uuu.tumblr.com/" target="_blank" rel="external">1041uuu</a>。</p>
+<h2 id="图像分析">图像分析</h2><p>这个部分也许名不副实？（笑。起初只是想做一个图像的色彩分析，统计色彩的出现频率。依据 rgb 色彩模型，则有256^3种色彩，非常大的数字，于是将相近的色彩归位一类，由大及小最终选定了 6^3 种色彩。使用一个长度为 256 的数组存储出现次数，色彩一一对应下标 0-255，并可反向由下标推导颜色以便在页面渲染。</p>
+<p>后来增添了灰度直方图及均衡化的直方图来表现图像的大体特征。</p>
+<h2 id="图像处理">图像处理</h2><p>在完成毕设的两个月中，用于学习图像处理和使用 JS 实现花了不少时间。</p>
+<ul>
 <li><a href="https://github.com/Ckitakishi/LightImage" target="_blank" rel="external">Github</a></li>
+<li><a href="https://lightimage.herokuapp.com" target="_blank" rel="external">Tye it</a> </li>
 </ul>
 ]]></content>
     <summary type="html">
