@@ -3,17 +3,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives: 2015/7 | LUMINOUS</title>
+  <title>iOS 的看门狗机制 | LUMINOUS</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="LUMINOUS">
-<meta property="og:url" content="http://ckitakishi.com/archives/2015/07/index.html">
+  <meta name="description" content="背景应用 100% Loss 时完全无法启动，一直崩溃。彻底切断网络连接正常启动，调试模式状态下等待时间非常久，但可以启动，并伴随 UI 微卡。强烈的预感这是线程阻塞。前一段时间被 Core Data Concurrency 折腾的够呛，看见线程问题就略有些心慌。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS 的看门狗机制">
+<meta property="og:url" content="http://ckitakishi.com/2016/08/17/WatchDog-机制/index.html">
 <meta property="og:site_name" content="LUMINOUS">
-<meta property="og:description">
+<meta property="og:description" content="背景应用 100% Loss 时完全无法启动，一直崩溃。彻底切断网络连接正常启动，调试模式状态下等待时间非常久，但可以启动，并伴随 UI 微卡。强烈的预感这是线程阻塞。前一段时间被 Core Data Concurrency 折腾的够呛，看见线程问题就略有些心慌。">
+<meta property="og:image" content="http://ckitakishi.com/images/watchdog.jpg">
+<meta property="og:updated_time" content="2016-08-21T06:14:24.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="LUMINOUS">
-<meta name="twitter:description">
+<meta name="twitter:title" content="iOS 的看门狗机制">
+<meta name="twitter:description" content="背景应用 100% Loss 时完全无法启动，一直崩溃。彻底切断网络连接正常启动，调试模式状态下等待时间非常久，但可以启动，并伴随 UI 微卡。强烈的预感这是线程阻塞。前一段时间被 Core Data Concurrency 折腾的够呛，看见线程问题就略有些心慌。">
   
     <link rel="alternative" href="/atom.xml" title="LUMINOUS" type="application/atom+xml">
   
@@ -68,40 +70,115 @@
   </div>
 </header>
               <div class="outer">
-                  <section id="main">
-  
-
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/07/31/说说过去这半年/" class="archive-article-date">
-  <time datetime="2015-07-31T14:58:17.000Z" itemprop="datePublished">Jul 31</time>
+                  <section id="main"><article id="post-WatchDog-机制" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/17/WatchDog-机制/" class="article-date">
+  <time datetime="2016-08-17T14:34:09.000Z" itemprop="datePublished">2016-08-17</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/求索集/">求索集</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/07/31/说说过去这半年/">说说过去这半年</a>
+    <h1 class="article-title" itemprop="name">
+      iOS 的看门狗机制
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="背景">背景</h3><p>应用 100% Loss 时完全无法启动，一直崩溃。彻底切断网络连接正常启动，调试模式状态下等待时间非常久，但可以启动，并伴随 UI 微卡。强烈的预感这是线程阻塞。前一段时间被 Core Data Concurrency 折腾的够呛，看见线程问题就略有些心慌。</p>
+<a id="more"></a>
+<h3 id="原因">原因</h3><p>首先看了 crash log，一如猜测，的确是卡在了主线程；意料之外的是，无数次闪退只留下了一份崩溃日志，如下所示：</p>
+<p><img src="/images/watchdog.jpg" alt="WatchDog"></p>
+<p>第一次见，读了一些资料大概才算是明白了这是怎么一回事。为了避免应用陷入错误状态导致界面无响应，Apple 设计了看门狗 (WatchDog) 机制。一旦超时，强制杀死进程。在不同的生命周期，触发看门狗机制的超时时间有所不同：</p>
+<table>
+<thead>
+<tr>
+<th>生命周期</th>
+<th>超时时间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>启动 Launch</td>
+<td>20 s</td>
+</tr>
+<tr>
+<td>恢复 Resume</td>
+<td>10 s</td>
+</tr>
+<tr>
+<td>悬挂 Suspend</td>
+<td>10 s</td>
+</tr>
+<tr>
+<td>退出 Quit</td>
+<td>6 s</td>
+</tr>
+<tr>
+<td>后台 Background</td>
+<td>10 min</td>
+</tr>
+</tbody>
+</table>
+<p>首先说一说异常编码，也是寓意颇深。8badf00d = ate bad food，大概是在说看门狗吃了坏的食物所以暴走了？！异常记录则表示这并不是一次崩溃（邪魅一笑：强制退出而已）。信息一栏指出时间限制为 20 s。结合应用业务来看，表层原因在于：每次启动应用，首先进行一次模版同步，在此之前需要检测登录状况，通过 RunLoop 反复尝试直到收到响应为止。然而不幸的是，这一些都发生在主线程。</p>
+<p>同步网络请求，主线程，超长超时时间，满足这三点，一定场景下几乎必然会触发看门狗机制。</p>
+<h3 id="对策">对策</h3><p>合理解决方案：<a href="[主线程上的同步网络请求](https://developer.apple.com/library/ios/qa/qa1693/_index.html)">^主线程上的同步网络请求</a></p>
+<ol>
+<li>异步网络请求：优点很多，最重要的是可以让你无忧无虑安全地访问网络，而无需担心线程。</li>
+<li>在非主线程中使用同步网络请求：如果异步运行你的网络代码比登天还难的话(也许你的应用是一个基于同步网络请求的大型移植项目)，退而求次，你也可以在次级线程中运行同步代码，也可以避免触发看门狗机制。</li>
+</ol>
+<p>此外，一部分情况下，例如这次遇到登录和模版同步时触发看门狗，事实上，即使在运用到模版时再次请求也是勉强可行的，因此姑且先跳过网络请求也可以。此时，还以使用一种我认为是相对比较差的方案：</p>
+<ol>
+<li>通过 RunLoop 来操控一切，一旦超过既定的超时时间，就提示用户重试或者暂时先跳过网络请求。</li>
+</ol>
+<p>应用的网络部分基于公司的通用框架，因此优先考虑在非主线程中进行网络请求来避免触发看门狗。</p>
+<p>至于调试模式下为什么可以正常启动应用，完全是因为该模式下看门狗机制处于禁用状态。<a href="[调试模式不发生崩溃](https://developer.apple.com/library/ios/qa/qa1592/_index.html)">^调试模式不发生崩溃</a></p>
+<p>此外，除了网络操作，I/O 读写文件和大规模运算等耗时任务也极有可能触发看门狗机制。合理处理线程，优化耗时任务，很大程度能避免不佳用户体验。</p>
+<h4 id="参考：">参考：</h4>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://ckitakishi.com/2016/08/17/WatchDog-机制/" data-id="cis47vd8e00225cciiwakl8p1" class="article-share-link">Share</a>
+      
+        <a href="http://ckitakishi.com/2016/08/17/WatchDog-机制/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/12/08/沖縄三日/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">沖縄三日</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
 </section>
                   
                   <aside id="sidebar">
@@ -199,11 +276,13 @@
 <script>
   var disqus_shortname = 'ckitakishi';
   
+  var disqus_url = 'http://ckitakishi.com/2016/08/17/WatchDog-机制/';
+  
   (function(){
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
   })();
 </script>
