@@ -5,7 +5,7 @@
   <subtitle><![CDATA[大概，就是为梦想而活]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://ckitakishi.com//"/>
-  <updated>2016-09-08T14:57:16.000Z</updated>
+  <updated>2016-08-21T15:23:05.000Z</updated>
   <id>http://ckitakishi.com//</id>
   
   <author>
@@ -14,30 +14,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title><![CDATA[关于 SEGA 的记忆]]></title>
-    <link href="http://ckitakishi.com/2016/09/08/%E5%85%B3%E4%BA%8E-SEGA-%E7%9A%84%E8%AE%B0%E5%BF%86/"/>
-    <id>http://ckitakishi.com/2016/09/08/关于-SEGA-的记忆/</id>
-    <published>2016-09-08T14:30:58.000Z</published>
-    <updated>2016-09-08T14:57:16.000Z</updated>
-    <content type="html"><![CDATA[<p>早上起来赖在床上浏览了发布会新闻，SUPER MARIO RUN，Pokemon GO，作为任豚感动的不行不行的，这一年真的不太那么任天堂，但是好惊喜～</p>
-<p>画风忽转，其实今天想说的是人生中接触的第一台游戏机 —— SEGA Mega Drive。</p>
- <a id="more"></a>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>早上起来赖在床上浏览了发布会新闻，SUPER MARIO RUN，Pokemon GO，作为任豚感动的不行不行的，这一年真的不太那么任天堂，但是好惊喜～</p>
-<p>画风忽转，其实今天想说的是人生中接触的第一台游戏机 —— SEGA Mega Drive。</p>]]>
-    
-    </summary>
-    
-      <category term="游戏" scheme="http://ckitakishi.com/tags/%E6%B8%B8%E6%88%8F/"/>
-    
-      <category term="记忆" scheme="http://ckitakishi.com/tags/%E8%AE%B0%E5%BF%86/"/>
-    
-      <category term="浮生记" scheme="http://ckitakishi.com/categories/%E6%B5%AE%E7%94%9F%E8%AE%B0/"/>
-    
-  </entry>
   
   <entry>
     <title><![CDATA[iOS 的看门狗机制]]></title>
