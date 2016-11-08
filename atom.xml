@@ -5,7 +5,7 @@
   <subtitle><![CDATA[大概，就是为梦想而活]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://ckitakishi.com//"/>
-  <updated>2016-08-21T15:23:05.000Z</updated>
+  <updated>2016-11-08T15:18:32.000Z</updated>
   <id>http://ckitakishi.com//</id>
   
   <author>
@@ -14,6 +14,19 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[十一月（一）]]></title>
+    <link href="http://ckitakishi.com/2016/11/09/%E5%8D%81%E4%B8%80%E6%9C%88%EF%BC%88%E4%B8%80%EF%BC%89/"/>
+    <id>http://ckitakishi.com/2016/11/09/十一月（一）/</id>
+    <published>2016-11-08T15:18:32.000Z</published>
+    <updated>2016-11-08T15:18:32.000Z</updated>
+    <content type="html"></content>
+    <summary type="html">
+    
+    </summary>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[iOS 的看门狗机制]]></title>
