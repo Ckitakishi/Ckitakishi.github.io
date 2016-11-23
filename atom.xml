@@ -5,7 +5,7 @@
   <subtitle><![CDATA[大概，就是为梦想而活]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://ckitakishi.com//"/>
-  <updated>2016-11-08T15:18:32.000Z</updated>
+  <updated>2016-11-23T14:37:36.000Z</updated>
   <id>http://ckitakishi.com//</id>
   
   <author>
@@ -16,15 +16,29 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title><![CDATA[十一月（一）]]></title>
-    <link href="http://ckitakishi.com/2016/11/09/%E5%8D%81%E4%B8%80%E6%9C%88%EF%BC%88%E4%B8%80%EF%BC%89/"/>
-    <id>http://ckitakishi.com/2016/11/09/十一月（一）/</id>
+    <title><![CDATA[字符串前后缀匹配]]></title>
+    <link href="http://ckitakishi.com/2016/11/09/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%89%8D%E5%90%8E%E7%BC%80%E5%8C%B9%E9%85%8D/"/>
+    <id>http://ckitakishi.com/2016/11/09/字符串前后缀匹配/</id>
     <published>2016-11-08T15:18:32.000Z</published>
-    <updated>2016-11-08T15:18:32.000Z</updated>
-    <content type="html"></content>
+    <updated>2016-11-23T14:37:36.000Z</updated>
+    <content type="html"><![CDATA[<p>之前修改了项目中一个 increment search 的组件，最近刚好又看到下题，于是想说一说前后缀匹配的事儿～</p>
+<p><a href="https://leetcode.com/problems/longest-common-prefix/" target="_blank" rel="external">14. Longest Common Prefix</a></p>
+<p>这是一个给定字符串数组，求所有字符串最长公有前缀的问题。</p>
+<p>直接用 <code>O(1)</code> 的额外空间来存储一个最长公有前缀，一次遍历后返回前缀字符串。这个想法自然到不需要多加解释，然而这么一写竟然击败了 100% 的 Swift 提交结果…</p>
+<p>所以不得不提一下十分高效的 <code>hasPrefix(_:)</code> 方法，它接受一个 <code>String</code> 类型的参数并返回 <code>Bool</code> 值，这里字符串大小写敏感，且基于 Unicode 标准等价。此外，与之对应用于比较后缀字符串的方法是 <code>hasSuffix(_:)</code>。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Unicode 标准等价</span></span><br><span class="line"><span class="keyword">let</span> composedCafe = <span class="string">"Café"</span></span><br><span class="line"><span class="keyword">let</span> decomposedCafe = <span class="string">"Cafe\u&#123;0301&#125;"</span></span><br><span class="line"><span class="built_in">print</span>(cafe.hasPrefix(composedCafe))</span><br><span class="line"><span class="comment">// Prints "true"</span></span><br><span class="line"><span class="built_in">print</span>(cafe.hasPrefix(decomposedCafe))</span><br><span class="line"><span class="comment">// Prints "true"</span></span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/Ckitakishi/Daily/blob/master/LeetCode14_LongestCommonPrefix.swift" target="_blank" rel="external"></a>                                                           </p>
+]]></content>
     <summary type="html">
-    
+    <![CDATA[<p>之前修改了项目中一个 increment search 的组件，最近刚好又看到下题，于是想说一说前后缀匹配的事儿～</p>
+<p><a href="https://leetcode.com/problems/longest-common-prefix/" target="_]]>
     </summary>
+    
+      <category term="LeetCode" scheme="http://ckitakishi.com/tags/LeetCode/"/>
+    
+      <category term="覚書" scheme="http://ckitakishi.com/tags/%E8%A6%9A%E6%9B%B8/"/>
+    
+      <category term="覚書" scheme="http://ckitakishi.com/categories/%E8%A6%9A%E6%9B%B8/"/>
     
   </entry>
   

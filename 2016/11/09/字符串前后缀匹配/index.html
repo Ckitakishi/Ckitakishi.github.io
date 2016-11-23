@@ -3,18 +3,30 @@
 <head>
   <meta charset="utf-8">
   
-  <title>假期来了 | LUMINOUS</title>
+  <title>字符串前后缀匹配 | LUMINOUS</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="回家就快要一周了。">
+  <meta name="description" content="之前修改了项目中一个 increment search 的组件，最近刚好又看到下题，于是想说一说前后缀匹配的事儿～
+14. Longest Common Prefix
+这是一个给定字符串数组，求所有字符串最长公有前缀的问题。
+直接用 O(1) 的额外空间来存储一个最长公有前缀，一次遍历后返回前缀字符串。这个想法自然到不需要多加解释，然而这么一写竟然击败了 100% 的 Swift 提交结果…
+所以">
 <meta property="og:type" content="article">
-<meta property="og:title" content="假期来了">
-<meta property="og:url" content="http://ckitakishi.com/2014/01/17/假期来了/index.html">
+<meta property="og:title" content="字符串前后缀匹配">
+<meta property="og:url" content="http://ckitakishi.com/2016/11/09/字符串前后缀匹配/index.html">
 <meta property="og:site_name" content="LUMINOUS">
-<meta property="og:description" content="回家就快要一周了。">
-<meta property="og:updated_time" content="2015-08-01T09:20:06.000Z">
+<meta property="og:description" content="之前修改了项目中一个 increment search 的组件，最近刚好又看到下题，于是想说一说前后缀匹配的事儿～
+14. Longest Common Prefix
+这是一个给定字符串数组，求所有字符串最长公有前缀的问题。
+直接用 O(1) 的额外空间来存储一个最长公有前缀，一次遍历后返回前缀字符串。这个想法自然到不需要多加解释，然而这么一写竟然击败了 100% 的 Swift 提交结果…
+所以">
+<meta property="og:updated_time" content="2016-11-23T14:37:36.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="假期来了">
-<meta name="twitter:description" content="回家就快要一周了。">
+<meta name="twitter:title" content="字符串前后缀匹配">
+<meta name="twitter:description" content="之前修改了项目中一个 increment search 的组件，最近刚好又看到下题，于是想说一说前后缀匹配的事儿～
+14. Longest Common Prefix
+这是一个给定字符串数组，求所有字符串最长公有前缀的问题。
+直接用 O(1) 的额外空间来存储一个最长公有前缀，一次遍历后返回前缀字符串。这个想法自然到不需要多加解释，然而这么一写竟然击败了 100% 的 Swift 提交结果…
+所以">
   
     <link rel="alternative" href="/atom.xml" title="LUMINOUS" type="application/atom+xml">
   
@@ -69,14 +81,14 @@
   </div>
 </header>
               <div class="outer">
-                  <section id="main"><article id="post-假期来了" class="article article-type-post" itemscope itemprop="blogPost">
+                  <section id="main"><article id="post-字符串前后缀匹配" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2014/01/17/假期来了/" class="article-date">
-  <time datetime="2014-01-17T12:21:11.000Z" itemprop="datePublished">2014-01-17</time>
+    <a href="/2016/11/09/字符串前后缀匹配/" class="article-date">
+  <time datetime="2016-11-08T15:18:32.000Z" itemprop="datePublished">2016-11-09</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/浮生记/">浮生记</a>
+    <a class="article-category-link" href="/categories/覚書/">覚書</a>
   </div>
 
   </div>
@@ -87,7 +99,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      假期来了
+      字符串前后缀匹配
     </h1>
   
 
@@ -95,16 +107,23 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="回家就快要一周了。">回家就快要一周了。</h4>
+        <p>之前修改了项目中一个 increment search 的组件，最近刚好又看到下题，于是想说一说前后缀匹配的事儿～</p>
+<p><a href="https://leetcode.com/problems/longest-common-prefix/" target="_blank" rel="external">14. Longest Common Prefix</a></p>
+<p>这是一个给定字符串数组，求所有字符串最长公有前缀的问题。</p>
+<p>直接用 <code>O(1)</code> 的额外空间来存储一个最长公有前缀，一次遍历后返回前缀字符串。这个想法自然到不需要多加解释，然而这么一写竟然击败了 100% 的 Swift 提交结果…</p>
+<p>所以不得不提一下十分高效的 <code>hasPrefix(_:)</code> 方法，它接受一个 <code>String</code> 类型的参数并返回 <code>Bool</code> 值，这里字符串大小写敏感，且基于 Unicode 标准等价。此外，与之对应用于比较后缀字符串的方法是 <code>hasSuffix(_:)</code>。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Unicode 标准等价</span></span><br><span class="line"><span class="keyword">let</span> composedCafe = <span class="string">"Café"</span></span><br><span class="line"><span class="keyword">let</span> decomposedCafe = <span class="string">"Cafe\u&#123;0301&#125;"</span></span><br><span class="line"><span class="built_in">print</span>(cafe.hasPrefix(composedCafe))</span><br><span class="line"><span class="comment">// Prints "true"</span></span><br><span class="line"><span class="built_in">print</span>(cafe.hasPrefix(decomposedCafe))</span><br><span class="line"><span class="comment">// Prints "true"</span></span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/Ckitakishi/Daily/blob/master/LeetCode14_LongestCommonPrefix.swift" target="_blank" rel="external"></a>                                                           </p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ckitakishi.com/2014/01/17/假期来了/" data-id="civv1cfna001l6y3zncniec9q" class="article-share-link">Share</a>
+      <a data-url="http://ckitakishi.com/2016/11/09/字符串前后缀匹配/" data-id="civv1cfn6001b6y3zf9zixrg9" class="article-share-link">Share</a>
       
-        <a href="http://ckitakishi.com/2014/01/17/假期来了/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="http://ckitakishi.com/2016/11/09/字符串前后缀匹配/#disqus_thread" class="article-comment-link">Comments</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/假期/">假期</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/生活/">生活</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/覚書/">覚書</a></li></ul>
 
     </footer>
   </div>
@@ -112,19 +131,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2014/01/21/短途骑行/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          短途骑行
-        
-      </div>
-    </a>
   
-  
-    <a href="/2014/01/06/遇到的一些问题与解决办法/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2016/08/17/WatchDog-机制/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">遇到的一些问题与解决办法</div>
+      <div class="article-nav-title">iOS 的看门狗机制</div>
     </a>
   
 </nav>
@@ -235,7 +245,7 @@
 <script>
   var disqus_shortname = 'ckitakishi';
   
-  var disqus_url = 'http://ckitakishi.com/2014/01/17/假期来了/';
+  var disqus_url = 'http://ckitakishi.com/2016/11/09/字符串前后缀匹配/';
   
   (function(){
     var dsq = document.createElement('script');
