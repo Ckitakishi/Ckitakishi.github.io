@@ -1,3 +1,10 @@
+@font-face {
+  font-family: 'FontAwesome';
+  src: url("fonts/fontawesome-webfont.eot");
+  src: url("fonts/fontawesome-webfont.eot?#iefix") format("embedded-opentype"), url("fonts/fontawesome-webfont.woff") format("woff"), url("fonts/fontawesome-webfont.ttf") format("truetype"), url("fonts/fontawesome-webfont.svgz#FontAwesomeRegular") format("svg"), url("fonts/fontawesome-webfont.svg#FontAwesomeRegular") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
 #cover {
   position: absolute;
   top: 0;
@@ -79,19 +86,37 @@
   text-decoration: none;
   font-size: 1.4em;
 }
+.homepage-link a:before,
+.github-link a:before,
+.twitter-link a:before,
+.mail-link a:before {
+  font-family: "FontAwesome";
+}
 .homepage-link {
   background-color: rgba(5, 178, 173, 0.6);
   border-bottom-left-radius: 8px;
 }
+.homepage-link a:before {
+  content: "\f015";
+}
 .github-link {
   background-color: rgba(255, 45, 119, 0.6);
+}
+.github-link a:before {
+  content: "\f09b";
 }
 .twitter-link {
   background-color: rgba(255, 179, 2, 0.6);
 }
+.twitter-link a:before {
+  content: "\f099";
+}
 .mail-link {
   background-color: rgba(4, 144, 243, 0.6);
   border-bottom-right-radius: 8px;
+}
+.mail-link a:before {
+  content: "\f003";
 }
 .mail-link a {
   font-size: 1.2em;
