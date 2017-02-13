@@ -3,17 +3,24 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: web | LUMINOUS</title>
+  <title>Swift App:一个意料之外的崩溃理由 | LUMINOUS</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="LUMINOUS">
-<meta property="og:url" content="http://ckitakishi.com/tags/web/index.html">
+  <meta name="description" content="这是一篇有实效性的记录，有效期大概只到今年九月:P。
+故事发生在去年年底。背景是一个新规 Swift 应用处于准备发布阶段，证书由开发测试用更替为发布用，两个证书同为企业版证书。
+应用功能本身十分简单，开发测试阶段也比较顺利，几乎没有发生崩溃。然而在更替证书之后，应用陷入了无限崩溃的境地。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Swift App:一个意料之外的崩溃理由">
+<meta property="og:url" content="http://ckitakishi.com/2017/02/13/Swift-App-一个意料之外的崩溃理由/index.html">
 <meta property="og:site_name" content="LUMINOUS">
-<meta property="og:description">
+<meta property="og:description" content="这是一篇有实效性的记录，有效期大概只到今年九月:P。
+故事发生在去年年底。背景是一个新规 Swift 应用处于准备发布阶段，证书由开发测试用更替为发布用，两个证书同为企业版证书。
+应用功能本身十分简单，开发测试阶段也比较顺利，几乎没有发生崩溃。然而在更替证书之后，应用陷入了无限崩溃的境地。">
+<meta property="og:updated_time" content="2017-02-13T14:59:24.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="LUMINOUS">
-<meta name="twitter:description">
+<meta name="twitter:title" content="Swift App:一个意料之外的崩溃理由">
+<meta name="twitter:description" content="这是一篇有实效性的记录，有效期大概只到今年九月:P。
+故事发生在去年年底。背景是一个新规 Swift 应用处于准备发布阶段，证书由开发测试用更替为发布用，两个证书同为企业版证书。
+应用功能本身十分简单，开发测试阶段也比较顺利，几乎没有发生崩溃。然而在更替证书之后，应用陷入了无限崩溃的境地。">
   
     <link rel="alternative" href="/atom.xml" title="LUMINOUS" type="application/atom+xml">
   
@@ -67,40 +74,72 @@
   </div>
 </header>
               <div class="outer">
-                  <section id="main">
-  
-
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/08/01/轻图像工具－LightImage/" class="archive-article-date">
-  <time datetime="2015-08-01T07:58:35.000Z" itemprop="datePublished">Aug 1</time>
+                  <section id="main"><article id="post-Swift-App-一个意料之外的崩溃理由" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/13/Swift-App-一个意料之外的崩溃理由/" class="article-date">
+  <time datetime="2017-02-13T14:10:51.000Z" itemprop="datePublished">2017-02-13</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/覚書/">覚書</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/08/01/轻图像工具－LightImage/">轻图像工具－LightImage</a>
+    <h1 class="article-title" itemprop="name">
+      Swift App:一个意料之外的崩溃理由
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这是一篇有实效性的记录，有效期大概只到今年九月:P。</p>
+<p>故事发生在去年年底。背景是一个新规 Swift 应用处于准备发布阶段，证书由开发测试用更替为发布用，两个证书同为企业版证书。</p>
+<p>应用功能本身十分简单，开发测试阶段也比较顺利，几乎没有发生崩溃。然而在更替证书之后，应用陷入了无限崩溃的境地。</p>
+<a id="more"></a>
+<p>Log 类似下面这样：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">dyld</span>: Library not <span class="attribute">loaded</span>: <span class="variable">@rpath</span>/libswiftCore.dylib</span><br><span class="line">  Referenced <span class="attribute">from</span>: ...</span><br><span class="line">  <span class="attribute">Reason</span>: no suitable image found.  Did <span class="attribute">find</span>:</span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://ckitakishi.com/2017/02/13/Swift-App-一个意料之外的崩溃理由/" data-id="ciz4860af002gyc3zhxozsckf" class="article-share-link">Share</a>
+      
+        <a href="http://ckitakishi.com/2017/02/13/Swift-App-一个意料之外的崩溃理由/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/覚書/">覚書</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/01/14/重新启程的-2016/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">重新启程的 2016</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
 </section>
                   
                   <aside id="sidebar">
@@ -198,11 +237,13 @@
 <script>
   var disqus_shortname = 'ckitakishi';
   
+  var disqus_url = 'http://ckitakishi.com/2017/02/13/Swift-App-一个意料之外的崩溃理由/';
+  
   (function(){
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
   })();
 </script>

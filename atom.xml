@@ -5,7 +5,7 @@
   <subtitle><![CDATA[大概，就是为梦想而活]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://ckitakishi.com//"/>
-  <updated>2017-01-17T15:43:53.000Z</updated>
+  <updated>2017-02-13T14:59:24.000Z</updated>
   <id>http://ckitakishi.com//</id>
   
   <author>
@@ -16,11 +16,39 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[Swift App:一个意料之外的崩溃理由]]></title>
+    <link href="http://ckitakishi.com/2017/02/13/Swift-App-%E4%B8%80%E4%B8%AA%E6%84%8F%E6%96%99%E4%B9%8B%E5%A4%96%E7%9A%84%E5%B4%A9%E6%BA%83%E7%90%86%E7%94%B1/"/>
+    <id>http://ckitakishi.com/2017/02/13/Swift-App-一个意料之外的崩溃理由/</id>
+    <published>2017-02-13T14:10:51.000Z</published>
+    <updated>2017-02-13T14:59:24.000Z</updated>
+    <content type="html"><![CDATA[<p>这是一篇有实效性的记录，有效期大概只到今年九月:P。</p>
+<p>故事发生在去年年底。背景是一个新规 Swift 应用处于准备发布阶段，证书由开发测试用更替为发布用，两个证书同为企业版证书。</p>
+<p>应用功能本身十分简单，开发测试阶段也比较顺利，几乎没有发生崩溃。然而在更替证书之后，应用陷入了无限崩溃的境地。</p>
+<a id="more"></a>
+<p>Log 类似下面这样：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">dyld</span>: Library not <span class="attribute">loaded</span>: <span class="variable">@rpath</span>/libswiftCore.dylib</span><br><span class="line">  Referenced <span class="attribute">from</span>: ...</span><br><span class="line">  <span class="attribute">Reason</span>: no suitable image found.  Did <span class="attribute">find</span>:</span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>这是一篇有实效性的记录，有效期大概只到今年九月:P。</p>
+<p>故事发生在去年年底。背景是一个新规 Swift 应用处于准备发布阶段，证书由开发测试用更替为发布用，两个证书同为企业版证书。</p>
+<p>应用功能本身十分简单，开发测试阶段也比较顺利，几乎没有发生崩溃。然而在更替证书之后，应用陷入了无限崩溃的境地。</p>]]>
+    
+    </summary>
+    
+      <category term="iOS" scheme="http://ckitakishi.com/tags/iOS/"/>
+    
+      <category term="覚書" scheme="http://ckitakishi.com/tags/%E8%A6%9A%E6%9B%B8/"/>
+    
+      <category term="覚書" scheme="http://ckitakishi.com/categories/%E8%A6%9A%E6%9B%B8/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[重新启程的 2016]]></title>
     <link href="http://ckitakishi.com/2017/01/14/%E9%87%8D%E6%96%B0%E5%90%AF%E7%A8%8B%E7%9A%84-2016/"/>
     <id>http://ckitakishi.com/2017/01/14/重新启程的-2016/</id>
     <published>2017-01-14T10:23:17.000Z</published>
-    <updated>2017-01-17T15:43:53.000Z</updated>
+    <updated>2017-01-29T15:02:01.000Z</updated>
     <content type="html"><![CDATA[<p>转眼一月都已过半…如果说 2015 于我而言是承前启后的一年，那 2016 大概算是重新启程的一年。</p>
 <h2 id="第一个完整的工作年">第一个完整的工作年</h2><p>2016 是我的第一个完整工作年，有吐不完的槽，也有说不尽的感谢。</p>
 <a id="more"></a>
@@ -28,10 +56,10 @@
 <p>年初，工作重心正式从前端转回 iOS，充满了期待。然而如果知道注定我会一个人孤独奋斗一整年，我还会这么想么～没有答案。从比 0 多一点的基础开始，搞了好多事儿，被嘲笑过日语说的烂，被以经验不足为由甩过锅…很喜欢一个词，「賛否両論」，本意是赞成与反对并存，不分优劣。我并不害怕被反对，被嘲笑（反正没人能在我的 bgm 里打败我哈哈哈，只怕 10 年后还像某些人一样活在自己的嘴里，活在自己的 yy 中（摊手。</p>
 <p>一年的勤勉工作换来了「奨励賞」，开心，但是更期待优秀的团队，优秀的自己。</p>
 <h2 id="认真的生活">认真的生活</h2><p>这一年来对时间管理还是没有什么清晰的概念，很遗憾，很遗憾。</p>
-<p>做了一些时间投入与金钱回报并不是那么成正比事，但是于我而言绝对是这一年最棒的事情之一。和优秀的人一起，总会想把事情做的更好一点。</p>
+<p>做了一些时间投入与金钱回报并不是那么成正比事，但是于我而言绝对是这一年最棒的事情之一。能够有幸参与《函数式 Swift》的翻译，于我而言绝不是能够衡量的财富，和优秀的人一起，总会想把事情做的更好一点。</p>
 <p>认识了一群爱读书的人，文学素养浅薄的我，也算是读了一些书。</p>
 <p>生活过得挺不错，（觉得）做饭进阶啦，游泳进阶啦，拍照也进阶啦～</p>
-<p>待续 &gt;&gt;</p>
+<h2 id="新年愿望">新年愿望</h2><p>为开源社区贡献力量<br>合适的时机换工作</p>
 ]]></content>
     <summary type="html">
     <![CDATA[<p>转眼一月都已过半…如果说 2015 于我而言是承前启后的一年，那 2016 大概算是重新启程的一年。</p>
