@@ -5,22 +5,19 @@
   
   <title>Swift App:一个意料之外的崩溃理由 | LUMINOUS</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="这是一篇有实效性的记录，有效期大概只到今年九月:P。
-故事发生在去年年底。背景是一个新规 Swift 应用处于准备发布阶段，证书由开发测试用更替为发布用，两个证书同为企业版证书。
-应用功能本身十分简单，开发测试阶段也比较顺利，几乎没有发生崩溃。然而在更替证书之后，应用陷入了无限崩溃的境地。">
+  <meta name="description" content="这是一个发生在去年年底的故事。背景是一个新规 Swift 应用处于准备发布阶段，证书由开发测试用更替为发布用，两份证书同为企业版证书，但是 Team 不同。
+应用功能本身十分简单，开发测试阶段也比较顺利，几乎没有发生崩溃。然而在更替证书之后，真机测试应用时却陷入了无限崩溃的境地。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Swift App:一个意料之外的崩溃理由">
 <meta property="og:url" content="http://ckitakishi.com/2017/02/13/Swift-App-一个意料之外的崩溃理由/index.html">
 <meta property="og:site_name" content="LUMINOUS">
-<meta property="og:description" content="这是一篇有实效性的记录，有效期大概只到今年九月:P。
-故事发生在去年年底。背景是一个新规 Swift 应用处于准备发布阶段，证书由开发测试用更替为发布用，两个证书同为企业版证书。
-应用功能本身十分简单，开发测试阶段也比较顺利，几乎没有发生崩溃。然而在更替证书之后，应用陷入了无限崩溃的境地。">
-<meta property="og:updated_time" content="2017-02-13T14:59:24.000Z">
+<meta property="og:description" content="这是一个发生在去年年底的故事。背景是一个新规 Swift 应用处于准备发布阶段，证书由开发测试用更替为发布用，两份证书同为企业版证书，但是 Team 不同。
+应用功能本身十分简单，开发测试阶段也比较顺利，几乎没有发生崩溃。然而在更替证书之后，真机测试应用时却陷入了无限崩溃的境地。">
+<meta property="og:updated_time" content="2017-02-15T14:50:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Swift App:一个意料之外的崩溃理由">
-<meta name="twitter:description" content="这是一篇有实效性的记录，有效期大概只到今年九月:P。
-故事发生在去年年底。背景是一个新规 Swift 应用处于准备发布阶段，证书由开发测试用更替为发布用，两个证书同为企业版证书。
-应用功能本身十分简单，开发测试阶段也比较顺利，几乎没有发生崩溃。然而在更替证书之后，应用陷入了无限崩溃的境地。">
+<meta name="twitter:description" content="这是一个发生在去年年底的故事。背景是一个新规 Swift 应用处于准备发布阶段，证书由开发测试用更替为发布用，两份证书同为企业版证书，但是 Team 不同。
+应用功能本身十分简单，开发测试阶段也比较顺利，几乎没有发生崩溃。然而在更替证书之后，真机测试应用时却陷入了无限崩溃的境地。">
   
     <link rel="alternative" href="/atom.xml" title="LUMINOUS" type="application/atom+xml">
   
@@ -100,17 +97,25 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>这是一篇有实效性的记录，有效期大概只到今年九月:P。</p>
-<p>故事发生在去年年底。背景是一个新规 Swift 应用处于准备发布阶段，证书由开发测试用更替为发布用，两个证书同为企业版证书。</p>
-<p>应用功能本身十分简单，开发测试阶段也比较顺利，几乎没有发生崩溃。然而在更替证书之后，应用陷入了无限崩溃的境地。</p>
+        <p>这是一个发生在去年年底的故事。背景是一个新规 Swift 应用处于准备发布阶段，证书由开发测试用更替为发布用，两份证书同为企业版证书，但是 Team 不同。</p>
+<p>应用功能本身十分简单，开发测试阶段也比较顺利，几乎没有发生崩溃。然而在更替证书之后，真机测试应用时却陷入了无限崩溃的境地。</p>
 <a id="more"></a>
 <p>Log 类似下面这样：</p>
 <figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">dyld</span>: Library not <span class="attribute">loaded</span>: <span class="variable">@rpath</span>/libswiftCore.dylib</span><br><span class="line">  Referenced <span class="attribute">from</span>: ...</span><br><span class="line">  <span class="attribute">Reason</span>: no suitable image found.  Did <span class="attribute">find</span>:</span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+<p>有很多原因会导致提示这个错误，作为 Trouble Shooting 记录下来：</p>
+<ul>
+<li>可能存在缓存，<strong>Clean</strong> 工程</li>
+<li>很多时候该问题发生在 Swift 与 Objective-C 混编的时候，所以需要检查 <em>Building Setting</em> 中 <em>Embeedded Content Contains Swift Code</em> 的设置是否已经为 <strong>YES</strong>。</li>
+<li>依然是配置，检查 <em>Building Setting</em> 中的 <em>Runpath Search Paths</em> 是否正确，通常是：@executable_path/Frameworks。</li>
+<li>重置证书 (注销再新建) 。</li>
+</ul>
+<p>实际的生产过程中，首先 check 了前三项，最终强烈怀疑是证书问题。关于 “libswiftCore.dylib 崩溃“这个话题，很容易能看到这篇 <a href="https://developer.apple.com/library/content/qa/qa1886/_index.html" target="_blank" rel="external">Q&amp;A</a>，其中提到要运行 Swift 应用必须使用 iOS 8 Released 之后创建的证书。对比手中的两份证书，除了 Team 不同之外，最大的差别在于创建时间，分别为 2016 年夏天，和 2014 年夏天。所以更新证书之后，问题也幸运地解决了。</p>
+<p>关于 libswiftCore.dylib 文件还想再多扯几句，看名字就能够猜到是 Swift 动态库，但是该文件和证书有什么关系呢？未完待续。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ckitakishi.com/2017/02/13/Swift-App-一个意料之外的崩溃理由/" data-id="ciz4860af002gyc3zhxozsckf" class="article-share-link">Share</a>
+      <a data-url="http://ckitakishi.com/2017/02/13/Swift-App-一个意料之外的崩溃理由/" data-id="ciz72rgiw002go6cjrfn1aram" class="article-share-link">Share</a>
       
         <a href="http://ckitakishi.com/2017/02/13/Swift-App-一个意料之外的崩溃理由/#disqus_thread" class="article-comment-link">Comments</a>
       
