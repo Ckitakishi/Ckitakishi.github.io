@@ -5,7 +5,7 @@
   <subtitle><![CDATA[大概，就是为梦想而活]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://ckitakishi.com//"/>
-  <updated>2017-02-16T15:03:02.000Z</updated>
+  <updated>2017-02-16T15:08:59.000Z</updated>
   <id>http://ckitakishi.com//</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://ckitakishi.com/2017/02/13/Swift-App-%E4%B8%80%E4%B8%AA%E6%84%8F%E6%96%99%E4%B9%8B%E5%A4%96%E7%9A%84%E5%B4%A9%E6%BA%83%E7%90%86%E7%94%B1/"/>
     <id>http://ckitakishi.com/2017/02/13/Swift-App-一个意料之外的崩溃理由/</id>
     <published>2017-02-13T14:10:51.000Z</published>
-    <updated>2017-02-16T15:03:02.000Z</updated>
+    <updated>2017-02-16T15:08:59.000Z</updated>
     <content type="html"><![CDATA[<p>这是一个发生在去年年底的故事。背景是一个新规 Swift 应用处于准备发布阶段，证书由开发测试用更替为发布用， 这是两份 Team 不同的企业版证书。</p>
 <p>应用功能本身十分简单，开发测试阶段也比较顺利，几乎没有发生崩溃。然而在更替证书之后，真机测试应用时却陷入了无限崩溃的境地。</p>
 <a id="more"></a>
@@ -44,9 +44,7 @@
     
       <category term="iOS" scheme="http://ckitakishi.com/tags/iOS/"/>
     
-      <category term="覚書" scheme="http://ckitakishi.com/tags/%E8%A6%9A%E6%9B%B8/"/>
-    
-      <category term="覚書" scheme="http://ckitakishi.com/categories/%E8%A6%9A%E6%9B%B8/"/>
+      <category term="求索集" scheme="http://ckitakishi.com/categories/%E6%B1%82%E7%B4%A2%E9%9B%86/"/>
     
   </entry>
   
