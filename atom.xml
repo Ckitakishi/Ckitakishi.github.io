@@ -5,7 +5,7 @@
   <subtitle><![CDATA[大概，就是为梦想而活]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://ckitakishi.com//"/>
-  <updated>2017-02-16T15:08:59.000Z</updated>
+  <updated>2017-05-13T07:09:40.000Z</updated>
   <id>http://ckitakishi.com//</id>
   
   <author>
@@ -14,6 +14,43 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Thread Sanitizer]]></title>
+    <link href="http://ckitakishi.com/2017/05/13/Thread-Sanitizer/"/>
+    <id>http://ckitakishi.com/2017/05/13/Thread-Sanitizer/</id>
+    <published>2017-05-13T05:39:19.000Z</published>
+    <updated>2017-05-13T07:09:40.000Z</updated>
+    <content type="html"><![CDATA[<blockquote>
+<p>作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。</p>
+</blockquote>
+<p>之前在修正并优化应用内线程管理的时候用了 <strong>Thread Sanitizer</strong> 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 <a href="https://developer.apple.com/videos/play/wwdc2016/412/" target="_blank" rel="external">Session 412</a>。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。<strong>TSan</strong> 能够发现一些问题，诸如 Keynote 里提到的：</p>
+<blockquote>
+<p>Use of uninitialized mutexes<br>Thread leaks (missing pthred_join)<br>Unsafe calls in signal handlers (ex:malloc)<br>Unlock from wrong thread<br>Data races</p>
+</blockquote>
+<p>因为在实际中遇到过，而且感觉发生概率相对较高，所以只展开说一下最后一项：数据竞争。数据竞争发生的基本条件是多个线程在同时访问同一块内存，并且其中至少又一个线程正在进行的是写操作。实际中常常表现为数据不整合，亦或是应用崩溃。比如下面这个例子：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[context performBlock:^&#123;&#10;    if (result &#38;&#38; context) &#123;&#10;        result = [self persistentSaveContext:context]; // 1&#10;    &#125;&#10;&#125;];&#10;return result; // 2</span><br></pre></td></tr></table></figure>
+<p><code>result</code> 在 1 和 2 两个地方发生了竞争。在 1 进行写操作之前，有可能处于不同线程的 2 早已经返回了，这样数据就发生了不整合。</p>
+<p>有很多方法可以解决这个问题，比如说：由异步操作变为同步操作，或是改变写操作的时间点。这里采取了第一个方案，使用同样用途的同步方法 <code>performBlockAndWait</code> 来取代 <code>performBlock</code>，这样以来，数据竞争的问题也就自然而然解决了。 </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[context performBlockAndWait:^&#123;&#10;    if (result &#38;&#38; context) &#123;&#10;        result = [self persistentSaveContext:context]; // 1&#10;    &#125;&#10;&#125;];&#10;return result; // 2</span><br></pre></td></tr></table></figure>
+<p>由于 <strong>TSan</strong> 是统合在编译器 (Clang) 层面的，所以当使用 Swift 来编写服务器代码的时候，完全可以在命令行中使用它：</p>
+<p><img src="/images/datarace.jpg" alt="Tsan command"></p>
+<p>P.S.目前 <strong>TSan</strong> 只支持 64bit 的模拟器及 macOS 自身。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<blockquote>
+<p>作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。</p>
+</blockquote>
+<p>之前在修正并优化应用内线程管理的时候用了 <strong>Thread Sanitizer</strong> 功能，]]>
+    </summary>
+    
+      <category term="LT" scheme="http://ckitakishi.com/tags/LT/"/>
+    
+      <category term="iOS" scheme="http://ckitakishi.com/tags/iOS/"/>
+    
+      <category term="求索集" scheme="http://ckitakishi.com/categories/%E6%B1%82%E7%B4%A2%E9%9B%86/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Swift App:一个意料之外的崩溃理由]]></title>

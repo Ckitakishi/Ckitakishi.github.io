@@ -3,17 +3,25 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: LeetCode | LUMINOUS</title>
+  <title>Thread Sanitizer | LUMINOUS</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="LUMINOUS">
-<meta property="og:url" content="http://ckitakishi.com/tags/LeetCode/index.html">
+  <meta name="description" content="作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。
+
+之前在修正并优化应用内线程管理的时候用了 Thread Sanitizer 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 Session 412。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。TSan 能够发现一些问题，诸如">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Thread Sanitizer">
+<meta property="og:url" content="http://ckitakishi.com/2017/05/13/Thread-Sanitizer/index.html">
 <meta property="og:site_name" content="LUMINOUS">
-<meta property="og:description">
+<meta property="og:description" content="作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。
+
+之前在修正并优化应用内线程管理的时候用了 Thread Sanitizer 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 Session 412。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。TSan 能够发现一些问题，诸如">
+<meta property="og:image" content="http://ckitakishi.com/images/datarace.jpg">
+<meta property="og:updated_time" content="2017-05-13T07:09:40.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="LUMINOUS">
-<meta name="twitter:description">
+<meta name="twitter:title" content="Thread Sanitizer">
+<meta name="twitter:description" content="作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。
+
+之前在修正并优化应用内线程管理的时候用了 Thread Sanitizer 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 Session 412。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。TSan 能够发现一些问题，诸如">
   
     <link rel="alternative" href="/atom.xml" title="LUMINOUS" type="application/atom+xml">
   
@@ -69,40 +77,81 @@
   </div>
 </header>
               <div class="outer">
-                  <section id="main">
-  
-
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/11/09/Swift字符串前后缀匹配/" class="archive-article-date">
-  <time datetime="2016-11-08T15:18:32.000Z" itemprop="datePublished">Nov 9</time>
+                  <section id="main"><article id="post-Thread-Sanitizer" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/05/13/Thread-Sanitizer/" class="article-date">
+  <time datetime="2017-05-13T05:39:19.000Z" itemprop="datePublished">2017-05-13</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/求索集/">求索集</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/11/09/Swift字符串前后缀匹配/">Swift 的字符串前后缀匹配</a>
+    <h1 class="article-title" itemprop="name">
+      Thread Sanitizer
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。</p>
+</blockquote>
+<p>之前在修正并优化应用内线程管理的时候用了 <strong>Thread Sanitizer</strong> 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 <a href="https://developer.apple.com/videos/play/wwdc2016/412/" target="_blank" rel="external">Session 412</a>。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。<strong>TSan</strong> 能够发现一些问题，诸如 Keynote 里提到的：</p>
+<blockquote>
+<p>Use of uninitialized mutexes<br>Thread leaks (missing pthred_join)<br>Unsafe calls in signal handlers (ex:malloc)<br>Unlock from wrong thread<br>Data races</p>
+</blockquote>
+<p>因为在实际中遇到过，而且感觉发生概率相对较高，所以只展开说一下最后一项：数据竞争。数据竞争发生的基本条件是多个线程在同时访问同一块内存，并且其中至少又一个线程正在进行的是写操作。实际中常常表现为数据不整合，亦或是应用崩溃。比如下面这个例子：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[context performBlock:^&#123;&#10;    if (result &#38;&#38; context) &#123;&#10;        result = [self persistentSaveContext:context]; // 1&#10;    &#125;&#10;&#125;];&#10;return result; // 2</span><br></pre></td></tr></table></figure>
+<p><code>result</code> 在 1 和 2 两个地方发生了竞争。在 1 进行写操作之前，有可能处于不同线程的 2 早已经返回了，这样数据就发生了不整合。</p>
+<p>有很多方法可以解决这个问题，比如说：由异步操作变为同步操作，或是改变写操作的时间点。这里采取了第一个方案，使用同样用途的同步方法 <code>performBlockAndWait</code> 来取代 <code>performBlock</code>，这样以来，数据竞争的问题也就自然而然解决了。 </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[context performBlockAndWait:^&#123;&#10;    if (result &#38;&#38; context) &#123;&#10;        result = [self persistentSaveContext:context]; // 1&#10;    &#125;&#10;&#125;];&#10;return result; // 2</span><br></pre></td></tr></table></figure>
+<p>由于 <strong>TSan</strong> 是统合在编译器 (Clang) 层面的，所以当使用 Swift 来编写服务器代码的时候，完全可以在命令行中使用它：</p>
+<p><img src="/images/datarace.jpg" alt="Tsan command"></p>
+<p>P.S.目前 <strong>TSan</strong> 只支持 64bit 的模拟器及 macOS 自身。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://ckitakishi.com/2017/05/13/Thread-Sanitizer/" data-id="cj2mxlu450029i8cjhpxj8j0c" class="article-share-link">Share</a>
+      
+        <a href="http://ckitakishi.com/2017/05/13/Thread-Sanitizer/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LT/">LT</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/02/13/Swift-App-一个意料之外的崩溃理由/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Swift App:一个意料之外的崩溃理由</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
 </section>
                   
                   <aside id="sidebar">
@@ -202,11 +251,13 @@
 <script>
   var disqus_shortname = 'ckitakishi';
   
+  var disqus_url = 'http://ckitakishi.com/2017/05/13/Thread-Sanitizer/';
+  
   (function(){
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
   })();
 </script>

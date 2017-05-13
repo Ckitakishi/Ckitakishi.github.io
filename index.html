@@ -71,6 +71,65 @@
               <div class="outer">
                   <section id="main">
   
+    <article id="post-Thread-Sanitizer" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/05/13/Thread-Sanitizer/" class="article-date">
+  <time datetime="2017-05-13T05:39:19.000Z" itemprop="datePublished">2017-05-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/求索集/">求索集</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/05/13/Thread-Sanitizer/">Thread Sanitizer</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。</p>
+</blockquote>
+<p>之前在修正并优化应用内线程管理的时候用了 <strong>Thread Sanitizer</strong> 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 <a href="https://developer.apple.com/videos/play/wwdc2016/412/" target="_blank" rel="external">Session 412</a>。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。<strong>TSan</strong> 能够发现一些问题，诸如 Keynote 里提到的：</p>
+<blockquote>
+<p>Use of uninitialized mutexes<br>Thread leaks (missing pthred_join)<br>Unsafe calls in signal handlers (ex:malloc)<br>Unlock from wrong thread<br>Data races</p>
+</blockquote>
+<p>因为在实际中遇到过，而且感觉发生概率相对较高，所以只展开说一下最后一项：数据竞争。数据竞争发生的基本条件是多个线程在同时访问同一块内存，并且其中至少又一个线程正在进行的是写操作。实际中常常表现为数据不整合，亦或是应用崩溃。比如下面这个例子：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[context performBlock:^&#123;&#10;    if (result &#38;&#38; context) &#123;&#10;        result = [self persistentSaveContext:context]; // 1&#10;    &#125;&#10;&#125;];&#10;return result; // 2</span><br></pre></td></tr></table></figure>
+<p><code>result</code> 在 1 和 2 两个地方发生了竞争。在 1 进行写操作之前，有可能处于不同线程的 2 早已经返回了，这样数据就发生了不整合。</p>
+<p>有很多方法可以解决这个问题，比如说：由异步操作变为同步操作，或是改变写操作的时间点。这里采取了第一个方案，使用同样用途的同步方法 <code>performBlockAndWait</code> 来取代 <code>performBlock</code>，这样以来，数据竞争的问题也就自然而然解决了。 </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[context performBlockAndWait:^&#123;&#10;    if (result &#38;&#38; context) &#123;&#10;        result = [self persistentSaveContext:context]; // 1&#10;    &#125;&#10;&#125;];&#10;return result; // 2</span><br></pre></td></tr></table></figure>
+<p>由于 <strong>TSan</strong> 是统合在编译器 (Clang) 层面的，所以当使用 Swift 来编写服务器代码的时候，完全可以在命令行中使用它：</p>
+<p><img src="/images/datarace.jpg" alt="Tsan command"></p>
+<p>P.S.目前 <strong>TSan</strong> 只支持 64bit 的模拟器及 macOS 自身。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://ckitakishi.com/2017/05/13/Thread-Sanitizer/" data-id="cj2mxlu450029i8cjhpxj8j0c" class="article-share-link">Share</a>
+      
+        <a href="http://ckitakishi.com/2017/05/13/Thread-Sanitizer/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LT/">LT</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Swift-App-一个意料之外的崩溃理由" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/02/13/Swift-App-一个意料之外的崩溃理由/" class="article-date">
@@ -107,7 +166,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ckitakishi.com/2017/02/13/Swift-App-一个意料之外的崩溃理由/" data-id="cizgzylvc002gz03zjbp1l0b6" class="article-share-link">Share</a>
+      <a data-url="http://ckitakishi.com/2017/02/13/Swift-App-一个意料之外的崩溃理由/" data-id="cj2mxlu4a002li8cjazlpgtj8" class="article-share-link">Share</a>
       
         <a href="http://ckitakishi.com/2017/02/13/Swift-App-一个意料之外的崩溃理由/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -157,7 +216,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ckitakishi.com/2017/01/14/重新启程的-2016/" data-id="cizgzylsm0001z03z9jk4yyuy" class="article-share-link">Share</a>
+      <a data-url="http://ckitakishi.com/2017/01/14/重新启程的-2016/" data-id="cj2mxlu2k0001i8cjn6jowwua" class="article-share-link">Share</a>
       
         <a href="http://ckitakishi.com/2017/01/14/重新启程的-2016/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -208,7 +267,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ckitakishi.com/2016/11/09/Swift字符串前后缀匹配/" data-id="cizgzylv90029z03zohdqfd9d" class="article-share-link">Share</a>
+      <a data-url="http://ckitakishi.com/2016/11/09/Swift字符串前后缀匹配/" data-id="cj2mxlu47002ei8cj6q3dstbk" class="article-share-link">Share</a>
       
         <a href="http://ckitakishi.com/2016/11/09/Swift字符串前后缀匹配/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -257,7 +316,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ckitakishi.com/2016/08/17/WatchDog-机制/" data-id="cizgzylv70025z03zkn8ls046" class="article-share-link">Share</a>
+      <a data-url="http://ckitakishi.com/2016/08/17/WatchDog-机制/" data-id="cj2mxlu430025i8cj3z9zcgz4" class="article-share-link">Share</a>
       
         <a href="http://ckitakishi.com/2016/08/17/WatchDog-机制/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -306,7 +365,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ckitakishi.com/2015/12/08/沖縄三日/" data-id="cizgzyluh0011z03zccp7lflf" class="article-share-link">Share</a>
+      <a data-url="http://ckitakishi.com/2015/12/08/沖縄三日/" data-id="cj2mxlu390011i8cjdwuj8g31" class="article-share-link">Share</a>
       
         <a href="http://ckitakishi.com/2015/12/08/沖縄三日/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -356,62 +415,12 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ckitakishi.com/2015/11/04/前向き/" data-id="cizgzyluo001ez03zod84fhb6" class="article-share-link">Share</a>
+      <a data-url="http://ckitakishi.com/2015/11/04/前向き/" data-id="cj2mxlu3h001ei8cjvda3s96m" class="article-share-link">Share</a>
       
         <a href="http://ckitakishi.com/2015/11/04/前向き/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-轻图像工具－LightImage" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/08/01/轻图像工具－LightImage/" class="article-date">
-  <time datetime="2015-08-01T07:58:35.000Z" itemprop="datePublished">2015-08-01</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/项目集/">项目集</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/01/轻图像工具－LightImage/">轻图像工具－LightImage</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>LightImage 是我的毕业设计项目，但是至今暂时还是一个残次成品，仍需大力的改善。初衷是开发一款轻量级的图像处理工具，后续又扩展了简易的图像分析和像素画绘制等功能。</p>
-<p>项目主要基于 HTML5 中的 Canvas 开发，当提及 Canvas 的时候，常常还会提到 SVG。Canvas 只能通过脚本驱动，适合像素级的图形问题处理；相比较而言 SVG 的驱动方式更加灵活，XML、CSS等都可，所以处理图形是通过元素。对于本项目而言，Canvas 是不二的选择。</p>
-        
-          <p class="article-more-link">
-            <a href="/2015/08/01/轻图像工具－LightImage/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://ckitakishi.com/2015/08/01/轻图像工具－LightImage/" data-id="cizgzylu6000dz03zi9cm1a70" class="article-share-link">Share</a>
-      
-        <a href="http://ckitakishi.com/2015/08/01/轻图像工具－LightImage/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/">web</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/图像/">图像</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/编程/">编程</a></li></ul>
 
     </footer>
   </div>
@@ -433,7 +442,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/思考/">思考</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/求索集/">求索集</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/浮生记/">浮生记</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/覚書/">覚書</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/项目集/">项目集</a><span class="category-list-count">2</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/思考/">思考</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/求索集/">求索集</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/浮生记/">浮生记</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/覚書/">覚書</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/项目集/">项目集</a><span class="category-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -442,7 +451,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode/">LeetCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/">github</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/假期/">假期</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/喜悦/">喜悦</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图像/">图像</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/思考/">思考</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数学/">数学</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/旅行/">旅行</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/生活/">生活</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编程/">编程</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/美食/">美食</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自行车/">自行车</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/覚書/">覚書</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/跑步/">跑步</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">3</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/LT/">LT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode/">LeetCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/">github</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/假期/">假期</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/喜悦/">喜悦</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图像/">图像</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/思考/">思考</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数学/">数学</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/旅行/">旅行</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/生活/">生活</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编程/">编程</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/美食/">美食</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自行车/">自行车</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/覚書/">覚書</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/跑步/">跑步</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">3</span></li></ul>
     </div>
   </div>
 
@@ -451,7 +460,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/LeetCode/" style="font-size: 10px;">LeetCode</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/iOS/" style="font-size: 17.5px;">iOS</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/假期/" style="font-size: 12.5px;">假期</a> <a href="/tags/喜悦/" style="font-size: 10px;">喜悦</a> <a href="/tags/图像/" style="font-size: 10px;">图像</a> <a href="/tags/思考/" style="font-size: 12.5px;">思考</a> <a href="/tags/数学/" style="font-size: 10px;">数学</a> <a href="/tags/旅行/" style="font-size: 10px;">旅行</a> <a href="/tags/生活/" style="font-size: 15px;">生活</a> <a href="/tags/编程/" style="font-size: 20px;">编程</a> <a href="/tags/美食/" style="font-size: 10px;">美食</a> <a href="/tags/自行车/" style="font-size: 10px;">自行车</a> <a href="/tags/覚書/" style="font-size: 10px;">覚書</a> <a href="/tags/跑步/" style="font-size: 10px;">跑步</a> <a href="/tags/随笔/" style="font-size: 15px;">随笔</a>
+      <a href="/tags/LT/" style="font-size: 10px;">LT</a> <a href="/tags/LeetCode/" style="font-size: 10px;">LeetCode</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/假期/" style="font-size: 13.33px;">假期</a> <a href="/tags/喜悦/" style="font-size: 10px;">喜悦</a> <a href="/tags/图像/" style="font-size: 10px;">图像</a> <a href="/tags/思考/" style="font-size: 13.33px;">思考</a> <a href="/tags/数学/" style="font-size: 10px;">数学</a> <a href="/tags/旅行/" style="font-size: 10px;">旅行</a> <a href="/tags/生活/" style="font-size: 16.67px;">生活</a> <a href="/tags/编程/" style="font-size: 20px;">编程</a> <a href="/tags/美食/" style="font-size: 10px;">美食</a> <a href="/tags/自行车/" style="font-size: 10px;">自行车</a> <a href="/tags/覚書/" style="font-size: 10px;">覚書</a> <a href="/tags/跑步/" style="font-size: 10px;">跑步</a> <a href="/tags/随笔/" style="font-size: 16.67px;">随笔</a>
     </div>
   </div>
 
@@ -460,7 +469,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">3</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">3</span></li></ul>
     </div>
   </div>
 
@@ -470,6 +479,10 @@
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2017/05/13/Thread-Sanitizer/">Thread Sanitizer</a>
+          </li>
         
           <li>
             <a href="/2017/02/13/Swift-App-一个意料之外的崩溃理由/">Swift App:一个意料之外的崩溃理由</a>
@@ -485,10 +498,6 @@
         
           <li>
             <a href="/2016/08/17/WatchDog-机制/">iOS 的看门狗机制</a>
-          </li>
-        
-          <li>
-            <a href="/2015/12/08/沖縄三日/">沖縄三日</a>
           </li>
         
       </ul>
