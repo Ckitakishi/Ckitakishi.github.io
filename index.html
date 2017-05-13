@@ -97,9 +97,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <blockquote>
-<p>作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。</p>
-</blockquote>
+        <p><em>作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。</em></p>
 <p>之前在修正并优化应用内线程管理的时候用了 <strong>Thread Sanitizer</strong> 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 <a href="https://developer.apple.com/videos/play/wwdc2016/412/" target="_blank" rel="external">Session 412</a>。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。<strong>TSan</strong> 能够发现一些问题，诸如 Keynote 里提到的：</p>
 <blockquote>
 <p>Use of uninitialized mutexes<br>Thread leaks (missing pthred_join)<br>Unsafe calls in signal handlers (ex:malloc)<br>Unlock from wrong thread<br>Data races</p>
@@ -110,13 +108,13 @@
 <p>有很多方法可以解决这个问题，比如说：由异步操作变为同步操作，或是改变写操作的时间点。这里采取了第一个方案，使用同样用途的同步方法 <code>performBlockAndWait</code> 来取代 <code>performBlock</code>，这样以来，数据竞争的问题也就自然而然解决了。 </p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[context performBlockAndWait:^&#123;&#10;    if (result &#38;&#38; context) &#123;&#10;        result = [self persistentSaveContext:context]; // 1&#10;    &#125;&#10;&#125;];&#10;return result; // 2</span><br></pre></td></tr></table></figure>
 <p>由于 <strong>TSan</strong> 是统合在编译器 (Clang) 层面的，所以当使用 Swift 来编写服务器代码的时候，完全可以在命令行中使用它：</p>
-<p><img src="/images/datarace.jpg" alt="Tsan command"></p>
+<p><img src="/images/datarace.png" alt="Tsan command"></p>
 <p>P.S.目前 <strong>TSan</strong> 只支持 64bit 的模拟器及 macOS 自身。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ckitakishi.com/2017/05/13/Thread-Sanitizer/" data-id="cj2mxlu450029i8cjhpxj8j0c" class="article-share-link">Share</a>
+      <a data-url="http://ckitakishi.com/2017/05/13/Thread-Sanitizer/" data-id="cj2mxpmef0029jlcjg2bz35o6" class="article-share-link">Share</a>
       
         <a href="http://ckitakishi.com/2017/05/13/Thread-Sanitizer/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -166,7 +164,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ckitakishi.com/2017/02/13/Swift-App-一个意料之外的崩溃理由/" data-id="cj2mxlu4a002li8cjazlpgtj8" class="article-share-link">Share</a>
+      <a data-url="http://ckitakishi.com/2017/02/13/Swift-App-一个意料之外的崩溃理由/" data-id="cj2mxpmek002ljlcjj0pdddz6" class="article-share-link">Share</a>
       
         <a href="http://ckitakishi.com/2017/02/13/Swift-App-一个意料之外的崩溃理由/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -216,7 +214,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ckitakishi.com/2017/01/14/重新启程的-2016/" data-id="cj2mxlu2k0001i8cjn6jowwua" class="article-share-link">Share</a>
+      <a data-url="http://ckitakishi.com/2017/01/14/重新启程的-2016/" data-id="cj2mxpmcy0001jlcjh01m5l6e" class="article-share-link">Share</a>
       
         <a href="http://ckitakishi.com/2017/01/14/重新启程的-2016/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -267,7 +265,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ckitakishi.com/2016/11/09/Swift字符串前后缀匹配/" data-id="cj2mxlu47002ei8cj6q3dstbk" class="article-share-link">Share</a>
+      <a data-url="http://ckitakishi.com/2016/11/09/Swift字符串前后缀匹配/" data-id="cj2mxpmeh002ejlcjvukyo46s" class="article-share-link">Share</a>
       
         <a href="http://ckitakishi.com/2016/11/09/Swift字符串前后缀匹配/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -316,7 +314,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ckitakishi.com/2016/08/17/WatchDog-机制/" data-id="cj2mxlu430025i8cj3z9zcgz4" class="article-share-link">Share</a>
+      <a data-url="http://ckitakishi.com/2016/08/17/WatchDog-机制/" data-id="cj2mxpmed0025jlcjhsvzzlvx" class="article-share-link">Share</a>
       
         <a href="http://ckitakishi.com/2016/08/17/WatchDog-机制/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -365,7 +363,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ckitakishi.com/2015/12/08/沖縄三日/" data-id="cj2mxlu390011i8cjdwuj8g31" class="article-share-link">Share</a>
+      <a data-url="http://ckitakishi.com/2015/12/08/沖縄三日/" data-id="cj2mxpmdl0011jlcjknfxa6lw" class="article-share-link">Share</a>
       
         <a href="http://ckitakishi.com/2015/12/08/沖縄三日/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -415,7 +413,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ckitakishi.com/2015/11/04/前向き/" data-id="cj2mxlu3h001ei8cjvda3s96m" class="article-share-link">Share</a>
+      <a data-url="http://ckitakishi.com/2015/11/04/前向き/" data-id="cj2mxpmds001ejlcjye3smvl0" class="article-share-link">Share</a>
       
         <a href="http://ckitakishi.com/2015/11/04/前向き/#disqus_thread" class="article-comment-link">Comments</a>
       

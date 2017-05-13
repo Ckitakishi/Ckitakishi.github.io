@@ -6,21 +6,18 @@
   <title>Thread Sanitizer | LUMINOUS</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。
-
 之前在修正并优化应用内线程管理的时候用了 Thread Sanitizer 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 Session 412。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。TSan 能够发现一些问题，诸如">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Thread Sanitizer">
 <meta property="og:url" content="http://ckitakishi.com/2017/05/13/Thread-Sanitizer/index.html">
 <meta property="og:site_name" content="LUMINOUS">
 <meta property="og:description" content="作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。
-
 之前在修正并优化应用内线程管理的时候用了 Thread Sanitizer 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 Session 412。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。TSan 能够发现一些问题，诸如">
-<meta property="og:image" content="http://ckitakishi.com/images/datarace.jpg">
-<meta property="og:updated_time" content="2017-05-13T07:09:40.000Z">
+<meta property="og:image" content="http://ckitakishi.com/images/datarace.png">
+<meta property="og:updated_time" content="2017-05-13T07:12:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Thread Sanitizer">
 <meta name="twitter:description" content="作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。
-
 之前在修正并优化应用内线程管理的时候用了 Thread Sanitizer 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 Session 412。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。TSan 能够发现一些问题，诸如">
   
     <link rel="alternative" href="/atom.xml" title="LUMINOUS" type="application/atom+xml">
@@ -103,9 +100,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <blockquote>
-<p>作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。</p>
-</blockquote>
+        <p><em>作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。</em></p>
 <p>之前在修正并优化应用内线程管理的时候用了 <strong>Thread Sanitizer</strong> 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 <a href="https://developer.apple.com/videos/play/wwdc2016/412/" target="_blank" rel="external">Session 412</a>。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。<strong>TSan</strong> 能够发现一些问题，诸如 Keynote 里提到的：</p>
 <blockquote>
 <p>Use of uninitialized mutexes<br>Thread leaks (missing pthred_join)<br>Unsafe calls in signal handlers (ex:malloc)<br>Unlock from wrong thread<br>Data races</p>
@@ -116,13 +111,13 @@
 <p>有很多方法可以解决这个问题，比如说：由异步操作变为同步操作，或是改变写操作的时间点。这里采取了第一个方案，使用同样用途的同步方法 <code>performBlockAndWait</code> 来取代 <code>performBlock</code>，这样以来，数据竞争的问题也就自然而然解决了。 </p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[context performBlockAndWait:^&#123;&#10;    if (result &#38;&#38; context) &#123;&#10;        result = [self persistentSaveContext:context]; // 1&#10;    &#125;&#10;&#125;];&#10;return result; // 2</span><br></pre></td></tr></table></figure>
 <p>由于 <strong>TSan</strong> 是统合在编译器 (Clang) 层面的，所以当使用 Swift 来编写服务器代码的时候，完全可以在命令行中使用它：</p>
-<p><img src="/images/datarace.jpg" alt="Tsan command"></p>
+<p><img src="/images/datarace.png" alt="Tsan command"></p>
 <p>P.S.目前 <strong>TSan</strong> 只支持 64bit 的模拟器及 macOS 自身。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ckitakishi.com/2017/05/13/Thread-Sanitizer/" data-id="cj2mxlu450029i8cjhpxj8j0c" class="article-share-link">Share</a>
+      <a data-url="http://ckitakishi.com/2017/05/13/Thread-Sanitizer/" data-id="cj2mxpmef0029jlcjg2bz35o6" class="article-share-link">Share</a>
       
         <a href="http://ckitakishi.com/2017/05/13/Thread-Sanitizer/#disqus_thread" class="article-comment-link">Comments</a>
       
