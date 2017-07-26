@@ -121,8 +121,6 @@
 .mail-link a {
   font-size: 1.2em;
 }
-.description-link a {
+.description a {
   color: white;
-  background-color: rgba(128, 128, 128, 0.6);
-  text-decoration-line: none;
 }
