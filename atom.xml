@@ -5,7 +5,7 @@
   <subtitle><![CDATA[大概，就是为梦想而活]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://ckitakishi.com//"/>
-  <updated>2017-05-13T07:12:33.000Z</updated>
+  <updated>2017-07-27T15:36:13.000Z</updated>
   <id>http://ckitakishi.com//</id>
   
   <author>
@@ -14,6 +14,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[viewWillAppear 杂谈]]></title>
+    <link href="http://ckitakishi.com/2017/07/26/viewWillAppear-%E6%9D%82%E8%B0%88/"/>
+    <id>http://ckitakishi.com/2017/07/26/viewWillAppear-杂谈/</id>
+    <published>2017-07-26T14:48:22.000Z</published>
+    <updated>2017-07-27T15:36:13.000Z</updated>
+    <content type="html"><![CDATA[<p>作为 view 的状态之一，<code>viewWillAppear</code> 的关注率极高，所以其实并没有什么好说的…我们都知道它会在 view 每一次将要准备出现之前被调用，所以常常可以用来初始化一些基本数据。</p>
+<p>前两周花了一点点时间重构了组里的某个小应用，前开发者新手上路，感觉不少代码值得推敲。在 debug 的时候发现应用一到后台就自动退出了，根本无法看它在后台的活动，震惊之余发现 info.plist 的 <code>Application does not run in background</code> 被设置为了 <code>YES</code>…反复揣摩整个应用的功能也不知道这么做目的何在，于是果断将其改为了 <code>NO</code>。</p>
+<p>不过事情并没有那么简单，毕竟这是一段关于 viewWillAppear 的杂谈。</p>
+<p>后来随着时间的推移，总算发现禁止后台运行的“用处”了。某个 view 有一个相对特殊的需求，应用从后台回到前台时需要重新初始化它的数据，尽管在 <code>viewWillAppear</code> 中准备了完备的初始化代码，但是这个状态的迁移并不能认为是 view 即将出现，毕竟 view 并没有消失，一直都是显示状态。所以自然 <code>viewWillAppear</code> 就不会被调用，为了解决这个问题，于是这位同学想了这个办法。</p>
+<p>不得不承认这个思路还是很清奇的，但是为了避免一些不必要的麻烦，我还是决定改用常规解决方案。在应用重回前台的时候发一个通知，告诉 view 可以重新初始化数据了。这种情况下，在 <code>viewWillAppear</code> 中添加一个对 <code>.UIApplicationWillEnterForeground</code> 通知的观察应该是一个不二的选择，它也常常被用于处理像是电话强制中断之类的需求：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">NotificationCenter</span>.<span class="keyword">default</span>.addObserver(<span class="keyword">self</span>, selector: #selector(willEnterForeground), name: .<span class="type">UIApplicationWillEnterForeground</span>, object: <span class="literal">nil</span>)</span><br></pre></td></tr></table></figure>
+<p>这个方案可是说是比较优雅的，不过不可以忘记移除通知。关于声明周期这些事儿，有时候真是操碎了心~</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>作为 view 的状态之一，<code>viewWillAppear</code> 的关注率极高，所以其实并没有什么好说的…我们都知道它会在 view 每一次将要准备出现之前被调用，所以常常可以用来初始化一些基本数据。</p>
+<p>前两周花了一点点时间重构了组里的某个小应]]>
+    </summary>
+    
+      <category term="iOS" scheme="http://ckitakishi.com/tags/iOS/"/>
+    
+      <category term="求索集" scheme="http://ckitakishi.com/categories/%E6%B1%82%E7%B4%A2%E9%9B%86/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Thread Sanitizer]]></title>
