@@ -5,7 +5,7 @@
   <subtitle><![CDATA[大概，就是为梦想而活]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://ckitakishi.com//"/>
-  <updated>2017-07-27T15:36:13.000Z</updated>
+  <updated>2017-09-24T15:23:45.000Z</updated>
   <id>http://ckitakishi.com//</id>
   
   <author>
@@ -14,6 +14,41 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Storyboard 与 Xib 的“抉择”]]></title>
+    <link href="http://ckitakishi.com/2017/09/24/Storyboard-%E4%B8%8E-Xib-%E7%9A%84%E2%80%9C%E6%8A%89%E6%8B%A9%E2%80%9D/"/>
+    <id>http://ckitakishi.com/2017/09/24/Storyboard-与-Xib-的“抉择”/</id>
+    <published>2017-09-24T13:33:29.000Z</published>
+    <updated>2017-09-24T15:23:45.000Z</updated>
+    <content type="html"><![CDATA[<blockquote>
+<p>近期开始进行一个新项目的原型制作及其结构设计，打算把一些心路历程记录下来，随便先给它取个名字叫做：<strong>P-OOP</strong>。</p>
+</blockquote>
+<p>比起手写 UI，“拖控件”的 Storyboard 和 Xib 似乎一直都更投我所好。不过即使是 Storyboard 和 Xib 之间，似乎也还是多多少少有一些纷争。</p>
+<h3 id="Storyboard_&amp;_Xib">Storyboard &amp; Xib</h3><p>公司 (年久失修) 的 iOS Guidelines 中写着一句话：</p>
+<blockquote>
+<p>进行源码管理时 Storyboard 极易导致冲突，团队开发时，各画面与各组件尽可能使用 Xib 进行实现。</p>
+</blockquote>
+<p>对此我一直抱着赞否两论的观点。在实际工作时，同一 Storyboard 中存在大量 ViewController 十分容易冲突是一个不争的事实，掉进这个坑的人有可能还进行过 xml 修正。但是这个锅 Storyboard 不背。一部分人可能因此选择了弃 Storyboard 从 Xib 之路，我也一度徘徊是否这才是正道。但是很显然的是，Storyboard 从一开始就不是为了代替 Xib 而来。</p>
+<p>除了 UI 设置的相似部分以外，Storyboard 更重视画面之间的关联和迁移，而 Xib 作为通用组件的模版应该是不二的选择。</p>
+<p>在 P-OOP 中，将会存在大量的 Dialog，尽管可以很容易的使用 Present Modally 来实现，不过为了保持系列产品的一致性，需要考虑如何以比较好的方式来实现共通的 Header 和 Footer 样式。目前选择的方案是，将 Dialog 作为一个 View 实现，Header 和 Footer 的样式在一个 Xib 中进行设置，并向该 View 添加一个 Content View。</p>
+<h3 id="心得">心得</h3><h4 id="Storyboard_Reference">Storyboard Reference</h4><h4 id="Loadable_Nib">Loadable Nib</h4><h4 id="类型安全">类型安全</h4>]]></content>
+    <summary type="html">
+    <![CDATA[<blockquote>
+<p>近期开始进行一个新项目的原型制作及其结构设计，打算把一些心路历程记录下来，随便先给它取个名字叫做：<strong>P-OOP</strong>。</p>
+</blockquote>
+<p>比起手写 UI，“拖控件”的 Storyboard 和 Xi]]>
+    </summary>
+    
+      <category term="P-OOP记录" scheme="http://ckitakishi.com/tags/P-OOP%E8%AE%B0%E5%BD%95/"/>
+    
+      <category term="Swift" scheme="http://ckitakishi.com/tags/Swift/"/>
+    
+      <category term="iOS" scheme="http://ckitakishi.com/tags/iOS/"/>
+    
+      <category term="求索集" scheme="http://ckitakishi.com/categories/%E6%B1%82%E7%B4%A2%E9%9B%86/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[viewWillAppear 杂谈]]></title>
@@ -45,7 +80,7 @@
     <link href="http://ckitakishi.com/2017/05/13/Thread-Sanitizer/"/>
     <id>http://ckitakishi.com/2017/05/13/Thread-Sanitizer/</id>
     <published>2017-05-13T05:39:19.000Z</published>
-    <updated>2017-05-13T07:12:33.000Z</updated>
+    <updated>2017-08-03T15:23:00.000Z</updated>
     <content type="html"><![CDATA[<p><em>作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。</em></p>
 <p>之前在修正并优化应用内线程管理的时候用了 <strong>Thread Sanitizer</strong> 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 <a href="https://developer.apple.com/videos/play/wwdc2016/412/" target="_blank" rel="external">Session 412</a>。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。<strong>TSan</strong> 能够发现一些问题，诸如 Keynote 里提到的：</p>
 <blockquote>
@@ -168,7 +203,7 @@
     <link href="http://ckitakishi.com/2016/08/17/WatchDog-%E6%9C%BA%E5%88%B6/"/>
     <id>http://ckitakishi.com/2016/08/17/WatchDog-机制/</id>
     <published>2016-08-17T14:34:09.000Z</published>
-    <updated>2016-08-21T15:23:05.000Z</updated>
+    <updated>2017-09-24T13:42:58.000Z</updated>
     <content type="html"><![CDATA[<h3 id="背景">背景</h3><p>应用 100% Loss 时完全无法启动，一直崩溃。彻底切断网络连接正常启动，调试模式状态下等待时间非常久，但可以启动，并伴随 UI 微卡。强烈的预感这是线程阻塞。前一段时间被 Core Data Concurrency 折腾的够呛，看见线程问题就略有些心慌。</p>
 <a id="more"></a>
 <h3 id="原因">原因</h3><p>首先看了 crash log，一如猜测，的确是卡在了主线程；意料之外的是，无数次闪退只留下了一份崩溃日志，如下所示：</p>

@@ -3,17 +3,33 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: iOS | LUMINOUS</title>
+  <title>Storyboard 与 Xib 的“抉择” | LUMINOUS</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="LUMINOUS">
-<meta property="og:url" content="http://ckitakishi.com/tags/iOS/index.html">
+  <meta name="description" content="近期开始进行一个新项目的原型制作及其结构设计，打算把一些心路历程记录下来，随便先给它取个名字叫做：P-OOP。
+
+比起手写 UI，“拖控件”的 Storyboard 和 Xib 似乎一直都更投我所好。不过即使是 Storyboard 和 Xib 之间，似乎也还是多多少少有一些纷争。
+Storyboard &amp;amp; Xib公司 (年久失修) 的 iOS Guidelines 中写着一句话：
+
+进行">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Storyboard 与 Xib 的“抉择”">
+<meta property="og:url" content="http://ckitakishi.com/2017/09/24/Storyboard-与-Xib-的“抉择”/index.html">
 <meta property="og:site_name" content="LUMINOUS">
-<meta property="og:description">
+<meta property="og:description" content="近期开始进行一个新项目的原型制作及其结构设计，打算把一些心路历程记录下来，随便先给它取个名字叫做：P-OOP。
+
+比起手写 UI，“拖控件”的 Storyboard 和 Xib 似乎一直都更投我所好。不过即使是 Storyboard 和 Xib 之间，似乎也还是多多少少有一些纷争。
+Storyboard &amp;amp; Xib公司 (年久失修) 的 iOS Guidelines 中写着一句话：
+
+进行">
+<meta property="og:updated_time" content="2017-09-24T15:23:45.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="LUMINOUS">
-<meta name="twitter:description">
+<meta name="twitter:title" content="Storyboard 与 Xib 的“抉择”">
+<meta name="twitter:description" content="近期开始进行一个新项目的原型制作及其结构设计，打算把一些心路历程记录下来，随便先给它取个名字叫做：P-OOP。
+
+比起手写 UI，“拖控件”的 Storyboard 和 Xib 似乎一直都更投我所好。不过即使是 Storyboard 和 Xib 之间，似乎也还是多多少少有一些纷争。
+Storyboard &amp;amp; Xib公司 (年久失修) 的 iOS Guidelines 中写着一句话：
+
+进行">
   
     <link rel="alternative" href="/atom.xml" title="LUMINOUS" type="application/atom+xml">
   
@@ -69,174 +85,77 @@
   </div>
 </header>
               <div class="outer">
-                  <section id="main">
-  
-
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2017/09/24/Storyboard-与-Xib-的“抉择”/" class="archive-article-date">
-  <time datetime="2017-09-24T13:33:29.000Z" itemprop="datePublished">Sep 24</time>
+                  <section id="main"><article id="post-Storyboard-与-Xib-的“抉择”" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/09/24/Storyboard-与-Xib-的“抉择”/" class="article-date">
+  <time datetime="2017-09-24T13:33:29.000Z" itemprop="datePublished">2017-09-24</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/求索集/">求索集</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/09/24/Storyboard-与-Xib-的“抉择”/">Storyboard 与 Xib 的“抉择”</a>
+    <h1 class="article-title" itemprop="name">
+      Storyboard 与 Xib 的“抉择”
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2017/07/26/viewWillAppear-杂谈/" class="archive-article-date">
-  <time datetime="2017-07-26T14:48:22.000Z" itemprop="datePublished">Jul 26</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/07/26/viewWillAppear-杂谈/">viewWillAppear 杂谈</a>
-    </h1>
-  
+        <blockquote>
+<p>近期开始进行一个新项目的原型制作及其结构设计，打算把一些心路历程记录下来，随便先给它取个名字叫做：<strong>P-OOP</strong>。</p>
+</blockquote>
+<p>比起手写 UI，“拖控件”的 Storyboard 和 Xib 似乎一直都更投我所好。不过即使是 Storyboard 和 Xib 之间，似乎也还是多多少少有一些纷争。</p>
+<h3 id="Storyboard_&amp;_Xib">Storyboard &amp; Xib</h3><p>公司 (年久失修) 的 iOS Guidelines 中写着一句话：</p>
+<blockquote>
+<p>进行源码管理时 Storyboard 极易导致冲突，团队开发时，各画面与各组件尽可能使用 Xib 进行实现。</p>
+</blockquote>
+<p>对此我一直抱着赞否两论的观点。在实际工作时，同一 Storyboard 中存在大量 ViewController 十分容易冲突是一个不争的事实，掉进这个坑的人有可能还进行过 xml 修正。但是这个锅 Storyboard 不背。一部分人可能因此选择了弃 Storyboard 从 Xib 之路，我也一度徘徊是否这才是正道。但是很显然的是，Storyboard 从一开始就不是为了代替 Xib 而来。</p>
+<p>除了 UI 设置的相似部分以外，Storyboard 更重视画面之间的关联和迁移，而 Xib 作为通用组件的模版应该是不二的选择。</p>
+<p>在 P-OOP 中，将会存在大量的 Dialog，尽管可以很容易的使用 Present Modally 来实现，不过为了保持系列产品的一致性，需要考虑如何以比较好的方式来实现共通的 Header 和 Footer 样式。目前选择的方案是，将 Dialog 作为一个 View 实现，Header 和 Footer 的样式在一个 Xib 中进行设置，并向该 View 添加一个 Content View。</p>
+<h3 id="心得">心得</h3><h4 id="Storyboard_Reference">Storyboard Reference</h4><h4 id="Loadable_Nib">Loadable Nib</h4><h4 id="类型安全">类型安全</h4>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://ckitakishi.com/2017/09/24/Storyboard-与-Xib-的“抉择”/" data-id="cj7yw9ndr002rozcj0c8lm8aq" class="article-share-link">Share</a>
+      
+        <a href="http://ckitakishi.com/2017/09/24/Storyboard-与-Xib-的“抉择”/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/P-OOP记录/">P-OOP记录</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
 
-    </header>
+    </footer>
   </div>
-</article>
   
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2017/05/13/Thread-Sanitizer/" class="archive-article-date">
-  <time datetime="2017-05-13T05:39:19.000Z" itemprop="datePublished">May 13</time>
-</a>
-      
+<nav id="article-nav">
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/05/13/Thread-Sanitizer/">Thread Sanitizer</a>
-    </h1>
   
+    <a href="/2017/07/26/viewWillAppear-杂谈/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">viewWillAppear 杂谈</div>
+    </a>
+  
+</nav>
 
-    </header>
-  </div>
+  
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2017/02/13/Swift-App-一个意料之外的崩溃理由/" class="archive-article-date">
-  <time datetime="2017-02-13T14:10:51.000Z" itemprop="datePublished">Feb 13</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/02/13/Swift-App-一个意料之外的崩溃理由/">Swift App:一个意料之外的崩溃理由</a>
-    </h1>
-  
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-      
-        </div></section>
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/08/17/WatchDog-机制/" class="archive-article-date">
-  <time datetime="2016-08-17T14:34:09.000Z" itemprop="datePublished">Aug 17</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/08/17/WatchDog-机制/">iOS 的看门狗机制</a>
-    </h1>
-  
 
-    </header>
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
   </div>
-</article>
-  
-    
-    
-      
-        </div></section>
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2014" class="archive-year">2014</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2014/07/01/dream-mark的前世今生/" class="archive-article-date">
-  <time datetime="2014-07-01T14:28:10.000Z" itemprop="datePublished">Jul 1</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2014/07/01/dream-mark的前世今生/">Dream Mark的前世今生</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2014/03/22/uikit-dynamics--ios7/" class="archive-article-date">
-  <time datetime="2014-03-22T13:17:38.000Z" itemprop="datePublished">Mar 22</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2014/03/22/uikit-dynamics--ios7/">UIKit Dynamics--iOS7</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
+</section>
 </section>
                   
                   <aside id="sidebar">
@@ -336,11 +255,13 @@
 <script>
   var disqus_shortname = 'ckitakishi';
   
+  var disqus_url = 'http://ckitakishi.com/2017/09/24/Storyboard-与-Xib-的“抉择”/';
+  
   (function(){
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
   })();
 </script>

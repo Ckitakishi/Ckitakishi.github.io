@@ -71,6 +71,61 @@
               <div class="outer">
                   <section id="main">
   
+    <article id="post-Storyboard-与-Xib-的“抉择”" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/09/24/Storyboard-与-Xib-的“抉择”/" class="article-date">
+  <time datetime="2017-09-24T13:33:29.000Z" itemprop="datePublished">2017-09-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/求索集/">求索集</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/24/Storyboard-与-Xib-的“抉择”/">Storyboard 与 Xib 的“抉择”</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>近期开始进行一个新项目的原型制作及其结构设计，打算把一些心路历程记录下来，随便先给它取个名字叫做：<strong>P-OOP</strong>。</p>
+</blockquote>
+<p>比起手写 UI，“拖控件”的 Storyboard 和 Xib 似乎一直都更投我所好。不过即使是 Storyboard 和 Xib 之间，似乎也还是多多少少有一些纷争。</p>
+<h3 id="Storyboard_&amp;_Xib">Storyboard &amp; Xib</h3><p>公司 (年久失修) 的 iOS Guidelines 中写着一句话：</p>
+<blockquote>
+<p>进行源码管理时 Storyboard 极易导致冲突，团队开发时，各画面与各组件尽可能使用 Xib 进行实现。</p>
+</blockquote>
+<p>对此我一直抱着赞否两论的观点。在实际工作时，同一 Storyboard 中存在大量 ViewController 十分容易冲突是一个不争的事实，掉进这个坑的人有可能还进行过 xml 修正。但是这个锅 Storyboard 不背。一部分人可能因此选择了弃 Storyboard 从 Xib 之路，我也一度徘徊是否这才是正道。但是很显然的是，Storyboard 从一开始就不是为了代替 Xib 而来。</p>
+<p>除了 UI 设置的相似部分以外，Storyboard 更重视画面之间的关联和迁移，而 Xib 作为通用组件的模版应该是不二的选择。</p>
+<p>在 P-OOP 中，将会存在大量的 Dialog，尽管可以很容易的使用 Present Modally 来实现，不过为了保持系列产品的一致性，需要考虑如何以比较好的方式来实现共通的 Header 和 Footer 样式。目前选择的方案是，将 Dialog 作为一个 View 实现，Header 和 Footer 的样式在一个 Xib 中进行设置，并向该 View 添加一个 Content View。</p>
+<h3 id="心得">心得</h3><h4 id="Storyboard_Reference">Storyboard Reference</h4><h4 id="Loadable_Nib">Loadable Nib</h4><h4 id="类型安全">类型安全</h4>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://ckitakishi.com/2017/09/24/Storyboard-与-Xib-的“抉择”/" data-id="cj7yw9ndr002rozcj0c8lm8aq" class="article-share-link">Share</a>
+      
+        <a href="http://ckitakishi.com/2017/09/24/Storyboard-与-Xib-的“抉择”/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/P-OOP记录/">P-OOP记录</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-viewWillAppear-杂谈" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/07/26/viewWillAppear-杂谈/" class="article-date">
@@ -108,7 +163,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ckitakishi.com/2017/07/26/viewWillAppear-杂谈/" data-id="cj5mlq7gx00005qcjb5sb2pc0" class="article-share-link">Share</a>
+      <a data-url="http://ckitakishi.com/2017/07/26/viewWillAppear-杂谈/" data-id="cj7yw9nd2001pozcjnkqb7xri" class="article-share-link">Share</a>
       
         <a href="http://ckitakishi.com/2017/07/26/viewWillAppear-杂谈/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -165,7 +220,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ckitakishi.com/2017/05/13/Thread-Sanitizer/" data-id="cj5mlpf34002956cj0v56uy2d" class="article-share-link">Share</a>
+      <a data-url="http://ckitakishi.com/2017/05/13/Thread-Sanitizer/" data-id="cj7yw9ndj002cozcjrg4dhpg4" class="article-share-link">Share</a>
       
         <a href="http://ckitakishi.com/2017/05/13/Thread-Sanitizer/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -215,7 +270,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ckitakishi.com/2017/02/13/Swift-App-一个意料之外的崩溃理由/" data-id="cj5mlpf39002l56cjlxjf6utb" class="article-share-link">Share</a>
+      <a data-url="http://ckitakishi.com/2017/02/13/Swift-App-一个意料之外的崩溃理由/" data-id="cj7yw9ndo002oozcj5jhro8uv" class="article-share-link">Share</a>
       
         <a href="http://ckitakishi.com/2017/02/13/Swift-App-一个意料之外的崩溃理由/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -265,7 +320,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ckitakishi.com/2017/01/14/重新启程的-2016/" data-id="cj5mlpf1f000156cjfz2ai0kv" class="article-share-link">Share</a>
+      <a data-url="http://ckitakishi.com/2017/01/14/重新启程的-2016/" data-id="cj7yw9nbw0001ozcjpy3daih9" class="article-share-link">Share</a>
       
         <a href="http://ckitakishi.com/2017/01/14/重新启程的-2016/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -316,7 +371,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ckitakishi.com/2016/11/09/Swift字符串前后缀匹配/" data-id="cj5mlpf36002e56cj1609pppq" class="article-share-link">Share</a>
+      <a data-url="http://ckitakishi.com/2016/11/09/Swift字符串前后缀匹配/" data-id="cj7yw9ndm002hozcje3g8rc6a" class="article-share-link">Share</a>
       
         <a href="http://ckitakishi.com/2016/11/09/Swift字符串前后缀匹配/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -365,61 +420,12 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ckitakishi.com/2016/08/17/WatchDog-机制/" data-id="cj5mlpf31002556cj2uobnrx9" class="article-share-link">Share</a>
+      <a data-url="http://ckitakishi.com/2016/08/17/WatchDog-机制/" data-id="cj7yw9ndh0029ozcj16bmffle" class="article-share-link">Share</a>
       
         <a href="http://ckitakishi.com/2016/08/17/WatchDog-机制/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-沖縄三日" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/12/08/沖縄三日/" class="article-date">
-  <time datetime="2015-12-08T13:56:53.000Z" itemprop="datePublished">2015-12-08</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/浮生记/">浮生记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/12/08/沖縄三日/">沖縄三日</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>期待已久的冲绳之行和不那么期待的马拉松如此而至。出发的早晨阳光特别温暖，モノレール窗子上映出身影，好暖～</p>
-        
-          <p class="article-more-link">
-            <a href="/2015/12/08/沖縄三日/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://ckitakishi.com/2015/12/08/沖縄三日/" data-id="cj5mlpf27001156cjn2ppiljw" class="article-share-link">Share</a>
-      
-        <a href="http://ckitakishi.com/2015/12/08/沖縄三日/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/旅行/">旅行</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/美食/">美食</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/跑步/">跑步</a></li></ul>
 
     </footer>
   </div>
@@ -441,7 +447,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/思考/">思考</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/求索集/">求索集</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/浮生记/">浮生记</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/覚書/">覚書</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/项目集/">项目集</a><span class="category-list-count">2</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/思考/">思考</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/求索集/">求索集</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/浮生记/">浮生记</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/覚書/">覚書</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/项目集/">项目集</a><span class="category-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -450,7 +456,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/LT/">LT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode/">LeetCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/">github</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/假期/">假期</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/喜悦/">喜悦</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图像/">图像</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/思考/">思考</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数学/">数学</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/旅行/">旅行</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/生活/">生活</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编程/">编程</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/美食/">美食</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自行车/">自行车</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/覚書/">覚書</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/跑步/">跑步</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">3</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/LT/">LT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode/">LeetCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/P-OOP记录/">P-OOP记录</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/">github</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/假期/">假期</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/喜悦/">喜悦</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图像/">图像</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/思考/">思考</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数学/">数学</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/旅行/">旅行</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/生活/">生活</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编程/">编程</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/美食/">美食</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自行车/">自行车</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/覚書/">覚書</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/跑步/">跑步</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">3</span></li></ul>
     </div>
   </div>
 
@@ -459,7 +465,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/LT/" style="font-size: 10px;">LT</a> <a href="/tags/LeetCode/" style="font-size: 10px;">LeetCode</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/假期/" style="font-size: 12.5px;">假期</a> <a href="/tags/喜悦/" style="font-size: 10px;">喜悦</a> <a href="/tags/图像/" style="font-size: 10px;">图像</a> <a href="/tags/思考/" style="font-size: 12.5px;">思考</a> <a href="/tags/数学/" style="font-size: 10px;">数学</a> <a href="/tags/旅行/" style="font-size: 10px;">旅行</a> <a href="/tags/生活/" style="font-size: 15px;">生活</a> <a href="/tags/编程/" style="font-size: 17.5px;">编程</a> <a href="/tags/美食/" style="font-size: 10px;">美食</a> <a href="/tags/自行车/" style="font-size: 10px;">自行车</a> <a href="/tags/覚書/" style="font-size: 10px;">覚書</a> <a href="/tags/跑步/" style="font-size: 10px;">跑步</a> <a href="/tags/随笔/" style="font-size: 15px;">随笔</a>
+      <a href="/tags/LT/" style="font-size: 10px;">LT</a> <a href="/tags/LeetCode/" style="font-size: 10px;">LeetCode</a> <a href="/tags/P-OOP记录/" style="font-size: 10px;">P-OOP记录</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/假期/" style="font-size: 12.5px;">假期</a> <a href="/tags/喜悦/" style="font-size: 10px;">喜悦</a> <a href="/tags/图像/" style="font-size: 10px;">图像</a> <a href="/tags/思考/" style="font-size: 12.5px;">思考</a> <a href="/tags/数学/" style="font-size: 10px;">数学</a> <a href="/tags/旅行/" style="font-size: 10px;">旅行</a> <a href="/tags/生活/" style="font-size: 15px;">生活</a> <a href="/tags/编程/" style="font-size: 17.5px;">编程</a> <a href="/tags/美食/" style="font-size: 10px;">美食</a> <a href="/tags/自行车/" style="font-size: 10px;">自行车</a> <a href="/tags/覚書/" style="font-size: 10px;">覚書</a> <a href="/tags/跑步/" style="font-size: 10px;">跑步</a> <a href="/tags/随笔/" style="font-size: 15px;">随笔</a>
     </div>
   </div>
 
@@ -468,7 +474,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">3</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">3</span></li></ul>
     </div>
   </div>
 
@@ -478,6 +484,10 @@
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2017/09/24/Storyboard-与-Xib-的“抉择”/">Storyboard 与 Xib 的“抉择”</a>
+          </li>
         
           <li>
             <a href="/2017/07/26/viewWillAppear-杂谈/">viewWillAppear 杂谈</a>
@@ -493,10 +503,6 @@
         
           <li>
             <a href="/2017/01/14/重新启程的-2016/">重新启程的 2016</a>
-          </li>
-        
-          <li>
-            <a href="/2016/11/09/Swift字符串前后缀匹配/">Swift 的字符串前后缀匹配</a>
           </li>
         
       </ul>
