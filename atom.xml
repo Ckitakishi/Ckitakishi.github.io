@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   
   <title><![CDATA[LUMINOUS]]></title>
-  <subtitle><![CDATA[大概，就是为梦想而活]]></subtitle>
+  
   <link href="/atom.xml" rel="self"/>
   <link href="http://ckitakishi.com//"/>
-  <updated>2017-09-28T15:25:54.000Z</updated>
+  <updated>2017-10-05T15:01:42.678Z</updated>
   <id>http://ckitakishi.com//</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://ckitakishi.com/2017/09/24/Storyboard-%E4%B8%8E-Xib-%E7%9A%84%E2%80%9C%E6%8A%89%E6%8B%A9%E2%80%9D/"/>
     <id>http://ckitakishi.com/2017/09/24/Storyboard-与-Xib-的“抉择”/</id>
     <published>2017-09-24T13:33:29.000Z</published>
-    <updated>2017-09-28T15:25:54.000Z</updated>
+    <updated>2017-10-05T15:01:42.678Z</updated>
     <content type="html"><![CDATA[<blockquote>
 <p>近期开始进行一个新项目的原型制作及其结构设计，打算把一些心路历程记录下来，随便先给它取个名字叫做：<strong>P-OOP</strong>。</p>
 </blockquote>
@@ -29,6 +29,7 @@
 <blockquote>
 <p>进行源码管理时 Storyboard 极易导致冲突，团队开发时，各画面与各组件尽可能使用 Xib 进行实现。</p>
 </blockquote>
+<a id="more"></a>
 <p>对此我一直抱着赞否两论的观点。在实际工作时，同一 Storyboard 中存在大量 ViewController 十分容易冲突是一个不争的事实，掉进这个坑的人有可能还进行过 xml 修正。但是这个锅 Storyboard 不背。一部分人可能因此选择了弃 Storyboard 从 Xib 之路，我也一度徘徊是否这才是正道。但是很显然的是，Storyboard 从一开始就不是为了代替 Xib 而来。</p>
 <p>除了 UI 设置的相似部分以外，Storyboard 更重视画面之间的关联和迁移，而 Xib 作为通用组件的模版应该是不二的选择。</p>
 <p>在 P-OOP 中，将会存在大量的 dialog，尽管可以很容易的使用 Present Modally 来实现，不过为了保持系列产品的一致性，需要考虑如何以比较好的方式来实现共通的 header 和 footer 样式。考虑过很多方案，比如：</p>
@@ -49,7 +50,12 @@
     <![CDATA[<blockquote>
 <p>近期开始进行一个新项目的原型制作及其结构设计，打算把一些心路历程记录下来，随便先给它取个名字叫做：<strong>P-OOP</strong>。</p>
 </blockquote>
-<p>比起手写 UI，“拖控件”的 Storyboard 和 Xi]]>
+<p>比起手写 UI，“拖控件”的 Storyboard 和 Xib 似乎一直都更投我所好。不过即使是 Storyboard 和 Xib 之间，似乎也还是多多少少有一些纷争。</p>
+<h3 id="Storyboard_&amp;_Xib">Storyboard &amp; Xib</h3><p>公司 (年久失修) 的 iOS Guidelines 中写着一句话：</p>
+<blockquote>
+<p>进行源码管理时 Storyboard 极易导致冲突，团队开发时，各画面与各组件尽可能使用 Xib 进行实现。</p>
+</blockquote>]]>
+    
     </summary>
     
       <category term="P-OOP记录" scheme="http://ckitakishi.com/tags/P-OOP%E8%AE%B0%E5%BD%95/"/>
@@ -67,10 +73,11 @@
     <link href="http://ckitakishi.com/2017/07/26/viewWillAppear-%E6%9D%82%E8%B0%88/"/>
     <id>http://ckitakishi.com/2017/07/26/viewWillAppear-杂谈/</id>
     <published>2017-07-26T14:48:22.000Z</published>
-    <updated>2017-07-27T15:36:13.000Z</updated>
+    <updated>2017-10-05T15:02:23.562Z</updated>
     <content type="html"><![CDATA[<p>作为 view 的状态之一，<code>viewWillAppear</code> 的关注率极高，所以其实并没有什么好说的…我们都知道它会在 view 每一次将要准备出现之前被调用，所以常常可以用来初始化一些基本数据。</p>
 <p>前两周花了一点点时间重构了组里的某个小应用，前开发者新手上路，感觉不少代码值得推敲。在 debug 的时候发现应用一到后台就自动退出了，根本无法看它在后台的活动，震惊之余发现 info.plist 的 <code>Application does not run in background</code> 被设置为了 <code>YES</code>…反复揣摩整个应用的功能也不知道这么做目的何在，于是果断将其改为了 <code>NO</code>。</p>
 <p>不过事情并没有那么简单，毕竟这是一段关于 viewWillAppear 的杂谈。</p>
+<a id="more"></a>
 <p>后来随着时间的推移，总算发现禁止后台运行的“用处”了。某个 view 有一个相对特殊的需求，应用从后台回到前台时需要重新初始化它的数据，尽管在 <code>viewWillAppear</code> 中准备了完备的初始化代码，但是这个状态的迁移并不能认为是 view 即将出现，毕竟 view 并没有消失，一直都是显示状态。所以自然 <code>viewWillAppear</code> 就不会被调用，为了解决这个问题，于是这位同学想了这个办法。</p>
 <p>不得不承认这个思路还是很清奇的，但是为了避免一些不必要的麻烦，我还是决定改用常规解决方案。在应用重回前台的时候发一个通知，告诉 view 可以重新初始化数据了。这种情况下，在 <code>viewWillAppear</code> 中添加一个对 <code>.UIApplicationWillEnterForeground</code> 通知的观察应该是一个不二的选择，它也常常被用于处理像是电话强制中断之类的需求：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">NotificationCenter</span>.<span class="keyword">default</span>.addObserver(<span class="keyword">self</span>, selector: #selector(willEnterForeground), name: .<span class="type">UIApplicationWillEnterForeground</span>, object: <span class="literal">nil</span>)</span><br></pre></td></tr></table></figure>
@@ -78,7 +85,9 @@
 ]]></content>
     <summary type="html">
     <![CDATA[<p>作为 view 的状态之一，<code>viewWillAppear</code> 的关注率极高，所以其实并没有什么好说的…我们都知道它会在 view 每一次将要准备出现之前被调用，所以常常可以用来初始化一些基本数据。</p>
-<p>前两周花了一点点时间重构了组里的某个小应]]>
+<p>前两周花了一点点时间重构了组里的某个小应用，前开发者新手上路，感觉不少代码值得推敲。在 debug 的时候发现应用一到后台就自动退出了，根本无法看它在后台的活动，震惊之余发现 info.plist 的 <code>Application does not run in background</code> 被设置为了 <code>YES</code>…反复揣摩整个应用的功能也不知道这么做目的何在，于是果断将其改为了 <code>NO</code>。</p>
+<p>不过事情并没有那么简单，毕竟这是一段关于 viewWillAppear 的杂谈。</p>]]>
+    
     </summary>
     
       <category term="iOS" scheme="http://ckitakishi.com/tags/iOS/"/>
@@ -92,13 +101,14 @@
     <link href="http://ckitakishi.com/2017/05/13/Thread-Sanitizer/"/>
     <id>http://ckitakishi.com/2017/05/13/Thread-Sanitizer/</id>
     <published>2017-05-13T05:39:19.000Z</published>
-    <updated>2017-08-03T15:23:00.000Z</updated>
+    <updated>2017-10-05T15:02:50.234Z</updated>
     <content type="html"><![CDATA[<p><em>作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。</em></p>
 <p>之前在修正并优化应用内线程管理的时候用了 <strong>Thread Sanitizer</strong> 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 <a href="https://developer.apple.com/videos/play/wwdc2016/412/" target="_blank" rel="external">Session 412</a>。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。<strong>TSan</strong> 能够发现一些问题，诸如 Keynote 里提到的：</p>
 <blockquote>
 <p>Use of uninitialized mutexes<br>Thread leaks (missing pthred_join)<br>Unsafe calls in signal handlers (ex:malloc)<br>Unlock from wrong thread<br>Data races</p>
 </blockquote>
 <p>因为在实际中遇到过，而且感觉发生概率相对较高，所以只展开说一下最后一项：数据竞争。数据竞争发生的基本条件是多个线程在同时访问同一块内存，并且其中至少又一个线程正在进行的是写操作。实际中常常表现为数据不整合，亦或是应用崩溃。比如下面这个例子：</p>
+<a id="more"></a>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[context performBlock:^&#123;&#10;    if (result &#38;&#38; context) &#123;&#10;        result = [self persistentSaveContext:context]; // 1&#10;    &#125;&#10;&#125;];&#10;return result; // 2</span><br></pre></td></tr></table></figure>
 <p><code>result</code> 在 1 和 2 两个地方发生了竞争。在 1 进行写操作之前，有可能处于不同线程的 2 早已经返回了，这样数据就发生了不整合。</p>
 <p>有很多方法可以解决这个问题，比如说：由异步操作变为同步操作，或是改变写操作的时间点。这里采取了第一个方案，使用同样用途的同步方法 <code>performBlockAndWait</code> 来取代 <code>performBlock</code>，这样以来，数据竞争的问题也就自然而然解决了。 </p>
@@ -109,7 +119,12 @@
 ]]></content>
     <summary type="html">
     <![CDATA[<p><em>作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。</em></p>
-<p>之前在修正并优化应用内线程管理的时候用了 <strong>Thread Sanitizer</strong> 功能，于是以此为机给大家简单介绍了一下。更]]>
+<p>之前在修正并优化应用内线程管理的时候用了 <strong>Thread Sanitizer</strong> 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 <a href="https://developer.apple.com/videos/play/wwdc2016/412/">Session 412</a>。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。<strong>TSan</strong> 能够发现一些问题，诸如 Keynote 里提到的：</p>
+<blockquote>
+<p>Use of uninitialized mutexes<br>Thread leaks (missing pthred_join)<br>Unsafe calls in signal handlers (ex:malloc)<br>Unlock from wrong thread<br>Data races</p>
+</blockquote>
+<p>因为在实际中遇到过，而且感觉发生概率相对较高，所以只展开说一下最后一项：数据竞争。数据竞争发生的基本条件是多个线程在同时访问同一块内存，并且其中至少又一个线程正在进行的是写操作。实际中常常表现为数据不整合，亦或是应用崩溃。比如下面这个例子：</p>]]>
+    
     </summary>
     
       <category term="LT" scheme="http://ckitakishi.com/tags/LT/"/>
