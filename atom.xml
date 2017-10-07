@@ -73,7 +73,7 @@
     <link href="http://ckitakishi.com/2017/07/26/viewWillAppear-%E6%9D%82%E8%B0%88/"/>
     <id>http://ckitakishi.com/2017/07/26/viewWillAppear-杂谈/</id>
     <published>2017-07-26T14:48:22.000Z</published>
-    <updated>2017-10-05T15:02:23.562Z</updated>
+    <updated>2017-10-05T15:02:24.121Z</updated>
     <content type="html"><![CDATA[<p>作为 view 的状态之一，<code>viewWillAppear</code> 的关注率极高，所以其实并没有什么好说的…我们都知道它会在 view 每一次将要准备出现之前被调用，所以常常可以用来初始化一些基本数据。</p>
 <p>前两周花了一点点时间重构了组里的某个小应用，前开发者新手上路，感觉不少代码值得推敲。在 debug 的时候发现应用一到后台就自动退出了，根本无法看它在后台的活动，震惊之余发现 info.plist 的 <code>Application does not run in background</code> 被设置为了 <code>YES</code>…反复揣摩整个应用的功能也不知道这么做目的何在，于是果断将其改为了 <code>NO</code>。</p>
 <p>不过事情并没有那么简单，毕竟这是一段关于 viewWillAppear 的杂谈。</p>
