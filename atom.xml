@@ -5,7 +5,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://ckitakishi.com//"/>
-  <updated>2017-10-07T15:58:43.952Z</updated>
+  <updated>2017-10-07T15:58:44.526Z</updated>
   <id>http://ckitakishi.com//</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://ckitakishi.com/2017/09/24/Storyboard-%E4%B8%8E-Xib-%E7%9A%84%E2%80%9C%E6%8A%89%E6%8B%A9%E2%80%9D/"/>
     <id>http://ckitakishi.com/2017/09/24/Storyboard-与-Xib-的“抉择”/</id>
     <published>2017-09-24T13:33:29.000Z</published>
-    <updated>2017-10-07T15:58:43.952Z</updated>
+    <updated>2017-10-07T15:58:44.526Z</updated>
     <content type="html"><![CDATA[<blockquote>
 <p>近期开始进行一个新项目的原型制作及其结构设计，打算把一些心路历程记录下来，随便先给它取个名字叫做：<strong>P-OOP</strong>。</p>
 </blockquote>
@@ -73,7 +73,7 @@
     <link href="http://ckitakishi.com/2017/07/26/viewWillAppear-%E6%9D%82%E8%B0%88/"/>
     <id>http://ckitakishi.com/2017/07/26/viewWillAppear-杂谈/</id>
     <published>2017-07-26T14:48:22.000Z</published>
-    <updated>2017-10-07T15:58:59.063Z</updated>
+    <updated>2017-10-07T15:58:59.639Z</updated>
     <content type="html"><![CDATA[<p>作为 view 的状态之一，<code>viewWillAppear</code> 的关注率极高，所以其实并没有什么好说的…我们都知道它会在 view 每一次将要准备出现之前被调用，所以常常可以用来初始化一些基本数据。</p>
 <p>前两周花了一点点时间重构了组里的某个小应用，前开发者新手上路，感觉不少代码值得推敲。在 debug 的时候发现应用一到后台就自动退出了，根本无法看它在后台的活动，震惊之余发现 info.plist 的 <code>Application does not run in background</code> 被设置为了 <code>YES</code>…反复揣摩整个应用的功能也不知道这么做目的何在，于是果断将其改为了 <code>NO</code>。</p>
 <p>不过事情并没有那么简单，毕竟这是一段关于 viewWillAppear 的杂谈。</p>
@@ -101,7 +101,7 @@
     <link href="http://ckitakishi.com/2017/05/13/Thread-Sanitizer/"/>
     <id>http://ckitakishi.com/2017/05/13/Thread-Sanitizer/</id>
     <published>2017-05-13T05:39:19.000Z</published>
-    <updated>2017-10-07T15:58:50.985Z</updated>
+    <updated>2017-10-07T15:58:51.568Z</updated>
     <content type="html"><![CDATA[<p><em>作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。</em></p>
 <p>之前在修正并优化应用内线程管理的时候用了 <strong>Thread Sanitizer</strong> 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 <a href="https://developer.apple.com/videos/play/wwdc2016/412/" target="_blank" rel="external">Session 412</a>。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。<strong>TSan</strong> 能够发现一些问题，诸如 Keynote 里提到的：</p>
 <blockquote>
@@ -203,7 +203,7 @@
     <link href="http://ckitakishi.com/2016/11/09/Swift%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%89%8D%E5%90%8E%E7%BC%80%E5%8C%B9%E9%85%8D/"/>
     <id>http://ckitakishi.com/2016/11/09/Swift字符串前后缀匹配/</id>
     <published>2016-11-08T15:18:32.000Z</published>
-    <updated>2017-10-07T15:58:26.073Z</updated>
+    <updated>2017-10-07T15:58:26.636Z</updated>
     <content type="html"><![CDATA[<p>之前修改了项目中一个 increment search 的组件，最近刚好又看到下题，于是想说一说前后缀匹配的事儿～</p>
 <p><a href="https://leetcode.com/problems/longest-common-prefix/" target="_blank" rel="external">14. Longest Common Prefix</a></p>
 <p>这是一个给定字符串数组，求所有字符串最长公有前缀的问题。</p>
@@ -365,7 +365,7 @@
     <link href="http://ckitakishi.com/2015/08/01/%E8%BD%BB%E5%9B%BE%E5%83%8F%E5%B7%A5%E5%85%B7%EF%BC%8DLightImage/"/>
     <id>http://ckitakishi.com/2015/08/01/轻图像工具－LightImage/</id>
     <published>2015-08-01T07:58:35.000Z</published>
-    <updated>2017-10-07T15:58:05.007Z</updated>
+    <updated>2017-10-07T15:58:05.594Z</updated>
     <content type="html"><![CDATA[<p>LightImage 是我的毕业设计项目，但是至今暂时还是一个残次成品，仍需大力的改善。初衷是开发一款轻量级的图像处理工具，后续又扩展了简易的图像分析和像素画绘制等功能。</p>
 <p>项目主要基于 HTML5 中的 Canvas 开发，当提及 Canvas 的时候，常常还会提到 SVG。Canvas 只能通过脚本驱动，适合像素级的图形问题处理；相比较而言 SVG 的驱动方式更加灵活，XML、CSS等都可，所以处理图形是通过元素。对于本项目而言，Canvas 是不二的选择。</p>
 <a id="more"></a>
@@ -403,7 +403,7 @@
     <link href="http://ckitakishi.com/2015/07/31/%E8%AF%B4%E8%AF%B4%E8%BF%87%E5%8E%BB%E8%BF%99%E5%8D%8A%E5%B9%B4/"/>
     <id>http://ckitakishi.com/2015/07/31/说说过去这半年/</id>
     <published>2015-07-31T14:58:17.000Z</published>
-    <updated>2015-08-01T09:11:22.000Z</updated>
+    <updated>2017-10-07T15:56:55.338Z</updated>
     <content type="html"><![CDATA[<p>过去这半年，说实话过的蛮不错。确定了工作，结束了实习，带着不舍顺利毕业，毕业旅行。每一件事都那么难忘。</p>
 <a id="more"></a>
 <p>年初，犹豫和纠结最终还是没能阻挡一个小小的梦想，决定去霓虹工作。大三以前还信誓旦旦的说过就算去日本也只可能是旅行，亲爱的日语老师们估计怎么也想不到当年那个日语下手的学生尽然要去工作了～</p>
@@ -498,7 +498,7 @@
     <link href="http://ckitakishi.com/2014/04/12/meziriac%E7%9A%84%E7%A0%9D%E7%A0%81%E9%97%AE%E9%A2%98/"/>
     <id>http://ckitakishi.com/2014/04/12/meziriac的砝码问题/</id>
     <published>2014-04-12T14:46:04.000Z</published>
-    <updated>2017-10-07T15:57:46.232Z</updated>
+    <updated>2017-10-07T15:57:46.825Z</updated>
     <content type="html"><![CDATA[<h4 id="在回学校的车上人超多，默默的在想砝码的那道题。下午那道题答的实在是…图样图森破…">在回学校的车上人超多，默默的在想砝码的那道题。下午那道题答的实在是…图样图森破…</h4><pre><code><span class="attribute">题目大概是:
 一个商去买钻石，所有钻石都&lt;</span>=<span class="string">40g，他只带四个砝码和一个天平，请问四个砝码分别是多重的？</span>
 </code></pre><a id="more"></a>
@@ -555,7 +555,7 @@
     <link href="http://ckitakishi.com/2014/03/22/uikit-dynamics--ios7/"/>
     <id>http://ckitakishi.com/2014/03/22/uikit-dynamics--ios7/</id>
     <published>2014-03-22T13:17:38.000Z</published>
-    <updated>2017-10-07T15:57:53.330Z</updated>
+    <updated>2017-10-07T15:57:53.909Z</updated>
     <content type="html"><![CDATA[<h2 id="Dynamic_Items:">Dynamic Items:</h2><h4 id="UIDynamicItem_Protocol是13年的WWDC新增加的。">UIDynamicItem Protocol是13年的WWDC新增加的。</h4><a id="more"></a>
 <p> <a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIDynamicItem_Protocol/Reference/Reference.html" target="_blank" rel="external">Apple Library相关的</a></p>
 <h4 id="UIKit_Dynamics的焦点都是关于items之间相互的作用及其动画。有一个要求，为了在一个item上使用dynamic_behavior，item必须满足UIDynamicItem协议。该协议定义了三个重要的属性，bounds，center，transform。bounds属性是readonly的,center,transform属性是read/write的，center需要更新动画的进度,transform属性返回一个CGAffineTransform的对象。">UIKit Dynamics的焦点都是关于items之间相互的作用及其动画。有一个要求，为了在一个item上使用dynamic behavior，item必须满足<code>UIDynamicItem</code>协议。该协议定义了三个重要的属性，<code>bounds</code>，<code>center</code>，<code>transform</code>。<code>bounds</code>属性是readonly的,<code>center</code>,<code>transform</code>属性是read/write的，<code>center</code>需要更新动画的进度,<code>transform</code>属性返回一个<code>CGAffineTransform</code>的对象。</h4><h4 id="从iOS7开始，默认的只有UIView和UICollectionViewLayoutAttributes类可实现该协议。但是，仍然可以自己创建类去实现之。">从iOS7开始，默认的只有<code>UIView</code>和<code>UICollectionViewLayoutAttributes</code>类可实现该协议。但是，仍然可以自己创建类去实现之。</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property(nonatomic, readonly) CGRect bounds&#10;@property(nonatomic, readwrite) CGPoint center&#10;@property(nonatomic, readwrite) CGAffineTransform transform</span><br></pre></td></tr></table></figure>
