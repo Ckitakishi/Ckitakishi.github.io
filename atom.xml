@@ -5,7 +5,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://ckitakishi.com//"/>
-  <updated>2017-10-15T13:54:26.182Z</updated>
+  <updated>2017-10-15T14:08:22.821Z</updated>
   <id>http://ckitakishi.com//</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://ckitakishi.com/2017/09/24/Storyboard-%E4%B8%8E-Xib-%E7%9A%84%E2%80%9C%E6%8A%89%E6%8B%A9%E2%80%9D/"/>
     <id>http://ckitakishi.com/2017/09/24/Storyboard-与-Xib-的“抉择”/</id>
     <published>2017-09-24T13:33:29.000Z</published>
-    <updated>2017-10-15T13:54:26.182Z</updated>
+    <updated>2017-10-15T14:08:22.821Z</updated>
     <content type="html"><![CDATA[<blockquote>
 <p>近期开始进行一个新项目的原型制作及其结构设计，打算把一些心路历程记录下来，随便先给它取个名字叫做：<strong>P-OOP</strong>。</p>
 </blockquote>
@@ -29,15 +29,13 @@
 <blockquote>
 <p>进行源码管理时 Storyboard 极易导致冲突，团队开发时，各画面与各组件尽可能使用 Xib 进行实现。</p>
 </blockquote>
-<a id="more"></a>
 <p>对此我一直抱着赞否两论的观点。在实际工作时，同一 Storyboard 中存在大量 ViewController 十分容易冲突是一个不争的事实，掉进这个坑的人有可能还进行过 xml 修正。但是这个锅 Storyboard 不背。一部分人可能因此选择了弃 Storyboard 从 Xib 之路，我也一度徘徊是否这才是正道。但是很显然的是，Storyboard 从一开始就不是为了代替 Xib 而来。</p>
 <p>除了 UI 设置的相似部分以外，Storyboard 更重视画面之间的关联和迁移，而 Xib 作为通用组件的模版应该是不二的选择。</p>
+<a id="more"></a>
 <p>在 P-OOP 中，将会存在大量的 dialog，尽管可以很容易的使用 Present Modally 来实现，不过为了保持系列产品的风格一致性，需要考虑如何以比较好的方式来实现共通的 header 和 footer 样式。考虑过很多方案，比如：</p>
 <ol>
-<li><p>将 footer 和 header 集成在同一个 view 中，并添加一个 content view，最终在某 controlelr view 中将上述 view 与实际从另一个 xib 中载入的 content view 组合，完成组装。但是存在一个比较显著的缺点，实际可见的 controller view 所呈现的内容并不是很直观，果然还是必须看代码才能梳理清楚。 </p>
-</li>
-<li><p>将 footer 和 header 以及一个 content view 集成在同一个 controller view 中。在代码中按照要求载入 content，代理方法之类变得容易管理了一些，但是更糟糕的是这个 controller 的代码终将成为垃圾场的。。。那加入继承呢？有些小题大做？</p>
-</li>
+<li>将 footer 和 header 集成在同一个 view 中，并添加一个 content view，最终在某 controlelr view 中将上述 view 与实际从另一个 xib 中载入的 content view 组合，完成组装。但是存在一个比较显著的缺点，实际可见的 controller view 所呈现的内容并不是很直观，果然还是必须看代码才能梳理清楚。 </li>
+<li>将 footer 和 header 以及一个 content view 集成在同一个 controller view 中。在代码中按照要求载入 content，代理方法之类变得容易管理了一些，但是更糟糕的是这个 controller 的代码终将成为垃圾场的。。。那加入继承呢？有些小题大做？</li>
 </ol>
 <p>果然简洁才是最高的，将 footer 和 header 完全独立为两个 view，按需载入。结合 @IBInspectable 和 @IBDesignable 可以说是比较完美了，从画面设计到迁移等都很清晰。不足一提的小缺点是使用时候的 auto layout 的设置可能存在一些重复操作 (比如 Auto Layout 之类的)，若考虑 Model 除了 form sheet 以外可以是 full screen，后者需要在顶部额外预留 20px，这样一来反而变得巧妙了。</p>
 <p>也许过几天自己的想法又发生了细微变化，但简洁清晰无论何时都不会太坏。</p>
@@ -59,8 +57,9 @@
 <h3 id="@IBDesignable_和_@IBInspectable">@IBDesignable 和 @IBInspectable</h3><p><strong>@IBDesignable</strong> 可以用于视图的实时渲染，<strong>@IBInspectable</strong> 可以用于定义运行时属性。</p>
 <p>举个例子来说：首先在定义一个 <code>DialogHeaderView</code>，标记为 <code>@IBDesignable</code>，将它的 <code>headerTitle</code> 属性设置为 <code>@IBInspectable</code>：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">@IBDesignable</span> <span class="class"><span class="keyword">class</span> <span class="title">DialogHeaderView</span>: <span class="title">UIView</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="preprocessor">@IBInspectable</span> <span class="keyword">var</span> headerTitle: <span class="type">String</span> = <span class="string">""</span> &#123;</span><br><span class="line">        <span class="keyword">didSet</span> &#123;</span><br><span class="line">            navigationBar.topItem?.title = <span class="keyword">self</span>.headerTitle</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ...   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>然后向目标视图添加一个 UIView，并将类定义为 <code>DialogHeaderView</code>，此时在 <em>Attribuite Inspector</em> 中可以直接设置属性，之后即会反映在运行时属性栏中：</p>
+<p>然后向目标视图添加一个 UIView，并将类定义为 <code>DialogHeaderView</code>，此时在 <em>Attribuite Inspector</em> 中可以直接设置属性：</p>
 <p><img src="/images/IB1.png" alt="IB1"></p>
+<p>之后即会反映在运行时属性栏中：</p>
 <p><img src="/images/IB2.png" alt="IB2"></p>
 <p>不过构建失败的时候还是挺多的，不妨通过 <strong>Editor -&gt; Debug Selected Views</strong> 来调试一下选中的视图。</p>
 <h3 id="类型安全">类型安全</h3><p>除了定义上面的 <code>Loadable</code> 协议，在类型安全这个问题上还可以进一步再做一些工作。</p>
@@ -75,7 +74,9 @@
 <h2 id="Storyboard_&amp;_Xib">Storyboard &amp; Xib</h2><p>公司 (年久失修) 的 iOS Guidelines 中写着一句话：</p>
 <blockquote>
 <p>进行源码管理时 Storyboard 极易导致冲突，团队开发时，各画面与各组件尽可能使用 Xib 进行实现。</p>
-</blockquote>]]>
+</blockquote>
+<p>对此我一直抱着赞否两论的观点。在实际工作时，同一 Storyboard 中存在大量 ViewController 十分容易冲突是一个不争的事实，掉进这个坑的人有可能还进行过 xml 修正。但是这个锅 Storyboard 不背。一部分人可能因此选择了弃 Storyboard 从 Xib 之路，我也一度徘徊是否这才是正道。但是很显然的是，Storyboard 从一开始就不是为了代替 Xib 而来。</p>
+<p>除了 UI 设置的相似部分以外，Storyboard 更重视画面之间的关联和迁移，而 Xib 作为通用组件的模版应该是不二的选择。</p>]]>
     
     </summary>
     
