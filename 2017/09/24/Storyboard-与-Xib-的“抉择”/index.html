@@ -6,7 +6,7 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://ckitakishi.com">
-  <title>Storyboard 与 Xib 的“抉择” | LUMINOUS</title>
+  <title>Storyboard 和 Xib 的“抉择” | LUMINOUS</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="近期开始进行一个新项目的原型制作及其结构设计，打算把一些心路历程记录下来，随便先给它取个名字叫做：P-OOP。
 
@@ -15,7 +15,7 @@ Storyboard &amp;amp; Xib公司 (年久失修) 的 iOS Guidelines 中写着一句
 
 进行">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Storyboard 与 Xib 的“抉择”">
+<meta property="og:title" content="Storyboard 和 Xib 的“抉择”">
 <meta property="og:url" content="http://ckitakishi.com/2017/09/24/Storyboard-与-Xib-的“抉择”/index.html">
 <meta property="og:site_name" content="LUMINOUS">
 <meta property="og:description" content="近期开始进行一个新项目的原型制作及其结构设计，打算把一些心路历程记录下来，随便先给它取个名字叫做：P-OOP。
@@ -24,12 +24,11 @@ Storyboard &amp;amp; Xib公司 (年久失修) 的 iOS Guidelines 中写着一句
 Storyboard &amp;amp; Xib公司 (年久失修) 的 iOS Guidelines 中写着一句话：
 
 进行">
-<meta property="og:image" content="http://ckitakishi.com/images/Storyboard_reference.png">
-<meta property="og:image" content="http://ckitakishi.com/images/IB1.png">
-<meta property="og:image" content="http://ckitakishi.com/images/IB2.png">
-<meta property="og:updated_time" content="2017-10-15T14:08:22.821Z">
+<meta property="og:image" content="/images/Storyboard_reference.png">
+<meta property="og:image" content="/images/IB1.png">
+<meta property="og:image" content="/images/IB2.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Storyboard 与 Xib 的“抉择”">
+<meta name="twitter:title" content="Storyboard 和 Xib 的“抉择”">
 <meta name="twitter:description" content="近期开始进行一个新项目的原型制作及其结构设计，打算把一些心路历程记录下来，随便先给它取个名字叫做：P-OOP。
 
 比起手写 UI，“拖控件”的 Storyboard 和 Xib 似乎一直都更投我所好。不过即使是 Storyboard 和 Xib 之间，似乎也还是多多少少有一些纷争。
@@ -210,7 +209,7 @@ ga('send', 'pageview');
         
   
     <h1 class="article-title" itemprop="name">
-      Storyboard 与 Xib 的“抉择”
+      Storyboard 和 Xib 的“抉择”
     </h1>
   
 
@@ -233,7 +232,7 @@ ga('send', 'pageview');
 <p>近期开始进行一个新项目的原型制作及其结构设计，打算把一些心路历程记录下来，随便先给它取个名字叫做：<strong>P-OOP</strong>。</p>
 </blockquote>
 <p>比起手写 UI，“拖控件”的 Storyboard 和 Xib 似乎一直都更投我所好。不过即使是 Storyboard 和 Xib 之间，似乎也还是多多少少有一些纷争。</p>
-<h2 id="Storyboard_&amp;_Xib">Storyboard &amp; Xib</h2><p>公司 (年久失修) 的 iOS Guidelines 中写着一句话：</p>
+<h2 id="Storyboard-amp-Xib"><a href="#Storyboard-amp-Xib" class="headerlink" title="Storyboard &amp; Xib"></a>Storyboard &amp; Xib</h2><p>公司 (年久失修) 的 iOS Guidelines 中写着一句话：</p>
 <blockquote>
 <p>进行源码管理时 Storyboard 极易导致冲突，团队开发时，各画面与各组件尽可能使用 Xib 进行实现。</p>
 </blockquote>
@@ -247,13 +246,13 @@ ga('send', 'pageview');
 </ol>
 <p>果然简洁才是最高的，将 footer 和 header 完全独立为两个 view，按需载入。结合 @IBInspectable 和 @IBDesignable 可以说是比较完美了，从画面设计到迁移等都很清晰。不足一提的小缺点是使用时候的 auto layout 的设置可能存在一些重复操作 (比如 Auto Layout 之类的)，若考虑 Model 除了 form sheet 以外可以是 full screen，后者需要在顶部额外预留 20px，这样一来反而变得巧妙了。</p>
 <p>也许过几天自己的想法又发生了细微变化，但简洁清晰无论何时都不会太坏。</p>
-<h2 id="心得">心得</h2><h3 id="Storyboard_Reference">Storyboard Reference</h3><p>Storyboard 容易引发冲突，这句话在 Storyboard Reference 面前是不成立的。</p>
+<h2 id="心得"><a href="#心得" class="headerlink" title="心得"></a>心得</h2><h3 id="Storyboard-Reference"><a href="#Storyboard-Reference" class="headerlink" title="Storyboard Reference"></a>Storyboard Reference</h3><p>Storyboard 容易引发冲突，这句话在 Storyboard Reference 面前是不成立的。</p>
 <p><strong>Storyboard Reference</strong> 第一次出现在 Xcode 7，可以从组件库中找到它，并自行进行配置和关联，十分简单，无需赘述。即使是一个已经完成且十分繁杂的 Storyboard，也可以选中想要分离的 Storyboard，通过 <strong>Editor -&gt; Refactor to Storyboard</strong> 来实现。比如，使用了两个 Container View，默认情况下此时画面中存在三个 controller，对其进行分离之后，变成了这样：</p>
 <p><img src="/images/Storyboard_reference.png" alt="Storyboard Reference"></p>
-<h3 id="Loadable_Nib">Loadable Nib</h3><p>将 Xib 组件的载入协议化，其中一个目的是为了类型安全，另一个目的是为了减少重复代码。</p>
+<h3 id="Loadable-Nib"><a href="#Loadable-Nib" class="headerlink" title="Loadable Nib"></a>Loadable Nib</h3><p>将 Xib 组件的载入协议化，其中一个目的是为了类型安全，另一个目的是为了减少重复代码。</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">protocol</span> <span class="title">Loadable</span>: <span class="title">class</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> nibName: <span class="type">String</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">Loadable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> nibName: <span class="type">String</span> &#123; <span class="keyword">return</span> <span class="type">String</span>(describing: <span class="type">Self</span>.<span class="keyword">self</span>) &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>对 <code>UIView</code> 进行扩展，要求被载入的 view 遵循 <code>Loadable</code> 协议：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">UIView</span> </span>&#123;</span><br><span class="line">    <span class="func"><span class="keyword">func</span> <span class="title">instantiateFromNib</span><span class="generics">&lt;T: UIView&gt;</span><span class="params">(<span class="number">_</span>:T.<span class="keyword">Type</span>)</span></span> -&gt; <span class="type">T</span> <span class="keyword">where</span> <span class="type">T</span>: <span class="type">Loadable</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> nib = <span class="type">UINib</span>(nibName: <span class="type">T</span>.nibName, bundle: <span class="literal">nil</span>).instantiate(withOwner: <span class="literal">nil</span>, options: <span class="literal">nil</span>).first <span class="keyword">as</span>? <span class="type">T</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> nib</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            fatalError(<span class="string">"Nib <span class="subst">\(T.nibName)</span> is not exist ?!"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="func"><span class="keyword">func</span> <span class="title">instantiateFromNibOwner</span><span class="generics">&lt;T: UIView&gt;</span><span class="params">(<span class="number">_</span>:T.<span class="keyword">Type</span>)</span></span> <span class="keyword">where</span> <span class="type">T</span>: <span class="type">Loadable</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> bundle = <span class="type">Bundle</span>(<span class="keyword">for</span>: type(of: <span class="keyword">self</span>))</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> nib = <span class="type">UINib</span>(nibName: <span class="type">T</span>.nibName, bundle: bundle).instantiate(withOwner: <span class="keyword">self</span>, options: <span class="literal">nil</span>).first <span class="keyword">as</span>? <span class="type">UIView</span> &#123;</span><br><span class="line">            nib.frame = <span class="keyword">self</span>.bounds</span><br><span class="line">            nib.autoresizingMask = [.flexibleWidth, .flexibleHeight]</span><br><span class="line">            <span class="keyword">self</span>.addSubview(nib)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            fatalError(<span class="string">"Nib <span class="subst">\(T.nibName)</span> is not exist ?!"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">UIView</span> </span>&#123;</span><br><span class="line">    <span class="func"><span class="keyword">func</span> <span class="title">instantiateFromNib</span><span class="generics">&lt;T: UIView&gt;</span><span class="params">(<span class="number">_</span>:T.<span class="keyword">Type</span>)</span></span> -&gt; <span class="type">T</span> <span class="keyword">where</span> <span class="type">T</span>: <span class="type">Loadable</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> nib = <span class="type">UINib</span>(nibName: <span class="type">T</span>.nibName, bundle: <span class="literal">nil</span>).instantiate(withOwner: <span class="literal">nil</span>, options: <span class="literal">nil</span>).first <span class="keyword">as</span>? <span class="type">T</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> nib</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">fatalError</span>(<span class="string">"Nib <span class="subst">\(T.nibName)</span> is not exist ?!"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="func"><span class="keyword">func</span> <span class="title">instantiateFromNibOwner</span><span class="generics">&lt;T: UIView&gt;</span><span class="params">(<span class="number">_</span>:T.<span class="keyword">Type</span>)</span></span> <span class="keyword">where</span> <span class="type">T</span>: <span class="type">Loadable</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> bundle = <span class="type">Bundle</span>(<span class="keyword">for</span>: type(of: <span class="keyword">self</span>))</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> nib = <span class="type">UINib</span>(nibName: <span class="type">T</span>.nibName, bundle: bundle).instantiate(withOwner: <span class="keyword">self</span>, options: <span class="literal">nil</span>).first <span class="keyword">as</span>? <span class="type">UIView</span> &#123;</span><br><span class="line">            nib.frame = <span class="keyword">self</span>.bounds</span><br><span class="line">            nib.autoresizingMask = [.flexibleWidth, .flexibleHeight]</span><br><span class="line">            <span class="keyword">self</span>.addSubview(nib)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">fatalError</span>(<span class="string">"Nib <span class="subst">\(T.nibName)</span> is not exist ?!"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>简洁的初始化：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> view:<span class="type">ClassName</span> = <span class="keyword">self</span>.instantiateFromNib(<span class="type">ClassName</span>.<span class="keyword">self</span>)</span><br><span class="line"><span class="keyword">self</span>.instantiateFromNibOwner(<span class="type">ClassName</span>.<span class="keyword">self</span>)</span><br></pre></td></tr></table></figure>
 <p>后来发现一个名为 <a href="https://github.com/AliSoftware/Reusable" target="_blank" rel="external">Reusable</a> 的库，其中除了这一部分的实现之外，还有对 Cell 甚至是 Storyboard 和 ViewController 的重用，十分强大。</p>
@@ -262,7 +261,10 @@ ga('send', 'pageview');
 <li><em>Reusable</em> 在初始化 nib 的时候选择了扩展协议。</li>
 <li>在 <em>File’s Owner</em> 的情况下，<em>Reusable</em> 使用了 Auto Layout。由于我们的 <strong>P-OOP</strong> 项目对应的设备尺寸不多，所以像是部分弹出框就没有对应 Auto Layout，所以就直接从 frame 的尺寸下手了。。</li>
 </ol>
-<h3 id="@IBDesignable_和_@IBInspectable">@IBDesignable 和 @IBInspectable</h3><p><strong>@IBDesignable</strong> 可以用于视图的实时渲染，<strong>@IBInspectable</strong> 可以用于定义运行时属性。</p>
+<blockquote>
+<p>追记：把这部分实现和例子提了出来放在了 <a href="https://github.com/Ckitakishi/LoadableNib" target="_blank" rel="external">Github</a> 上～</p>
+</blockquote>
+<h3 id="IBDesignable-和-IBInspectable"><a href="#IBDesignable-和-IBInspectable" class="headerlink" title="@IBDesignable 和 @IBInspectable"></a>@IBDesignable 和 @IBInspectable</h3><p><strong>@IBDesignable</strong> 可以用于视图的实时渲染，<strong>@IBInspectable</strong> 可以用于定义运行时属性。</p>
 <p>举个例子来说：首先在定义一个 <code>DialogHeaderView</code>，标记为 <code>@IBDesignable</code>，将它的 <code>headerTitle</code> 属性设置为 <code>@IBInspectable</code>：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">@IBDesignable</span> <span class="class"><span class="keyword">class</span> <span class="title">DialogHeaderView</span>: <span class="title">UIView</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="preprocessor">@IBInspectable</span> <span class="keyword">var</span> headerTitle: <span class="type">String</span> = <span class="string">""</span> &#123;</span><br><span class="line">        <span class="keyword">didSet</span> &#123;</span><br><span class="line">            navigationBar.topItem?.title = <span class="keyword">self</span>.headerTitle</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ...   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>然后向目标视图添加一个 UIView，并将类定义为 <code>DialogHeaderView</code>，此时在 <em>Attribuite Inspector</em> 中可以直接设置属性：</p>
@@ -270,7 +272,7 @@ ga('send', 'pageview');
 <p>之后即会反映在运行时属性栏中：</p>
 <p><img src="/images/IB2.png" alt="IB2"></p>
 <p>不过构建失败的时候还是挺多的，不妨通过 <strong>Editor -&gt; Debug Selected Views</strong> 来调试一下选中的视图。</p>
-<h3 id="类型安全">类型安全</h3><p>除了定义上面的 <code>Loadable</code> 协议，在类型安全这个问题上还可以进一步再做一些工作。</p>
+<h3 id="类型安全"><a href="#类型安全" class="headerlink" title="类型安全"></a>类型安全</h3><p>除了定义上面的 <code>Loadable</code> 协议，在类型安全这个问题上还可以进一步再做一些工作。</p>
 <p>存在 Storyboard，Segue 的定义也就会有存在，由于 identifier 的定义是字符串，防不胜防，不匹配的情况还是会时而发生。这时候使用 <a href="https://github.com/mac-cain13/R.swift" target="_blank" rel="external">R.swift</a> 就能够完全解消这个担忧了。</p>
 <p><em>R.swift</em> 被广泛使用于解决类型安全的问题，图片、字体、本地化等等都受益于此。</p>
 

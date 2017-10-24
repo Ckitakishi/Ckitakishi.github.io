@@ -1,84 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
+  <title>LUMINOUS</title>
   
-  <title><![CDATA[LUMINOUS]]></title>
   
   <link href="/atom.xml" rel="self"/>
-  <link href="http://ckitakishi.com//"/>
-  <updated>2017-10-15T14:08:22.821Z</updated>
-  <id>http://ckitakishi.com//</id>
+  
+  <link href="http://ckitakishi.com/"/>
+  <updated>2017-10-23T15:37:04.255Z</updated>
+  <id>http://ckitakishi.com/</id>
   
   <author>
-    <name><![CDATA[[object Object]]]></name>
+    <name>[object Object]</name>
     
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title><![CDATA[Storyboard 与 Xib 的“抉择”]]></title>
+    <title>Storyboard 和 Xib 的“抉择”</title>
     <link href="http://ckitakishi.com/2017/09/24/Storyboard-%E4%B8%8E-Xib-%E7%9A%84%E2%80%9C%E6%8A%89%E6%8B%A9%E2%80%9D/"/>
     <id>http://ckitakishi.com/2017/09/24/Storyboard-与-Xib-的“抉择”/</id>
     <published>2017-09-24T13:33:29.000Z</published>
-    <updated>2017-10-15T14:08:22.821Z</updated>
-    <content type="html"><![CDATA[<blockquote>
-<p>近期开始进行一个新项目的原型制作及其结构设计，打算把一些心路历程记录下来，随便先给它取个名字叫做：<strong>P-OOP</strong>。</p>
-</blockquote>
-<p>比起手写 UI，“拖控件”的 Storyboard 和 Xib 似乎一直都更投我所好。不过即使是 Storyboard 和 Xib 之间，似乎也还是多多少少有一些纷争。</p>
-<h2 id="Storyboard_&amp;_Xib">Storyboard &amp; Xib</h2><p>公司 (年久失修) 的 iOS Guidelines 中写着一句话：</p>
-<blockquote>
-<p>进行源码管理时 Storyboard 极易导致冲突，团队开发时，各画面与各组件尽可能使用 Xib 进行实现。</p>
-</blockquote>
-<p>对此我一直抱着赞否两论的观点。在实际工作时，同一 Storyboard 中存在大量 ViewController 十分容易冲突是一个不争的事实，掉进这个坑的人有可能还进行过 xml 修正。但是这个锅 Storyboard 不背。一部分人可能因此选择了弃 Storyboard 从 Xib 之路，我也一度徘徊是否这才是正道。但是很显然的是，Storyboard 从一开始就不是为了代替 Xib 而来。</p>
-<p>除了 UI 设置的相似部分以外，Storyboard 更重视画面之间的关联和迁移，而 Xib 作为通用组件的模版应该是不二的选择。</p>
-<a id="more"></a>
-<p>在 P-OOP 中，将会存在大量的 dialog，尽管可以很容易的使用 Present Modally 来实现，不过为了保持系列产品的风格一致性，需要考虑如何以比较好的方式来实现共通的 header 和 footer 样式。考虑过很多方案，比如：</p>
-<ol>
-<li>将 footer 和 header 集成在同一个 view 中，并添加一个 content view，最终在某 controlelr view 中将上述 view 与实际从另一个 xib 中载入的 content view 组合，完成组装。但是存在一个比较显著的缺点，实际可见的 controller view 所呈现的内容并不是很直观，果然还是必须看代码才能梳理清楚。 </li>
-<li>将 footer 和 header 以及一个 content view 集成在同一个 controller view 中。在代码中按照要求载入 content，代理方法之类变得容易管理了一些，但是更糟糕的是这个 controller 的代码终将成为垃圾场的。。。那加入继承呢？有些小题大做？</li>
-</ol>
-<p>果然简洁才是最高的，将 footer 和 header 完全独立为两个 view，按需载入。结合 @IBInspectable 和 @IBDesignable 可以说是比较完美了，从画面设计到迁移等都很清晰。不足一提的小缺点是使用时候的 auto layout 的设置可能存在一些重复操作 (比如 Auto Layout 之类的)，若考虑 Model 除了 form sheet 以外可以是 full screen，后者需要在顶部额外预留 20px，这样一来反而变得巧妙了。</p>
-<p>也许过几天自己的想法又发生了细微变化，但简洁清晰无论何时都不会太坏。</p>
-<h2 id="心得">心得</h2><h3 id="Storyboard_Reference">Storyboard Reference</h3><p>Storyboard 容易引发冲突，这句话在 Storyboard Reference 面前是不成立的。</p>
-<p><strong>Storyboard Reference</strong> 第一次出现在 Xcode 7，可以从组件库中找到它，并自行进行配置和关联，十分简单，无需赘述。即使是一个已经完成且十分繁杂的 Storyboard，也可以选中想要分离的 Storyboard，通过 <strong>Editor -&gt; Refactor to Storyboard</strong> 来实现。比如，使用了两个 Container View，默认情况下此时画面中存在三个 controller，对其进行分离之后，变成了这样：</p>
-<p><img src="/images/Storyboard_reference.png" alt="Storyboard Reference"></p>
-<h3 id="Loadable_Nib">Loadable Nib</h3><p>将 Xib 组件的载入协议化，其中一个目的是为了类型安全，另一个目的是为了减少重复代码。</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">protocol</span> <span class="title">Loadable</span>: <span class="title">class</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> nibName: <span class="type">String</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">Loadable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> nibName: <span class="type">String</span> &#123; <span class="keyword">return</span> <span class="type">String</span>(describing: <span class="type">Self</span>.<span class="keyword">self</span>) &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>对 <code>UIView</code> 进行扩展，要求被载入的 view 遵循 <code>Loadable</code> 协议：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">UIView</span> </span>&#123;</span><br><span class="line">    <span class="func"><span class="keyword">func</span> <span class="title">instantiateFromNib</span><span class="generics">&lt;T: UIView&gt;</span><span class="params">(<span class="number">_</span>:T.<span class="keyword">Type</span>)</span></span> -&gt; <span class="type">T</span> <span class="keyword">where</span> <span class="type">T</span>: <span class="type">Loadable</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> nib = <span class="type">UINib</span>(nibName: <span class="type">T</span>.nibName, bundle: <span class="literal">nil</span>).instantiate(withOwner: <span class="literal">nil</span>, options: <span class="literal">nil</span>).first <span class="keyword">as</span>? <span class="type">T</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> nib</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            fatalError(<span class="string">"Nib <span class="subst">\(T.nibName)</span> is not exist ?!"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="func"><span class="keyword">func</span> <span class="title">instantiateFromNibOwner</span><span class="generics">&lt;T: UIView&gt;</span><span class="params">(<span class="number">_</span>:T.<span class="keyword">Type</span>)</span></span> <span class="keyword">where</span> <span class="type">T</span>: <span class="type">Loadable</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> bundle = <span class="type">Bundle</span>(<span class="keyword">for</span>: type(of: <span class="keyword">self</span>))</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> nib = <span class="type">UINib</span>(nibName: <span class="type">T</span>.nibName, bundle: bundle).instantiate(withOwner: <span class="keyword">self</span>, options: <span class="literal">nil</span>).first <span class="keyword">as</span>? <span class="type">UIView</span> &#123;</span><br><span class="line">            nib.frame = <span class="keyword">self</span>.bounds</span><br><span class="line">            nib.autoresizingMask = [.flexibleWidth, .flexibleHeight]</span><br><span class="line">            <span class="keyword">self</span>.addSubview(nib)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            fatalError(<span class="string">"Nib <span class="subst">\(T.nibName)</span> is not exist ?!"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>简洁的初始化：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> view:<span class="type">ClassName</span> = <span class="keyword">self</span>.instantiateFromNib(<span class="type">ClassName</span>.<span class="keyword">self</span>)</span><br><span class="line"><span class="keyword">self</span>.instantiateFromNibOwner(<span class="type">ClassName</span>.<span class="keyword">self</span>)</span><br></pre></td></tr></table></figure>
-<p>后来发现一个名为 <a href="https://github.com/AliSoftware/Reusable" target="_blank" rel="external">Reusable</a> 的库，其中除了这一部分的实现之外，还有对 Cell 甚至是 Storyboard 和 ViewController 的重用，十分强大。</p>
-<p>回到这一部分的实现，略有区别的地方在于：</p>
-<ol>
-<li><em>Reusable</em> 在初始化 nib 的时候选择了扩展协议。</li>
-<li>在 <em>File’s Owner</em> 的情况下，<em>Reusable</em> 使用了 Auto Layout。由于我们的 <strong>P-OOP</strong> 项目对应的设备尺寸不多，所以像是部分弹出框就没有对应 Auto Layout，所以就直接从 frame 的尺寸下手了。。</li>
-</ol>
-<h3 id="@IBDesignable_和_@IBInspectable">@IBDesignable 和 @IBInspectable</h3><p><strong>@IBDesignable</strong> 可以用于视图的实时渲染，<strong>@IBInspectable</strong> 可以用于定义运行时属性。</p>
-<p>举个例子来说：首先在定义一个 <code>DialogHeaderView</code>，标记为 <code>@IBDesignable</code>，将它的 <code>headerTitle</code> 属性设置为 <code>@IBInspectable</code>：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">@IBDesignable</span> <span class="class"><span class="keyword">class</span> <span class="title">DialogHeaderView</span>: <span class="title">UIView</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="preprocessor">@IBInspectable</span> <span class="keyword">var</span> headerTitle: <span class="type">String</span> = <span class="string">""</span> &#123;</span><br><span class="line">        <span class="keyword">didSet</span> &#123;</span><br><span class="line">            navigationBar.topItem?.title = <span class="keyword">self</span>.headerTitle</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ...   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>然后向目标视图添加一个 UIView，并将类定义为 <code>DialogHeaderView</code>，此时在 <em>Attribuite Inspector</em> 中可以直接设置属性：</p>
-<p><img src="/images/IB1.png" alt="IB1"></p>
-<p>之后即会反映在运行时属性栏中：</p>
-<p><img src="/images/IB2.png" alt="IB2"></p>
-<p>不过构建失败的时候还是挺多的，不妨通过 <strong>Editor -&gt; Debug Selected Views</strong> 来调试一下选中的视图。</p>
-<h3 id="类型安全">类型安全</h3><p>除了定义上面的 <code>Loadable</code> 协议，在类型安全这个问题上还可以进一步再做一些工作。</p>
-<p>存在 Storyboard，Segue 的定义也就会有存在，由于 identifier 的定义是字符串，防不胜防，不匹配的情况还是会时而发生。这时候使用 <a href="https://github.com/mac-cain13/R.swift" target="_blank" rel="external">R.swift</a> 就能够完全解消这个担忧了。</p>
-<p><em>R.swift</em> 被广泛使用于解决类型安全的问题，图片、字体、本地化等等都受益于此。</p>
-]]></content>
+    <updated>2017-10-23T15:37:04.255Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>近期开始进行一个新项目的原型制作及其结构设计，打算把一些心路历程记录下来，随便先给它取个名字叫做：<strong>P-OOP</strong>。</p></blockquote><p>比起手写 UI，“拖控件”的 Storyboard 和 Xib 似乎一直都更投我所好。不过即使是 Storyboard 和 Xib 之间，似乎也还是多多少少有一些纷争。</p><h2 id="Storyboard-amp-Xib"><a href="#Storyboard-amp-Xib" class="headerlink" title="Storyboard &amp; Xib"></a>Storyboard &amp; Xib</h2><p>公司 (年久失修) 的 iOS Guidelines 中写着一句话：</p><blockquote><p>进行源码管理时 Storyboard 极易导致冲突，团队开发时，各画面与各组件尽可能使用 Xib 进行实现。</p></blockquote><p>对此我一直抱着赞否两论的观点。在实际工作时，同一 Storyboard 中存在大量 ViewController 十分容易冲突是一个不争的事实，掉进这个坑的人有可能还进行过 xml 修正。但是这个锅 Storyboard 不背。一部分人可能因此选择了弃 Storyboard 从 Xib 之路，我也一度徘徊是否这才是正道。但是很显然的是，Storyboard 从一开始就不是为了代替 Xib 而来。</p><p>除了 UI 设置的相似部分以外，Storyboard 更重视画面之间的关联和迁移，而 Xib 作为通用组件的模版应该是不二的选择。</p><a id="more"></a><p>在 P-OOP 中，将会存在大量的 dialog，尽管可以很容易的使用 Present Modally 来实现，不过为了保持系列产品的风格一致性，需要考虑如何以比较好的方式来实现共通的 header 和 footer 样式。考虑过很多方案，比如：</p><ol><li>将 footer 和 header 集成在同一个 view 中，并添加一个 content view，最终在某 controlelr view 中将上述 view 与实际从另一个 xib 中载入的 content view 组合，完成组装。但是存在一个比较显著的缺点，实际可见的 controller view 所呈现的内容并不是很直观，果然还是必须看代码才能梳理清楚。 </li><li>将 footer 和 header 以及一个 content view 集成在同一个 controller view 中。在代码中按照要求载入 content，代理方法之类变得容易管理了一些，但是更糟糕的是这个 controller 的代码终将成为垃圾场的。。。那加入继承呢？有些小题大做？</li></ol><p>果然简洁才是最高的，将 footer 和 header 完全独立为两个 view，按需载入。结合 @IBInspectable 和 @IBDesignable 可以说是比较完美了，从画面设计到迁移等都很清晰。不足一提的小缺点是使用时候的 auto layout 的设置可能存在一些重复操作 (比如 Auto Layout 之类的)，若考虑 Model 除了 form sheet 以外可以是 full screen，后者需要在顶部额外预留 20px，这样一来反而变得巧妙了。</p><p>也许过几天自己的想法又发生了细微变化，但简洁清晰无论何时都不会太坏。</p><h2 id="心得"><a href="#心得" class="headerlink" title="心得"></a>心得</h2><h3 id="Storyboard-Reference"><a href="#Storyboard-Reference" class="headerlink" title="Storyboard Reference"></a>Storyboard Reference</h3><p>Storyboard 容易引发冲突，这句话在 Storyboard Reference 面前是不成立的。</p><p><strong>Storyboard Reference</strong> 第一次出现在 Xcode 7，可以从组件库中找到它，并自行进行配置和关联，十分简单，无需赘述。即使是一个已经完成且十分繁杂的 Storyboard，也可以选中想要分离的 Storyboard，通过 <strong>Editor -&gt; Refactor to Storyboard</strong> 来实现。比如，使用了两个 Container View，默认情况下此时画面中存在三个 controller，对其进行分离之后，变成了这样：</p><p><img src="/images/Storyboard_reference.png" alt="Storyboard Reference"></p><h3 id="Loadable-Nib"><a href="#Loadable-Nib" class="headerlink" title="Loadable Nib"></a>Loadable Nib</h3><p>将 Xib 组件的载入协议化，其中一个目的是为了类型安全，另一个目的是为了减少重复代码。</p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">protocol</span> <span class="title">Loadable</span>: <span class="title">class</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> nibName: <span class="type">String</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">Loadable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> nibName: <span class="type">String</span> &#123; <span class="keyword">return</span> <span class="type">String</span>(describing: <span class="type">Self</span>.<span class="keyword">self</span>) &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>对 <code>UIView</code> 进行扩展，要求被载入的 view 遵循 <code>Loadable</code> 协议：</p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">UIView</span> </span>&#123;</span><br><span class="line">    <span class="func"><span class="keyword">func</span> <span class="title">instantiateFromNib</span><span class="generics">&lt;T: UIView&gt;</span><span class="params">(<span class="number">_</span>:T.<span class="keyword">Type</span>)</span></span> -&gt; <span class="type">T</span> <span class="keyword">where</span> <span class="type">T</span>: <span class="type">Loadable</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> nib = <span class="type">UINib</span>(nibName: <span class="type">T</span>.nibName, bundle: <span class="literal">nil</span>).instantiate(withOwner: <span class="literal">nil</span>, options: <span class="literal">nil</span>).first <span class="keyword">as</span>? <span class="type">T</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> nib</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">fatalError</span>(<span class="string">"Nib <span class="subst">\(T.nibName)</span> is not exist ?!"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="func"><span class="keyword">func</span> <span class="title">instantiateFromNibOwner</span><span class="generics">&lt;T: UIView&gt;</span><span class="params">(<span class="number">_</span>:T.<span class="keyword">Type</span>)</span></span> <span class="keyword">where</span> <span class="type">T</span>: <span class="type">Loadable</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> bundle = <span class="type">Bundle</span>(<span class="keyword">for</span>: type(of: <span class="keyword">self</span>))</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> nib = <span class="type">UINib</span>(nibName: <span class="type">T</span>.nibName, bundle: bundle).instantiate(withOwner: <span class="keyword">self</span>, options: <span class="literal">nil</span>).first <span class="keyword">as</span>? <span class="type">UIView</span> &#123;</span><br><span class="line">            nib.frame = <span class="keyword">self</span>.bounds</span><br><span class="line">            nib.autoresizingMask = [.flexibleWidth, .flexibleHeight]</span><br><span class="line">            <span class="keyword">self</span>.addSubview(nib)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">fatalError</span>(<span class="string">"Nib <span class="subst">\(T.nibName)</span> is not exist ?!"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>简洁的初始化：</p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> view:<span class="type">ClassName</span> = <span class="keyword">self</span>.instantiateFromNib(<span class="type">ClassName</span>.<span class="keyword">self</span>)</span><br><span class="line"><span class="keyword">self</span>.instantiateFromNibOwner(<span class="type">ClassName</span>.<span class="keyword">self</span>)</span><br></pre></td></tr></table></figure><p>后来发现一个名为 <a href="https://github.com/AliSoftware/Reusable" target="_blank" rel="external">Reusable</a> 的库，其中除了这一部分的实现之外，还有对 Cell 甚至是 Storyboard 和 ViewController 的重用，十分强大。</p><p>回到这一部分的实现，略有区别的地方在于：</p><ol><li><em>Reusable</em> 在初始化 nib 的时候选择了扩展协议。</li><li>在 <em>File’s Owner</em> 的情况下，<em>Reusable</em> 使用了 Auto Layout。由于我们的 <strong>P-OOP</strong> 项目对应的设备尺寸不多，所以像是部分弹出框就没有对应 Auto Layout，所以就直接从 frame 的尺寸下手了。。</li></ol><blockquote><p>追记：把这部分实现和例子提了出来放在了 <a href="https://github.com/Ckitakishi/LoadableNib" target="_blank" rel="external">Github</a> 上～</p></blockquote><h3 id="IBDesignable-和-IBInspectable"><a href="#IBDesignable-和-IBInspectable" class="headerlink" title="@IBDesignable 和 @IBInspectable"></a>@IBDesignable 和 @IBInspectable</h3><p><strong>@IBDesignable</strong> 可以用于视图的实时渲染，<strong>@IBInspectable</strong> 可以用于定义运行时属性。</p><p>举个例子来说：首先在定义一个 <code>DialogHeaderView</code>，标记为 <code>@IBDesignable</code>，将它的 <code>headerTitle</code> 属性设置为 <code>@IBInspectable</code>：</p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">@IBDesignable</span> <span class="class"><span class="keyword">class</span> <span class="title">DialogHeaderView</span>: <span class="title">UIView</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="preprocessor">@IBInspectable</span> <span class="keyword">var</span> headerTitle: <span class="type">String</span> = <span class="string">""</span> &#123;</span><br><span class="line">        <span class="keyword">didSet</span> &#123;</span><br><span class="line">            navigationBar.topItem?.title = <span class="keyword">self</span>.headerTitle</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ...   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>然后向目标视图添加一个 UIView，并将类定义为 <code>DialogHeaderView</code>，此时在 <em>Attribuite Inspector</em> 中可以直接设置属性：</p><p><img src="/images/IB1.png" alt="IB1"></p><p>之后即会反映在运行时属性栏中：</p><p><img src="/images/IB2.png" alt="IB2"></p><p>不过构建失败的时候还是挺多的，不妨通过 <strong>Editor -&gt; Debug Selected Views</strong> 来调试一下选中的视图。</p><h3 id="类型安全"><a href="#类型安全" class="headerlink" title="类型安全"></a>类型安全</h3><p>除了定义上面的 <code>Loadable</code> 协议，在类型安全这个问题上还可以进一步再做一些工作。</p><p>存在 Storyboard，Segue 的定义也就会有存在，由于 identifier 的定义是字符串，防不胜防，不匹配的情况还是会时而发生。这时候使用 <a href="https://github.com/mac-cain13/R.swift" target="_blank" rel="external">R.swift</a> 就能够完全解消这个担忧了。</p><p><em>R.swift</em> 被广泛使用于解决类型安全的问题，图片、字体、本地化等等都受益于此。</p>]]></content>
+    
     <summary type="html">
-    <![CDATA[<blockquote>
-<p>近期开始进行一个新项目的原型制作及其结构设计，打算把一些心路历程记录下来，随便先给它取个名字叫做：<strong>P-OOP</strong>。</p>
-</blockquote>
-<p>比起手写 UI，“拖控件”的 Storyboard 和 Xib 似乎一直都更投我所好。不过即使是 Storyboard 和 Xib 之间，似乎也还是多多少少有一些纷争。</p>
-<h2 id="Storyboard_&amp;_Xib">Storyboard &amp; Xib</h2><p>公司 (年久失修) 的 iOS Guidelines 中写着一句话：</p>
-<blockquote>
-<p>进行源码管理时 Storyboard 极易导致冲突，团队开发时，各画面与各组件尽可能使用 Xib 进行实现。</p>
-</blockquote>
-<p>对此我一直抱着赞否两论的观点。在实际工作时，同一 Storyboard 中存在大量 ViewController 十分容易冲突是一个不争的事实，掉进这个坑的人有可能还进行过 xml 修正。但是这个锅 Storyboard 不背。一部分人可能因此选择了弃 Storyboard 从 Xib 之路，我也一度徘徊是否这才是正道。但是很显然的是，Storyboard 从一开始就不是为了代替 Xib 而来。</p>
-<p>除了 UI 设置的相似部分以外，Storyboard 更重视画面之间的关联和迁移，而 Xib 作为通用组件的模版应该是不二的选择。</p>]]>
+    
+      &lt;blockquote&gt;
+&lt;p&gt;近期开始进行一个新项目的原型制作及其结构设计，打算把一些心路历程记录下来，随便先给它取个名字叫做：&lt;strong&gt;P-OOP&lt;/strong&gt;。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;比起手写 UI，“拖控件”的 Storyboard 和 Xib 似乎一直都更投我所好。不过即使是 Storyboard 和 Xib 之间，似乎也还是多多少少有一些纷争。&lt;/p&gt;
+&lt;h2 id=&quot;Storyboard-amp-Xib&quot;&gt;&lt;a href=&quot;#Storyboard-amp-Xib&quot; class=&quot;headerlink&quot; title=&quot;Storyboard &amp;amp; Xib&quot;&gt;&lt;/a&gt;Storyboard &amp;amp; Xib&lt;/h2&gt;&lt;p&gt;公司 (年久失修) 的 iOS Guidelines 中写着一句话：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;进行源码管理时 Storyboard 极易导致冲突，团队开发时，各画面与各组件尽可能使用 Xib 进行实现。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;对此我一直抱着赞否两论的观点。在实际工作时，同一 Storyboard 中存在大量 ViewController 十分容易冲突是一个不争的事实，掉进这个坑的人有可能还进行过 xml 修正。但是这个锅 Storyboard 不背。一部分人可能因此选择了弃 Storyboard 从 Xib 之路，我也一度徘徊是否这才是正道。但是很显然的是，Storyboard 从一开始就不是为了代替 Xib 而来。&lt;/p&gt;
+&lt;p&gt;除了 UI 设置的相似部分以外，Storyboard 更重视画面之间的关联和迁移，而 Xib 作为通用组件的模版应该是不二的选择。&lt;/p&gt;
     
     </summary>
+    
+      <category term="求索集" scheme="http://ckitakishi.com/categories/%E6%B1%82%E7%B4%A2%E9%9B%86/"/>
+    
     
       <category term="P-OOP记录" scheme="http://ckitakishi.com/tags/P-OOP%E8%AE%B0%E5%BD%95/"/>
     
@@ -86,265 +49,174 @@
     
       <category term="iOS" scheme="http://ckitakishi.com/tags/iOS/"/>
     
-      <category term="求索集" scheme="http://ckitakishi.com/categories/%E6%B1%82%E7%B4%A2%E9%9B%86/"/>
-    
   </entry>
   
   <entry>
-    <title><![CDATA[viewWillAppear 杂谈]]></title>
+    <title>viewWillAppear 杂谈</title>
     <link href="http://ckitakishi.com/2017/07/26/viewWillAppear-%E6%9D%82%E8%B0%88/"/>
     <id>http://ckitakishi.com/2017/07/26/viewWillAppear-杂谈/</id>
     <published>2017-07-26T14:48:22.000Z</published>
-    <updated>2017-10-07T15:58:59.639Z</updated>
-    <content type="html"><![CDATA[<p>作为 view 的状态之一，<code>viewWillAppear</code> 的关注率极高，所以其实并没有什么好说的…我们都知道它会在 view 每一次将要准备出现之前被调用，所以常常可以用来初始化一些基本数据。</p>
-<p>前两周花了一点点时间重构了组里的某个小应用，前开发者新手上路，感觉不少代码值得推敲。在 debug 的时候发现应用一到后台就自动退出了，根本无法看它在后台的活动，震惊之余发现 info.plist 的 <code>Application does not run in background</code> 被设置为了 <code>YES</code>…反复揣摩整个应用的功能也不知道这么做目的何在，于是果断将其改为了 <code>NO</code>。</p>
-<p>不过事情并没有那么简单，毕竟这是一段关于 viewWillAppear 的杂谈。</p>
-<a id="more"></a>
-<p>后来随着时间的推移，总算发现禁止后台运行的“用处”了。某个 view 有一个相对特殊的需求，应用从后台回到前台时需要重新初始化它的数据，尽管在 <code>viewWillAppear</code> 中准备了完备的初始化代码，但是这个状态的迁移并不能认为是 view 即将出现，毕竟 view 并没有消失，一直都是显示状态。所以自然 <code>viewWillAppear</code> 就不会被调用，为了解决这个问题，于是这位同学想了这个办法。</p>
-<p>不得不承认这个思路还是很清奇的，但是为了避免一些不必要的麻烦，我还是决定改用常规解决方案。在应用重回前台的时候发一个通知，告诉 view 可以重新初始化数据了。这种情况下，在 <code>viewWillAppear</code> 中添加一个对 <code>.UIApplicationWillEnterForeground</code> 通知的观察应该是一个不二的选择，它也常常被用于处理像是电话强制中断之类的需求：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">NotificationCenter</span>.<span class="keyword">default</span>.addObserver(<span class="keyword">self</span>, selector: #selector(willEnterForeground), name: .<span class="type">UIApplicationWillEnterForeground</span>, object: <span class="literal">nil</span>)</span><br></pre></td></tr></table></figure>
-<p>这个方案可是说是比较优雅的，不过不可以忘记移除通知。关于声明周期这些事儿，有时候真是操碎了心~</p>
-]]></content>
+    <updated>2017-10-07T15:58:59.640Z</updated>
+    
+    <content type="html"><![CDATA[<p>作为 view 的状态之一，<code>viewWillAppear</code> 的关注率极高，所以其实并没有什么好说的…我们都知道它会在 view 每一次将要准备出现之前被调用，所以常常可以用来初始化一些基本数据。</p><p>前两周花了一点点时间重构了组里的某个小应用，前开发者新手上路，感觉不少代码值得推敲。在 debug 的时候发现应用一到后台就自动退出了，根本无法看它在后台的活动，震惊之余发现 info.plist 的 <code>Application does not run in background</code> 被设置为了 <code>YES</code>…反复揣摩整个应用的功能也不知道这么做目的何在，于是果断将其改为了 <code>NO</code>。</p><p>不过事情并没有那么简单，毕竟这是一段关于 viewWillAppear 的杂谈。</p><a id="more"></a><p>后来随着时间的推移，总算发现禁止后台运行的“用处”了。某个 view 有一个相对特殊的需求，应用从后台回到前台时需要重新初始化它的数据，尽管在 <code>viewWillAppear</code> 中准备了完备的初始化代码，但是这个状态的迁移并不能认为是 view 即将出现，毕竟 view 并没有消失，一直都是显示状态。所以自然 <code>viewWillAppear</code> 就不会被调用，为了解决这个问题，于是这位同学想了这个办法。</p><p>不得不承认这个思路还是很清奇的，但是为了避免一些不必要的麻烦，我还是决定改用常规解决方案。在应用重回前台的时候发一个通知，告诉 view 可以重新初始化数据了。这种情况下，在 <code>viewWillAppear</code> 中添加一个对 <code>.UIApplicationWillEnterForeground</code> 通知的观察应该是一个不二的选择，它也常常被用于处理像是电话强制中断之类的需求：</p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">NotificationCenter</span>.<span class="keyword">default</span>.addObserver(<span class="keyword">self</span>, selector: #selector(willEnterForeground), name: .<span class="type">UIApplicationWillEnterForeground</span>, object: <span class="literal">nil</span>)</span><br></pre></td></tr></table></figure><p>这个方案可是说是比较优雅的，不过不可以忘记移除通知。关于声明周期这些事儿，有时候真是操碎了心~</p>]]></content>
+    
     <summary type="html">
-    <![CDATA[<p>作为 view 的状态之一，<code>viewWillAppear</code> 的关注率极高，所以其实并没有什么好说的…我们都知道它会在 view 每一次将要准备出现之前被调用，所以常常可以用来初始化一些基本数据。</p>
-<p>前两周花了一点点时间重构了组里的某个小应用，前开发者新手上路，感觉不少代码值得推敲。在 debug 的时候发现应用一到后台就自动退出了，根本无法看它在后台的活动，震惊之余发现 info.plist 的 <code>Application does not run in background</code> 被设置为了 <code>YES</code>…反复揣摩整个应用的功能也不知道这么做目的何在，于是果断将其改为了 <code>NO</code>。</p>
-<p>不过事情并没有那么简单，毕竟这是一段关于 viewWillAppear 的杂谈。</p>]]>
+    
+      &lt;p&gt;作为 view 的状态之一，&lt;code&gt;viewWillAppear&lt;/code&gt; 的关注率极高，所以其实并没有什么好说的…我们都知道它会在 view 每一次将要准备出现之前被调用，所以常常可以用来初始化一些基本数据。&lt;/p&gt;
+&lt;p&gt;前两周花了一点点时间重构了组里的某个小应用，前开发者新手上路，感觉不少代码值得推敲。在 debug 的时候发现应用一到后台就自动退出了，根本无法看它在后台的活动，震惊之余发现 info.plist 的 &lt;code&gt;Application does not run in background&lt;/code&gt; 被设置为了 &lt;code&gt;YES&lt;/code&gt;…反复揣摩整个应用的功能也不知道这么做目的何在，于是果断将其改为了 &lt;code&gt;NO&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;不过事情并没有那么简单，毕竟这是一段关于 viewWillAppear 的杂谈。&lt;/p&gt;
     
     </summary>
     
-      <category term="iOS" scheme="http://ckitakishi.com/tags/iOS/"/>
-    
       <category term="求索集" scheme="http://ckitakishi.com/categories/%E6%B1%82%E7%B4%A2%E9%9B%86/"/>
+    
+    
+      <category term="iOS" scheme="http://ckitakishi.com/tags/iOS/"/>
     
   </entry>
   
   <entry>
-    <title><![CDATA[Thread Sanitizer]]></title>
+    <title>Thread Sanitizer</title>
     <link href="http://ckitakishi.com/2017/05/13/Thread-Sanitizer/"/>
     <id>http://ckitakishi.com/2017/05/13/Thread-Sanitizer/</id>
     <published>2017-05-13T05:39:19.000Z</published>
     <updated>2017-10-07T15:58:51.568Z</updated>
-    <content type="html"><![CDATA[<p><em>作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。</em></p>
-<p>之前在修正并优化应用内线程管理的时候用了 <strong>Thread Sanitizer</strong> 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 <a href="https://developer.apple.com/videos/play/wwdc2016/412/" target="_blank" rel="external">Session 412</a>。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。<strong>TSan</strong> 能够发现一些问题，诸如 Keynote 里提到的：</p>
-<blockquote>
-<p>Use of uninitialized mutexes<br>Thread leaks (missing pthred_join)<br>Unsafe calls in signal handlers (ex:malloc)<br>Unlock from wrong thread<br>Data races</p>
-</blockquote>
-<p>因为在实际中遇到过，而且感觉发生概率相对较高，所以只展开说一下最后一项：数据竞争。数据竞争发生的基本条件是多个线程在同时访问同一块内存，并且其中至少又一个线程正在进行的是写操作。实际中常常表现为数据不整合，亦或是应用崩溃。比如下面这个例子：</p>
-<a id="more"></a>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[context performBlock:^&#123;&#10;    if (result &#38;&#38; context) &#123;&#10;        result = [self persistentSaveContext:context]; // 1&#10;    &#125;&#10;&#125;];&#10;return result; // 2</span><br></pre></td></tr></table></figure>
-<p><code>result</code> 在 1 和 2 两个地方发生了竞争。在 1 进行写操作之前，有可能处于不同线程的 2 早已经返回了，这样数据就发生了不整合。</p>
-<p>有很多方法可以解决这个问题，比如说：由异步操作变为同步操作，或是改变写操作的时间点。这里采取了第一个方案，使用同样用途的同步方法 <code>performBlockAndWait</code> 来取代 <code>performBlock</code>，这样以来，数据竞争的问题也就自然而然解决了。 </p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[context performBlockAndWait:^&#123;&#10;    if (result &#38;&#38; context) &#123;&#10;        result = [self persistentSaveContext:context]; // 1&#10;    &#125;&#10;&#125;];&#10;return result; // 2</span><br></pre></td></tr></table></figure>
-<p>由于 <strong>TSan</strong> 是统合在编译器 (Clang) 层面的，所以当使用 Swift 来编写服务器代码的时候，完全可以在命令行中使用它：</p>
-<p><img src="/images/datarace.png" alt="Tsan command"></p>
-<p>P.S.目前 <strong>TSan</strong> 只支持 64bit 的模拟器及 macOS 自身。</p>
-]]></content>
+    
+    <content type="html"><![CDATA[<p><em>作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。</em></p><p>之前在修正并优化应用内线程管理的时候用了 <strong>Thread Sanitizer</strong> 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 <a href="https://developer.apple.com/videos/play/wwdc2016/412/" target="_blank" rel="external">Session 412</a>。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。<strong>TSan</strong> 能够发现一些问题，诸如 Keynote 里提到的：</p><blockquote><p>Use of uninitialized mutexes<br>Thread leaks (missing pthred_join)<br>Unsafe calls in signal handlers (ex:malloc)<br>Unlock from wrong thread<br>Data races</p></blockquote><p>因为在实际中遇到过，而且感觉发生概率相对较高，所以只展开说一下最后一项：数据竞争。数据竞争发生的基本条件是多个线程在同时访问同一块内存，并且其中至少又一个线程正在进行的是写操作。实际中常常表现为数据不整合，亦或是应用崩溃。比如下面这个例子：</p><a id="more"></a><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[context performBlock:^&#123;&#10;    if (result &#38;&#38; context) &#123;&#10;        result = [self persistentSaveContext:context]; // 1&#10;    &#125;&#10;&#125;];&#10;return result; // 2</span><br></pre></td></tr></table></figure><p><code>result</code> 在 1 和 2 两个地方发生了竞争。在 1 进行写操作之前，有可能处于不同线程的 2 早已经返回了，这样数据就发生了不整合。</p><p>有很多方法可以解决这个问题，比如说：由异步操作变为同步操作，或是改变写操作的时间点。这里采取了第一个方案，使用同样用途的同步方法 <code>performBlockAndWait</code> 来取代 <code>performBlock</code>，这样以来，数据竞争的问题也就自然而然解决了。 </p><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[context performBlockAndWait:^&#123;&#10;    if (result &#38;&#38; context) &#123;&#10;        result = [self persistentSaveContext:context]; // 1&#10;    &#125;&#10;&#125;];&#10;return result; // 2</span><br></pre></td></tr></table></figure><p>由于 <strong>TSan</strong> 是统合在编译器 (Clang) 层面的，所以当使用 Swift 来编写服务器代码的时候，完全可以在命令行中使用它：</p><p><img src="/images/datarace.png" alt="Tsan command"></p><p>P.S.目前 <strong>TSan</strong> 只支持 64bit 的模拟器及 macOS 自身。</p>]]></content>
+    
     <summary type="html">
-    <![CDATA[<p><em>作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。</em></p>
-<p>之前在修正并优化应用内线程管理的时候用了 <strong>Thread Sanitizer</strong> 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 <a href="https://developer.apple.com/videos/play/wwdc2016/412/">Session 412</a>。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。<strong>TSan</strong> 能够发现一些问题，诸如 Keynote 里提到的：</p>
-<blockquote>
-<p>Use of uninitialized mutexes<br>Thread leaks (missing pthred_join)<br>Unsafe calls in signal handlers (ex:malloc)<br>Unlock from wrong thread<br>Data races</p>
-</blockquote>
-<p>因为在实际中遇到过，而且感觉发生概率相对较高，所以只展开说一下最后一项：数据竞争。数据竞争发生的基本条件是多个线程在同时访问同一块内存，并且其中至少又一个线程正在进行的是写操作。实际中常常表现为数据不整合，亦或是应用崩溃。比如下面这个例子：</p>]]>
+    
+      &lt;p&gt;&lt;em&gt;作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;之前在修正并优化应用内线程管理的时候用了 &lt;strong&gt;Thread Sanitizer&lt;/strong&gt; 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 &lt;a href=&quot;https://developer.apple.com/videos/play/wwdc2016/412/&quot;&gt;Session 412&lt;/a&gt;。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。&lt;strong&gt;TSan&lt;/strong&gt; 能够发现一些问题，诸如 Keynote 里提到的：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Use of uninitialized mutexes&lt;br&gt;Thread leaks (missing pthred_join)&lt;br&gt;Unsafe calls in signal handlers (ex:malloc)&lt;br&gt;Unlock from wrong thread&lt;br&gt;Data races&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;因为在实际中遇到过，而且感觉发生概率相对较高，所以只展开说一下最后一项：数据竞争。数据竞争发生的基本条件是多个线程在同时访问同一块内存，并且其中至少又一个线程正在进行的是写操作。实际中常常表现为数据不整合，亦或是应用崩溃。比如下面这个例子：&lt;/p&gt;
     
     </summary>
+    
+      <category term="求索集" scheme="http://ckitakishi.com/categories/%E6%B1%82%E7%B4%A2%E9%9B%86/"/>
+    
     
       <category term="LT" scheme="http://ckitakishi.com/tags/LT/"/>
     
       <category term="iOS" scheme="http://ckitakishi.com/tags/iOS/"/>
     
-      <category term="求索集" scheme="http://ckitakishi.com/categories/%E6%B1%82%E7%B4%A2%E9%9B%86/"/>
-    
   </entry>
   
   <entry>
-    <title><![CDATA[Swift App:一个意料之外的崩溃理由]]></title>
+    <title>Swift App:一个意料之外的崩溃理由</title>
     <link href="http://ckitakishi.com/2017/02/13/Swift-App-%E4%B8%80%E4%B8%AA%E6%84%8F%E6%96%99%E4%B9%8B%E5%A4%96%E7%9A%84%E5%B4%A9%E6%BA%83%E7%90%86%E7%94%B1/"/>
     <id>http://ckitakishi.com/2017/02/13/Swift-App-一个意料之外的崩溃理由/</id>
     <published>2017-02-13T14:10:51.000Z</published>
     <updated>2017-10-07T15:58:36.897Z</updated>
-    <content type="html"><![CDATA[<p>这是一个发生在去年年底的故事。背景是一个新规 Swift 应用处于准备发布阶段，证书由开发测试用更替为发布用， 这是两份 Team 不同的企业版证书。</p>
-<p>应用功能本身十分简单，开发测试阶段也比较顺利，几乎没有发生崩溃。然而在更替证书之后，真机测试应用时却陷入了无限崩溃的境地。</p>
-<a id="more"></a>
-<p>Log 类似下面这样：</p>
-<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">dyld</span>: Library not <span class="attribute">loaded</span>: <span class="variable">@rpath</span>/libswiftCore.dylib</span><br><span class="line">  Referenced <span class="attribute">from</span>: ...</span><br><span class="line">  <span class="attribute">Reason</span>: no suitable image found.  Did <span class="attribute">find</span>:</span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
-<p>有很多原因会导致提示这个错误，作为 Trouble Shooting 记录下来：</p>
-<ul>
-<li>可能存在缓存，<strong>Clean</strong> 工程</li>
-<li>很多时候该问题发生在 Swift 与 Objective-C 混编的时候，所以需要检查 <em>Building Setting</em> 中 <em>Embeedded Content Contains Swift Code</em> 的设置是否已经为 <strong>YES</strong>。</li>
-<li>依然是配置，检查 <em>Building Setting</em> 中的 <em>Runpath Search Paths</em> 是否正确，通常是：<strong>@executable_path/Frameworks</strong>。</li>
-<li>重置证书 (注销再新建) 。</li>
-</ul>
-<p>实际的生产过程中，首先 check 了前三项，最终强烈怀疑是证书问题。关于 “libswiftCore.dylib 崩溃“这个话题，很容易能看到这篇 <a href="https://developer.apple.com/library/content/qa/qa1886/_index.html" target="_blank" rel="external">Q&amp;A</a>，其中提到要运行 Swift 应用必须使用 iOS 8 Released 之后创建的证书。对比手中的两份证书，除了 Team 不同之外，最大的差别在于创建时间，分别为 2016 年夏天，和 2014 年夏天。所以更新证书之后，问题也幸运地解决了。</p>
-<p>关于 libswiftCore.dylib 文件还想再多扯几句，看名字就能够猜到是 Swift 动态库，具体说来它其实是 Swift 的运行时库，但是该文件和证书有什么关系呢？原因在于目前 Swift 的版本升级还不稳定，如果将这些运行时库直接放到系统中，很可能会导致每次 Swift 升级都导致应用不再能够使用，而作为这个问题的解决方案，Apple 选择将运行时库打包进应用中，这样就保证了开发与应用的 Swift 版本一致。由于 libswiftCore.dylib 属于应用的一部分，所以也是需要签名的，而像上一段所说，能够为 Swift 的运行时库签名的证书必须创建于 iOS 8 Released 之后。这一切，都是为了提高 Swift 的兼容性，关于兼容性，强烈推荐这条 <a href="http://swifter.tips/compatibility/" target="_blank" rel="external">Tip</a>。</p>
-]]></content>
+    
+    <content type="html"><![CDATA[<p>这是一个发生在去年年底的故事。背景是一个新规 Swift 应用处于准备发布阶段，证书由开发测试用更替为发布用， 这是两份 Team 不同的企业版证书。</p><p>应用功能本身十分简单，开发测试阶段也比较顺利，几乎没有发生崩溃。然而在更替证书之后，真机测试应用时却陷入了无限崩溃的境地。</p><a id="more"></a><p>Log 类似下面这样：</p><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">dyld</span>: Library not <span class="attribute">loaded</span>: <span class="variable">@rpath</span>/libswiftCore.dylib</span><br><span class="line">  Referenced <span class="attribute">from</span>: ...</span><br><span class="line">  <span class="attribute">Reason</span>: no suitable image found.  Did <span class="attribute">find</span>:</span><br><span class="line">  ...</span><br></pre></td></tr></table></figure><p>有很多原因会导致提示这个错误，作为 Trouble Shooting 记录下来：</p><ul><li>可能存在缓存，<strong>Clean</strong> 工程</li><li>很多时候该问题发生在 Swift 与 Objective-C 混编的时候，所以需要检查 <em>Building Setting</em> 中 <em>Embeedded Content Contains Swift Code</em> 的设置是否已经为 <strong>YES</strong>。</li><li>依然是配置，检查 <em>Building Setting</em> 中的 <em>Runpath Search Paths</em> 是否正确，通常是：<strong>@executable_path/Frameworks</strong>。</li><li>重置证书 (注销再新建) 。</li></ul><p>实际的生产过程中，首先 check 了前三项，最终强烈怀疑是证书问题。关于 “libswiftCore.dylib 崩溃“这个话题，很容易能看到这篇 <a href="https://developer.apple.com/library/content/qa/qa1886/_index.html" target="_blank" rel="external">Q&amp;A</a>，其中提到要运行 Swift 应用必须使用 iOS 8 Released 之后创建的证书。对比手中的两份证书，除了 Team 不同之外，最大的差别在于创建时间，分别为 2016 年夏天，和 2014 年夏天。所以更新证书之后，问题也幸运地解决了。</p><p>关于 libswiftCore.dylib 文件还想再多扯几句，看名字就能够猜到是 Swift 动态库，具体说来它其实是 Swift 的运行时库，但是该文件和证书有什么关系呢？原因在于目前 Swift 的版本升级还不稳定，如果将这些运行时库直接放到系统中，很可能会导致每次 Swift 升级都导致应用不再能够使用，而作为这个问题的解决方案，Apple 选择将运行时库打包进应用中，这样就保证了开发与应用的 Swift 版本一致。由于 libswiftCore.dylib 属于应用的一部分，所以也是需要签名的，而像上一段所说，能够为 Swift 的运行时库签名的证书必须创建于 iOS 8 Released 之后。这一切，都是为了提高 Swift 的兼容性，关于兼容性，强烈推荐这条 <a href="http://swifter.tips/compatibility/" target="_blank" rel="external">Tip</a>。</p>]]></content>
+    
     <summary type="html">
-    <![CDATA[<p>这是一个发生在去年年底的故事。背景是一个新规 Swift 应用处于准备发布阶段，证书由开发测试用更替为发布用， 这是两份 Team 不同的企业版证书。</p>
-<p>应用功能本身十分简单，开发测试阶段也比较顺利，几乎没有发生崩溃。然而在更替证书之后，真机测试应用时却陷入了无限崩溃的境地。</p>]]>
+    
+      &lt;p&gt;这是一个发生在去年年底的故事。背景是一个新规 Swift 应用处于准备发布阶段，证书由开发测试用更替为发布用， 这是两份 Team 不同的企业版证书。&lt;/p&gt;
+&lt;p&gt;应用功能本身十分简单，开发测试阶段也比较顺利，几乎没有发生崩溃。然而在更替证书之后，真机测试应用时却陷入了无限崩溃的境地。&lt;/p&gt;
     
     </summary>
     
-      <category term="iOS" scheme="http://ckitakishi.com/tags/iOS/"/>
-    
       <category term="求索集" scheme="http://ckitakishi.com/categories/%E6%B1%82%E7%B4%A2%E9%9B%86/"/>
+    
+    
+      <category term="iOS" scheme="http://ckitakishi.com/tags/iOS/"/>
     
   </entry>
   
   <entry>
-    <title><![CDATA[重新启程的 2016]]></title>
+    <title>重新启程的 2016</title>
     <link href="http://ckitakishi.com/2017/01/14/%E9%87%8D%E6%96%B0%E5%90%AF%E7%A8%8B%E7%9A%84-2016/"/>
     <id>http://ckitakishi.com/2017/01/14/重新启程的-2016/</id>
     <published>2017-01-14T10:23:17.000Z</published>
     <updated>2017-01-29T15:02:01.000Z</updated>
-    <content type="html"><![CDATA[<p>转眼一月都已过半…如果说 2015 于我而言是承前启后的一年，那 2016 大概算是重新启程的一年。</p>
-<h2 id="第一个完整的工作年">第一个完整的工作年</h2><p>2016 是我的第一个完整工作年，有吐不完的槽，也有说不尽的感谢。</p>
-<a id="more"></a>
-<p>远离家乡，薪水不可观，事多，责任重，没有靠谱的工作搭档，无数次质疑自己为什么不早点做个了断，但是无法否认自己在成长，也得到了一定程度上的回报。曾一夜无眠的想过，好多事，时候未到。</p>
-<p>年初，工作重心正式从前端转回 iOS，充满了期待。然而如果知道注定我会一个人孤独奋斗一整年，我还会这么想么～没有答案。从比 0 多一点的基础开始，搞了好多事儿，被嘲笑过日语说的烂，被以经验不足为由甩过锅…很喜欢一个词，「賛否両論」，本意是赞成与反对并存，不分优劣。我并不害怕被反对，被嘲笑（反正没人能在我的 bgm 里打败我哈哈哈，只怕 10 年后还像某些人一样活在自己的嘴里，活在自己的 yy 中（摊手。</p>
-<p>一年的勤勉工作换来了「奨励賞」，开心，但是更期待优秀的团队，优秀的自己。</p>
-<h2 id="认真的生活">认真的生活</h2><p>这一年来对时间管理还是没有什么清晰的概念，很遗憾，很遗憾。</p>
-<p>做了一些时间投入与金钱回报并不是那么成正比事，但是于我而言绝对是这一年最棒的事情之一。能够有幸参与《函数式 Swift》的翻译，于我而言绝不是能够衡量的财富，和优秀的人一起，总会想把事情做的更好一点。</p>
-<p>认识了一群爱读书的人，文学素养浅薄的我，也算是读了一些书。</p>
-<p>生活过得挺不错，（觉得）做饭进阶啦，游泳进阶啦，拍照也进阶啦～</p>
-<h2 id="新年愿望">新年愿望</h2><p>为开源社区贡献力量<br>合适的时机换工作</p>
-]]></content>
+    
+    <content type="html"><![CDATA[<p>转眼一月都已过半…如果说 2015 于我而言是承前启后的一年，那 2016 大概算是重新启程的一年。</p><h2 id="第一个完整的工作年"><a href="#第一个完整的工作年" class="headerlink" title="第一个完整的工作年"></a>第一个完整的工作年</h2><p>2016 是我的第一个完整工作年，有吐不完的槽，也有说不尽的感谢。</p><a id="more"></a><p>远离家乡，薪水不可观，事多，责任重，没有靠谱的工作搭档，无数次质疑自己为什么不早点做个了断，但是无法否认自己在成长，也得到了一定程度上的回报。曾一夜无眠的想过，好多事，时候未到。</p><p>年初，工作重心正式从前端转回 iOS，充满了期待。然而如果知道注定我会一个人孤独奋斗一整年，我还会这么想么～没有答案。从比 0 多一点的基础开始，搞了好多事儿，被嘲笑过日语说的烂，被以经验不足为由甩过锅…很喜欢一个词，「賛否両論」，本意是赞成与反对并存，不分优劣。我并不害怕被反对，被嘲笑（反正没人能在我的 bgm 里打败我哈哈哈，只怕 10 年后还像某些人一样活在自己的嘴里，活在自己的 yy 中（摊手。</p><p>一年的勤勉工作换来了「奨励賞」，开心，但是更期待优秀的团队，优秀的自己。</p><h2 id="认真的生活"><a href="#认真的生活" class="headerlink" title="认真的生活"></a>认真的生活</h2><p>这一年来对时间管理还是没有什么清晰的概念，很遗憾，很遗憾。</p><p>做了一些时间投入与金钱回报并不是那么成正比事，但是于我而言绝对是这一年最棒的事情之一。能够有幸参与《函数式 Swift》的翻译，于我而言绝不是能够衡量的财富，和优秀的人一起，总会想把事情做的更好一点。</p><p>认识了一群爱读书的人，文学素养浅薄的我，也算是读了一些书。</p><p>生活过得挺不错，（觉得）做饭进阶啦，游泳进阶啦，拍照也进阶啦～</p><h2 id="新年愿望"><a href="#新年愿望" class="headerlink" title="新年愿望"></a>新年愿望</h2><p>为开源社区贡献力量<br>合适的时机换工作</p>]]></content>
+    
     <summary type="html">
-    <![CDATA[<p>转眼一月都已过半…如果说 2015 于我而言是承前启后的一年，那 2016 大概算是重新启程的一年。</p>
-<h2 id="第一个完整的工作年">第一个完整的工作年</h2><p>2016 是我的第一个完整工作年，有吐不完的槽，也有说不尽的感谢。</p>]]>
+    
+      &lt;p&gt;转眼一月都已过半…如果说 2015 于我而言是承前启后的一年，那 2016 大概算是重新启程的一年。&lt;/p&gt;
+&lt;h2 id=&quot;第一个完整的工作年&quot;&gt;&lt;a href=&quot;#第一个完整的工作年&quot; class=&quot;headerlink&quot; title=&quot;第一个完整的工作年&quot;&gt;&lt;/a&gt;第一个完整的工作年&lt;/h2&gt;&lt;p&gt;2016 是我的第一个完整工作年，有吐不完的槽，也有说不尽的感谢。&lt;/p&gt;
     
     </summary>
     
-      <category term="随笔" scheme="http://ckitakishi.com/tags/%E9%9A%8F%E7%AC%94/"/>
-    
       <category term="浮生记" scheme="http://ckitakishi.com/categories/%E6%B5%AE%E7%94%9F%E8%AE%B0/"/>
+    
+    
+      <category term="随笔" scheme="http://ckitakishi.com/tags/%E9%9A%8F%E7%AC%94/"/>
     
   </entry>
   
   <entry>
-    <title><![CDATA[Swift 的字符串前后缀匹配]]></title>
+    <title>Swift 的字符串前后缀匹配</title>
     <link href="http://ckitakishi.com/2016/11/09/Swift%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%89%8D%E5%90%8E%E7%BC%80%E5%8C%B9%E9%85%8D/"/>
     <id>http://ckitakishi.com/2016/11/09/Swift字符串前后缀匹配/</id>
     <published>2016-11-08T15:18:32.000Z</published>
     <updated>2017-10-07T15:58:26.636Z</updated>
-    <content type="html"><![CDATA[<p>之前修改了项目中一个 increment search 的组件，最近刚好又看到下题，于是想说一说前后缀匹配的事儿～</p>
-<p><a href="https://leetcode.com/problems/longest-common-prefix/" target="_blank" rel="external">14. Longest Common Prefix</a></p>
-<p>这是一个给定字符串数组，求所有字符串最长公有前缀的问题。</p>
-<p>直接用 <code>O(1)</code> 的额外空间来存储一个最长公有前缀，一次遍历后返回前缀字符串。这个想法自然到不需要多加解释，然而这么一写竟然击败了 100% 的 Swift 提交结果…</p>
-<p>所以不得不提一下十分高效的 <code>hasPrefix(_:)</code> 方法，它接受一个 <code>String</code> 类型的参数并返回 <code>Bool</code> 值，这里字符串大小写敏感，且基于 Unicode 标准等价。此外，与之对应用于比较后缀字符串的方法是 <code>hasSuffix(_:)</code>。</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Unicode 标准等价</span></span><br><span class="line"><span class="keyword">let</span> composedCafe = <span class="string">"Café"</span></span><br><span class="line"><span class="keyword">let</span> decomposedCafe = <span class="string">"Cafe\u&#123;0301&#125;"</span></span><br><span class="line"><span class="built_in">print</span>(cafe.hasPrefix(composedCafe))</span><br><span class="line"><span class="comment">// Prints "true"</span></span><br><span class="line"><span class="built_in">print</span>(cafe.hasPrefix(decomposedCafe))</span><br><span class="line"><span class="comment">// Prints "true"</span></span><br></pre></td></tr></table></figure>
-<p><a href="https://github.com/Ckitakishi/Daily/blob/master/LeetCode14_LongestCommonPrefix.swift" target="_blank" rel="external"></a>                                                           </p>
-]]></content>
+    
+    <content type="html"><![CDATA[<p>之前修改了项目中一个 increment search 的组件，最近刚好又看到下题，于是想说一说前后缀匹配的事儿～</p><p><a href="https://leetcode.com/problems/longest-common-prefix/" target="_blank" rel="external">14. Longest Common Prefix</a></p><p>这是一个给定字符串数组，求所有字符串最长公有前缀的问题。</p><p>直接用 <code>O(1)</code> 的额外空间来存储一个最长公有前缀，一次遍历后返回前缀字符串。这个想法自然到不需要多加解释，然而这么一写竟然击败了 100% 的 Swift 提交结果…</p><p>所以不得不提一下十分高效的 <code>hasPrefix(_:)</code> 方法，它接受一个 <code>String</code> 类型的参数并返回 <code>Bool</code> 值，这里字符串大小写敏感，且基于 Unicode 标准等价。此外，与之对应用于比较后缀字符串的方法是 <code>hasSuffix(_:)</code>。</p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Unicode 标准等价</span></span><br><span class="line"><span class="keyword">let</span> composedCafe = <span class="string">"Café"</span></span><br><span class="line"><span class="keyword">let</span> decomposedCafe = <span class="string">"Cafe\u&#123;0301&#125;"</span></span><br><span class="line"><span class="built_in">print</span>(cafe.hasPrefix(composedCafe))</span><br><span class="line"><span class="comment">// Prints "true"</span></span><br><span class="line"><span class="built_in">print</span>(cafe.hasPrefix(decomposedCafe))</span><br><span class="line"><span class="comment">// Prints "true"</span></span><br></pre></td></tr></table></figure><p><a href="https://github.com/Ckitakishi/Daily/blob/master/LeetCode14_LongestCommonPrefix.swift" target="_blank" rel="external"></a>                                                           </p>]]></content>
+    
     <summary type="html">
-    <![CDATA[<p>之前修改了项目中一个 increment search 的组件，最近刚好又看到下题，于是想说一说前后缀匹配的事儿～</p>
-<p><a href="https://leetcode.com/problems/longest-common-prefix/" target="_]]>
+    
+      
+      
+        &lt;p&gt;之前修改了项目中一个 increment search 的组件，最近刚好又看到下题，于是想说一说前后缀匹配的事儿～&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://leetcode.com/problems/longest-common-prefix/&quot; target=&quot;_
+      
+    
     </summary>
+    
+      <category term="求索集" scheme="http://ckitakishi.com/categories/%E6%B1%82%E7%B4%A2%E9%9B%86/"/>
+    
     
       <category term="LeetCode" scheme="http://ckitakishi.com/tags/LeetCode/"/>
     
       <category term="覚書" scheme="http://ckitakishi.com/tags/%E8%A6%9A%E6%9B%B8/"/>
     
-      <category term="求索集" scheme="http://ckitakishi.com/categories/%E6%B1%82%E7%B4%A2%E9%9B%86/"/>
-    
   </entry>
   
   <entry>
-    <title><![CDATA[iOS 的看门狗机制]]></title>
+    <title>iOS 的看门狗机制</title>
     <link href="http://ckitakishi.com/2016/08/17/WatchDog-%E6%9C%BA%E5%88%B6/"/>
     <id>http://ckitakishi.com/2016/08/17/WatchDog-机制/</id>
     <published>2016-08-17T14:34:09.000Z</published>
     <updated>2017-10-07T15:58:17.337Z</updated>
-    <content type="html"><![CDATA[<h3 id="背景">背景</h3><p>应用 100% Loss 时完全无法启动，一直崩溃。彻底切断网络连接正常启动，调试模式状态下等待时间非常久，但可以启动，并伴随 UI 微卡。强烈的预感这是线程阻塞。前一段时间被 Core Data Concurrency 折腾的够呛，看见线程问题就略有些心慌。</p>
-<a id="more"></a>
-<h3 id="原因">原因</h3><p>首先看了 crash log，一如猜测，的确是卡在了主线程；意料之外的是，无数次闪退只留下了一份崩溃日志，如下所示：</p>
-<p><img src="/images/watchdog.png" alt="WatchDog"></p>
-<p>第一次见，读了一些资料大概才算是明白了这是怎么一回事。为了避免应用陷入错误状态导致界面无响应，Apple 设计了看门狗 (WatchDog) 机制。一旦超时，强制杀死进程。在不同的生命周期，触发看门狗机制的超时时间有所不同：</p>
-<table>
-<thead>
-<tr>
-<th>生命周期</th>
-<th>超时时间</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>启动 Launch</td>
-<td>20 s</td>
-</tr>
-<tr>
-<td>恢复 Resume</td>
-<td>10 s</td>
-</tr>
-<tr>
-<td>悬挂 Suspend</td>
-<td>10 s</td>
-</tr>
-<tr>
-<td>退出 Quit</td>
-<td>6 s</td>
-</tr>
-<tr>
-<td>后台 Background</td>
-<td>10 min</td>
-</tr>
-</tbody>
-</table>
-<p>首先说一说异常编码，也是寓意颇深。8badf00d = ate bad food，大概是在说看门狗吃了坏的食物所以暴走了？！异常记录则表示这并不是一次崩溃（邪魅一笑：强制退出而已）。信息一栏指出时间限制为 20 s。结合应用业务来看，表层原因在于：每次启动应用，首先进行一次模版同步，在此之前需要检测登录状况，通过 RunLoop 反复尝试直到收到响应为止。然而不幸的是，这一些都发生在主线程。</p>
-<p>同步网络请求，主线程，超长超时时间，满足这三点，一定场景下几乎必然会触发看门狗机制。</p>
-<h3 id="对策">对策</h3><p>合理解决方案：</p>
-<ol>
-<li>异步网络请求：优点很多，最重要的是可以让你无忧无虑安全地访问网络，而无需担心线程。</li>
-<li>在非主线程中使用同步网络请求：如果异步运行你的网络代码比登天还难的话(也许你的应用是一个基于同步网络请求的大型移植项目)，退而求次，你也可以在次级线程中运行同步代码，也可以避免触发看门狗机制。</li>
-</ol>
-<p>此外，一部分情况下，例如这次遇到登录和模版同步时触发看门狗，事实上，即使在运用到模版时再次请求也是勉强可行的，因此姑且先跳过网络请求也可以。此时，还以使用一种我认为是相对比较差的方案：</p>
-<ol>
-<li>通过 RunLoop 来操控一切，一旦超过既定的超时时间，就提示用户重试或者暂时先跳过网络请求。</li>
-</ol>
-<p>应用的网络部分基于公司的通用框架，因此优先考虑在非主线程中进行网络请求来避免触发看门狗。</p>
-<p>至于调试模式下为什么可以正常启动应用，完全是因为该模式下看门狗机制处于禁用状态。</p>
-<p>此外，除了网络操作，I/O 读写文件和大规模运算等耗时任务也极有可能触发看门狗机制。合理处理线程，优化耗时任务，很大程度能避免不佳用户体验。</p>
-<h4 id="参考：">参考：</h4><ol>
-<li><a href="https://developer.apple.com/library/ios/qa/qa1693/_index.html" target="_blank" rel="external">主线程上的同步网络请求</a></li>
-<li><a href="https://developer.apple.com/library/ios/qa/qa1592/_index.html" target="_blank" rel="external">调试模式不发生崩溃</a></li>
-</ol>
-]]></content>
+    
+    <content type="html"><![CDATA[<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>应用 100% Loss 时完全无法启动，一直崩溃。彻底切断网络连接正常启动，调试模式状态下等待时间非常久，但可以启动，并伴随 UI 微卡。强烈的预感这是线程阻塞。前一段时间被 Core Data Concurrency 折腾的够呛，看见线程问题就略有些心慌。</p><a id="more"></a><h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>首先看了 crash log，一如猜测，的确是卡在了主线程；意料之外的是，无数次闪退只留下了一份崩溃日志，如下所示：</p><p><img src="/images/watchdog.png" alt="WatchDog"></p><p>第一次见，读了一些资料大概才算是明白了这是怎么一回事。为了避免应用陷入错误状态导致界面无响应，Apple 设计了看门狗 (WatchDog) 机制。一旦超时，强制杀死进程。在不同的生命周期，触发看门狗机制的超时时间有所不同：</p><table><thead><tr><th>生命周期</th><th>超时时间</th></tr></thead><tbody><tr><td>启动 Launch</td><td>20 s</td></tr><tr><td>恢复 Resume</td><td>10 s</td></tr><tr><td>悬挂 Suspend</td><td>10 s</td></tr><tr><td>退出 Quit</td><td>6 s</td></tr><tr><td>后台 Background</td><td>10 min</td></tr></tbody></table><p>首先说一说异常编码，也是寓意颇深。8badf00d = ate bad food，大概是在说看门狗吃了坏的食物所以暴走了？！异常记录则表示这并不是一次崩溃（邪魅一笑：强制退出而已）。信息一栏指出时间限制为 20 s。结合应用业务来看，表层原因在于：每次启动应用，首先进行一次模版同步，在此之前需要检测登录状况，通过 RunLoop 反复尝试直到收到响应为止。然而不幸的是，这一些都发生在主线程。</p><p>同步网络请求，主线程，超长超时时间，满足这三点，一定场景下几乎必然会触发看门狗机制。</p><h3 id="对策"><a href="#对策" class="headerlink" title="对策"></a>对策</h3><p>合理解决方案：</p><ol><li>异步网络请求：优点很多，最重要的是可以让你无忧无虑安全地访问网络，而无需担心线程。</li><li>在非主线程中使用同步网络请求：如果异步运行你的网络代码比登天还难的话(也许你的应用是一个基于同步网络请求的大型移植项目)，退而求次，你也可以在次级线程中运行同步代码，也可以避免触发看门狗机制。</li></ol><p>此外，一部分情况下，例如这次遇到登录和模版同步时触发看门狗，事实上，即使在运用到模版时再次请求也是勉强可行的，因此姑且先跳过网络请求也可以。此时，还以使用一种我认为是相对比较差的方案：</p><ol><li>通过 RunLoop 来操控一切，一旦超过既定的超时时间，就提示用户重试或者暂时先跳过网络请求。</li></ol><p>应用的网络部分基于公司的通用框架，因此优先考虑在非主线程中进行网络请求来避免触发看门狗。</p><p>至于调试模式下为什么可以正常启动应用，完全是因为该模式下看门狗机制处于禁用状态。</p><p>此外，除了网络操作，I/O 读写文件和大规模运算等耗时任务也极有可能触发看门狗机制。合理处理线程，优化耗时任务，很大程度能避免不佳用户体验。</p><h4 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h4><ol><li><a href="https://developer.apple.com/library/ios/qa/qa1693/_index.html" target="_blank" rel="external">主线程上的同步网络请求</a></li><li><a href="https://developer.apple.com/library/ios/qa/qa1592/_index.html" target="_blank" rel="external">调试模式不发生崩溃</a></li></ol>]]></content>
+    
     <summary type="html">
-    <![CDATA[<h3 id="背景">背景</h3><p>应用 100% Loss 时完全无法启动，一直崩溃。彻底切断网络连接正常启动，调试模式状态下等待时间非常久，但可以启动，并伴随 UI 微卡。强烈的预感这是线程阻塞。前一段时间被 Core Data Concurrency 折腾的够呛，看见线程问题就略有些心慌。</p>]]>
+    
+      &lt;h3 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h3&gt;&lt;p&gt;应用 100% Loss 时完全无法启动，一直崩溃。彻底切断网络连接正常启动，调试模式状态下等待时间非常久，但可以启动，并伴随 UI 微卡。强烈的预感这是线程阻塞。前一段时间被 Core Data Concurrency 折腾的够呛，看见线程问题就略有些心慌。&lt;/p&gt;
     
     </summary>
     
-      <category term="iOS" scheme="http://ckitakishi.com/tags/iOS/"/>
-    
       <category term="求索集" scheme="http://ckitakishi.com/categories/%E6%B1%82%E7%B4%A2%E9%9B%86/"/>
+    
+    
+      <category term="iOS" scheme="http://ckitakishi.com/tags/iOS/"/>
     
   </entry>
   
   <entry>
-    <title><![CDATA[沖縄三日]]></title>
+    <title>沖縄三日</title>
     <link href="http://ckitakishi.com/2015/12/08/%E6%B2%96%E7%B8%84%E4%B8%89%E6%97%A5/"/>
     <id>http://ckitakishi.com/2015/12/08/沖縄三日/</id>
     <published>2015-12-08T13:56:53.000Z</published>
     <updated>2016-02-28T13:36:23.000Z</updated>
-    <content type="html"><![CDATA[<p>期待已久的冲绳之行和不那么期待的马拉松如此而至。出发的早晨阳光特别温暖，モノレール窗子上映出身影，好暖～</p>
-<a id="more"></a>
-<p>到达当晚和晴儿一起吃了冲绳そば，终于吃到本土的了（笑…</p>
-<p><img src="/images/soba.jpg" alt="沖縄ぞば"></p>
-<p>为了这次的马拉松的平安..从 7 月渐渐开始了不科学的练习，第一次早晨出去跑了 2km<br>就累成狗，恢复了好几天。8 月底参加了昆马 10km，幸运的达成！来日后，跑过小道，跑过荒川沿岸，跑过皇居，慢慢喜欢上了跑步的感觉。</p>
-<p>每一次跑都是坚持再坚持，也许跟自己说过一万遍再，没有完赛好遗憾…也许是练习不足，也许是 FREE 4.0 FLYKNIT 并不太适合超长距离…不管怎么说，对得起自己了。</p>
-<p>当日，起初天高气爽，后来风雨大作。一路上吃，跑，吃，跑，冲绳黑糖是真的很好吃。赛程最后阶段，遇到热心的大叔带我跑了一段，一直跟我说坚持跑还能赶得上哟～然而弱爆了的我还是在最终［还剩 1km］的地方听到了结束的信号。运动场入口的的志愿者们夹道给了我们［最后的击掌］，6:15，今天跑了这么久～</p>
-<p><img src="/images/marathon.jpg" alt="那覇マラソン"></p>
-<p>赛后第二天，逛水族馆，看海。词穷的我只说得出一个形容词：美。</p>
-<p>来馆必看的ジンベエザメ，后来才知是鲸鲨。一瞬间感到自己的渺小。</p>
-<p><img src="/images/aquarium.jpg" alt="美ら海水族館"></p>
-<p>三面环海的岛上，自己拍婚纱照的情侣。</p>
-<p><img src="/images/sea.jpg" alt="海"></p>
-<p>曾经的参天大树，如今又是另一种风韵。一起，任海风吹～</p>
-<p><img src="/images/sea2.jpg" alt="海"></p>
-<p>于我而言，这三天又是一场洗礼，只想一生努力，一生被爱。用一句广告语作结吧，<strong>「苦しいけど、幸せ」</strong>。</p>
-]]></content>
+    
+    <content type="html"><![CDATA[<p>期待已久的冲绳之行和不那么期待的马拉松如此而至。出发的早晨阳光特别温暖，モノレール窗子上映出身影，好暖～</p><a id="more"></a><p>到达当晚和晴儿一起吃了冲绳そば，终于吃到本土的了（笑…</p><p><img src="/images/soba.jpg" alt="沖縄ぞば"></p><p>为了这次的马拉松的平安..从 7 月渐渐开始了不科学的练习，第一次早晨出去跑了 2km<br>就累成狗，恢复了好几天。8 月底参加了昆马 10km，幸运的达成！来日后，跑过小道，跑过荒川沿岸，跑过皇居，慢慢喜欢上了跑步的感觉。</p><p>每一次跑都是坚持再坚持，也许跟自己说过一万遍再，没有完赛好遗憾…也许是练习不足，也许是 FREE 4.0 FLYKNIT 并不太适合超长距离…不管怎么说，对得起自己了。</p><p>当日，起初天高气爽，后来风雨大作。一路上吃，跑，吃，跑，冲绳黑糖是真的很好吃。赛程最后阶段，遇到热心的大叔带我跑了一段，一直跟我说坚持跑还能赶得上哟～然而弱爆了的我还是在最终［还剩 1km］的地方听到了结束的信号。运动场入口的的志愿者们夹道给了我们［最后的击掌］，6:15，今天跑了这么久～</p><p><img src="/images/marathon.jpg" alt="那覇マラソン"></p><p>赛后第二天，逛水族馆，看海。词穷的我只说得出一个形容词：美。</p><p>来馆必看的ジンベエザメ，后来才知是鲸鲨。一瞬间感到自己的渺小。</p><p><img src="/images/aquarium.jpg" alt="美ら海水族館"></p><p>三面环海的岛上，自己拍婚纱照的情侣。</p><p><img src="/images/sea.jpg" alt="海"></p><p>曾经的参天大树，如今又是另一种风韵。一起，任海风吹～</p><p><img src="/images/sea2.jpg" alt="海"></p><p>于我而言，这三天又是一场洗礼，只想一生努力，一生被爱。用一句广告语作结吧，<strong>「苦しいけど、幸せ」</strong>。</p>]]></content>
+    
     <summary type="html">
-    <![CDATA[<p>期待已久的冲绳之行和不那么期待的马拉松如此而至。出发的早晨阳光特别温暖，モノレール窗子上映出身影，好暖～</p>]]>
+    
+      &lt;p&gt;期待已久的冲绳之行和不那么期待的马拉松如此而至。出发的早晨阳光特别温暖，モノレール窗子上映出身影，好暖～&lt;/p&gt;
     
     </summary>
+    
+      <category term="浮生记" scheme="http://ckitakishi.com/categories/%E6%B5%AE%E7%94%9F%E8%AE%B0/"/>
+    
     
       <category term="旅行" scheme="http://ckitakishi.com/tags/%E6%97%85%E8%A1%8C/"/>
     
@@ -352,63 +224,49 @@
     
       <category term="跑步" scheme="http://ckitakishi.com/tags/%E8%B7%91%E6%AD%A5/"/>
     
-      <category term="浮生记" scheme="http://ckitakishi.com/categories/%E6%B5%AE%E7%94%9F%E8%AE%B0/"/>
-    
   </entry>
   
   <entry>
-    <title><![CDATA[前向き]]></title>
+    <title>前向き</title>
     <link href="http://ckitakishi.com/2015/11/04/%E5%89%8D%E5%90%91%E3%81%8D/"/>
     <id>http://ckitakishi.com/2015/11/04/前向き/</id>
     <published>2015-11-04T13:54:49.000Z</published>
     <updated>2015-11-04T15:27:55.000Z</updated>
-    <content type="html"><![CDATA[<p>一直很很喜欢 CIH 在知乎说的一句话：这个世界上，总是有人，为梦想而活。</p>
-<p>深以为，我是这样的人，因为还有梦想，所以无论多么失落，多么悲伤，都忍耐。</p>
-<a id="more"></a>
-<p>－－－－ 分割线后的吐槽 －－－－</p>
-<p>二十多天的努力，无论如何也没想到在中期发表中只有悲剧。无论项目做的好或者坏，who care？尽管似乎整个发表只有项目还ok。<br>其他方面就真是差到爆了，这么多天日语还是这么烂。<br>开玩笑说为了以后能继续装逼，一定要好好呆在这儿好好学日语。。。<br>关于日语，竟然有种心有余而力不足的感觉，<br>以及，发表内容都是些什么鬼？没有从用户角度出发的项目介绍都是耍流氓。</p>
-<p>身边好多人，从方方面面照顾着我们，该吊打时吊打，失落时还有安慰和鼓励，感谢。</p>
-<p>用一个喜欢的词做为结尾吧，前向き！</p>
-]]></content>
+    
+    <content type="html"><![CDATA[<p>一直很很喜欢 CIH 在知乎说的一句话：这个世界上，总是有人，为梦想而活。</p><p>深以为，我是这样的人，因为还有梦想，所以无论多么失落，多么悲伤，都忍耐。</p><a id="more"></a><p>－－－－ 分割线后的吐槽 －－－－</p><p>二十多天的努力，无论如何也没想到在中期发表中只有悲剧。无论项目做的好或者坏，who care？尽管似乎整个发表只有项目还ok。<br>其他方面就真是差到爆了，这么多天日语还是这么烂。<br>开玩笑说为了以后能继续装逼，一定要好好呆在这儿好好学日语。。。<br>关于日语，竟然有种心有余而力不足的感觉，<br>以及，发表内容都是些什么鬼？没有从用户角度出发的项目介绍都是耍流氓。</p><p>身边好多人，从方方面面照顾着我们，该吊打时吊打，失落时还有安慰和鼓励，感谢。</p><p>用一个喜欢的词做为结尾吧，前向き！</p>]]></content>
+    
     <summary type="html">
-    <![CDATA[<p>一直很很喜欢 CIH 在知乎说的一句话：这个世界上，总是有人，为梦想而活。</p>
-<p>深以为，我是这样的人，因为还有梦想，所以无论多么失落，多么悲伤，都忍耐。</p>]]>
+    
+      &lt;p&gt;一直很很喜欢 CIH 在知乎说的一句话：这个世界上，总是有人，为梦想而活。&lt;/p&gt;
+&lt;p&gt;深以为，我是这样的人，因为还有梦想，所以无论多么失落，多么悲伤，都忍耐。&lt;/p&gt;
     
     </summary>
     
-      <category term="随笔" scheme="http://ckitakishi.com/tags/%E9%9A%8F%E7%AC%94/"/>
-    
       <category term="浮生记" scheme="http://ckitakishi.com/categories/%E6%B5%AE%E7%94%9F%E8%AE%B0/"/>
+    
+    
+      <category term="随笔" scheme="http://ckitakishi.com/tags/%E9%9A%8F%E7%AC%94/"/>
     
   </entry>
   
   <entry>
-    <title><![CDATA[轻图像工具－LightImage]]></title>
+    <title>轻图像工具－LightImage</title>
     <link href="http://ckitakishi.com/2015/08/01/%E8%BD%BB%E5%9B%BE%E5%83%8F%E5%B7%A5%E5%85%B7%EF%BC%8DLightImage/"/>
     <id>http://ckitakishi.com/2015/08/01/轻图像工具－LightImage/</id>
     <published>2015-08-01T07:58:35.000Z</published>
     <updated>2017-10-07T15:58:05.594Z</updated>
-    <content type="html"><![CDATA[<p>LightImage 是我的毕业设计项目，但是至今暂时还是一个残次成品，仍需大力的改善。初衷是开发一款轻量级的图像处理工具，后续又扩展了简易的图像分析和像素画绘制等功能。</p>
-<p>项目主要基于 HTML5 中的 Canvas 开发，当提及 Canvas 的时候，常常还会提到 SVG。Canvas 只能通过脚本驱动，适合像素级的图形问题处理；相比较而言 SVG 的驱动方式更加灵活，XML、CSS等都可，所以处理图形是通过元素。对于本项目而言，Canvas 是不二的选择。</p>
-<a id="more"></a>
-<p>项目使用了框架 Vue.js，结合曾经完成的一个数据量较大的应用来看，很优雅，很轻量，很灵活，调试也很棒，不过也遇到一些需要仔细思考的问题，生命周期，路由，页面重载等等。</p>
-<p>答辩完后就一直想把一个多月开发过程中的心得和遇到的有意思的问题总结一下，还好之前有在 trello 上记录。下面想从三个部分来说一说～</p>
-<h2 id="绘画">绘画</h2><p>关于这个部分，细节的部分集中于事件处理，例如笔迹离开和进入画布需要绑定 mouseleave 和 mouseenter 事件。想要说一说的是，这里添加了我很喜欢的像素画绘制，通过倍率来模拟不同格子数的像素画布，尝试过使用单个像素放大但并适用。在这里不得不提给我带来深刻影响的像素动画作品们 <a href="http://1041uuu.tumblr.com/" target="_blank" rel="external">1041uuu</a>。</p>
-<p>未来展望：使用栈保存笔画，完成撤销前进；提供自定义像素数量；以及允许添加多张画布组成动画。</p>
-<h2 id="图像分析">图像分析</h2><p>这个部分也许名不副实？（笑。起初只是想做一个图像的色彩分析，统计色彩的出现频率。依据 rgb 色彩模型，则有256^3种色彩，非常大的数字，于是将相近的色彩归位一类，由大及小最终选定了 6^3 种色彩。使用一个长度为 256 的数组存储出现次数，色彩一一对应下标 0-255，并可反向由下标推导颜色以便在页面渲染。</p>
-<p>后来增添了灰度直方图及均衡化的直方图来表现图像的大体特征。这个部分效率受图像大小影响并不明显。</p>
-<p>未来展望：可导出分析结果；保持效率得到更精确的结果。</p>
-<h2 id="图像处理">图像处理</h2><p>做毕设的两个月中，用于学习图像处理和使用 JavaScript 实现花了不少时间。起初大概看了看《数字图像处理》..的目录、基础和色彩相关章节，有了一点点宏观的理解，后期更具体的理解大多来自于他人文章和《数字图像处理原理与实践：基于Visual C++开发》。实现中，比较深刻的是图像剪切，有几个 jQuery 实现的插件，然而还是强迫自己写了一个纯 JavaScript 的，但至今仍不完善，将来如若有一日能够见人，打算让其作为一个独立的组件存在。</p>
-<p>图像处理的效率随着图像增大而剧降，很 sad，也是一个改善的重点。</p>
-<p>未来展望：结合直方图，添加曲线；可调节亮度，对比度等。</p>
-<h2 id="有话说">有话说</h2><p>源码完全在 <a href="https://github.com/Ckitakishi/LightImage" target="_blank" rel="external">Github</a></p>
-<p>可以在 heroku 上 <a href="https://lightimage.herokuapp.com" target="_blank" rel="external">Tye it</a> </p>
-]]></content>
+    
+    <content type="html"><![CDATA[<p>LightImage 是我的毕业设计项目，但是至今暂时还是一个残次成品，仍需大力的改善。初衷是开发一款轻量级的图像处理工具，后续又扩展了简易的图像分析和像素画绘制等功能。</p><p>项目主要基于 HTML5 中的 Canvas 开发，当提及 Canvas 的时候，常常还会提到 SVG。Canvas 只能通过脚本驱动，适合像素级的图形问题处理；相比较而言 SVG 的驱动方式更加灵活，XML、CSS等都可，所以处理图形是通过元素。对于本项目而言，Canvas 是不二的选择。</p><a id="more"></a><p>项目使用了框架 Vue.js，结合曾经完成的一个数据量较大的应用来看，很优雅，很轻量，很灵活，调试也很棒，不过也遇到一些需要仔细思考的问题，生命周期，路由，页面重载等等。</p><p>答辩完后就一直想把一个多月开发过程中的心得和遇到的有意思的问题总结一下，还好之前有在 trello 上记录。下面想从三个部分来说一说～</p><h2 id="绘画"><a href="#绘画" class="headerlink" title="绘画"></a>绘画</h2><p>关于这个部分，细节的部分集中于事件处理，例如笔迹离开和进入画布需要绑定 mouseleave 和 mouseenter 事件。想要说一说的是，这里添加了我很喜欢的像素画绘制，通过倍率来模拟不同格子数的像素画布，尝试过使用单个像素放大但并适用。在这里不得不提给我带来深刻影响的像素动画作品们 <a href="http://1041uuu.tumblr.com/" target="_blank" rel="external">1041uuu</a>。</p><p>未来展望：使用栈保存笔画，完成撤销前进；提供自定义像素数量；以及允许添加多张画布组成动画。</p><h2 id="图像分析"><a href="#图像分析" class="headerlink" title="图像分析"></a>图像分析</h2><p>这个部分也许名不副实？（笑。起初只是想做一个图像的色彩分析，统计色彩的出现频率。依据 rgb 色彩模型，则有256^3种色彩，非常大的数字，于是将相近的色彩归位一类，由大及小最终选定了 6^3 种色彩。使用一个长度为 256 的数组存储出现次数，色彩一一对应下标 0-255，并可反向由下标推导颜色以便在页面渲染。</p><p>后来增添了灰度直方图及均衡化的直方图来表现图像的大体特征。这个部分效率受图像大小影响并不明显。</p><p>未来展望：可导出分析结果；保持效率得到更精确的结果。</p><h2 id="图像处理"><a href="#图像处理" class="headerlink" title="图像处理"></a>图像处理</h2><p>做毕设的两个月中，用于学习图像处理和使用 JavaScript 实现花了不少时间。起初大概看了看《数字图像处理》..的目录、基础和色彩相关章节，有了一点点宏观的理解，后期更具体的理解大多来自于他人文章和《数字图像处理原理与实践：基于Visual C++开发》。实现中，比较深刻的是图像剪切，有几个 jQuery 实现的插件，然而还是强迫自己写了一个纯 JavaScript 的，但至今仍不完善，将来如若有一日能够见人，打算让其作为一个独立的组件存在。</p><p>图像处理的效率随着图像增大而剧降，很 sad，也是一个改善的重点。</p><p>未来展望：结合直方图，添加曲线；可调节亮度，对比度等。</p><h2 id="有话说"><a href="#有话说" class="headerlink" title="有话说"></a>有话说</h2><p>源码完全在 <a href="https://github.com/Ckitakishi/LightImage" target="_blank" rel="external">Github</a></p><p>可以在 heroku 上 <a href="https://lightimage.herokuapp.com" target="_blank" rel="external">Tye it</a> </p>]]></content>
+    
     <summary type="html">
-    <![CDATA[<p>LightImage 是我的毕业设计项目，但是至今暂时还是一个残次成品，仍需大力的改善。初衷是开发一款轻量级的图像处理工具，后续又扩展了简易的图像分析和像素画绘制等功能。</p>
-<p>项目主要基于 HTML5 中的 Canvas 开发，当提及 Canvas 的时候，常常还会提到 SVG。Canvas 只能通过脚本驱动，适合像素级的图形问题处理；相比较而言 SVG 的驱动方式更加灵活，XML、CSS等都可，所以处理图形是通过元素。对于本项目而言，Canvas 是不二的选择。</p>]]>
+    
+      &lt;p&gt;LightImage 是我的毕业设计项目，但是至今暂时还是一个残次成品，仍需大力的改善。初衷是开发一款轻量级的图像处理工具，后续又扩展了简易的图像分析和像素画绘制等功能。&lt;/p&gt;
+&lt;p&gt;项目主要基于 HTML5 中的 Canvas 开发，当提及 Canvas 的时候，常常还会提到 SVG。Canvas 只能通过脚本驱动，适合像素级的图形问题处理；相比较而言 SVG 的驱动方式更加灵活，XML、CSS等都可，所以处理图形是通过元素。对于本项目而言，Canvas 是不二的选择。&lt;/p&gt;
     
     </summary>
+    
+      <category term="求索集" scheme="http://ckitakishi.com/categories/%E6%B1%82%E7%B4%A2%E9%9B%86/"/>
+    
     
       <category term="web" scheme="http://ckitakishi.com/tags/web/"/>
     
@@ -416,123 +274,127 @@
     
       <category term="编程" scheme="http://ckitakishi.com/tags/%E7%BC%96%E7%A8%8B/"/>
     
-      <category term="求索集" scheme="http://ckitakishi.com/categories/%E6%B1%82%E7%B4%A2%E9%9B%86/"/>
-    
   </entry>
   
   <entry>
-    <title><![CDATA[说说过去这半年]]></title>
+    <title>说说过去这半年</title>
     <link href="http://ckitakishi.com/2015/07/31/%E8%AF%B4%E8%AF%B4%E8%BF%87%E5%8E%BB%E8%BF%99%E5%8D%8A%E5%B9%B4/"/>
     <id>http://ckitakishi.com/2015/07/31/说说过去这半年/</id>
     <published>2015-07-31T14:58:17.000Z</published>
     <updated>2017-10-07T15:56:55.338Z</updated>
-    <content type="html"><![CDATA[<p>过去这半年，说实话过的蛮不错。确定了工作，结束了实习，带着不舍顺利毕业，毕业旅行。每一件事都那么难忘。</p>
-<a id="more"></a>
-<p>年初，犹豫和纠结最终还是没能阻挡一个小小的梦想，决定去霓虹工作。大三以前还信誓旦旦的说过就算去日本也只可能是旅行，亲爱的日语老师们估计怎么也想不到当年那个日语下手的学生尽然要去工作了～</p>
-<p>四月底，结束了八个月的实习，最想说的是感谢，身边的人都充满了正能量。最幸福的是开发主线由 iOS 重新回到了 web 前端开发，框架开发，新产品研发，案件对应…。</p>
-<p>六月底，毕业设计 [<a href="https://lightimage.herokuapp.com" target="_blank" rel="external">lightimage</a>] 和学位授予为大学划上了句号，带着满满的祝福和好几十G的毕业照跟最爱的 DUT 说再见了。</p>
-<p>七月，伴随着江南烟雨的毕业旅行，每天早晨醒来都会想又少了一天相伴，真的舍不得。同一个屋檐下生活了四年，你们给我带来了太多，一起努力一起玩耍互相吐槽互相打击…</p>
-<p>窗外大雨滂沱，赶在七月的尾巴，流水账一样的梳理了这半年来的发生的事情和心情。我就要带着梦想重新起航啦～</p>
-]]></content>
+    
+    <content type="html"><![CDATA[<p>过去这半年，说实话过的蛮不错。确定了工作，结束了实习，带着不舍顺利毕业，毕业旅行。每一件事都那么难忘。</p><a id="more"></a><p>年初，犹豫和纠结最终还是没能阻挡一个小小的梦想，决定去霓虹工作。大三以前还信誓旦旦的说过就算去日本也只可能是旅行，亲爱的日语老师们估计怎么也想不到当年那个日语下手的学生尽然要去工作了～</p><p>四月底，结束了八个月的实习，最想说的是感谢，身边的人都充满了正能量。最幸福的是开发主线由 iOS 重新回到了 web 前端开发，框架开发，新产品研发，案件对应…。</p><p>六月底，毕业设计 [<a href="https://lightimage.herokuapp.com" target="_blank" rel="external">lightimage</a>] 和学位授予为大学划上了句号，带着满满的祝福和好几十G的毕业照跟最爱的 DUT 说再见了。</p><p>七月，伴随着江南烟雨的毕业旅行，每天早晨醒来都会想又少了一天相伴，真的舍不得。同一个屋檐下生活了四年，你们给我带来了太多，一起努力一起玩耍互相吐槽互相打击…</p><p>窗外大雨滂沱，赶在七月的尾巴，流水账一样的梳理了这半年来的发生的事情和心情。我就要带着梦想重新起航啦～</p>]]></content>
+    
     <summary type="html">
-    <![CDATA[<p>过去这半年，说实话过的蛮不错。确定了工作，结束了实习，带着不舍顺利毕业，毕业旅行。每一件事都那么难忘。</p>]]>
+    
+      &lt;p&gt;过去这半年，说实话过的蛮不错。确定了工作，结束了实习，带着不舍顺利毕业，毕业旅行。每一件事都那么难忘。&lt;/p&gt;
     
     </summary>
     
-      <category term="随笔" scheme="http://ckitakishi.com/tags/%E9%9A%8F%E7%AC%94/"/>
-    
       <category term="浮生记" scheme="http://ckitakishi.com/categories/%E6%B5%AE%E7%94%9F%E8%AE%B0/"/>
+    
+    
+      <category term="随笔" scheme="http://ckitakishi.com/tags/%E9%9A%8F%E7%AC%94/"/>
     
   </entry>
   
   <entry>
-    <title><![CDATA[念念不忘]]></title>
+    <title>念念不忘</title>
     <link href="http://ckitakishi.com/2014/10/28/%E5%BF%B5%E5%BF%B5%E4%B8%8D%E5%BF%98/"/>
     <id>http://ckitakishi.com/2014/10/28/念念不忘/</id>
     <published>2014-10-28T11:19:18.000Z</published>
     <updated>2015-08-01T09:11:41.000Z</updated>
-    <content type="html"><![CDATA[<p>大连的冬天如期而至，时光匆匆…实习也马上就要进入第三个月，依然想要去南方…<br>过去的两个月，重新投入到 web 前端开发的怀抱，有种好久不见，你依然美丽的感觉。但是问题依旧是有的，幸好也会感觉到自己确确实实在进步。工作之余的生活特别规律，每天和 Q 一起或蹭网，或乱逛，或购物，偶尔也约上迪迪一起吃喝玩乐。<br>今天开始了写 jQuery 插件的征途，这个还是下一篇再说吧。［：）…］</p>
-]]></content>
+    
+    <content type="html"><![CDATA[<p>大连的冬天如期而至，时光匆匆…实习也马上就要进入第三个月，依然想要去南方…<br>过去的两个月，重新投入到 web 前端开发的怀抱，有种好久不见，你依然美丽的感觉。但是问题依旧是有的，幸好也会感觉到自己确确实实在进步。工作之余的生活特别规律，每天和 Q 一起或蹭网，或乱逛，或购物，偶尔也约上迪迪一起吃喝玩乐。<br>今天开始了写 jQuery 插件的征途，这个还是下一篇再说吧。［：）…］</p>]]></content>
+    
     <summary type="html">
-    <![CDATA[<p>大连的冬天如期而至，时光匆匆…实习也马上就要进入第三个月，依然想要去南方…<br>过去的两个月，重新投入到 web 前端开发的怀抱，有种好久不见，你依然美丽的感觉。但是问题依旧是有的，幸好也会感觉到自己确确实实在进步。工作之余的生活特别规律，每天和 Q 一起或蹭网，或乱逛，]]>
+    
+      
+      
+        &lt;p&gt;大连的冬天如期而至，时光匆匆…实习也马上就要进入第三个月，依然想要去南方…&lt;br&gt;过去的两个月，重新投入到 web 前端开发的怀抱，有种好久不见，你依然美丽的感觉。但是问题依旧是有的，幸好也会感觉到自己确确实实在进步。工作之余的生活特别规律，每天和 Q 一起或蹭网，或乱逛，
+      
+    
     </summary>
+    
+      <category term="浮生记" scheme="http://ckitakishi.com/categories/%E6%B5%AE%E7%94%9F%E8%AE%B0/"/>
+    
     
       <category term="思考" scheme="http://ckitakishi.com/tags/%E6%80%9D%E8%80%83/"/>
     
       <category term="生活" scheme="http://ckitakishi.com/tags/%E7%94%9F%E6%B4%BB/"/>
     
-      <category term="浮生记" scheme="http://ckitakishi.com/categories/%E6%B5%AE%E7%94%9F%E8%AE%B0/"/>
-    
   </entry>
   
   <entry>
-    <title><![CDATA[Dream Mark的前世今生]]></title>
+    <title>Dream Mark的前世今生</title>
     <link href="http://ckitakishi.com/2014/07/01/dream-mark%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/"/>
     <id>http://ckitakishi.com/2014/07/01/dream-mark的前世今生/</id>
     <published>2014-07-01T14:28:10.000Z</published>
     <updated>2017-10-07T15:57:40.253Z</updated>
-    <content type="html"><![CDATA[<h2 id="DreamMark_的前世">DreamMark 的前世</h2><p>DreamMark的的简介永远都是 <em>Mark our dream.</em> </p>
-<p>起初，这源于一次激烈的讨论。“生活并不平淡，可很多东西就是记不住”，“我们大概需要借助纸和笔”，“可是，铭心的自然忘不了，其它又记了干嘛”，差一点，就再也没有然后了。“不一样的，记住可以是为了记忆，也可以是提醒”，“做梦！哪有那么神奇。”，“嗯！那就做梦吧！”，“……”。</p>
-<p>于是，我们决定 <em>mark our dream</em> 。让梦境和梦想，为记忆添上那么一点儿不同的东西。</p>
-<a id="more"></a>
-<h2 id="DreamMark_的今生">DreamMark 的今生</h2><p>半个月，每天约 3 小时，我们完成了 DreamMark 最初版的开发。</p>
-<p>DreamMark 支持两种模式：</p>
-<blockquote>
-<p>涂鸦 —- 给你一个画板，你可以绘出你的梦<br>拼图 —- 场景 + 人物 + 情节 + 其它 = 你的梦</p>
-</blockquote>
-<p>DreamMark 学会了走路，但还走的不漂亮。无论是设计还是代码，我们会努力做到更好。</p>
-<h2 id="DreamMark_相关">DreamMark 相关</h2><p>所有图片均由 <a href="http://chiakiq.com/" target="_blank" rel="external">晴</a> 原创。<br>使用 <a href="https://www.parse.com/" target="_blank" rel="external">Parse</a> 提供后台服务。<br>更新在 <a href="https://github.com/Ckitakishi/DreamMark" target="_blank" rel="external">这里</a>。</p>
-]]></content>
+    
+    <content type="html"><![CDATA[<h2 id="DreamMark-的前世"><a href="#DreamMark-的前世" class="headerlink" title="DreamMark 的前世"></a>DreamMark 的前世</h2><p>DreamMark的的简介永远都是 <em>Mark our dream.</em> </p><p>起初，这源于一次激烈的讨论。“生活并不平淡，可很多东西就是记不住”，“我们大概需要借助纸和笔”，“可是，铭心的自然忘不了，其它又记了干嘛”，差一点，就再也没有然后了。“不一样的，记住可以是为了记忆，也可以是提醒”，“做梦！哪有那么神奇。”，“嗯！那就做梦吧！”，“……”。</p><p>于是，我们决定 <em>mark our dream</em> 。让梦境和梦想，为记忆添上那么一点儿不同的东西。</p><a id="more"></a><h2 id="DreamMark-的今生"><a href="#DreamMark-的今生" class="headerlink" title="DreamMark 的今生"></a>DreamMark 的今生</h2><p>半个月，每天约 3 小时，我们完成了 DreamMark 最初版的开发。</p><p>DreamMark 支持两种模式：</p><blockquote><p>涂鸦 — 给你一个画板，你可以绘出你的梦<br>拼图 — 场景 + 人物 + 情节 + 其它 = 你的梦</p></blockquote><p>DreamMark 学会了走路，但还走的不漂亮。无论是设计还是代码，我们会努力做到更好。</p><h2 id="DreamMark-相关"><a href="#DreamMark-相关" class="headerlink" title="DreamMark 相关"></a>DreamMark 相关</h2><p>所有图片均由 <a href="http://chiakiq.com/" target="_blank" rel="external">晴</a> 原创。<br>使用 <a href="https://www.parse.com/" target="_blank" rel="external">Parse</a> 提供后台服务。<br>更新在 <a href="https://github.com/Ckitakishi/DreamMark" target="_blank" rel="external">这里</a>。</p>]]></content>
+    
     <summary type="html">
-    <![CDATA[<h2 id="DreamMark_的前世">DreamMark 的前世</h2><p>DreamMark的的简介永远都是 <em>Mark our dream.</em> </p>
-<p>起初，这源于一次激烈的讨论。“生活并不平淡，可很多东西就是记不住”，“我们大概需要借助纸和笔”，“可是，铭心的自然忘不了，其它又记了干嘛”，差一点，就再也没有然后了。“不一样的，记住可以是为了记忆，也可以是提醒”，“做梦！哪有那么神奇。”，“嗯！那就做梦吧！”，“……”。</p>
-<p>于是，我们决定 <em>mark our dream</em> 。让梦境和梦想，为记忆添上那么一点儿不同的东西。</p>]]>
+    
+      &lt;h2 id=&quot;DreamMark-的前世&quot;&gt;&lt;a href=&quot;#DreamMark-的前世&quot; class=&quot;headerlink&quot; title=&quot;DreamMark 的前世&quot;&gt;&lt;/a&gt;DreamMark 的前世&lt;/h2&gt;&lt;p&gt;DreamMark的的简介永远都是 &lt;em&gt;Mark our dream.&lt;/em&gt; &lt;/p&gt;
+&lt;p&gt;起初，这源于一次激烈的讨论。“生活并不平淡，可很多东西就是记不住”，“我们大概需要借助纸和笔”，“可是，铭心的自然忘不了，其它又记了干嘛”，差一点，就再也没有然后了。“不一样的，记住可以是为了记忆，也可以是提醒”，“做梦！哪有那么神奇。”，“嗯！那就做梦吧！”，“……”。&lt;/p&gt;
+&lt;p&gt;于是，我们决定 &lt;em&gt;mark our dream&lt;/em&gt; 。让梦境和梦想，为记忆添上那么一点儿不同的东西。&lt;/p&gt;
     
     </summary>
+    
+      <category term="求索集" scheme="http://ckitakishi.com/categories/%E6%B1%82%E7%B4%A2%E9%9B%86/"/>
+    
     
       <category term="iOS" scheme="http://ckitakishi.com/tags/iOS/"/>
     
       <category term="编程" scheme="http://ckitakishi.com/tags/%E7%BC%96%E7%A8%8B/"/>
     
-      <category term="求索集" scheme="http://ckitakishi.com/categories/%E6%B1%82%E7%B4%A2%E9%9B%86/"/>
-    
   </entry>
   
   <entry>
-    <title><![CDATA[与 Swift 共舞]]></title>
+    <title>与 Swift 共舞</title>
     <link href="http://ckitakishi.com/2014/06/03/%E4%B8%8E-swift-%E5%85%B1%E8%88%9E/"/>
     <id>http://ckitakishi.com/2014/06/03/与-swift-共舞/</id>
     <published>2014-06-03T14:22:50.000Z</published>
     <updated>2014-06-10T13:54:47.000Z</updated>
-    <content type="html"><![CDATA[<h4 id="不知道现在说与Swift共舞会不会太乐观，一门新语言的诞生，惊喜的同时充满太多未知。迫不及待的下载了Xcode_6，感受Swift带来的新气象。然而很不幸的是，第一次使用playground模拟器就挂了…不过语法真的是很符合我的胃口，对我来说，自然是又像C#，又像Javascript啦~很期待接下来的学习。">不知道现在说与Swift共舞会不会太乐观，一门新语言的诞生，惊喜的同时充满太多未知。迫不及待的下载了Xcode 6，感受Swift带来的新气象。然而很不幸的是，第一次使用playground模拟器就挂了…不过语法真的是很符合我的胃口，对我来说，自然是又像C#，又像Javascript啦~很期待接下来的学习。</h4><h4 id="希望今后，这篇文章能够持续写下去，期待与Swift共舞。">希望今后，这篇文章能够持续写下去，期待与Swift共舞。</h4>]]></content>
+    
+    <content type="html"><![CDATA[<h4 id="不知道现在说与Swift共舞会不会太乐观，一门新语言的诞生，惊喜的同时充满太多未知。迫不及待的下载了Xcode-6，感受Swift带来的新气象。然而很不幸的是，第一次使用playground模拟器就挂了…不过语法真的是很符合我的胃口，对我来说，自然是又像C-，又像Javascript啦-很期待接下来的学习。"><a href="#不知道现在说与Swift共舞会不会太乐观，一门新语言的诞生，惊喜的同时充满太多未知。迫不及待的下载了Xcode-6，感受Swift带来的新气象。然而很不幸的是，第一次使用playground模拟器就挂了…不过语法真的是很符合我的胃口，对我来说，自然是又像C-，又像Javascript啦-很期待接下来的学习。" class="headerlink" title="不知道现在说与Swift共舞会不会太乐观，一门新语言的诞生，惊喜的同时充满太多未知。迫不及待的下载了Xcode 6，感受Swift带来的新气象。然而很不幸的是，第一次使用playground模拟器就挂了…不过语法真的是很符合我的胃口，对我来说，自然是又像C#，又像Javascript啦~很期待接下来的学习。"></a>不知道现在说与Swift共舞会不会太乐观，一门新语言的诞生，惊喜的同时充满太多未知。迫不及待的下载了Xcode 6，感受Swift带来的新气象。然而很不幸的是，第一次使用playground模拟器就挂了…不过语法真的是很符合我的胃口，对我来说，自然是又像C#，又像Javascript啦~很期待接下来的学习。</h4><h4 id="希望今后，这篇文章能够持续写下去，期待与Swift共舞。"><a href="#希望今后，这篇文章能够持续写下去，期待与Swift共舞。" class="headerlink" title="希望今后，这篇文章能够持续写下去，期待与Swift共舞。"></a>希望今后，这篇文章能够持续写下去，期待与Swift共舞。</h4>]]></content>
+    
     <summary type="html">
-    <![CDATA[<h4 id="不知道现在说与Swift共舞会不会太乐观，一门新语言的诞生，惊喜的同时充满太多未知。迫不及待的下载了Xcode_6，感受Swift带来的新气象。然而很不幸的是，第一次使用playground模拟器就挂了…不过语法真的是很符合我的胃口，对我来说，自然是又像C#，又像]]>
+    
+      
+      
+        &lt;h4 id=&quot;不知道现在说与Swift共舞会不会太乐观，一门新语言的诞生，惊喜的同时充满太多未知。迫不及待的下载了Xcode-6，感受Swift带来的新气象。然而很不幸的是，第一次使用playground模拟器就挂了…不过语法真的是很符合我的胃口，对我来说，自然是又像C-，又像
+      
+    
     </summary>
     
-      <category term="编程" scheme="http://ckitakishi.com/tags/%E7%BC%96%E7%A8%8B/"/>
-    
       <category term="iOS" scheme="http://ckitakishi.com/categories/iOS/"/>
+    
+    
+      <category term="编程" scheme="http://ckitakishi.com/tags/%E7%BC%96%E7%A8%8B/"/>
     
   </entry>
   
   <entry>
-    <title><![CDATA[Meziriac的砝码问题]]></title>
+    <title>Meziriac的砝码问题</title>
     <link href="http://ckitakishi.com/2014/04/12/meziriac%E7%9A%84%E7%A0%9D%E7%A0%81%E9%97%AE%E9%A2%98/"/>
     <id>http://ckitakishi.com/2014/04/12/meziriac的砝码问题/</id>
     <published>2014-04-12T14:46:04.000Z</published>
-    <updated>2017-10-07T15:57:46.825Z</updated>
-    <content type="html"><![CDATA[<h4 id="在回学校的车上人超多，默默的在想砝码的那道题。下午那道题答的实在是…图样图森破…">在回学校的车上人超多，默默的在想砝码的那道题。下午那道题答的实在是…图样图森破…</h4><pre><code><span class="attribute">题目大概是:
-一个商去买钻石，所有钻石都&lt;</span>=<span class="string">40g，他只带四个砝码和一个天平，请问四个砝码分别是多重的？</span>
-</code></pre><a id="more"></a>
-<h4 id="在车上时，考虑了四个数字加减可能出现数据数量，超过40个妥妥的，嘿嘿，使用暴力穷举？不过那时只能靠想了，设四个数为a,b,c,d，其中组合的最大值a+b+c+d=40，最小是可能就是a-b-c-d,不能等于1，就假设等于2吧，然后求出四个数分别是，4，7，8，21。可惜在1-20中，16无法出现…-再一次感觉到自己弱爆了。">在车上时，考虑了四个数字加减可能出现数据数量，超过40个妥妥的，嘿嘿，使用暴力穷举？不过那时只能靠想了，设四个数为a,b,c,d，其中组合的最大值a+b+c+d=40，最小是可能就是a-b-c-d,不能等于1，就假设等于2吧，然后求出四个数分别是，4，7，8，21。可惜在1-20中，16无法出现….再一次感觉到自己弱爆了。</h4><h4 id="现在，除了穷举，还可以有以下方法。">现在，除了穷举，还可以有以下方法。</h4><pre><code>方法一：可以考虑三进制，把0，1，2转化为-1，0，1就可以很好的表示砝码的问题了。
-方法二：（可以理解为由小及大么）<span class="number">1是1；1，3</span>可以组成<span class="number">1-4；1，3</span>，9可以组成<span class="number">1-13；1，3</span>，9，27可以组成1-40。
-</code></pre><h4 id="觉得现在的思考能力真心还不如以前了，还是应该多思考些问题才好T_T。">觉得现在的思考能力真心还不如以前了，还是应该多思考些问题才好T_T。</h4>]]></content>
+    <updated>2017-10-07T15:57:46.826Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="在回学校的车上人超多，默默的在想砝码的那道题。下午那道题答的实在是…图样图森破…"><a href="#在回学校的车上人超多，默默的在想砝码的那道题。下午那道题答的实在是…图样图森破…" class="headerlink" title="在回学校的车上人超多，默默的在想砝码的那道题。下午那道题答的实在是…图样图森破…"></a>在回学校的车上人超多，默默的在想砝码的那道题。下午那道题答的实在是…图样图森破…</h4><pre><code>题目大概是:一个商去买钻石，所有钻石都&lt;=40g，他只带四个砝码和一个天平，请问四个砝码分别是多重的？</code></pre><a id="more"></a><h4 id="在车上时，考虑了四个数字加减可能出现数据数量，超过40个妥妥的，嘿嘿，使用暴力穷举？不过那时只能靠想了，设四个数为a-b-c-d，其中组合的最大值a-b-c-d-40，最小是可能就是a-b-c-d-不能等于1，就假设等于2吧，然后求出四个数分别是，4，7，8，21。可惜在1-20中，16无法出现…-再一次感觉到自己弱爆了。"><a href="#在车上时，考虑了四个数字加减可能出现数据数量，超过40个妥妥的，嘿嘿，使用暴力穷举？不过那时只能靠想了，设四个数为a-b-c-d，其中组合的最大值a-b-c-d-40，最小是可能就是a-b-c-d-不能等于1，就假设等于2吧，然后求出四个数分别是，4，7，8，21。可惜在1-20中，16无法出现…-再一次感觉到自己弱爆了。" class="headerlink" title="在车上时，考虑了四个数字加减可能出现数据数量，超过40个妥妥的，嘿嘿，使用暴力穷举？不过那时只能靠想了，设四个数为a,b,c,d，其中组合的最大值a+b+c+d=40，最小是可能就是a-b-c-d,不能等于1，就假设等于2吧，然后求出四个数分别是，4，7，8，21。可惜在1-20中，16无法出现….再一次感觉到自己弱爆了。"></a>在车上时，考虑了四个数字加减可能出现数据数量，超过40个妥妥的，嘿嘿，使用暴力穷举？不过那时只能靠想了，设四个数为a,b,c,d，其中组合的最大值a+b+c+d=40，最小是可能就是a-b-c-d,不能等于1，就假设等于2吧，然后求出四个数分别是，4，7，8，21。可惜在1-20中，16无法出现….再一次感觉到自己弱爆了。</h4><h4 id="现在，除了穷举，还可以有以下方法。"><a href="#现在，除了穷举，还可以有以下方法。" class="headerlink" title="现在，除了穷举，还可以有以下方法。"></a>现在，除了穷举，还可以有以下方法。</h4><pre><code>方法一：可以考虑三进制，把0，1，2转化为-1，0，1就可以很好的表示砝码的问题了。方法二：（可以理解为由小及大么）1是1；1，3可以组成1-4；1，3，9可以组成1-13；1，3，9，27可以组成1-40。</code></pre><h4 id="觉得现在的思考能力真心还不如以前了，还是应该多思考些问题才好T-T。"><a href="#觉得现在的思考能力真心还不如以前了，还是应该多思考些问题才好T-T。" class="headerlink" title="觉得现在的思考能力真心还不如以前了，还是应该多思考些问题才好T_T。"></a>觉得现在的思考能力真心还不如以前了，还是应该多思考些问题才好T_T。</h4>]]></content>
+    
     <summary type="html">
-    <![CDATA[<h4 id="在回学校的车上人超多，默默的在想砝码的那道题。下午那道题答的实在是…图样图森破…">在回学校的车上人超多，默默的在想砝码的那道题。下午那道题答的实在是…图样图森破…</h4><pre><code><span class="attribute">题目大概是:
-一个商去买钻石，所有钻石都&lt;</span>=<span class="string">40g，他只带四个砝码和一个天平，请问四个砝码分别是多重的？</span>
-</code></pre>]]>
+    
+      &lt;h4 id=&quot;在回学校的车上人超多，默默的在想砝码的那道题。下午那道题答的实在是…图样图森破…&quot;&gt;&lt;a href=&quot;#在回学校的车上人超多，默默的在想砝码的那道题。下午那道题答的实在是…图样图森破…&quot; class=&quot;headerlink&quot; title=&quot;在回学校的车上人超多，默默的在想砝码的那道题。下午那道题答的实在是…图样图森破…&quot;&gt;&lt;/a&gt;在回学校的车上人超多，默默的在想砝码的那道题。下午那道题答的实在是…图样图森破…&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;题目大概是:
+一个商去买钻石，所有钻石都&amp;lt;=40g，他只带四个砝码和一个天平，请问四个砝码分别是多重的？
+&lt;/code&gt;&lt;/pre&gt;
     
     </summary>
+    
+      <category term="求索集" scheme="http://ckitakishi.com/categories/%E6%B1%82%E7%B4%A2%E9%9B%86/"/>
+    
     
       <category term="思考" scheme="http://ckitakishi.com/tags/%E6%80%9D%E8%80%83/"/>
     
@@ -540,173 +402,129 @@
     
       <category term="编程" scheme="http://ckitakishi.com/tags/%E7%BC%96%E7%A8%8B/"/>
     
-      <category term="求索集" scheme="http://ckitakishi.com/categories/%E6%B1%82%E7%B4%A2%E9%9B%86/"/>
-    
   </entry>
   
   <entry>
-    <title><![CDATA[诞生日]]></title>
+    <title>诞生日</title>
     <link href="http://ckitakishi.com/2014/04/03/%E8%AF%9E%E7%94%9F%E6%97%A5/"/>
     <id>http://ckitakishi.com/2014/04/03/诞生日/</id>
     <published>2014-04-03T10:28:07.000Z</published>
     <updated>2015-08-01T09:12:29.000Z</updated>
-    <content type="html"><![CDATA[<p>人间四月天，转眼又一年。还没等到大连的莺飞草长，就已经迈过了二十一的坎，生日快乐~(*^^)v   —关于生日，记忆中大概只有美好吧~</p>
-<p>小时候，每年生日都会拍一张照片，记录成长；小学时，生日是全班同学的聚会，一起玩整整一晚上，在烧烤摊high完才各回各家。中学时，每一年的生日都有父母相伴，生日礼物开始不再是文具；不得不提的高三，我们会为每一位同学庆祝生日，终生难忘。</p>
-<a id="more"></a>
-<p>今年生日前一直向<a href="chiakiq.com">晴</a>吐槽，说自己慢慢不年轻了……晴表示巨无语。有时候会为大学的某些阶段没有珍惜时光感到遗憾，尤其是在参加阿里的笔试后，凄惨的处女笔。。。发自内心的说，这是一个很珍贵的年纪，能够比过几年更快的更有精力的学习一些东西，也能够参透一些曾经不懂的东西。</p>
-<p>感谢祝福我的大家，么么哒~爸妈今年送了一支LAMY Safari 和一块表，很喜欢，很惊喜。还有晴的礼物们，瞬间提升文艺程度！还有收到书，拜仁周边啦~~什么的~都很符合我的口味。</p>
-<hr>
-<p>不曾忘记初心，无论如何，我都会一直为之努力。</p>
-]]></content>
+    
+    <content type="html"><![CDATA[<p>人间四月天，转眼又一年。还没等到大连的莺飞草长，就已经迈过了二十一的坎，生日快乐~(*^^)v   –关于生日，记忆中大概只有美好吧~</p><p>小时候，每年生日都会拍一张照片，记录成长；小学时，生日是全班同学的聚会，一起玩整整一晚上，在烧烤摊high完才各回各家。中学时，每一年的生日都有父母相伴，生日礼物开始不再是文具；不得不提的高三，我们会为每一位同学庆祝生日，终生难忘。</p><a id="more"></a><p>今年生日前一直向<a href="chiakiq.com">晴</a>吐槽，说自己慢慢不年轻了……晴表示巨无语。有时候会为大学的某些阶段没有珍惜时光感到遗憾，尤其是在参加阿里的笔试后，凄惨的处女笔。。。发自内心的说，这是一个很珍贵的年纪，能够比过几年更快的更有精力的学习一些东西，也能够参透一些曾经不懂的东西。</p><p>感谢祝福我的大家，么么哒~爸妈今年送了一支LAMY Safari 和一块表，很喜欢，很惊喜。还有晴的礼物们，瞬间提升文艺程度！还有收到书，拜仁周边啦~~什么的~都很符合我的口味。</p><hr><p>不曾忘记初心，无论如何，我都会一直为之努力。</p>]]></content>
+    
     <summary type="html">
-    <![CDATA[<p>人间四月天，转眼又一年。还没等到大连的莺飞草长，就已经迈过了二十一的坎，生日快乐~(*^^)v   —关于生日，记忆中大概只有美好吧~</p>
-<p>小时候，每年生日都会拍一张照片，记录成长；小学时，生日是全班同学的聚会，一起玩整整一晚上，在烧烤摊high完才各回各家。中学时，每一年的生日都有父母相伴，生日礼物开始不再是文具；不得不提的高三，我们会为每一位同学庆祝生日，终生难忘。</p>]]>
+    
+      &lt;p&gt;人间四月天，转眼又一年。还没等到大连的莺飞草长，就已经迈过了二十一的坎，生日快乐~(*^^)v   –关于生日，记忆中大概只有美好吧~&lt;/p&gt;
+&lt;p&gt;小时候，每年生日都会拍一张照片，记录成长；小学时，生日是全班同学的聚会，一起玩整整一晚上，在烧烤摊high完才各回各家。中学时，每一年的生日都有父母相伴，生日礼物开始不再是文具；不得不提的高三，我们会为每一位同学庆祝生日，终生难忘。&lt;/p&gt;
     
     </summary>
+    
+      <category term="浮生记" scheme="http://ckitakishi.com/categories/%E6%B5%AE%E7%94%9F%E8%AE%B0/"/>
+    
     
       <category term="喜悦" scheme="http://ckitakishi.com/tags/%E5%96%9C%E6%82%A6/"/>
     
       <category term="生活" scheme="http://ckitakishi.com/tags/%E7%94%9F%E6%B4%BB/"/>
     
-      <category term="浮生记" scheme="http://ckitakishi.com/categories/%E6%B5%AE%E7%94%9F%E8%AE%B0/"/>
-    
   </entry>
   
   <entry>
-    <title><![CDATA[UIKit Dynamics--iOS7]]></title>
+    <title>UIKit Dynamics--iOS7</title>
     <link href="http://ckitakishi.com/2014/03/22/uikit-dynamics--ios7/"/>
     <id>http://ckitakishi.com/2014/03/22/uikit-dynamics--ios7/</id>
     <published>2014-03-22T13:17:38.000Z</published>
     <updated>2017-10-07T15:57:53.909Z</updated>
-    <content type="html"><![CDATA[<h2 id="Dynamic_Items:">Dynamic Items:</h2><h4 id="UIDynamicItem_Protocol是13年的WWDC新增加的。">UIDynamicItem Protocol是13年的WWDC新增加的。</h4><a id="more"></a>
-<p> <a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIDynamicItem_Protocol/Reference/Reference.html" target="_blank" rel="external">Apple Library相关的</a></p>
-<h4 id="UIKit_Dynamics的焦点都是关于items之间相互的作用及其动画。有一个要求，为了在一个item上使用dynamic_behavior，item必须满足UIDynamicItem协议。该协议定义了三个重要的属性，bounds，center，transform。bounds属性是readonly的,center,transform属性是read/write的，center需要更新动画的进度,transform属性返回一个CGAffineTransform的对象。">UIKit Dynamics的焦点都是关于items之间相互的作用及其动画。有一个要求，为了在一个item上使用dynamic behavior，item必须满足<code>UIDynamicItem</code>协议。该协议定义了三个重要的属性，<code>bounds</code>，<code>center</code>，<code>transform</code>。<code>bounds</code>属性是readonly的,<code>center</code>,<code>transform</code>属性是read/write的，<code>center</code>需要更新动画的进度,<code>transform</code>属性返回一个<code>CGAffineTransform</code>的对象。</h4><h4 id="从iOS7开始，默认的只有UIView和UICollectionViewLayoutAttributes类可实现该协议。但是，仍然可以自己创建类去实现之。">从iOS7开始，默认的只有<code>UIView</code>和<code>UICollectionViewLayoutAttributes</code>类可实现该协议。但是，仍然可以自己创建类去实现之。</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property(nonatomic, readonly) CGRect bounds&#10;@property(nonatomic, readwrite) CGPoint center&#10;@property(nonatomic, readwrite) CGAffineTransform transform</span><br></pre></td></tr></table></figure>
-<h2 id="Dynamic_Behaviors">Dynamic Behaviors</h2><h4 id="在UIKit_Dynamics中，一个Dynamic_Behavior模拟的是真实世界的物理行为。包含以下六个类：">在UIKit Dynamics中，一个Dynamic Behavior模拟的是真实世界的物理行为。包含以下六个类：</h4><ul>
-<li>UIAttachmentBehavior</li>
-<li>UICollisionBehavior</li>
-<li>UIGravityBehavior</li>
-<li>UIPushBehavior</li>
-<li>UISnapBehavior</li>
-<li>UIDynamicItemBehavior </li>
-</ul>
-<h4 id="前五个分别是—附着、碰撞、重力、推力、捕捉。_最后一个不是一个具体的行为，但是也很有用~按我的理解就是可以设置一个物体的本质属性，不依赖于外界而存在的。">前五个分别是—附着、碰撞、重力、推力、捕捉。 最后一个不是一个具体的行为，但是也很有用~按我的理解就是可以设置一个物体的本质属性，不依赖于外界而存在的。</h4><h4 id="最近写代码用到UIDynamicItemBehavior，感觉太棒了！">最近写代码用到UIDynamicItemBehavior，感觉太棒了！</h4><ul>
-<li>allowsRotation 是否可以旋转；默认YES；</li>
-<li>density 密度；默认1.0;</li>
-<li>elasticity 弹性系数；默认0.0；</li>
-<li>friction 摩擦系数；默认0.0；</li>
-<li>resistance 阻力；默认0.0；</li>
-</ul>
-<h4 id="当时想要让一个球能够一开始就有方向有速度的运动，以下两个函数不能再赞，很简便。">当时想要让一个球能够一开始就有方向有速度的运动，以下两个函数不能再赞，很简便。</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"> &#8211; addAngularVelocity(CGFloat):forItem(id[UIDynamicItem])//&#35774;&#32622;&#35282;&#36895;&#24230;&#10; &#8211; addLinearVelocity(CGPoint):forItem(id[UIDynamicItem])//&#35774;&#32622;&#32447;&#36895;&#24230;&#10;//angularResistance&#35282;&#24230;&#38459;&#21147;&#31995;&#25968;</span><br></pre></td></tr></table></figure>
-<h2 id="UIDynamicAnimator">UIDynamicAnimator</h2><h4 id="UIDynamicBehavior需要添加到animator上才能发生作用；">UIDynamicBehavior需要添加到animator上才能发生作用；</h4><h2 id="ReferenceView">ReferenceView</h2><h4 id="等同于力学参考系。">等同于力学参考系。</h4>]]></content>
+    
+    <content type="html"><![CDATA[<h2 id="Dynamic-Items"><a href="#Dynamic-Items" class="headerlink" title="Dynamic Items:"></a>Dynamic Items:</h2><h4 id="UIDynamicItem-Protocol是13年的WWDC新增加的。"><a href="#UIDynamicItem-Protocol是13年的WWDC新增加的。" class="headerlink" title="UIDynamicItem Protocol是13年的WWDC新增加的。"></a>UIDynamicItem Protocol是13年的WWDC新增加的。</h4><a id="more"></a><p> <a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIDynamicItem_Protocol/Reference/Reference.html" target="_blank" rel="external">Apple Library相关的</a></p><h4 id="UIKit-Dynamics的焦点都是关于items之间相互的作用及其动画。有一个要求，为了在一个item上使用dynamic-behavior，item必须满足UIDynamicItem协议。该协议定义了三个重要的属性，bounds，center，transform。bounds属性是readonly的-center-transform属性是read-write的，center需要更新动画的进度-transform属性返回一个CGAffineTransform的对象。"><a href="#UIKit-Dynamics的焦点都是关于items之间相互的作用及其动画。有一个要求，为了在一个item上使用dynamic-behavior，item必须满足UIDynamicItem协议。该协议定义了三个重要的属性，bounds，center，transform。bounds属性是readonly的-center-transform属性是read-write的，center需要更新动画的进度-transform属性返回一个CGAffineTransform的对象。" class="headerlink" title="UIKit Dynamics的焦点都是关于items之间相互的作用及其动画。有一个要求，为了在一个item上使用dynamic behavior，item必须满足UIDynamicItem协议。该协议定义了三个重要的属性，bounds，center，transform。bounds属性是readonly的,center,transform属性是read/write的，center需要更新动画的进度,transform属性返回一个CGAffineTransform的对象。"></a>UIKit Dynamics的焦点都是关于items之间相互的作用及其动画。有一个要求，为了在一个item上使用dynamic behavior，item必须满足<code>UIDynamicItem</code>协议。该协议定义了三个重要的属性，<code>bounds</code>，<code>center</code>，<code>transform</code>。<code>bounds</code>属性是readonly的,<code>center</code>,<code>transform</code>属性是read/write的，<code>center</code>需要更新动画的进度,<code>transform</code>属性返回一个<code>CGAffineTransform</code>的对象。</h4><h4 id="从iOS7开始，默认的只有UIView和UICollectionViewLayoutAttributes类可实现该协议。但是，仍然可以自己创建类去实现之。"><a href="#从iOS7开始，默认的只有UIView和UICollectionViewLayoutAttributes类可实现该协议。但是，仍然可以自己创建类去实现之。" class="headerlink" title="从iOS7开始，默认的只有UIView和UICollectionViewLayoutAttributes类可实现该协议。但是，仍然可以自己创建类去实现之。"></a>从iOS7开始，默认的只有<code>UIView</code>和<code>UICollectionViewLayoutAttributes</code>类可实现该协议。但是，仍然可以自己创建类去实现之。</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property(nonatomic, readonly) CGRect bounds&#10;@property(nonatomic, readwrite) CGPoint center&#10;@property(nonatomic, readwrite) CGAffineTransform transform</span><br></pre></td></tr></table></figure><h2 id="Dynamic-Behaviors"><a href="#Dynamic-Behaviors" class="headerlink" title="Dynamic Behaviors"></a>Dynamic Behaviors</h2><h4 id="在UIKit-Dynamics中，一个Dynamic-Behavior模拟的是真实世界的物理行为。包含以下六个类："><a href="#在UIKit-Dynamics中，一个Dynamic-Behavior模拟的是真实世界的物理行为。包含以下六个类：" class="headerlink" title="在UIKit Dynamics中，一个Dynamic Behavior模拟的是真实世界的物理行为。包含以下六个类："></a>在UIKit Dynamics中，一个Dynamic Behavior模拟的是真实世界的物理行为。包含以下六个类：</h4><ul><li>UIAttachmentBehavior</li><li>UICollisionBehavior</li><li>UIGravityBehavior</li><li>UIPushBehavior</li><li>UISnapBehavior</li><li>UIDynamicItemBehavior </li></ul><h4 id="前五个分别是–附着、碰撞、重力、推力、捕捉。-最后一个不是一个具体的行为，但是也很有用-按我的理解就是可以设置一个物体的本质属性，不依赖于外界而存在的。"><a href="#前五个分别是–附着、碰撞、重力、推力、捕捉。-最后一个不是一个具体的行为，但是也很有用-按我的理解就是可以设置一个物体的本质属性，不依赖于外界而存在的。" class="headerlink" title="前五个分别是–附着、碰撞、重力、推力、捕捉。 最后一个不是一个具体的行为，但是也很有用~按我的理解就是可以设置一个物体的本质属性，不依赖于外界而存在的。"></a>前五个分别是–附着、碰撞、重力、推力、捕捉。 最后一个不是一个具体的行为，但是也很有用~按我的理解就是可以设置一个物体的本质属性，不依赖于外界而存在的。</h4><h4 id="最近写代码用到UIDynamicItemBehavior，感觉太棒了！"><a href="#最近写代码用到UIDynamicItemBehavior，感觉太棒了！" class="headerlink" title="最近写代码用到UIDynamicItemBehavior，感觉太棒了！"></a>最近写代码用到UIDynamicItemBehavior，感觉太棒了！</h4><ul><li>allowsRotation 是否可以旋转；默认YES；</li><li>density 密度；默认1.0;</li><li>elasticity 弹性系数；默认0.0；</li><li>friction 摩擦系数；默认0.0；</li><li>resistance 阻力；默认0.0；</li></ul><h4 id="当时想要让一个球能够一开始就有方向有速度的运动，以下两个函数不能再赞，很简便。"><a href="#当时想要让一个球能够一开始就有方向有速度的运动，以下两个函数不能再赞，很简便。" class="headerlink" title="当时想要让一个球能够一开始就有方向有速度的运动，以下两个函数不能再赞，很简便。"></a>当时想要让一个球能够一开始就有方向有速度的运动，以下两个函数不能再赞，很简便。</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"> &#8211; addAngularVelocity(CGFloat):forItem(id[UIDynamicItem])//&#35774;&#32622;&#35282;&#36895;&#24230;&#10; &#8211; addLinearVelocity(CGPoint):forItem(id[UIDynamicItem])//&#35774;&#32622;&#32447;&#36895;&#24230;&#10;//angularResistance&#35282;&#24230;&#38459;&#21147;&#31995;&#25968;</span><br></pre></td></tr></table></figure><h2 id="UIDynamicAnimator"><a href="#UIDynamicAnimator" class="headerlink" title="UIDynamicAnimator"></a>UIDynamicAnimator</h2><h4 id="UIDynamicBehavior需要添加到animator上才能发生作用；"><a href="#UIDynamicBehavior需要添加到animator上才能发生作用；" class="headerlink" title="UIDynamicBehavior需要添加到animator上才能发生作用；"></a>UIDynamicBehavior需要添加到animator上才能发生作用；</h4><h2 id="ReferenceView"><a href="#ReferenceView" class="headerlink" title="ReferenceView"></a>ReferenceView</h2><h4 id="等同于力学参考系。"><a href="#等同于力学参考系。" class="headerlink" title="等同于力学参考系。"></a>等同于力学参考系。</h4>]]></content>
+    
     <summary type="html">
-    <![CDATA[<h2 id="Dynamic_Items:">Dynamic Items:</h2><h4 id="UIDynamicItem_Protocol是13年的WWDC新增加的。">UIDynamicItem Protocol是13年的WWDC新增加的。</h4>]]>
+    
+      &lt;h2 id=&quot;Dynamic-Items&quot;&gt;&lt;a href=&quot;#Dynamic-Items&quot; class=&quot;headerlink&quot; title=&quot;Dynamic Items:&quot;&gt;&lt;/a&gt;Dynamic Items:&lt;/h2&gt;&lt;h4 id=&quot;UIDynamicItem-Protocol是13年的WWDC新增加的。&quot;&gt;&lt;a href=&quot;#UIDynamicItem-Protocol是13年的WWDC新增加的。&quot; class=&quot;headerlink&quot; title=&quot;UIDynamicItem Protocol是13年的WWDC新增加的。&quot;&gt;&lt;/a&gt;UIDynamicItem Protocol是13年的WWDC新增加的。&lt;/h4&gt;
     
     </summary>
+    
+      <category term="求索集" scheme="http://ckitakishi.com/categories/%E6%B1%82%E7%B4%A2%E9%9B%86/"/>
+    
     
       <category term="iOS" scheme="http://ckitakishi.com/tags/iOS/"/>
     
       <category term="编程" scheme="http://ckitakishi.com/tags/%E7%BC%96%E7%A8%8B/"/>
     
-      <category term="求索集" scheme="http://ckitakishi.com/categories/%E6%B1%82%E7%B4%A2%E9%9B%86/"/>
-    
   </entry>
   
   <entry>
-    <title><![CDATA[短途骑行]]></title>
+    <title>短途骑行</title>
     <link href="http://ckitakishi.com/2014/01/21/%E7%9F%AD%E9%80%94%E9%AA%91%E8%A1%8C/"/>
     <id>http://ckitakishi.com/2014/01/21/短途骑行/</id>
     <published>2014-01-21T13:46:43.000Z</published>
     <updated>2015-08-01T09:11:48.000Z</updated>
-    <content type="html"><![CDATA[<h4 id="昨日这个冬天的第三场雪悄然而至，今天早上大雾一场，下午居然天晴了。">昨日这个冬天的第三场雪悄然而至，今天早上大雾一场，下午居然天晴了。</h4><h4 id="前几天入了13款merida的duke_500,对于我这种菜鸟来说，实在是很给力了。假期抓紧时间骑。高中时对大学的憧憬之一就是可以在校园以骑行为交通方式，结果软院全是楼梯。。泪奔。">前几天入了13款merida的duke 500,对于我这种菜鸟来说，实在是很给力了。假期抓紧时间骑。高中时对大学的憧憬之一就是可以在校园以骑行为交通方式，结果软院全是楼梯。。泪奔。</h4><a id="more"></a>
-<h4 id="参数如下，正在研究ing。">参数如下，正在研究ing。</h4><pre><code>【颜色】 白色、白蓝色、红色、黑色、白/红色
-【车架尺寸】：<span class="number">26</span>X15/<span class="number">17</span>/<span class="number">19</span> 
-【车架】：MERIDA专利TFS铝合金车架&lt;带 flex stay 技术----蛙腿&gt;
-【前叉】：三托XCT <span class="literal">V4</span>铝合金避震前叉
-【车匣】: 日本SHIMANO M375碟刹
-【链条】：KMC，HG40防锈链条
-【手把】：X-mission
-【副把】：ALLOY SAND-<span class="keyword">BLACK
-</span>【竖管】：ALLOY SAND-<span class="keyword">BLACK
-</span>【碗组】：VP-A42E
-【花鼓】：久裕快拆铝合金碟刹花鼓
-【车圈】：美利达铝合金车圈
-【轮胎】：CST <span class="number">26</span>X1.<span class="number">95</span>
-【坐管】：<span class="number">30</span>.<span class="number">8</span>D ALLOY SAND-<span class="keyword">BLACK
-</span>【脚踏】：VP-<span class="number">988</span>A ALLOY
-【飞轮】：SHIMANO HG20-<span class="number">8</span>S <span class="number">11</span>-<span class="number">30</span>T
-【前后变速器】：SHIMANO ACERA M310/M360
-【变速控制杆】：SHIMANO EF51
-【变速级别】：SHIMANO <span class="number">24</span>速
-【齿盘曲柄】：美利达 <span class="number">42</span>-<span class="number">32</span>-<span class="number">22</span>T
-</code></pre><h4 id="趁着下午天晴，就和爸爸一起去骑车了，妈妈驾车跟随（虽然一直觉得我以后没车也可，但是今天觉得车的重要性有时是存在的）">趁着下午天晴，就和爸爸一起去骑车了，妈妈驾车跟随（虽然一直觉得我以后没车也可，但是今天觉得车的重要性有时是存在的）</h4><h4 id="晒图两张~">晒图两张~</h4><p><img src="http://ckitakishi.com/image/20140121.jpg" alt="20140121"><br><img src="http://ckitakishi.com/image/201401212.jpg" alt="201401212"></p>
-]]></content>
+    
+    <content type="html"><![CDATA[<h4 id="昨日这个冬天的第三场雪悄然而至，今天早上大雾一场，下午居然天晴了。"><a href="#昨日这个冬天的第三场雪悄然而至，今天早上大雾一场，下午居然天晴了。" class="headerlink" title="昨日这个冬天的第三场雪悄然而至，今天早上大雾一场，下午居然天晴了。"></a>昨日这个冬天的第三场雪悄然而至，今天早上大雾一场，下午居然天晴了。</h4><h4 id="前几天入了13款merida的duke-500-对于我这种菜鸟来说，实在是很给力了。假期抓紧时间骑。高中时对大学的憧憬之一就是可以在校园以骑行为交通方式，结果软院全是楼梯。。泪奔。"><a href="#前几天入了13款merida的duke-500-对于我这种菜鸟来说，实在是很给力了。假期抓紧时间骑。高中时对大学的憧憬之一就是可以在校园以骑行为交通方式，结果软院全是楼梯。。泪奔。" class="headerlink" title="前几天入了13款merida的duke 500,对于我这种菜鸟来说，实在是很给力了。假期抓紧时间骑。高中时对大学的憧憬之一就是可以在校园以骑行为交通方式，结果软院全是楼梯。。泪奔。"></a>前几天入了13款merida的duke 500,对于我这种菜鸟来说，实在是很给力了。假期抓紧时间骑。高中时对大学的憧憬之一就是可以在校园以骑行为交通方式，结果软院全是楼梯。。泪奔。</h4><a id="more"></a><h4 id="参数如下，正在研究ing。"><a href="#参数如下，正在研究ing。" class="headerlink" title="参数如下，正在研究ing。"></a>参数如下，正在研究ing。</h4><pre><code>【颜色】 白色、白蓝色、红色、黑色、白/红色【车架尺寸】：26X15/17/19 【车架】：MERIDA专利TFS铝合金车架&lt;带 flex stay 技术----蛙腿&gt;【前叉】：三托XCT V4铝合金避震前叉【车匣】: 日本SHIMANO M375碟刹【链条】：KMC，HG40防锈链条【手把】：X-mission【副把】：ALLOY SAND-BLACK【竖管】：ALLOY SAND-BLACK【碗组】：VP-A42E【花鼓】：久裕快拆铝合金碟刹花鼓【车圈】：美利达铝合金车圈【轮胎】：CST 26X1.95【坐管】：30.8D ALLOY SAND-BLACK【脚踏】：VP-988A ALLOY【飞轮】：SHIMANO HG20-8S 11-30T【前后变速器】：SHIMANO ACERA M310/M360【变速控制杆】：SHIMANO EF51【变速级别】：SHIMANO 24速【齿盘曲柄】：美利达 42-32-22T</code></pre><h4 id="趁着下午天晴，就和爸爸一起去骑车了，妈妈驾车跟随（虽然一直觉得我以后没车也可，但是今天觉得车的重要性有时是存在的）"><a href="#趁着下午天晴，就和爸爸一起去骑车了，妈妈驾车跟随（虽然一直觉得我以后没车也可，但是今天觉得车的重要性有时是存在的）" class="headerlink" title="趁着下午天晴，就和爸爸一起去骑车了，妈妈驾车跟随（虽然一直觉得我以后没车也可，但是今天觉得车的重要性有时是存在的）"></a>趁着下午天晴，就和爸爸一起去骑车了，妈妈驾车跟随（虽然一直觉得我以后没车也可，但是今天觉得车的重要性有时是存在的）</h4><h4 id="晒图两张"><a href="#晒图两张" class="headerlink" title="晒图两张~"></a>晒图两张~</h4><p><img src="http://ckitakishi.com/image/20140121.jpg" alt="20140121"><br><img src="http://ckitakishi.com/image/201401212.jpg" alt="201401212"></p>]]></content>
+    
     <summary type="html">
-    <![CDATA[<h4 id="昨日这个冬天的第三场雪悄然而至，今天早上大雾一场，下午居然天晴了。">昨日这个冬天的第三场雪悄然而至，今天早上大雾一场，下午居然天晴了。</h4><h4 id="前几天入了13款merida的duke_500,对于我这种菜鸟来说，实在是很给力了。假期抓紧时间骑。高中时对大学的憧憬之一就是可以在校园以骑行为交通方式，结果软院全是楼梯。。泪奔。">前几天入了13款merida的duke 500,对于我这种菜鸟来说，实在是很给力了。假期抓紧时间骑。高中时对大学的憧憬之一就是可以在校园以骑行为交通方式，结果软院全是楼梯。。泪奔。</h4>]]>
+    
+      &lt;h4 id=&quot;昨日这个冬天的第三场雪悄然而至，今天早上大雾一场，下午居然天晴了。&quot;&gt;&lt;a href=&quot;#昨日这个冬天的第三场雪悄然而至，今天早上大雾一场，下午居然天晴了。&quot; class=&quot;headerlink&quot; title=&quot;昨日这个冬天的第三场雪悄然而至，今天早上大雾一场，下午居然天晴了。&quot;&gt;&lt;/a&gt;昨日这个冬天的第三场雪悄然而至，今天早上大雾一场，下午居然天晴了。&lt;/h4&gt;&lt;h4 id=&quot;前几天入了13款merida的duke-500-对于我这种菜鸟来说，实在是很给力了。假期抓紧时间骑。高中时对大学的憧憬之一就是可以在校园以骑行为交通方式，结果软院全是楼梯。。泪奔。&quot;&gt;&lt;a href=&quot;#前几天入了13款merida的duke-500-对于我这种菜鸟来说，实在是很给力了。假期抓紧时间骑。高中时对大学的憧憬之一就是可以在校园以骑行为交通方式，结果软院全是楼梯。。泪奔。&quot; class=&quot;headerlink&quot; title=&quot;前几天入了13款merida的duke 500,对于我这种菜鸟来说，实在是很给力了。假期抓紧时间骑。高中时对大学的憧憬之一就是可以在校园以骑行为交通方式，结果软院全是楼梯。。泪奔。&quot;&gt;&lt;/a&gt;前几天入了13款merida的duke 500,对于我这种菜鸟来说，实在是很给力了。假期抓紧时间骑。高中时对大学的憧憬之一就是可以在校园以骑行为交通方式，结果软院全是楼梯。。泪奔。&lt;/h4&gt;
     
     </summary>
+    
+      <category term="浮生记" scheme="http://ckitakishi.com/categories/%E6%B5%AE%E7%94%9F%E8%AE%B0/"/>
+    
     
       <category term="假期" scheme="http://ckitakishi.com/tags/%E5%81%87%E6%9C%9F/"/>
     
       <category term="自行车" scheme="http://ckitakishi.com/tags/%E8%87%AA%E8%A1%8C%E8%BD%A6/"/>
     
-      <category term="浮生记" scheme="http://ckitakishi.com/categories/%E6%B5%AE%E7%94%9F%E8%AE%B0/"/>
-    
   </entry>
   
   <entry>
-    <title><![CDATA[假期来了]]></title>
+    <title>假期来了</title>
     <link href="http://ckitakishi.com/2014/01/17/%E5%81%87%E6%9C%9F%E6%9D%A5%E4%BA%86/"/>
     <id>http://ckitakishi.com/2014/01/17/假期来了/</id>
     <published>2014-01-17T12:21:11.000Z</published>
     <updated>2015-08-01T09:20:06.000Z</updated>
-    <content type="html"><![CDATA[<h4 id="回家就快要一周了。">回家就快要一周了。</h4>]]></content>
+    
+    <content type="html"><![CDATA[<h4 id="回家就快要一周了。"><a href="#回家就快要一周了。" class="headerlink" title="回家就快要一周了。"></a>回家就快要一周了。</h4>]]></content>
+    
     <summary type="html">
-    <![CDATA[<h4 id="回家就快要一周了。">回家就快要一周了。</h4>]]>
+    
+      
+      
+        &lt;h4 id=&quot;回家就快要一周了。&quot;&gt;&lt;a href=&quot;#回家就快要一周了。&quot; class=&quot;headerlink&quot; title=&quot;回家就快要一周了。&quot;&gt;&lt;/a&gt;回家就快要一周了。&lt;/h4&gt;
+      
+    
     </summary>
+    
+      <category term="浮生记" scheme="http://ckitakishi.com/categories/%E6%B5%AE%E7%94%9F%E8%AE%B0/"/>
+    
     
       <category term="假期" scheme="http://ckitakishi.com/tags/%E5%81%87%E6%9C%9F/"/>
     
       <category term="生活" scheme="http://ckitakishi.com/tags/%E7%94%9F%E6%B4%BB/"/>
     
-      <category term="浮生记" scheme="http://ckitakishi.com/categories/%E6%B5%AE%E7%94%9F%E8%AE%B0/"/>
-    
   </entry>
   
   <entry>
-    <title><![CDATA[遇到的一些问题与解决办法]]></title>
+    <title>遇到的一些问题与解决办法</title>
     <link href="http://ckitakishi.com/2014/01/06/%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/"/>
     <id>http://ckitakishi.com/2014/01/06/遇到的一些问题与解决办法/</id>
     <published>2014-01-06T13:30:51.000Z</published>
-    <updated>2017-10-07T15:57:22.785Z</updated>
-    <content type="html"><![CDATA[<h4 id="一直有些博客写记录的习惯，但是越来越觉得定制的博客们很多时候无法满足需求，本来打算使用ghost，新生的力量总是值得期待，但是突然之间它就被墙了…了解了一些框架，选择了hexo,打开主页的瞬间就认定它了。hexo由Node-js驱动，迅速，简洁。">一直有些博客写记录的习惯，但是越来越觉得定制的博客们很多时候无法满足需求，本来打算使用ghost，新生的力量总是值得期待，但是突然之间它就被墙了…了解了一些框架，选择了<a href="http://zespia.tw/hexo/" target="_blank" rel="external">hexo</a>,打开主页的瞬间就认定它了。hexo由Node.js驱动，迅速，简洁。</h4><h4 id="这两天也遇到了一些问题，简单的记录下来。">这两天也遇到了一些问题，简单的记录下来。</h4><a id="more"></a>
-<h2 id="1-无法成功deploy">1.无法成功deploy</h2><h4 id="此时已经完成了node-js的安装，并在github创建了名为username-github-io的repository。部署完成之后，">此时已经完成了<a href="http://nodejs.org/" target="_blank" rel="external">node.js</a>的安装，并在<a href="https://github.com/" target="_blank" rel="external">github</a>创建了名为username.github.io的repository。部署完成之后，</h4><p>  hexo generate<br>  hexo server  </p>
-<h4 id="此时已经可以通过localhost:4000查看页面，landscape的主题觉得很深沉。">此时已经可以通过localhost:4000查看页面，landscape的主题觉得很深沉。</h4><pre><code><span class="title">hexo</span> deploy
-</code></pre><h4 id="竟然没有成功。出现了好几个fetal:……，提示文件不存在。赶紧关掉bash，用管理员权限打开，终于没有fetal了。windows总是这样…-就在我得意的笑时，仔细一看，艾玛，竟然没有成功push到github。搜索良久，猜想也许是重装系统后ssh_key出问题，重新生成了一个，依然未能解决。看到有网友说github名字有大写可能导致问题，一想自己的名儿，于是contact了github的工作人员，人家很快回邮件，开头就是NO！往来了两封邮件，查看密钥可用性，以及我的命令和错误。结果第二天，就好了……是的，就好了。个人认为可能真的和ssh_key有关吧。">竟然没有成功。出现了好几个fetal:……，提示文件不存在。赶紧关掉bash，用管理员权限打开，终于没有fetal了。windows总是这样…..就在我得意的笑时，仔细一看，艾玛，竟然没有成功push到github。搜索良久，猜想也许是重装系统后ssh key出问题，重新生成了一个，依然未能解决。看到有网友说github名字有大写可能导致问题，一想自己的名儿，于是contact了github的工作人员，人家很快回邮件，开头就是NO！往来了两封邮件，查看密钥可用性，以及我的命令和错误。结果第二天，就好了……是的，就好了。个人认为可能真的和ssh key有关吧。</h4><h2 id="2-ico图标的添加">2.ico图标的添加</h2><h4 id="关于小图标的添加，参考了zippera所写。">关于小图标的添加，参考了<a href="http://zipperary.com/2013/05/30/hexo-guide-4/" target="_blank" rel="external">zippera</a>所写。</h4><figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;% <span class="keyword">if</span> (config.root)&#123; %&gt;</span><br><span class="line">  &lt;link <span class="variable">href=</span><span class="string">"/favicon.ico"</span> <span class="variable">rel=</span><span class="string">"shortcut icon"</span> <span class="variable">type=</span><span class="string">"image/x-icon"</span> /&gt; <span class="comment">#这段是faviconer提供的通用代码。</span></span><br><span class="line">&lt;% &#125; %&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="我的做法是直接将以上代码添加到head-ejs">我的做法是直接将以上代码添加到head.ejs</h4><h4 id="感谢Qing设计的A，B图标,在自己在操作过程中，只能在localhost查看到图标。查看了github的repo，发现反复deploy_B图标但是依然存在的是A图标，纠其原因，放弃A图标之后缓存还在。查看了文档，根目录下的db-json即为缓存，删除之，重新deploy，就成功了。">感谢<a href="http://chiakiq.com/" target="_blank" rel="external">Qing</a>设计的A，B图标,在自己在操作过程中，只能在localhost查看到图标。查看了github的repo，发现反复deploy B图标但是依然存在的是A图标，纠其原因，放弃A图标之后缓存还在。查看了文档，根目录下的<strong>db.json</strong>即为缓存，删除之，重新deploy，就成功了。</h4><h4 id="此后，如果由于缓存而导致的无法更新内容，删除db-json即可。">此后，如果由于缓存而导致的无法更新内容，删除<strong>db.json</strong>即可。</h4><h2 id="3-域名的解析">3.域名的解析</h2><h4 id="选择了DNSPod解析域名，添加A记录时，记录值填了个二级域名的ip，坐等~吃过饭后依然不行，参考了一些人的经历，又添加了一条A记录，ip写了pages-github-com_的ip:204-232-175-78；很奇怪，自己ping的ip地址是一个澳大利亚的地址103-*。经过一番折腾，验证了204-232-175-78和ping的ip地址都是可以用的。而且感觉后者更快。">选择了<a href="https://www.dnspod.cn/" target="_blank" rel="external">DNSPod</a>解析域名，添加A记录时，记录值填了个二级域名的ip，坐等~吃过饭后依然不行，参考了一些人的经历，又添加了一条A记录，ip写了pages.github.com 的ip:204.232.175.78；很奇怪，自己ping的ip地址是一个澳大利亚的地址103.<strong><em>.</em></strong>.<em>*</em>。经过一番折腾，验证了204.232.175.78和ping的ip地址都是可以用的。而且感觉后者更快。</h4><h2 id="4-hexo_generate_无法解析">4.hexo generate 无法解析</h2><h4 id="在本文修改再提交时又遇到问题，hexo_g出现了debug">在本文修改再提交时又遇到问题，hexo g出现了debug</h4><pre><code><span class="string">rawMessage:</span> <span class="string">'Unable to parse.'</span>,
-<span class="string">parsedLine:</span> <span class="number">8</span>,
-<span class="string">snippet:</span> <span class="string">'  hexo generate '</span>,
-<span class="string">parsedFile:</span> <span class="literal">null</span>,
-<span class="string">message:</span> <span class="string">'Unable to parse.'</span>,
-<span class="string">domain:</span> 
-{ <span class="string">domain:</span> <span class="literal">null</span>,
-<span class="label"> _events:</span> { <span class="string">error:</span> [Function] },
-<span class="label"> _maxListeners:</span> <span class="number">10</span>,
-<span class="label"> members:</span> [],
-<span class="label"> _disposed:</span> <span class="literal">true</span> },
-<span class="string">domainThrown:</span> <span class="literal">true</span> }
-</code></pre><p>去查看了hexo项目的<a href="https://github.com/tommy351/hexo/issues?page=1&amp;state=open" target="_blank" rel="external">Issues</a>，有人遇到类似的一些问题，原因是markdown语法不太对，发现是因为汉字之间用了“——”。</p>
-<hr>
-<h2 id="(*^^)v路漫漫其修远兮，吾将上下而求索。">(*^^)v路漫漫其修远兮，吾将上下而求索。</h2>]]></content>
+    <updated>2017-10-07T15:57:22.786Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="一直有些博客写记录的习惯，但是越来越觉得定制的博客们很多时候无法满足需求，本来打算使用ghost，新生的力量总是值得期待，但是突然之间它就被墙了…了解了一些框架，选择了hexo-打开主页的瞬间就认定它了。hexo由Node-js驱动，迅速，简洁。"><a href="#一直有些博客写记录的习惯，但是越来越觉得定制的博客们很多时候无法满足需求，本来打算使用ghost，新生的力量总是值得期待，但是突然之间它就被墙了…了解了一些框架，选择了hexo-打开主页的瞬间就认定它了。hexo由Node-js驱动，迅速，简洁。" class="headerlink" title="一直有些博客写记录的习惯，但是越来越觉得定制的博客们很多时候无法满足需求，本来打算使用ghost，新生的力量总是值得期待，但是突然之间它就被墙了…了解了一些框架，选择了hexo,打开主页的瞬间就认定它了。hexo由Node.js驱动，迅速，简洁。"></a>一直有些博客写记录的习惯，但是越来越觉得定制的博客们很多时候无法满足需求，本来打算使用ghost，新生的力量总是值得期待，但是突然之间它就被墙了…了解了一些框架，选择了<a href="http://zespia.tw/hexo/" target="_blank" rel="external">hexo</a>,打开主页的瞬间就认定它了。hexo由Node.js驱动，迅速，简洁。</h4><h4 id="这两天也遇到了一些问题，简单的记录下来。"><a href="#这两天也遇到了一些问题，简单的记录下来。" class="headerlink" title="这两天也遇到了一些问题，简单的记录下来。"></a>这两天也遇到了一些问题，简单的记录下来。</h4><a id="more"></a><h2 id="1-无法成功deploy"><a href="#1-无法成功deploy" class="headerlink" title="1.无法成功deploy"></a>1.无法成功deploy</h2><h4 id="此时已经完成了node-js的安装，并在github创建了名为username-github-io的repository。部署完成之后，"><a href="#此时已经完成了node-js的安装，并在github创建了名为username-github-io的repository。部署完成之后，" class="headerlink" title="此时已经完成了node.js的安装，并在github创建了名为username.github.io的repository。部署完成之后，"></a>此时已经完成了<a href="http://nodejs.org/" target="_blank" rel="external">node.js</a>的安装，并在<a href="https://github.com/" target="_blank" rel="external">github</a>创建了名为username.github.io的repository。部署完成之后，</h4><p>  hexo generate<br>  hexo server  </p><h4 id="此时已经可以通过localhost-4000查看页面，landscape的主题觉得很深沉。"><a href="#此时已经可以通过localhost-4000查看页面，landscape的主题觉得很深沉。" class="headerlink" title="此时已经可以通过localhost:4000查看页面，landscape的主题觉得很深沉。"></a>此时已经可以通过localhost:4000查看页面，landscape的主题觉得很深沉。</h4><pre><code>hexo deploy</code></pre><h4 id="竟然没有成功。出现了好几个fetal-……，提示文件不存在。赶紧关掉bash，用管理员权限打开，终于没有fetal了。windows总是这样…-就在我得意的笑时，仔细一看，艾玛，竟然没有成功push到github。搜索良久，猜想也许是重装系统后ssh-key出问题，重新生成了一个，依然未能解决。看到有网友说github名字有大写可能导致问题，一想自己的名儿，于是contact了github的工作人员，人家很快回邮件，开头就是NO！往来了两封邮件，查看密钥可用性，以及我的命令和错误。结果第二天，就好了……是的，就好了。个人认为可能真的和ssh-key有关吧。"><a href="#竟然没有成功。出现了好几个fetal-……，提示文件不存在。赶紧关掉bash，用管理员权限打开，终于没有fetal了。windows总是这样…-就在我得意的笑时，仔细一看，艾玛，竟然没有成功push到github。搜索良久，猜想也许是重装系统后ssh-key出问题，重新生成了一个，依然未能解决。看到有网友说github名字有大写可能导致问题，一想自己的名儿，于是contact了github的工作人员，人家很快回邮件，开头就是NO！往来了两封邮件，查看密钥可用性，以及我的命令和错误。结果第二天，就好了……是的，就好了。个人认为可能真的和ssh-key有关吧。" class="headerlink" title="竟然没有成功。出现了好几个fetal:……，提示文件不存在。赶紧关掉bash，用管理员权限打开，终于没有fetal了。windows总是这样…..就在我得意的笑时，仔细一看，艾玛，竟然没有成功push到github。搜索良久，猜想也许是重装系统后ssh key出问题，重新生成了一个，依然未能解决。看到有网友说github名字有大写可能导致问题，一想自己的名儿，于是contact了github的工作人员，人家很快回邮件，开头就是NO！往来了两封邮件，查看密钥可用性，以及我的命令和错误。结果第二天，就好了……是的，就好了。个人认为可能真的和ssh key有关吧。"></a>竟然没有成功。出现了好几个fetal:……，提示文件不存在。赶紧关掉bash，用管理员权限打开，终于没有fetal了。windows总是这样…..就在我得意的笑时，仔细一看，艾玛，竟然没有成功push到github。搜索良久，猜想也许是重装系统后ssh key出问题，重新生成了一个，依然未能解决。看到有网友说github名字有大写可能导致问题，一想自己的名儿，于是contact了github的工作人员，人家很快回邮件，开头就是NO！往来了两封邮件，查看密钥可用性，以及我的命令和错误。结果第二天，就好了……是的，就好了。个人认为可能真的和ssh key有关吧。</h4><h2 id="2-ico图标的添加"><a href="#2-ico图标的添加" class="headerlink" title="2.ico图标的添加"></a>2.ico图标的添加</h2><h4 id="关于小图标的添加，参考了zippera所写。"><a href="#关于小图标的添加，参考了zippera所写。" class="headerlink" title="关于小图标的添加，参考了zippera所写。"></a>关于小图标的添加，参考了<a href="http://zipperary.com/2013/05/30/hexo-guide-4/" target="_blank" rel="external">zippera</a>所写。</h4><figure class="highlight erb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"></span>&lt;%<span class="ruby"> <span class="keyword">if</span> (config.root)&#123; </span>%&gt;<span class="xml"></span><br><span class="line">  <span class="tag">&lt;<span class="title">link</span> <span class="attribute">href</span>=<span class="value">"/favicon.ico"</span> <span class="attribute">rel</span>=<span class="value">"shortcut icon"</span> <span class="attribute">type</span>=<span class="value">"image/x-icon"</span> /&gt;</span> #这段是faviconer提供的通用代码。</span><br><span class="line"></span>&lt;%<span class="ruby"> &#125; </span>%&gt;<span class="xml"></span></span><br></pre></td></tr></table></figure><h4 id="我的做法是直接将以上代码添加到head-ejs"><a href="#我的做法是直接将以上代码添加到head-ejs" class="headerlink" title="我的做法是直接将以上代码添加到head.ejs"></a>我的做法是直接将以上代码添加到head.ejs</h4><p>####感谢<a href="http://chiakiq.com/" target="_blank" rel="external">Qing</a>设计的A，B图标,在自己在操作过程中，只能在localhost查看到图标。查看了github的repo，发现反复deploy B图标但是依然存在的是A图标，纠其原因，放弃A图标之后缓存还在。查看了文档，根目录下的<strong>db.json</strong>即为缓存，删除之，重新deploy，就成功了。</p><h4 id="此后，如果由于缓存而导致的无法更新内容，删除db-json即可。"><a href="#此后，如果由于缓存而导致的无法更新内容，删除db-json即可。" class="headerlink" title="此后，如果由于缓存而导致的无法更新内容，删除db.json即可。"></a>此后，如果由于缓存而导致的无法更新内容，删除<strong>db.json</strong>即可。</h4><h2 id="3-域名的解析"><a href="#3-域名的解析" class="headerlink" title="3.域名的解析"></a>3.域名的解析</h2><h4 id="选择了DNSPod解析域名，添加A记录时，记录值填了个二级域名的ip，坐等-吃过饭后依然不行，参考了一些人的经历，又添加了一条A记录，ip写了pages-github-com-的ip-204-232-175-78；很奇怪，自己ping的ip地址是一个澳大利亚的地址103-。经过一番折腾，验证了204-232-175-78和ping的ip地址都是可以用的。而且感觉后者更快。"><a href="#选择了DNSPod解析域名，添加A记录时，记录值填了个二级域名的ip，坐等-吃过饭后依然不行，参考了一些人的经历，又添加了一条A记录，ip写了pages-github-com-的ip-204-232-175-78；很奇怪，自己ping的ip地址是一个澳大利亚的地址103-。经过一番折腾，验证了204-232-175-78和ping的ip地址都是可以用的。而且感觉后者更快。" class="headerlink" title="选择了DNSPod解析域名，添加A记录时，记录值填了个二级域名的ip，坐等~吃过饭后依然不行，参考了一些人的经历，又添加了一条A记录，ip写了pages.github.com 的ip:204.232.175.78；很奇怪，自己ping的ip地址是一个澳大利亚的地址103...*。经过一番折腾，验证了204.232.175.78和ping的ip地址都是可以用的。而且感觉后者更快。"></a>选择了<a href="https://www.dnspod.cn/" target="_blank" rel="external">DNSPod</a>解析域名，添加A记录时，记录值填了个二级域名的ip，坐等~吃过饭后依然不行，参考了一些人的经历，又添加了一条A记录，ip写了pages.github.com 的ip:204.232.175.78；很奇怪，自己ping的ip地址是一个澳大利亚的地址103.<strong><em>.</em></strong>.<em>*</em>。经过一番折腾，验证了204.232.175.78和ping的ip地址都是可以用的。而且感觉后者更快。</h4><h2 id="4-hexo-generate-无法解析"><a href="#4-hexo-generate-无法解析" class="headerlink" title="4.hexo generate 无法解析"></a>4.hexo generate 无法解析</h2><h4 id="在本文修改再提交时又遇到问题，hexo-g出现了debug"><a href="#在本文修改再提交时又遇到问题，hexo-g出现了debug" class="headerlink" title="在本文修改再提交时又遇到问题，hexo g出现了debug"></a>在本文修改再提交时又遇到问题，hexo g出现了debug</h4><pre><code>rawMessage: &apos;Unable to parse.&apos;,parsedLine: 8,snippet: &apos;  hexo generate &apos;,parsedFile: null,message: &apos;Unable to parse.&apos;,domain: { domain: null, _events: { error: [Function] }, _maxListeners: 10, members: [], _disposed: true },domainThrown: true }</code></pre><p>去查看了hexo项目的<a href="https://github.com/tommy351/hexo/issues?page=1&amp;state=open" target="_blank" rel="external">Issues</a>，有人遇到类似的一些问题，原因是markdown语法不太对，发现是因为汉字之间用了“—-”。</p><hr><h2 id="v路漫漫其修远兮，吾将上下而求索。"><a href="#v路漫漫其修远兮，吾将上下而求索。" class="headerlink" title="(*^^)v路漫漫其修远兮，吾将上下而求索。"></a>(*^^)v路漫漫其修远兮，吾将上下而求索。</h2>]]></content>
+    
     <summary type="html">
-    <![CDATA[<h4 id="一直有些博客写记录的习惯，但是越来越觉得定制的博客们很多时候无法满足需求，本来打算使用ghost，新生的力量总是值得期待，但是突然之间它就被墙了…了解了一些框架，选择了hexo,打开主页的瞬间就认定它了。hexo由Node-js驱动，迅速，简洁。">一直有些博客写记录的习惯，但是越来越觉得定制的博客们很多时候无法满足需求，本来打算使用ghost，新生的力量总是值得期待，但是突然之间它就被墙了…了解了一些框架，选择了<a href="http://zespia.tw/hexo/">hexo</a>,打开主页的瞬间就认定它了。hexo由Node.js驱动，迅速，简洁。</h4><h4 id="这两天也遇到了一些问题，简单的记录下来。">这两天也遇到了一些问题，简单的记录下来。</h4>]]>
+    
+      &lt;h4 id=&quot;一直有些博客写记录的习惯，但是越来越觉得定制的博客们很多时候无法满足需求，本来打算使用ghost，新生的力量总是值得期待，但是突然之间它就被墙了…了解了一些框架，选择了hexo-打开主页的瞬间就认定它了。hexo由Node-js驱动，迅速，简洁。&quot;&gt;&lt;a href=&quot;#一直有些博客写记录的习惯，但是越来越觉得定制的博客们很多时候无法满足需求，本来打算使用ghost，新生的力量总是值得期待，但是突然之间它就被墙了…了解了一些框架，选择了hexo-打开主页的瞬间就认定它了。hexo由Node-js驱动，迅速，简洁。&quot; class=&quot;headerlink&quot; title=&quot;一直有些博客写记录的习惯，但是越来越觉得定制的博客们很多时候无法满足需求，本来打算使用ghost，新生的力量总是值得期待，但是突然之间它就被墙了…了解了一些框架，选择了hexo,打开主页的瞬间就认定它了。hexo由Node.js驱动，迅速，简洁。&quot;&gt;&lt;/a&gt;一直有些博客写记录的习惯，但是越来越觉得定制的博客们很多时候无法满足需求，本来打算使用ghost，新生的力量总是值得期待，但是突然之间它就被墙了…了解了一些框架，选择了&lt;a href=&quot;http://zespia.tw/hexo/&quot;&gt;hexo&lt;/a&gt;,打开主页的瞬间就认定它了。hexo由Node.js驱动，迅速，简洁。&lt;/h4&gt;&lt;h4 id=&quot;这两天也遇到了一些问题，简单的记录下来。&quot;&gt;&lt;a href=&quot;#这两天也遇到了一些问题，简单的记录下来。&quot; class=&quot;headerlink&quot; title=&quot;这两天也遇到了一些问题，简单的记录下来。&quot;&gt;&lt;/a&gt;这两天也遇到了一些问题，简单的记录下来。&lt;/h4&gt;
     
     </summary>
+    
+      <category term="求索集" scheme="http://ckitakishi.com/categories/%E6%B1%82%E7%B4%A2%E9%9B%86/"/>
+    
     
       <category term="github" scheme="http://ckitakishi.com/tags/github/"/>
     
       <category term="hexo" scheme="http://ckitakishi.com/tags/hexo/"/>
-    
-      <category term="求索集" scheme="http://ckitakishi.com/categories/%E6%B1%82%E7%B4%A2%E9%9B%86/"/>
     
   </entry>
   
