@@ -6,20 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://ckitakishi.com">
-  <title>viewWillAppear 杂谈 | Ckitakishi.playground</title>
+  <title>Ckitakishi.playground</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="作为 view 的状态之一，viewWillAppear 的关注率极高，所以其实并没有什么好说的…我们都知道它会在 view 每一次将要准备出现之前被调用，所以常常可以用来初始化一些基本数据。
-前两周花了一点点时间重构了组里的某个小应用，前开发者新手上路，感觉不少代码值得推敲。在 debug 的时候发现应用一到后台就自动退出了，根本无法看它在后台的活动，震惊之余发现 info.plist 的 Ap">
-<meta property="og:type" content="article">
-<meta property="og:title" content="viewWillAppear 杂谈">
-<meta property="og:url" content="http://ckitakishi.com/2017/07/26/viewWillAppear-杂谈/index.html">
+  <meta name="description" content="Ckitakishi 目前在日本从事 iOS 开发，在此之前是一名前端开发者，对动画和图像感兴趣，正在为写出优美的代码而修炼。初出茅庐的译者，参与译有《函数式 Swift》和《集合类型优化》">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ckitakishi.playground">
+<meta property="og:url" content="http://ckitakishi.com/archives/2018/01/index.html">
 <meta property="og:site_name" content="Ckitakishi.playground">
-<meta property="og:description" content="作为 view 的状态之一，viewWillAppear 的关注率极高，所以其实并没有什么好说的…我们都知道它会在 view 每一次将要准备出现之前被调用，所以常常可以用来初始化一些基本数据。
-前两周花了一点点时间重构了组里的某个小应用，前开发者新手上路，感觉不少代码值得推敲。在 debug 的时候发现应用一到后台就自动退出了，根本无法看它在后台的活动，震惊之余发现 info.plist 的 Ap">
+<meta property="og:description" content="Ckitakishi 目前在日本从事 iOS 开发，在此之前是一名前端开发者，对动画和图像感兴趣，正在为写出优美的代码而修炼。初出茅庐的译者，参与译有《函数式 Swift》和《集合类型优化》">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="viewWillAppear 杂谈">
-<meta name="twitter:description" content="作为 view 的状态之一，viewWillAppear 的关注率极高，所以其实并没有什么好说的…我们都知道它会在 view 每一次将要准备出现之前被调用，所以常常可以用来初始化一些基本数据。
-前两周花了一点点时间重构了组里的某个小应用，前开发者新手上路，感觉不少代码值得推敲。在 debug 的时候发现应用一到后台就自动退出了，根本无法看它在后台的活动，震惊之余发现 info.plist 的 Ap">
+<meta name="twitter:title" content="Ckitakishi.playground">
+<meta name="twitter:description" content="Ckitakishi 目前在日本从事 iOS 开发，在此之前是一名前端开发者，对动画和图像感兴趣，正在为写出优美的代码而修炼。初出茅庐的译者，参与译有《函数式 Swift》和《集合类型优化》">
   
     <link rel="alternative" href="/atom.xml" title="Ckitakishi.playground" type="application/atom+xml">
   
@@ -187,20 +184,25 @@ ga('send', 'pageview');
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-viewWillAppear-杂谈" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
+            
+  
+  
     
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      viewWillAppear 杂谈
-    </h1>
-  
-
-        
-        <a href="/2017/07/26/viewWillAppear-杂谈/" class="archive-article-date">
-	  <time datetime="2017-07-26T14:48:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-26</time>
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2018" class="archive-year">2018</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2018/01/08/想要坚持下去的2018/" class="archive-article-date">
+	  <time datetime="2018-01-08T12:30:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-08</time>
 	  <span id="busuanzi_container_page_pv" style="color:DarkGray">
 		 | <span id="busuanzi_value_page_pv"></span> Views
 	  </span>
@@ -208,200 +210,51 @@ ga('send', 'pageview');
 
 <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
 </script>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>作为 view 的状态之一，<code>viewWillAppear</code> 的关注率极高，所以其实并没有什么好说的…我们都知道它会在 view 每一次将要准备出现之前被调用，所以常常可以用来初始化一些基本数据。</p>
-<p>前两周花了一点点时间重构了组里的某个小应用，前开发者新手上路，感觉不少代码值得推敲。在 debug 的时候发现应用一到后台就自动退出了，根本无法看它在后台的活动，震惊之余发现 info.plist 的 <code>Application does not run in background</code> 被设置为了 <code>YES</code>…反复揣摩整个应用的功能也不知道这么做目的何在，于是果断将其改为了 <code>NO</code>。</p>
-<p>不过事情并没有那么简单，毕竟这是一段关于 viewWillAppear 的杂谈。</p>
-<a id="more"></a>
-<p>后来随着时间的推移，总算发现禁止后台运行的“用处”了。某个 view 有一个相对特殊的需求，应用从后台回到前台时需要重新初始化它的数据，尽管在 <code>viewWillAppear</code> 中准备了完备的初始化代码，但是这个状态的迁移并不能认为是 view 即将出现，毕竟 view 并没有消失，一直都是显示状态。所以自然 <code>viewWillAppear</code> 就不会被调用，为了解决这个问题，于是这位同学想了这个办法。</p>
-<p>不得不承认这个思路还是很清奇的，但是为了避免一些不必要的麻烦，我还是决定改用常规解决方案。在应用重回前台的时候发一个通知，告诉 view 可以重新初始化数据了。这种情况下，在 <code>viewWillAppear</code> 中添加一个对 <code>.UIApplicationWillEnterForeground</code> 通知的观察应该是一个不二的选择，它也常常被用于处理像是电话强制中断之类的需求：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">NotificationCenter</span>.<span class="keyword">default</span>.addObserver(<span class="keyword">self</span>, selector: #selector(willEnterForeground), name: .<span class="type">UIApplicationWillEnterForeground</span>, object: <span class="literal">nil</span>)</span><br></pre></td></tr></table></figure>
-<p>这个方案可是说是比较优雅的，不过不可以忘记移除通知。关于声明周期这些事儿，有时候真是操碎了心~</p>
-
-      
-
-      
-        <div class="page-reward">
-          <a href="javascript:;" class="page-reward-btn tooltip-top">
-            <div class="tooltip tooltip-east">
-            <span class="tooltip-item">
-              赏
-            </span>
-            <span class="tooltip-content">
-              <span class="tooltip-text">
-                <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>喵🐱<i class="icon icon-quo-right"></i></p>
-                  <div class="reward-box">
-                    
-                    
-                    <div class="reward-box-item">
-                      <img class="reward-img" src="/qr.jpg">
-                      <span class="reward-type">微信</span>
-                    </div>
-                    
-                  </div>
-                </span>
-              </span>
-            </span>
-          </div>
-          </a>
         </div>
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2018/01/08/想要坚持下去的2018/">想要坚持下去的2018</a>
+    </h1>
+  
+
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">iOS</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">随笔</a>
         		</li>
       		
 		</ul>
 	</div>
 
-      
+          
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/求索集//" class="article-tag-list-link color4">求索集</a>
+        			<a href="/categories/浮生记//" class="article-tag-list-link color4">浮生记</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://ckitakishi.com/2017/07/26/viewWillAppear-杂谈/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2017/09/24/Storyboard-与-Xib-的“抉择”/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          Storyboard 和 Xib 的“抉择”
-        
-      </div>
-    </a>
   
   
-    <a href="/2017/05/13/Thread-Sanitizer/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Thread Sanitizer</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-  
-  
+    </div></section>
   
 
-  
-
-  
-    <section id="comments">
-      <div id="disqus_thread"></div>
-        <script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'true'; // required: replace example with your forum shortname
-
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-      </script>
-      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    </section>
-  
-
-  
+    
 
 
           </div>
@@ -424,7 +277,7 @@ ga('send', 'pageview');
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: true,
+		isPost: false,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
