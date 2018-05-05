@@ -216,7 +216,13 @@ ga('send', 'pageview');
 <p><strong>Support:</strong></p>
 <p>If you have any question or comment for MetaX, please do not hesitate to contact me via the ways on the bottom left of this page.</p>
 </blockquote>
-
+<p>Source: <a href="https://github.com/Ckitakishi/MetaX">MetaX on Github</a></p>
+<h2 id="初衷"><a href="#初衷" class="headerlink" title="初衷"></a>初衷</h2><p>常常把相机中的照片传到手机里，但是比较麻烦的一点是没有地理信息，所以就自己动手丰衣足食了。<br>作为一个总结，下文的主题是照片框架 PhotoKit 和简单的问题解决记录。</p>
+<h2 id="关于照片框架-PhotoKit"><a href="#关于照片框架-PhotoKit" class="headerlink" title="关于照片框架 - PhotoKit"></a>关于照片框架 - PhotoKit</h2><p>在 <strong>PhotoKit</strong> 之前，AssetsLibrary 是被广泛使用的，由于并没有实际用过，就不再赘述。从 <strong>PhotoKit</strong> 的文档就可以看出来，这是一个十分庞大的框架，包含了相当多的类。<strong>PhotoKit</strong> 可以使得自己的应用与照片库以相同流程工作，此外性能也相当不错。</p>
+<h3 id="从获取图像开始"><a href="#从获取图像开始" class="headerlink" title="从获取图像开始"></a>从获取图像开始</h3><h4 id="相册取得"><a href="#相册取得" class="headerlink" title="相册取得"></a>相册取得</h4><p>如果以从相册列表选取照片这个流程为例来看，相册列表中的所有对象都是 <code>PHCollection</code>，它是一个抽象父类，拥有两个子类： <code>PHAssetCollection</code> 和 <code>PHCollectionList</code>，前者表示相册，后者表示相册列表也就是文件夹。题外话，在 iOS 设备上创建文件夹几乎可以说是一个隐藏功能，点击追加按钮是相册，而长按则可以选择相册或文件夹。而获取相册的方法是使用上述几个类中的 fetch 方法，返回 <code>PHFetchResult&lt;XXX&gt;</code>，可以用部分与 <code>Foundation</code> 中集合类型相同的接口来处理这个结果，比如用 <code>enumerateObjects(_:)</code> 来进行遍历。该方法默认会取回所有结果，但是可以通过使用 <code>PHFetchOptions</code> 来做一些过滤或是排序处理。例如取回所有智能相册：</p>
+        
+          <a class="article-more-a" href="/2018/04/29/关于-MetaX-的三言两语/#more">more >></a>
+        
       
 
       
