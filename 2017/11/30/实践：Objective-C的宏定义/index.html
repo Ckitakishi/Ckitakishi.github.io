@@ -248,7 +248,6 @@ ga('send', 'pageview');
 <p>利用例：</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@TODO(<span class="string">"test code 1"</span>)</span><br><span class="line">@TODO(<span class="string">"test code 2"</span>)</span><br></pre></td></tr></table></figure>
 <h2 id="杂谈"><a href="#杂谈" class="headerlink" title="杂谈"></a>杂谈</h2><p>当要使用宏时，务必要考虑有没有必要，合不合理，会不会有副作用。举个例子来说：当需要定义一个常量时，宏完全可以，但是更好的选择是使用 <code>const</code> 关键字。借助宏来定义常量最大的痛点就是不包含类型信息，<code>const</code> 不仅弥补了类型信息缺失的问题，而且在访问控制权限这块也表现地更好。</p>
-<p>还有对于宏定义应该写在哪里这个问题，个人倾向于：全项目共通就写在 <em>Prefix.pch</em> 里，和个别类相关就写在相关类中，尽管也有不少人可能更倾向于全部写在自定义类中，以便管理。即使抛开 <em>Prefix.pch</em> 只需要编译一次而带来的微小性能收益不谈，它作为一个预编译文件，物尽其用也不错哦～</p>
 <p>最后还想提一句 <code>typedef</code>，人们常常会拿它和 <code>#define</code> 相比较，看起来用法很相似，其实本质上有蛮大区别，<code>typedef</code> 是在编译期间进行处理的关键字。用途上来说，<code>typedef</code> 更多是用于创建类型别名，上述 Enum 的宏定义中为枚举指定别名就依赖于 <code>typedef</code>。</p>
 <p>以上。</p>
 
