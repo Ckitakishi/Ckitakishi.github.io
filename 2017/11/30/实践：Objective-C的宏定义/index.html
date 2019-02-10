@@ -1,31 +1,25 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://ckitakishi.com">
   <title>实践：Objective-C的宏定义 | Ckitakishi.playground</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="之前某一周的 LT 话题。
-
-宏定义在 Objective-C 中可以说是被广泛使用。就实际来说，目前组内对 Enum, Singeleton, Log 等都使用了宏来进行定义。究其原因，一部分是为了为了减少重复代码，提升开发体验，还有一部分来源于对条件编译的需求。
-最早知道宏定义是在 C 语言课本上，然后就是笔试时候的各种宏展开。但是直到投入项目开发之后才算是稍微理解了一些宏的强大与脆弱。所以很">
+  <meta name="description" content="之前某一周的 LT 话题。  宏定义在 Objective-C 中可以说是被广泛使用。就实际来说，目前组内对 Enum, Singeleton, Log 等都使用了宏来进行定义。究其原因，一部分是为了为了减少重复代码，提升开发体验，还有一部分来源于对条件编译的需求。 最早知道宏定义是在 C 语言课本上，然后就是笔试时候的各种宏展开。但是直到投入项目开发之后才算是稍微理解了一些宏的强大与脆弱。所以">
+<meta name="keywords" content="iOS,LT,Objective-C">
 <meta property="og:type" content="article">
 <meta property="og:title" content="实践：Objective-C的宏定义">
 <meta property="og:url" content="http://ckitakishi.com/2017/11/30/实践：Objective-C的宏定义/index.html">
 <meta property="og:site_name" content="Ckitakishi.playground">
-<meta property="og:description" content="之前某一周的 LT 话题。
-
-宏定义在 Objective-C 中可以说是被广泛使用。就实际来说，目前组内对 Enum, Singeleton, Log 等都使用了宏来进行定义。究其原因，一部分是为了为了减少重复代码，提升开发体验，还有一部分来源于对条件编译的需求。
-最早知道宏定义是在 C 语言课本上，然后就是笔试时候的各种宏展开。但是直到投入项目开发之后才算是稍微理解了一些宏的强大与脆弱。所以很">
+<meta property="og:description" content="之前某一周的 LT 话题。  宏定义在 Objective-C 中可以说是被广泛使用。就实际来说，目前组内对 Enum, Singeleton, Log 等都使用了宏来进行定义。究其原因，一部分是为了为了减少重复代码，提升开发体验，还有一部分来源于对条件编译的需求。 最早知道宏定义是在 C 语言课本上，然后就是笔试时候的各种宏展开。但是直到投入项目开发之后才算是稍微理解了一些宏的强大与脆弱。所以">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-06T08:59:38.889Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="实践：Objective-C的宏定义">
-<meta name="twitter:description" content="之前某一周的 LT 话题。
-
-宏定义在 Objective-C 中可以说是被广泛使用。就实际来说，目前组内对 Enum, Singeleton, Log 等都使用了宏来进行定义。究其原因，一部分是为了为了减少重复代码，提升开发体验，还有一部分来源于对条件编译的需求。
-最早知道宏定义是在 C 语言课本上，然后就是笔试时候的各种宏展开。但是直到投入项目开发之后才算是稍微理解了一些宏的强大与脆弱。所以很">
+<meta name="twitter:description" content="之前某一周的 LT 话题。  宏定义在 Objective-C 中可以说是被广泛使用。就实际来说，目前组内对 Enum, Singeleton, Log 等都使用了宏来进行定义。究其原因，一部分是为了为了减少重复代码，提升开发体验，还有一部分来源于对条件编译的需求。 最早知道宏定义是在 C 语言课本上，然后就是笔试时候的各种宏展开。但是直到投入项目开发之后才算是稍微理解了一些宏的强大与脆弱。所以">
   
     <link rel="alternative" href="/atom.xml" title="Ckitakishi.playground" type="application/atom+xml">
   
@@ -57,7 +51,7 @@ ga('send', 'pageview');
   
 
 </head>
-
+</html>
 <body>
   <div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -193,7 +187,7 @@ ga('send', 'pageview');
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-实践：Objective-C的宏定义" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-实践：Objective-C的宏定义" class="article article-type-post " itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -207,13 +201,8 @@ ga('send', 'pageview');
         
         <a href="/2017/11/30/实践：Objective-C的宏定义/" class="archive-article-date">
 	  <time datetime="2017-11-30T13:17:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-30</time>
-	  <span id="busuanzi_container_page_pv" style="color:DarkGray">
-		 | <span id="busuanzi_value_page_pv"></span> Views
-	  </span>
 </a>
 
-<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
-</script>
         
       </header>
     
@@ -226,25 +215,25 @@ ga('send', 'pageview');
 <p>最早知道宏定义是在 C 语言课本上，然后就是笔试时候的各种宏展开。但是直到投入项目开发之后才算是稍微理解了一些宏的强大与脆弱。所以很想简单谈一谈 Objective-C 的宏定义实践。</p>
 <h2 id="关于宏"><a href="#关于宏" class="headerlink" title="关于宏"></a>关于宏</h2><p>宏属于 C 预处理的一部分，C++，Objective-C 也一样通用。宏分为两种，对象宏 (<strong>Object-like</strong>) 和函数宏 (<strong>Function-like</strong>)。顾名思义，对象宏类似于数据对象，函数宏类似于函数调用。</p>
 <a id="more"></a>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Object-like</span></span><br><span class="line"><span class="preprocessor">#define HEIGHT 60</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Function-like</span></span><br><span class="line"><span class="preprocessor">#define MIN(a, b) a <span class="title">&lt; b ? a : b</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Object-like</span></span><br><span class="line"><span class="meta">#define HEIGHT 60</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Function-like</span></span><br><span class="line"><span class="meta">#define MIN(a, b) a <span class="meta-string">&lt; b ? a : b</span></span></span><br></pre></td></tr></table></figure>
 <p>函数宏看起来可以说是相当便利，而且执行效率还非常高。但是在实际运用中很多时候并不推荐使用，比如当出现自增自减运算时，上面的最小值就可能会发生错误，你不能说它是陷阱，毕竟宏的强项并不是复杂的逻辑运算。但是艺高人胆大，如果能玩得转用一用也无妨~</p>
-<p>扩展阅读：<a href="https://gcc.gnu.org/onlinedocs/cpp/index.html#SEC_Contents" target="_blank" rel="external">The C Preprocessor</a></p>
+<p>扩展阅读：<a href="https://gcc.gnu.org/onlinedocs/cpp/index.html#SEC_Contents" target="_blank" rel="noopener">The C Preprocessor</a></p>
 <h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><h3 id="单例的宏定义："><a href="#单例的宏定义：" class="headerlink" title="单例的宏定义："></a>单例的宏定义：</h3><p>使用了条件编译 <code>#ifndef</code>，推荐这种写法，尤其是在定义 cell 的高度时最好这么做，防止多重定义。<br>这是一个函数宏。</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#ifndef Singleton_h</span></span><br><span class="line"><span class="preprocessor">#define Singleton_h</span></span><br><span class="line"></span><br><span class="line"><span class="preprocessor">#define SINGLETON_IMPL( classname )\</span></span><br><span class="line">+ (classname *)sharedInstance\</span><br><span class="line">&#123;\</span><br><span class="line"><span class="keyword">static</span> <span class="built_in">dispatch_once_t</span> onceToken;\</span><br><span class="line"><span class="keyword">static</span> classname *_sharedInstance = <span class="literal">nil</span>;\</span><br><span class="line"><span class="built_in">dispatch_once</span>(&amp;onceToken, ^&#123;\</span><br><span class="line">_sharedInstance = [[[<span class="keyword">self</span> class] alloc] init];\</span><br><span class="line">&#125;);\</span><br><span class="line"><span class="keyword">return</span> _sharedInstance;\</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="preprocessor">#define SINGLETON_DEFINE( classname )\</span></span><br><span class="line">+ (classname *)sharedInstance;</span><br><span class="line"></span><br><span class="line"><span class="preprocessor">#endif</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#ifndef Singleton_h</span></span><br><span class="line"><span class="meta">#define Singleton_h</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#define SINGLETON_IMPL( classname )\</span></span><br><span class="line">+ (classname *)sharedInstance\</span><br><span class="line">&#123;\</span><br><span class="line"><span class="keyword">static</span> <span class="built_in">dispatch_once_t</span> onceToken;\</span><br><span class="line"><span class="keyword">static</span> classname *_sharedInstance = <span class="literal">nil</span>;\</span><br><span class="line"><span class="built_in">dispatch_once</span>(&amp;onceToken, ^&#123;\</span><br><span class="line">_sharedInstance = [[[<span class="keyword">self</span> <span class="keyword">class</span>] alloc] init];\</span><br><span class="line">&#125;);\</span><br><span class="line"><span class="keyword">return</span> _sharedInstance;\</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#define SINGLETON_DEFINE( classname )\</span></span><br><span class="line">+ (classname *)sharedInstance;</span><br><span class="line"></span><br><span class="line"><span class="meta">#endif</span></span><br></pre></td></tr></table></figure>
 <p>利用例：</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ClassName<span class="class">.h</span></span><br><span class="line"><span class="function"><span class="title">SINGLETON_DEFINE</span><span class="params">(ClassName)</span></span></span><br><span class="line"></span><br><span class="line">ClassName<span class="class">.m</span></span><br><span class="line"><span class="function"><span class="title">SINGLETON_IMPL</span><span class="params">(ClassName)</span></span></span><br><span class="line"></span><br><span class="line">OtherClass:</span><br><span class="line">[ClassName sharedInstance].property</span><br></pre></td></tr></table></figure>
-<h3 id="2-enum的宏定义："><a href="#2-enum的宏定义：" class="headerlink" title="2. enum的宏定义："></a>2. enum的宏定义：</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#ifndef APP_ENUM</span></span><br><span class="line"><span class="preprocessor">#define APP_ENUM( name_ ) \</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">enum</span> name_ : <span class="built_in">NSInteger</span> name_; \</span><br><span class="line"><span class="keyword">enum</span> name_ : <span class="built_in">NSInteger</span></span><br><span class="line"><span class="preprocessor">#endif</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ClassName.h</span><br><span class="line"><span class="function"><span class="title">SINGLETON_DEFINE</span><span class="params">(ClassName)</span></span></span><br><span class="line"></span><br><span class="line">ClassName.m</span><br><span class="line"><span class="function"><span class="title">SINGLETON_IMPL</span><span class="params">(ClassName)</span></span></span><br><span class="line"></span><br><span class="line">OtherClass:</span><br><span class="line">[ClassName sharedInstance].property</span><br></pre></td></tr></table></figure>
+<h3 id="2-enum的宏定义："><a href="#2-enum的宏定义：" class="headerlink" title="2. enum的宏定义："></a>2. enum的宏定义：</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#ifndef APP_ENUM</span></span><br><span class="line"><span class="meta">#define APP_ENUM( name_ ) \</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">enum</span> name_ : <span class="built_in">NSInteger</span> name_; \</span><br><span class="line"><span class="keyword">enum</span> name_ : <span class="built_in">NSInteger</span></span><br><span class="line"><span class="meta">#endif</span></span><br></pre></td></tr></table></figure>
 <p>利用例：</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">APP_ENUM( EnumName ) &#123;</span><br><span class="line">    EnumNameA,</span><br><span class="line">    EnumNameB</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <h3 id="3-LOG的宏定义："><a href="#3-LOG的宏定义：" class="headerlink" title="3. LOG的宏定义："></a>3. LOG的宏定义：</h3><p>当且仅当版本为开发版或内部测试版时输出 log。这里的 <code>__PRETTY_FUNCTION__</code>, <code>__LINE__</code> 都是 C 中已定义的函数宏，分别表示函数和行数。</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#ifdef DEBUG</span></span><br><span class="line"><span class="preprocessor">#define LOG(A, ...) NSLog(@<span class="title">"DEBUG: %s:%d:%@"</span>, __PRETTY_FUNCTION__,__LINE__,[NSString stringWithFormat:A, ## __VA_ARGS__]);</span></span><br><span class="line"><span class="preprocessor">#elif defined ALPHA</span></span><br><span class="line"><span class="preprocessor">#define LOG(A, ...) NSLog(@<span class="title">"ALPHA: %s:%d:%@"</span>, __PRETTY_FUNCTION__,__LINE__,[NSString stringWithFormat:A, ## __VA_ARGS__]);</span></span><br><span class="line"><span class="preprocessor">#else</span></span><br><span class="line"><span class="preprocessor">#define LOG(...)</span></span><br><span class="line"><span class="preprocessor">#endif</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#ifdef DEBUG</span></span><br><span class="line"><span class="meta">#define LOG(A, ...) NSLog(@<span class="meta-string">"DEBUG: %s:%d:%@"</span>, __PRETTY_FUNCTION__,__LINE__,[NSString stringWithFormat:A, ## __VA_ARGS__]);</span></span><br><span class="line"><span class="meta">#elif defined ALPHA</span></span><br><span class="line"><span class="meta">#define LOG(A, ...) NSLog(@<span class="meta-string">"ALPHA: %s:%d:%@"</span>, __PRETTY_FUNCTION__,__LINE__,[NSString stringWithFormat:A, ## __VA_ARGS__]);</span></span><br><span class="line"><span class="meta">#else</span></span><br><span class="line"><span class="meta">#define LOG(...)</span></span><br><span class="line"><span class="meta">#endif</span></span><br></pre></td></tr></table></figure>
 <p>利用例：</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LOG(<span class="string">@"test"</span>);</span><br></pre></td></tr></table></figure>
 <p>出力：</p>
 <p>[Time] [App Name] [Build Configuration] [File Name + Method] [Line Number] log </p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2017-11-27 09:35:19.099 AppName[59272:2201737] DEBUG: -[ClassName method]:330: test</span><br></pre></td></tr></table></figure>
-<h3 id="4-TODO-amp-FIX-的宏定义："><a href="#4-TODO-amp-FIX-的宏定义：" class="headerlink" title="4. TODO&amp;FIX 的宏定义："></a>4. TODO&amp;FIX 的宏定义：</h3><p>参考自 <a href="http://blog.sunnyxx.com/2015/03/01/todo-macro/" target="_blank" rel="external">todo-macro</a>，很有意思的一篇文章，通过宏定义将 <code>#pragma message (&quot;msg&quot;)</code> 进行扩展而作为 TODO 使用：</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#define STRINGIFY(S) #S</span></span><br><span class="line"><span class="preprocessor">#define DEFER_STRINGIFY(S) STRINGIFY(S)</span></span><br><span class="line"><span class="preprocessor">#define PRAGMA_MESSAGE(MSG) _Pragma(STRINGIFY(message(MSG)))</span></span><br><span class="line"><span class="preprocessor">#define FORMATTED_MESSAGE(MSG) <span class="title">"[TODO-"</span> DEFER_STRINGIFY(__COUNTER__) <span class="title">"]"</span> MSG <span class="title">" Line:"</span> DEFER_STRINGIFY(__LINE__)</span></span><br><span class="line"></span><br><span class="line"><span class="preprocessor">#define TODO(MSG) PRAGMA_MESSAGE(FORMATTED_MESSAGE(MSG))</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2017-11-27 09:35:19.099 AppName[59272:2201737] DEBUG: -[ClassName method]:330: test</span><br></pre></td></tr></table></figure>
+<h3 id="4-TODO-amp-FIX-的宏定义："><a href="#4-TODO-amp-FIX-的宏定义：" class="headerlink" title="4. TODO&amp;FIX 的宏定义："></a>4. TODO&amp;FIX 的宏定义：</h3><p>参考自 <a href="http://blog.sunnyxx.com/2015/03/01/todo-macro/" target="_blank" rel="noopener">todo-macro</a>，很有意思的一篇文章，通过宏定义将 <code>#pragma message (&quot;msg&quot;)</code> 进行扩展而作为 TODO 使用：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#define STRINGIFY(S) #S</span></span><br><span class="line"><span class="meta">#define DEFER_STRINGIFY(S) STRINGIFY(S)</span></span><br><span class="line"><span class="meta">#define PRAGMA_MESSAGE(MSG) _Pragma(STRINGIFY(message(MSG)))</span></span><br><span class="line"><span class="meta">#define FORMATTED_MESSAGE(MSG) <span class="meta-string">"[TODO-"</span> DEFER_STRINGIFY(__COUNTER__) <span class="meta-string">"]"</span> MSG <span class="meta-string">" Line:"</span> DEFER_STRINGIFY(__LINE__)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#define TODO(MSG) PRAGMA_MESSAGE(FORMATTED_MESSAGE(MSG))</span></span><br></pre></td></tr></table></figure>
 <p>利用例：</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@TODO(<span class="string">"test code 1"</span>)</span><br><span class="line">@TODO(<span class="string">"test code 2"</span>)</span><br></pre></td></tr></table></figure>
 <h2 id="杂谈"><a href="#杂谈" class="headerlink" title="杂谈"></a>杂谈</h2><p>当要使用宏时，务必要考虑有没有必要，合不合理，会不会有副作用。举个例子来说：当需要定义一个常量时，宏完全可以，但是更好的选择是使用 <code>const</code> 关键字。借助宏来定义常量最大的痛点就是不包含类型信息，<code>const</code> 不仅弥补了类型信息缺失的问题，而且在访问控制权限这块也表现地更好。</p>
@@ -289,15 +278,15 @@ ga('send', 'pageview');
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">iOS</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">LT</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Objective-C</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">iOS</a>
         		</li>
       		
 		</ul>
@@ -448,7 +437,7 @@ ga('send', 'pageview');
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2018 Ckitakishi
+    		&copy; 2019 Ckitakishi
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten

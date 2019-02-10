@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://ckitakishi.com">
   <title>UIKit Dynamics--iOS7 | Ckitakishi.playground</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Dynamic Items:UIDynamicItem Protocol是13年的WWDC新增加的。">
+<meta name="keywords" content="iOS,编程">
 <meta property="og:type" content="article">
 <meta property="og:title" content="UIKit Dynamics--iOS7">
 <meta property="og:url" content="http://ckitakishi.com/2014/03/22/uikit-dynamics--ios7/index.html">
 <meta property="og:site_name" content="Ckitakishi.playground">
 <meta property="og:description" content="Dynamic Items:UIDynamicItem Protocol是13年的WWDC新增加的。">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2017-10-07T15:57:53.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="UIKit Dynamics--iOS7">
 <meta name="twitter:description" content="Dynamic Items:UIDynamicItem Protocol是13年的WWDC新增加的。">
@@ -48,7 +51,7 @@ ga('send', 'pageview');
   
 
 </head>
-
+</html>
 <body>
   <div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -184,7 +187,7 @@ ga('send', 'pageview');
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-uikit-dynamics--ios7" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-uikit-dynamics--ios7" class="article article-type-post " itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -198,21 +201,16 @@ ga('send', 'pageview');
         
         <a href="/2014/03/22/uikit-dynamics--ios7/" class="archive-article-date">
 	  <time datetime="2014-03-22T13:17:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2014-03-22</time>
-	  <span id="busuanzi_container_page_pv" style="color:DarkGray">
-		 | <span id="busuanzi_value_page_pv"></span> Views
-	  </span>
 </a>
 
-<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
-</script>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="Dynamic-Items"><a href="#Dynamic-Items" class="headerlink" title="Dynamic Items:"></a>Dynamic Items:</h2><h4 id="UIDynamicItem-Protocol是13年的WWDC新增加的。"><a href="#UIDynamicItem-Protocol是13年的WWDC新增加的。" class="headerlink" title="UIDynamicItem Protocol是13年的WWDC新增加的。"></a>UIDynamicItem Protocol是13年的WWDC新增加的。</h4><a id="more"></a>
-<p> <a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIDynamicItem_Protocol/Reference/Reference.html" target="_blank" rel="external">Apple Library相关的</a></p>
-<h4 id="UIKit-Dynamics的焦点都是关于items之间相互的作用及其动画。有一个要求，为了在一个item上使用dynamic-behavior，item必须满足UIDynamicItem协议。该协议定义了三个重要的属性，bounds，center，transform。bounds属性是readonly的-center-transform属性是read-write的，center需要更新动画的进度-transform属性返回一个CGAffineTransform的对象。"><a href="#UIKit-Dynamics的焦点都是关于items之间相互的作用及其动画。有一个要求，为了在一个item上使用dynamic-behavior，item必须满足UIDynamicItem协议。该协议定义了三个重要的属性，bounds，center，transform。bounds属性是readonly的-center-transform属性是read-write的，center需要更新动画的进度-transform属性返回一个CGAffineTransform的对象。" class="headerlink" title="UIKit Dynamics的焦点都是关于items之间相互的作用及其动画。有一个要求，为了在一个item上使用dynamic behavior，item必须满足UIDynamicItem协议。该协议定义了三个重要的属性，bounds，center，transform。bounds属性是readonly的,center,transform属性是read/write的，center需要更新动画的进度,transform属性返回一个CGAffineTransform的对象。"></a>UIKit Dynamics的焦点都是关于items之间相互的作用及其动画。有一个要求，为了在一个item上使用dynamic behavior，item必须满足<code>UIDynamicItem</code>协议。该协议定义了三个重要的属性，<code>bounds</code>，<code>center</code>，<code>transform</code>。<code>bounds</code>属性是readonly的,<code>center</code>,<code>transform</code>属性是read/write的，<code>center</code>需要更新动画的进度,<code>transform</code>属性返回一个<code>CGAffineTransform</code>的对象。</h4><h4 id="从iOS7开始，默认的只有UIView和UICollectionViewLayoutAttributes类可实现该协议。但是，仍然可以自己创建类去实现之。"><a href="#从iOS7开始，默认的只有UIView和UICollectionViewLayoutAttributes类可实现该协议。但是，仍然可以自己创建类去实现之。" class="headerlink" title="从iOS7开始，默认的只有UIView和UICollectionViewLayoutAttributes类可实现该协议。但是，仍然可以自己创建类去实现之。"></a>从iOS7开始，默认的只有<code>UIView</code>和<code>UICollectionViewLayoutAttributes</code>类可实现该协议。但是，仍然可以自己创建类去实现之。</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property(nonatomic, readonly) CGRect bounds&#10;@property(nonatomic, readwrite) CGPoint center&#10;@property(nonatomic, readwrite) CGAffineTransform transform</span><br></pre></td></tr></table></figure>
+<p> <a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIDynamicItem_Protocol/Reference/Reference.html" target="_blank" rel="noopener">Apple Library相关的</a></p>
+<h4 id="UIKit-Dynamics的焦点都是关于items之间相互的作用及其动画。有一个要求，为了在一个item上使用dynamic-behavior，item必须满足UIDynamicItem协议。该协议定义了三个重要的属性，bounds，center，transform。bounds属性是readonly的-center-transform属性是read-write的，center需要更新动画的进度-transform属性返回一个CGAffineTransform的对象。"><a href="#UIKit-Dynamics的焦点都是关于items之间相互的作用及其动画。有一个要求，为了在一个item上使用dynamic-behavior，item必须满足UIDynamicItem协议。该协议定义了三个重要的属性，bounds，center，transform。bounds属性是readonly的-center-transform属性是read-write的，center需要更新动画的进度-transform属性返回一个CGAffineTransform的对象。" class="headerlink" title="UIKit Dynamics的焦点都是关于items之间相互的作用及其动画。有一个要求，为了在一个item上使用dynamic behavior，item必须满足UIDynamicItem协议。该协议定义了三个重要的属性，bounds，center，transform。bounds属性是readonly的,center,transform属性是read/write的，center需要更新动画的进度,transform属性返回一个CGAffineTransform的对象。"></a>UIKit Dynamics的焦点都是关于items之间相互的作用及其动画。有一个要求，为了在一个item上使用dynamic behavior，item必须满足<code>UIDynamicItem</code>协议。该协议定义了三个重要的属性，<code>bounds</code>，<code>center</code>，<code>transform</code>。<code>bounds</code>属性是readonly的,<code>center</code>,<code>transform</code>属性是read/write的，<code>center</code>需要更新动画的进度,<code>transform</code>属性返回一个<code>CGAffineTransform</code>的对象。</h4><h4 id="从iOS7开始，默认的只有UIView和UICollectionViewLayoutAttributes类可实现该协议。但是，仍然可以自己创建类去实现之。"><a href="#从iOS7开始，默认的只有UIView和UICollectionViewLayoutAttributes类可实现该协议。但是，仍然可以自己创建类去实现之。" class="headerlink" title="从iOS7开始，默认的只有UIView和UICollectionViewLayoutAttributes类可实现该协议。但是，仍然可以自己创建类去实现之。"></a>从iOS7开始，默认的只有<code>UIView</code>和<code>UICollectionViewLayoutAttributes</code>类可实现该协议。但是，仍然可以自己创建类去实现之。</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@property(nonatomic, readonly) CGRect bounds</span><br><span class="line">@property(nonatomic, readwrite) CGPoint center</span><br><span class="line">@property(nonatomic, readwrite) CGAffineTransform transform</span><br></pre></td></tr></table></figure>
 <h2 id="Dynamic-Behaviors"><a href="#Dynamic-Behaviors" class="headerlink" title="Dynamic Behaviors"></a>Dynamic Behaviors</h2><h4 id="在UIKit-Dynamics中，一个Dynamic-Behavior模拟的是真实世界的物理行为。包含以下六个类："><a href="#在UIKit-Dynamics中，一个Dynamic-Behavior模拟的是真实世界的物理行为。包含以下六个类：" class="headerlink" title="在UIKit Dynamics中，一个Dynamic Behavior模拟的是真实世界的物理行为。包含以下六个类："></a>在UIKit Dynamics中，一个Dynamic Behavior模拟的是真实世界的物理行为。包含以下六个类：</h4><ul>
 <li>UIAttachmentBehavior</li>
 <li>UICollisionBehavior</li>
@@ -228,7 +226,7 @@ ga('send', 'pageview');
 <li>friction 摩擦系数；默认0.0；</li>
 <li>resistance 阻力；默认0.0；</li>
 </ul>
-<h4 id="当时想要让一个球能够一开始就有方向有速度的运动，以下两个函数不能再赞，很简便。"><a href="#当时想要让一个球能够一开始就有方向有速度的运动，以下两个函数不能再赞，很简便。" class="headerlink" title="当时想要让一个球能够一开始就有方向有速度的运动，以下两个函数不能再赞，很简便。"></a>当时想要让一个球能够一开始就有方向有速度的运动，以下两个函数不能再赞，很简便。</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"> &#8211; addAngularVelocity(CGFloat):forItem(id[UIDynamicItem])//&#35774;&#32622;&#35282;&#36895;&#24230;&#10; &#8211; addLinearVelocity(CGPoint):forItem(id[UIDynamicItem])//&#35774;&#32622;&#32447;&#36895;&#24230;&#10;//angularResistance&#35282;&#24230;&#38459;&#21147;&#31995;&#25968;</span><br></pre></td></tr></table></figure>
+<h4 id="当时想要让一个球能够一开始就有方向有速度的运动，以下两个函数不能再赞，很简便。"><a href="#当时想要让一个球能够一开始就有方向有速度的运动，以下两个函数不能再赞，很简便。" class="headerlink" title="当时想要让一个球能够一开始就有方向有速度的运动，以下两个函数不能再赞，很简便。"></a>当时想要让一个球能够一开始就有方向有速度的运动，以下两个函数不能再赞，很简便。</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> – addAngularVelocity(CGFloat):forItem(id[UIDynamicItem])//设置角速度</span><br><span class="line"> – addLinearVelocity(CGPoint):forItem(id[UIDynamicItem])//设置线速度</span><br><span class="line">//angularResistance角度阻力系数</span><br></pre></td></tr></table></figure>
 <h2 id="UIDynamicAnimator"><a href="#UIDynamicAnimator" class="headerlink" title="UIDynamicAnimator"></a>UIDynamicAnimator</h2><h4 id="UIDynamicBehavior需要添加到animator上才能发生作用；"><a href="#UIDynamicBehavior需要添加到animator上才能发生作用；" class="headerlink" title="UIDynamicBehavior需要添加到animator上才能发生作用；"></a>UIDynamicBehavior需要添加到animator上才能发生作用；</h4><h2 id="ReferenceView"><a href="#ReferenceView" class="headerlink" title="ReferenceView"></a>ReferenceView</h2><h4 id="等同于力学参考系。"><a href="#等同于力学参考系。" class="headerlink" title="等同于力学参考系。"></a>等同于力学参考系。</h4>
       
 
@@ -423,7 +421,7 @@ ga('send', 'pageview');
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2018 Ckitakishi
+    		&copy; 2019 Ckitakishi
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten

@@ -1,26 +1,27 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://ckitakishi.com">
   <title>Thread Sanitizer | Ckitakishi.playground</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。
-之前在修正并优化应用内线程管理的时候用了 Thread Sanitizer 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 Session 412。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。TSan 能够发现一些问题，诸如">
+  <meta name="description" content="作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。 之前在修正并优化应用内线程管理的时候用了 Thread Sanitizer 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 Session 412。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。TSan 能够发现一些问题，诸如">
+<meta name="keywords" content="iOS,LT">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Thread Sanitizer">
 <meta property="og:url" content="http://ckitakishi.com/2017/05/13/Thread-Sanitizer/index.html">
 <meta property="og:site_name" content="Ckitakishi.playground">
-<meta property="og:description" content="作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。
-之前在修正并优化应用内线程管理的时候用了 Thread Sanitizer 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 Session 412。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。TSan 能够发现一些问题，诸如">
-<meta property="og:image" content="/images/datarace.png">
+<meta property="og:description" content="作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。 之前在修正并优化应用内线程管理的时候用了 Thread Sanitizer 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 Session 412。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。TSan 能够发现一些问题，诸如">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://ckitakishi.com/images/datarace.png">
+<meta property="og:updated_time" content="2017-10-07T15:58:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Thread Sanitizer">
-<meta name="twitter:description" content="作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。
-之前在修正并优化应用内线程管理的时候用了 Thread Sanitizer 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 Session 412。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。TSan 能够发现一些问题，诸如">
+<meta name="twitter:description" content="作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。 之前在修正并优化应用内线程管理的时候用了 Thread Sanitizer 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 Session 412。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。TSan 能够发现一些问题，诸如">
+<meta name="twitter:image" content="http://ckitakishi.com/images/datarace.png">
   
     <link rel="alternative" href="/atom.xml" title="Ckitakishi.playground" type="application/atom+xml">
   
@@ -52,7 +53,7 @@ ga('send', 'pageview');
   
 
 </head>
-
+</html>
 <body>
   <div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -188,7 +189,7 @@ ga('send', 'pageview');
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Thread-Sanitizer" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-Thread-Sanitizer" class="article article-type-post " itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -202,29 +203,24 @@ ga('send', 'pageview');
         
         <a href="/2017/05/13/Thread-Sanitizer/" class="archive-article-date">
 	  <time datetime="2017-05-13T05:39:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-13</time>
-	  <span id="busuanzi_container_page_pv" style="color:DarkGray">
-		 | <span id="busuanzi_value_page_pv"></span> Views
-	  </span>
 </a>
 
-<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
-</script>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
         <p><em>作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。</em></p>
-<p>之前在修正并优化应用内线程管理的时候用了 <strong>Thread Sanitizer</strong> 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 <a href="https://developer.apple.com/videos/play/wwdc2016/412/" target="_blank" rel="external">Session 412</a>。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。<strong>TSan</strong> 能够发现一些问题，诸如 Keynote 里提到的：</p>
+<p>之前在修正并优化应用内线程管理的时候用了 <strong>Thread Sanitizer</strong> 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 <a href="https://developer.apple.com/videos/play/wwdc2016/412/" target="_blank" rel="noopener">Session 412</a>。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。<strong>TSan</strong> 能够发现一些问题，诸如 Keynote 里提到的：</p>
 <blockquote>
 <p>Use of uninitialized mutexes<br>Thread leaks (missing pthred_join)<br>Unsafe calls in signal handlers (ex:malloc)<br>Unlock from wrong thread<br>Data races</p>
 </blockquote>
 <p>因为在实际中遇到过，而且感觉发生概率相对较高，所以只展开说一下最后一项：数据竞争。数据竞争发生的基本条件是多个线程在同时访问同一块内存，并且其中至少又一个线程正在进行的是写操作。实际中常常表现为数据不整合，亦或是应用崩溃。比如下面这个例子：</p>
 <a id="more"></a>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[context performBlock:^&#123;&#10;    if (result &#38;&#38; context) &#123;&#10;        result = [self persistentSaveContext:context]; // 1&#10;    &#125;&#10;&#125;];&#10;return result; // 2</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[context performBlock:^&#123;</span><br><span class="line">    if (result &amp;&amp; context) &#123;</span><br><span class="line">        result = [self persistentSaveContext:context]; // 1</span><br><span class="line">    &#125;</span><br><span class="line">&#125;];</span><br><span class="line">return result; // 2</span><br></pre></td></tr></table></figure>
 <p><code>result</code> 在 1 和 2 两个地方发生了竞争。在 1 进行写操作之前，有可能处于不同线程的 2 早已经返回了，这样数据就发生了不整合。</p>
 <p>有很多方法可以解决这个问题，比如说：由异步操作变为同步操作，或是改变写操作的时间点。这里采取了第一个方案，使用同样用途的同步方法 <code>performBlockAndWait</code> 来取代 <code>performBlock</code>，这样以来，数据竞争的问题也就自然而然解决了。 </p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[context performBlockAndWait:^&#123;&#10;    if (result &#38;&#38; context) &#123;&#10;        result = [self persistentSaveContext:context]; // 1&#10;    &#125;&#10;&#125;];&#10;return result; // 2</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[context performBlockAndWait:^&#123;</span><br><span class="line">    if (result &amp;&amp; context) &#123;</span><br><span class="line">        result = [self persistentSaveContext:context]; // 1</span><br><span class="line">    &#125;</span><br><span class="line">&#125;];</span><br><span class="line">return result; // 2</span><br></pre></td></tr></table></figure>
 <p>由于 <strong>TSan</strong> 是统合在编译器 (Clang) 层面的，所以当使用 Swift 来编写服务器代码的时候，完全可以在命令行中使用它：</p>
 <p><img src="/images/datarace.png" alt="Tsan command"></p>
 <p>P.S.目前 <strong>TSan</strong> 只支持 64bit 的模拟器及 macOS 自身。</p>
@@ -267,11 +263,11 @@ ga('send', 'pageview');
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">LT</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">iOS</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">iOS</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">LT</a>
         		</li>
       		
 		</ul>
@@ -422,7 +418,7 @@ ga('send', 'pageview');
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2018 Ckitakishi
+    		&copy; 2019 Ckitakishi
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://ckitakishi.com">
   <title>Ckitakishi.playground</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -14,6 +14,7 @@
 <meta property="og:url" content="http://ckitakishi.com/page/2/index.html">
 <meta property="og:site_name" content="Ckitakishi.playground">
 <meta property="og:description" content="Ckitakishi 目前在日本从事 iOS 开发，在此之前是一名前端开发者，对动画和图像感兴趣，正在为写出优美的代码而修炼。初出茅庐的译者，参与译有《函数式 Swift》和《集合类型优化》">
+<meta property="og:locale" content="default">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ckitakishi.playground">
 <meta name="twitter:description" content="Ckitakishi 目前在日本从事 iOS 开发，在此之前是一名前端开发者，对动画和图像感兴趣，正在为写出优美的代码而修炼。初出茅庐的译者，参与译有《函数式 Swift》和《集合类型优化》">
@@ -48,7 +49,7 @@ ga('send', 'pageview');
   
 
 </head>
-
+</html>
 <body>
   <div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -186,7 +187,7 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-Swift-App-一个意料之外的崩溃理由" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Swift-App-一个意料之外的崩溃理由" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -200,13 +201,8 @@ ga('send', 'pageview');
         
         <a href="/2017/02/13/Swift-App-一个意料之外的崩溃理由/" class="archive-article-date">
 	  <time datetime="2017-02-13T14:10:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-02-13</time>
-	  <span id="busuanzi_container_page_pv" style="color:DarkGray">
-		 | <span id="busuanzi_value_page_pv"></span> Views
-	  </span>
 </a>
 
-<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
-</script>
         
       </header>
     
@@ -280,7 +276,7 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-重新启程的-2016" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-重新启程的-2016" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -294,13 +290,8 @@ ga('send', 'pageview');
         
         <a href="/2017/01/14/重新启程的-2016/" class="archive-article-date">
 	  <time datetime="2017-01-14T10:23:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-14</time>
-	  <span id="busuanzi_container_page_pv" style="color:DarkGray">
-		 | <span id="busuanzi_value_page_pv"></span> Views
-	  </span>
 </a>
 
-<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
-</script>
         
       </header>
     
@@ -374,7 +365,7 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-Swift字符串前后缀匹配" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Swift字符串前后缀匹配" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -388,25 +379,20 @@ ga('send', 'pageview');
         
         <a href="/2016/11/09/Swift字符串前后缀匹配/" class="archive-article-date">
 	  <time datetime="2016-11-08T15:18:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-11-09</time>
-	  <span id="busuanzi_container_page_pv" style="color:DarkGray">
-		 | <span id="busuanzi_value_page_pv"></span> Views
-	  </span>
 </a>
 
-<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
-</script>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
         <p>之前修改了项目中一个 increment search 的组件，最近刚好又看到下题，于是想说一说前后缀匹配的事儿～</p>
-<p><a href="https://leetcode.com/problems/longest-common-prefix/" target="_blank" rel="external">14. Longest Common Prefix</a></p>
+<p><a href="https://leetcode.com/problems/longest-common-prefix/" target="_blank" rel="noopener">14. Longest Common Prefix</a></p>
 <p>这是一个给定字符串数组，求所有字符串最长公有前缀的问题。</p>
 <p>直接用 <code>O(1)</code> 的额外空间来存储一个最长公有前缀，一次遍历后返回前缀字符串。这个想法自然到不需要多加解释，然而这么一写竟然击败了 100% 的 Swift 提交结果…</p>
 <p>所以不得不提一下十分高效的 <code>hasPrefix(_:)</code> 方法，它接受一个 <code>String</code> 类型的参数并返回 <code>Bool</code> 值，这里字符串大小写敏感，且基于 Unicode 标准等价。此外，与之对应用于比较后缀字符串的方法是 <code>hasSuffix(_:)</code>。</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Unicode 标准等价</span></span><br><span class="line"><span class="keyword">let</span> composedCafe = <span class="string">"Café"</span></span><br><span class="line"><span class="keyword">let</span> decomposedCafe = <span class="string">"Cafe\u&#123;0301&#125;"</span></span><br><span class="line"><span class="built_in">print</span>(cafe.hasPrefix(composedCafe))</span><br><span class="line"><span class="comment">// Prints "true"</span></span><br><span class="line"><span class="built_in">print</span>(cafe.hasPrefix(decomposedCafe))</span><br><span class="line"><span class="comment">// Prints "true"</span></span><br></pre></td></tr></table></figure>
-<p><a href="https://github.com/Ckitakishi/Daily/blob/master/LeetCode14_LongestCommonPrefix.swift" target="_blank" rel="external"></a>                                                           </p>
+<p><a href="https://github.com/Ckitakishi/Daily/blob/master/LeetCode14_LongestCommonPrefix.swift" target="_blank" rel="noopener"></a>                                                           </p>
 
       
 
@@ -475,7 +461,7 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-WatchDog-机制" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-WatchDog-机制" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -489,13 +475,8 @@ ga('send', 'pageview');
         
         <a href="/2016/08/17/WatchDog-机制/" class="archive-article-date">
 	  <time datetime="2016-08-17T14:34:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-08-17</time>
-	  <span id="busuanzi_container_page_pv" style="color:DarkGray">
-		 | <span id="busuanzi_value_page_pv"></span> Views
-	  </span>
 </a>
 
-<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
-</script>
         
       </header>
     
@@ -568,7 +549,7 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-沖縄三日" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-沖縄三日" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -582,13 +563,8 @@ ga('send', 'pageview');
         
         <a href="/2015/12/08/沖縄三日/" class="archive-article-date">
 	  <time datetime="2015-12-08T13:56:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-12-08</time>
-	  <span id="busuanzi_container_page_pv" style="color:DarkGray">
-		 | <span id="busuanzi_value_page_pv"></span> Views
-	  </span>
 </a>
 
-<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
-</script>
         
       </header>
     
@@ -610,15 +586,15 @@ ga('send', 'pageview');
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">跑步</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">旅行</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">美食</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">跑步</a>
         		</li>
       		
 		</ul>
@@ -669,7 +645,7 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-前向き" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-前向き" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -683,13 +659,8 @@ ga('send', 'pageview');
         
         <a href="/2015/11/04/前向き/" class="archive-article-date">
 	  <time datetime="2015-11-04T13:54:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-11-04</time>
-	  <span id="busuanzi_container_page_pv" style="color:DarkGray">
-		 | <span id="busuanzi_value_page_pv"></span> Views
-	  </span>
 </a>
 
-<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
-</script>
         
       </header>
     
@@ -763,7 +734,7 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-轻图像工具－LightImage" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-轻图像工具－LightImage" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -777,13 +748,8 @@ ga('send', 'pageview');
         
         <a href="/2015/08/01/轻图像工具－LightImage/" class="archive-article-date">
 	  <time datetime="2015-08-01T07:58:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-08-01</time>
-	  <span id="busuanzi_container_page_pv" style="color:DarkGray">
-		 | <span id="busuanzi_value_page_pv"></span> Views
-	  </span>
 </a>
 
-<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
-</script>
         
       </header>
     
@@ -806,15 +772,15 @@ ga('send', 'pageview');
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">编程</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">web</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">图像</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">编程</a>
         		</li>
       		
 		</ul>
@@ -879,7 +845,7 @@ ga('send', 'pageview');
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2018 Ckitakishi
+    		&copy; 2019 Ckitakishi
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
