@@ -6,18 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://ckitakishi.com">
-  <title>Ckitakishi.playground</title>
+  <title>Memory warning: 大隐隐于市 | Ckitakishi.playground</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Ckitakishi 目前在日本从事 iOS 开发，在此之前是一名前端开发者，对动画和图像感兴趣，正在为写出优美的代码而修炼。初出茅庐的译者，参与译有《函数式 Swift》和《集合类型优化》">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Ckitakishi.playground">
-<meta property="og:url" content="http://ckitakishi.com/page/2/index.html">
+  <meta name="description" content="对 memory warning (内存警告) 的处理是一个在开发中极其容易被忽略的问题，究其原因，最重要莫过于 warning 并不那么容易发生，开发中尤其如此。即使发生了，在我们分析崩溃日志的时候，也未必能够明察与之是否有关，再进一步说，就算知道了十有八九是 memory warning 导致了崩溃，有时候要准确定位根源仍需耗费一番功夫。 常见原因由内存原因导致的崩溃类型多不胜数，不过在这里只">
+<meta name="keywords" content="iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Memory warning: 大隐隐于市">
+<meta property="og:url" content="http://ckitakishi.com/2019/02/23/Memory-warning-大隐隐于市/index.html">
 <meta property="og:site_name" content="Ckitakishi.playground">
-<meta property="og:description" content="Ckitakishi 目前在日本从事 iOS 开发，在此之前是一名前端开发者，对动画和图像感兴趣，正在为写出优美的代码而修炼。初出茅庐的译者，参与译有《函数式 Swift》和《集合类型优化》">
+<meta property="og:description" content="对 memory warning (内存警告) 的处理是一个在开发中极其容易被忽略的问题，究其原因，最重要莫过于 warning 并不那么容易发生，开发中尤其如此。即使发生了，在我们分析崩溃日志的时候，也未必能够明察与之是否有关，再进一步说，就算知道了十有八九是 memory warning 导致了崩溃，有时候要准确定位根源仍需耗费一番功夫。 常见原因由内存原因导致的崩溃类型多不胜数，不过在这里只">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-02-23T07:40:37.921Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ckitakishi.playground">
-<meta name="twitter:description" content="Ckitakishi 目前在日本从事 iOS 开发，在此之前是一名前端开发者，对动画和图像感兴趣，正在为写出优美的代码而修炼。初出茅庐的译者，参与译有《函数式 Swift》和《集合类型优化》">
+<meta name="twitter:title" content="Memory warning: 大隐隐于市">
+<meta name="twitter:description" content="对 memory warning (内存警告) 的处理是一个在开发中极其容易被忽略的问题，究其原因，最重要莫过于 warning 并不那么容易发生，开发中尤其如此。即使发生了，在我们分析崩溃日志的时候，也未必能够明察与之是否有关，再进一步说，就算知道了十有八九是 memory warning 导致了崩溃，有时候要准确定位根源仍需耗费一番功夫。 常见原因由内存原因导致的崩溃类型多不胜数，不过在这里只">
   
     <link rel="alternative" href="/atom.xml" title="Ckitakishi.playground" type="application/atom+xml">
   
@@ -185,22 +187,20 @@ ga('send', 'pageview');
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-Thread-Sanitizer" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+            <article id="post-Memory-warning-大隐隐于市" class="article article-type-post " itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/05/13/Thread-Sanitizer/">Thread Sanitizer</a>
+    <h1 class="article-title" itemprop="name">
+      Memory warning: 大隐隐于市
     </h1>
   
 
         
-        <a href="/2017/05/13/Thread-Sanitizer/" class="archive-article-date">
-	  <time datetime="2017-05-13T05:39:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-13</time>
+        <a href="/2019/02/23/Memory-warning-大隐隐于市/" class="archive-article-date">
+	  <time datetime="2019-02-23T03:32:21.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-02-23</time>
 </a>
 
         
@@ -208,110 +208,69 @@ ga('send', 'pageview');
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><em>作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。</em></p>
-<p>之前在修正并优化应用内线程管理的时候用了 <strong>Thread Sanitizer</strong> 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 <a href="https://developer.apple.com/videos/play/wwdc2016/412/" target="_blank" rel="noopener">Session 412</a>。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。<strong>TSan</strong> 能够发现一些问题，诸如 Keynote 里提到的：</p>
-<blockquote>
-<p>Use of uninitialized mutexes<br>Thread leaks (missing pthred_join)<br>Unsafe calls in signal handlers (ex:malloc)<br>Unlock from wrong thread<br>Data races</p>
-</blockquote>
-<p>因为在实际中遇到过，而且感觉发生概率相对较高，所以只展开说一下最后一项：数据竞争。数据竞争发生的基本条件是多个线程在同时访问同一块内存，并且其中至少又一个线程正在进行的是写操作。实际中常常表现为数据不整合，亦或是应用崩溃。比如下面这个例子：</p>
-        
-          <a class="article-more-a" href="/2017/05/13/Thread-Sanitizer/#more">more >></a>
-        
+        <p>对 memory warning (内存警告) 的处理是一个在开发中极其容易被忽略的问题，究其原因，最重要莫过于 warning 并不那么容易发生<del>，开发中尤其如此</del>。即使发生了，在我们分析崩溃日志的时候，也未必能够明察与之是否有关，再进一步说，就算知道了十有八九是 memory warning 导致了崩溃，有时候要准确定位根源仍需耗费一番功夫。</p>
+<h2 id="常见原因"><a href="#常见原因" class="headerlink" title="常见原因"></a>常见原因</h2><p>由内存原因导致的崩溃类型多不胜数，不过在这里只打算讨论内存不足导致应用被强制终结这一种。比较常见的是下述几种：</p>
+<ul>
+<li>自然消耗，处理媒体资源尤其容易消耗内存。<ul>
+<li>未处理 memory warning</li>
+<li>对 memory warning 的处理不正确</li>
+</ul>
+</li>
+<li>memory leak (内存泄漏)，确切来说 memory leak 不是直接原因，而是一个加速器。</li>
+</ul>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>之所以认识到这个问题的重要性，是因为最近在看崩溃日志的时候，发现有很多个原因近似，但发生场所不太相同的崩溃，不过总体来说发生率只有 0.0X%。因为夹杂着一些 RxSwift 的代码，真正发生崩溃的位置变得很难判断，真实原因更是扑朔迷离。所谓家家有本难念的经，相似的，短短代码都有说不尽的故事，所以就事论事，来说说到底发生了什么。</p>
+<a id="more"></a>
+<p>首先，我们有一个封装了 <code>UICollectionView</code> 的 <code>UIViewController</code>，也就是 <code>BaseCollectionViewController</code>，在其中定义了一个可以“保证”不是 <code>nil</code> 且不为 <code>weak</code> 的 <code>collectionVIew</code>：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// BaseCollectionViewController.swift</span></span><br><span class="line"><span class="keyword">fileprivate</span>(<span class="keyword">set</span>) <span class="keyword">var</span> collectionView: <span class="type">UICollectionView!</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">didReceiveMemoryWarning</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> isViewLoaded &amp;&amp; view.window == <span class="literal">nil</span> &amp;&amp; collectionView.isDescendant(of: view) &#123;</span><br><span class="line">        collectionView.removeFromSuperview()</span><br><span class="line">        collectionView.delegate = <span class="literal">nil</span></span><br><span class="line">        collectionView.dataSource = <span class="literal">nil</span></span><br><span class="line">        collectionView = <span class="literal">nil</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">super</span>.didReceiveMemoryWarning()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">loadView</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">super</span>.loadView()</span><br><span class="line">    <span class="comment">// init collectionView in code</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此外，还拥有一个继承自 BaseCollectionViewController 的 XXViewController：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// XXViewController</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">XXViewController</span>: <span class="title">BaseCollectionViewController</span> </span>&#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">didReceiveMemoryWarning</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> isViewLoaded &amp;&amp; view.window == <span class="literal">nil</span> &#123;</span><br><span class="line">            <span class="comment">// ...</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">super</span>.didReceiveMemoryWarning()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">func</span> <span class="title">reloadData</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="comment">// fetch data from server then reload collection view</span></span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">        collectionView.reloadData()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实际的运用情景是，在 <code>XXViewController`</code> 中存在 pop 一个新 ViewController 的情况，这个时候，XXViewController<code>需要重新获取数据来刷新页面并更新 collectionView 的</code>contentOffset<code>。按道理来说，刷新数据在下一次 view will appear 的时候进行会更保险，但是由于被强烈要求调整</code>contentOffset` 这个过程不可见，所以…这样一来，bug 就“应运而生”了。</p>
+<p>当新 ViewController 位于最顶端的时候，XXViewController 就不再被 window 所持有。由于它继承自 BaseCollectionViewController，<code>didReceiveMemoryWarning</code> 发生时 collectionView 会在不知不觉中被置为 nil，如果这一切发生在 collectionView.reloadData() 之前，那噩梦就诞生了。</p>
+<p>这个时候，或许会反思 controller view 之间的继承关系到底合理么，调整 <code>contentOffset</code> 不可见到底合理么，<code>collectionView = nil</code> 到底有没有意义。我认为这些都是合理的着手点，对于这类问题，找到原因其实就已经解决了 80% 了。</p>
+<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><p>未雨绸缪这句话在这里非常适用，提前去思考一些问题有助于我们规避 memory warning 带来的麻烦：</p>
+<ul>
+<li>当接收到 memery warning 时我们该做什么？</li>
+<li>view controller  不被 window 持有的时候需要做什么？</li>
+<li>当一个 view controller 被恢复的时候，<code>loadView</code>, <code>viewDidLoad</code> 会默认被调用，但是自定义的 <code>init</code> 方法们就不一定了，这样仍能顺利完成初始化吗？</li>
+<li>是否存在显著的内存泄漏？</li>
+</ul>
+<p>当这些问题都梳理清楚的时候，也就大大减少了后顾之忧。</p>
+<p>除了上面提到过的 <code>didReceiveMemoryWarning</code>，还有一个比较常用的方法： <code>applicationDidReceiveMemoryWarning</code>，后者是 App delegate 的方法，所以我认为可以用来管理一些全局对象，或是缓存之类的。除此之外，还可以在必要的时候监听名为 <code>UIApplicationDidReceiveMemoryWarningNotification</code> 的通知来做一些特殊的处理。</p>
+<h2 id="触发-memory-warning"><a href="#触发-memory-warning" class="headerlink" title="触发 memory warning"></a>触发 memory warning</h2><p>那么，当准备就绪的时候，我们就可以通过触发 memory warning 来进行测试了。</p>
+<ol>
+<li>模拟器 –&gt; Debug –&gt; Simulate Memory Warning (<code>Shift + Command + M</code>): 模拟器调试选项，结合断点模拟 warning</li>
+<li><code>UIApplication.shared.perform(Selector((&quot;_performMemoryWarning&quot;)))</code>: 在代码中指定位置触发 warning</li>
+</ol>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>内存管理着实不是一个简单的问题，上述内容不过浮于浅表。如果想要稍微再多了解一点，推荐看一看 WWDC 2018 的 <a href="https://developer.apple.com/videos/play/wwdc2018/416/" target="_blank" rel="noopener">Session 416</a> ，有很多内容刷新了我的既存认知…</p>
+
       
 
       
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">iOS</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">LT</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/求索集//" class="article-tag-list-link color4">求索集</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/05/13/Thread-Sanitizer/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>喵🐱<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/qr.jpg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Swift-App-一个意料之外的崩溃理由" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/13/Swift-App-一个意料之外的崩溃理由/">Swift App:一个意料之外的崩溃理由</a>
-    </h1>
-  
-
-        
-        <a href="/2017/02/13/Swift-App-一个意料之外的崩溃理由/" class="archive-article-date">
-	  <time datetime="2017-02-13T14:10:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-02-13</time>
-</a>
-
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>这是一个发生在去年年底的故事。背景是一个新规 Swift 应用处于准备发布阶段，证书由开发测试用更替为发布用， 这是两份 Team 不同的企业版证书。</p>
-<p>应用功能本身十分简单，开发测试阶段也比较顺利，几乎没有发生崩溃。然而在更替证书之后，真机测试应用时却陷入了无限崩溃的境地。</p>
-        
-          <a class="article-more-a" href="/2017/02/13/Swift-App-一个意料之外的崩溃理由/#more">more >></a>
-        
-      
-
       
     </div>
     <div class="article-info article-info-index">
@@ -342,16 +301,75 @@ ga('send', 'pageview');
 
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/02/13/Swift-App-一个意料之外的崩溃理由/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://ckitakishi.com/2019/02/23/Memory-warning-大隐隐于市/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2018/04/29/关于-MetaX-的三言两语/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">关于 MetaX 的三言两语</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -371,470 +389,30 @@ ga('send', 'pageview');
 
 
 
-
-  
-    <article id="post-重新启程的-2016" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/14/重新启程的-2016/">重新启程的 2016</a>
-    </h1>
-  
-
-        
-        <a href="/2017/01/14/重新启程的-2016/" class="archive-article-date">
-	  <time datetime="2017-01-14T10:23:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-14</time>
-</a>
-
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>转眼一月都已过半…如果说 2015 于我而言是承前启后的一年，那 2016 大概算是重新启程的一年。</p>
-<h2 id="第一个完整的工作年"><a href="#第一个完整的工作年" class="headerlink" title="第一个完整的工作年"></a>第一个完整的工作年</h2><p>2016 是我的第一个完整工作年，有吐不完的槽，也有说不尽的感谢。</p>
-        
-          <a class="article-more-a" href="/2017/01/14/重新启程的-2016/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">随笔</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/浮生记//" class="article-tag-list-link color4">浮生记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/01/14/重新启程的-2016/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Swift字符串前后缀匹配" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/09/Swift字符串前后缀匹配/">Swift 的字符串前后缀匹配</a>
-    </h1>
-  
-
-        
-        <a href="/2016/11/09/Swift字符串前后缀匹配/" class="archive-article-date">
-	  <time datetime="2016-11-08T15:18:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-11-09</time>
-</a>
-
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>之前修改了项目中一个 increment search 的组件，最近刚好又看到下题，于是想说一说前后缀匹配的事儿～</p>
-<p><a href="https://leetcode.com/problems/longest-common-prefix/" target="_blank" rel="noopener">14. Longest Common Prefix</a></p>
-<p>这是一个给定字符串数组，求所有字符串最长公有前缀的问题。</p>
-<p>直接用 <code>O(1)</code> 的额外空间来存储一个最长公有前缀，一次遍历后返回前缀字符串。这个想法自然到不需要多加解释，然而这么一写竟然击败了 100% 的 Swift 提交结果…</p>
-<p>所以不得不提一下十分高效的 <code>hasPrefix(_:)</code> 方法，它接受一个 <code>String</code> 类型的参数并返回 <code>Bool</code> 值，这里字符串大小写敏感，且基于 Unicode 标准等价。此外，与之对应用于比较后缀字符串的方法是 <code>hasSuffix(_:)</code>。</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Unicode 标准等价</span></span><br><span class="line"><span class="keyword">let</span> composedCafe = <span class="string">"Café"</span></span><br><span class="line"><span class="keyword">let</span> decomposedCafe = <span class="string">"Cafe\u&#123;0301&#125;"</span></span><br><span class="line"><span class="built_in">print</span>(cafe.hasPrefix(composedCafe))</span><br><span class="line"><span class="comment">// Prints "true"</span></span><br><span class="line"><span class="built_in">print</span>(cafe.hasPrefix(decomposedCafe))</span><br><span class="line"><span class="comment">// Prints "true"</span></span><br></pre></td></tr></table></figure>
-<p><a href="https://github.com/Ckitakishi/Daily/blob/master/LeetCode14_LongestCommonPrefix.swift" target="_blank" rel="noopener"></a>                                                           </p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">LeetCode</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">覚書</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/求索集//" class="article-tag-list-link color4">求索集</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/11/09/Swift字符串前后缀匹配/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-WatchDog-机制" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/17/WatchDog-机制/">iOS 的看门狗机制</a>
-    </h1>
-  
-
-        
-        <a href="/2016/08/17/WatchDog-机制/" class="archive-article-date">
-	  <time datetime="2016-08-17T14:34:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-08-17</time>
-</a>
-
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>应用 100% Loss 时完全无法启动，一直崩溃。彻底切断网络连接正常启动，调试模式状态下等待时间非常久，但可以启动，并伴随 UI 微卡。强烈的预感这是线程阻塞。前一段时间被 Core Data Concurrency 折腾的够呛，看见线程问题就略有些心慌。</p>
-        
-          <a class="article-more-a" href="/2016/08/17/WatchDog-机制/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">iOS</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/求索集//" class="article-tag-list-link color4">求索集</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/08/17/WatchDog-机制/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-沖縄三日" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/12/08/沖縄三日/">沖縄三日</a>
-    </h1>
-  
-
-        
-        <a href="/2015/12/08/沖縄三日/" class="archive-article-date">
-	  <time datetime="2015-12-08T13:56:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-12-08</time>
-</a>
-
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>期待已久的冲绳之行和不那么期待的马拉松如此而至。出发的早晨阳光特别温暖，モノレール窗子上映出身影，好暖～</p>
-        
-          <a class="article-more-a" href="/2015/12/08/沖縄三日/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">跑步</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">旅行</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">美食</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/浮生记//" class="article-tag-list-link color4">浮生记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2015/12/08/沖縄三日/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-前向き" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/11/04/前向き/">前向き</a>
-    </h1>
-  
-
-        
-        <a href="/2015/11/04/前向き/" class="archive-article-date">
-	  <time datetime="2015-11-04T13:54:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-11-04</time>
-</a>
-
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>一直很很喜欢 CIH 在知乎说的一句话：这个世界上，总是有人，为梦想而活。</p>
-<p>深以为，我是这样的人，因为还有梦想，所以无论多么失落，多么悲伤，都忍耐。</p>
-        
-          <a class="article-more-a" href="/2015/11/04/前向き/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">随笔</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/浮生记//" class="article-tag-list-link color4">浮生记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2015/11/04/前向き/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
   
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
-    </nav>
+  
+
+  
+
+  
+    <section id="comments">
+      <div id="disqus_thread"></div>
+        <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'true'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </section>
+  
+
   
 
 
@@ -857,8 +435,8 @@ ga('send', 'pageview');
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
