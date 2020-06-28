@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="Ckitakishi.playground">
 <meta property="og:description" content="Swift 拥有可选类型且类型安全，这些特性帮助开发者避免了很多麻烦问题。 然而当涉及到字符串的时候，还是或多或少存在一些瑕疵。例如引用资源文件，图片文字等，一旦拼写错误，是没有办法在编译之前知道的，又或者是继续在代码中引用已经被删除的资源，也不容易被察觉。为了解决这个问题，一些知名的库应运而生，像是 R.swift, SwiftGen 之类。解决方案的其中一个核心是使得资源引用这个过程变得类型安">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-06-06T14:15:17.211Z">
+<meta property="og:updated_time" content="2020-06-27T16:18:58.474Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="安全且优雅地使用 NSAttributedString - Part.1">
 <meta name="twitter:description" content="Swift 拥有可选类型且类型安全，这些特性帮助开发者避免了很多麻烦问题。 然而当涉及到字符串的时候，还是或多或少存在一些瑕疵。例如引用资源文件，图片文字等，一旦拼写错误，是没有办法在编译之前知道的，又或者是继续在代码中引用已经被删除的资源，也不容易被察觉。为了解决这个问题，一些知名的库应运而生，像是 R.swift, SwiftGen 之类。解决方案的其中一个核心是使得资源引用这个过程变得类型安">
@@ -107,7 +107,7 @@
 
     </div>
     <div id="toc">
-      
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#TBC"><span class="toc-number">1.</span> <span class="toc-text">TBC</span></a></li></ol>
     </div>
   </span>
 </div>
@@ -187,8 +187,11 @@
 <p>于是，最初的代码就可以用一种更 <code>Swifty</code> 的方式来重写了。<br>代码风格各有所爱，就我个人来说，安全与优雅的代码着实令人感动：P</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">xxxxxx.attributedText = <span class="type">NSAttributedString</span>(</span><br><span class="line">    string: <span class="string">"卮言春天 破碎秋千"</span>,</span><br><span class="line">    stringAttributes: [</span><br><span class="line">        .font(.systemFont(ofSize: <span class="number">12.0</span>, weight: .regular)),</span><br><span class="line">        .foregroundColor(.gray),</span><br><span class="line">	      .paragraphStyle([</span><br><span class="line">	          .lineSpacing(<span class="number">1.0</span>),</span><br><span class="line">	          .lineBreakMode(.byTruncatingTail),</span><br><span class="line">	          .alignment(.center)</span><br><span class="line">	      ])</span><br><span class="line"></span><br><span class="line">])</span><br></pre></td></tr></table></figure>
 <p>至此，我们就拥有了一个类型安全的 <code>NSAttributedString</code> 初始化方法。不过条条大路通罗马，伴随着 <code>SwiftUI</code> 的诞生，Swift 5.1 中新增加了 <code>Function Builder</code>，用它来达成我们最初的目标也不失为一个好方法。读一读这篇 <a href="https://medium.com/@carson.katri/create-your-first-function-builder-in-5-minutes-b4a717390671" target="_blank" rel="noopener">Create Your First Function Builder in 10 Minutes</a> 应该会有不少启发。</p>
-<p>TBC</p>
-<p>(下一篇计划讲一讲在其它一些场景中，如何更优雅地使用 <code>NSAttributedString</code>)</p>
+<h2 id="TBC"><a href="#TBC" class="headerlink" title="TBC"></a>TBC</h2><p>(下一篇计划讲一讲在其它一些场景中，如何更优雅地使用 <code>NSAttributedString</code>)</p>
+<blockquote>
+<p>Source Code:</p>
+<p><a href="https://github.com/Ckitakishi/PlayWithAttributedString" target="_blank" rel="noopener">https://github.com/Ckitakishi/PlayWithAttributedString</a></p>
+</blockquote>
 
   </div>
 </article>
@@ -224,7 +227,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#TBC"><span class="toc-number">1.</span> <span class="toc-text">TBC</span></a></li></ol>
     </div>
 
     <div id="share-footer" style="display: none">
@@ -260,7 +263,7 @@
     Copyright &copy;
     
     
-    2016-2020
+    2014-2020
     Ckitakishi
   </div>
   <div class="footer-right">

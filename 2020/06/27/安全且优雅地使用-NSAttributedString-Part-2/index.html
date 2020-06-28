@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="Ckitakishi.playground">
 <meta property="og:description" content="在上一篇中，我们讨论了如何安全且优雅地定义一个属性字符串。不过在实际的运用场景中，情况往往会更复杂一些。 例如，当我们需要一个由很多属性不同的部分构成的完整字符串，或者是想要实现图文混排。这个时候，不可避免的需要将所有部分组装在一起，最基础的方法是创建 NSMutableAttributedString ，然后通过 append(_:) 方法来完成字符串的构建。简单易懂是它的有点，然而不知不觉中可">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-06-27T16:13:02.340Z">
+<meta property="og:updated_time" content="2020-06-27T16:17:50.379Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="安全且优雅地使用 NSAttributedString - Part.2">
 <meta name="twitter:description" content="在上一篇中，我们讨论了如何安全且优雅地定义一个属性字符串。不过在实际的运用场景中，情况往往会更复杂一些。 例如，当我们需要一个由很多属性不同的部分构成的完整字符串，或者是想要实现图文混排。这个时候，不可避免的需要将所有部分组装在一起，最基础的方法是创建 NSMutableAttributedString ，然后通过 append(_:) 方法来完成字符串的构建。简单易懂是它的有点，然而不知不觉中可">
@@ -176,6 +176,10 @@
 <p>到这里，组装属性字符串的过程变得优雅且灵活了一些。</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> attrString1: <span class="type">AttributedString</span> = <span class="string">"""</span></span><br><span class="line"><span class="string">\("踟蹰不如", stringAttributes: [ .foregroundColor(.systemGray), .font(.systemFont(ofSize: 14.0)) ])</span></span><br><span class="line"><span class="string">\("停止抱歉", stringAttributes: [ .foregroundColor(.systemGray2), .font(.systemFont(ofSize: 14.0)) ])</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> attrString2: <span class="type">AttributedString</span> = <span class="string">"""</span></span><br><span class="line"><span class="string">\(image: UIImage(named: "stop") ?? UIImage(), offsetX: 0.0, offsetY: 0.0, scale: 0.5)</span></span><br><span class="line"><span class="string">\("再过秋天", stringAttributes: [ .foregroundColor(.systemGray3), .font(.systemFont(ofSize: 14.0)) ])</span></span><br><span class="line"><span class="string">\("烂了蜿蜒", stringAttributes: [ .foregroundColor(.systemGray4), .font(.systemFont(ofSize: 14.0)) ])</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line">attrString1.append(attrString2)</span><br><span class="line"></span><br><span class="line">xxxxxlabel.attributedText = attrString1.attributedString</span><br></pre></td></tr></table></figure>
 <h2 id="尾声"><a href="#尾声" class="headerlink" title="尾声"></a>尾声</h2><p>我想很多人对属性字符串的感情应该是爱恨交织的，希望这两篇文章能为它拉回几张的票…😂</p>
+<blockquote>
+<p>Source Code:</p>
+<p><a href="https://github.com/Ckitakishi/PlayWithAttributedString" target="_blank" rel="noopener">https://github.com/Ckitakishi/PlayWithAttributedString</a></p>
+</blockquote>
 
   </div>
 </article>
@@ -247,7 +251,7 @@
     Copyright &copy;
     
     
-    2016-2020
+    2014-2020
     Ckitakishi
   </div>
   <div class="footer-right">
