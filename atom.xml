@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://ckitakishi.com/"/>
-  <updated>2020-06-27T16:17:50.379Z</updated>
+  <updated>2021-01-01T16:21:44.250Z</updated>
   <id>http://ckitakishi.com/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>2020 最后一天我在想什么</title>
+    <link href="http://ckitakishi.com/2021/01/01/2020-%E6%9C%80%E5%90%8E%E4%B8%80%E5%A4%A9%E6%88%91%E5%9C%A8%E6%83%B3%E4%BB%80%E4%B9%88/"/>
+    <id>http://ckitakishi.com/2021/01/01/2020-最后一天我在想什么/</id>
+    <published>2021-01-01T12:43:22.000Z</published>
+    <updated>2021-01-01T16:21:44.250Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p> 2020.12.31 / 晴</p></blockquote><h3 id="2020"><a href="#2020" class="headerlink" title="2020"></a>2020</h3><p>毕业后的几年间，大多数的年末年始都在路上或者即将启程，15 的湘南，17 的北海道，18 的川渝，19 的北陆…在一个个普通的日子里写下珍贵的记忆，让它们有了特别的意义。下午走在街上，日落将近，赶紧随手拍了一张照片来记录 2020 最后的夕日，一瞬间有些恍惚，不确定明年的此刻我是否还会记得这一天。</p><p>关于 2020，大多数人的生活或多或少都受到了一些负面影响，猜想很多人都在心中默默想过，“如果没有疫情…”，“疫情过后…”。我亦是如此，一方面这几年多了一些烦恼和忧虑，再加之长期在家的压抑，有几个月真的不太快乐，切身领会了看似普通的日子其实难能可贵这个道理。好在并不会屈服于生活带来的苦痛，而且很多事都翻篇了，又开始对新的一年有了期待（笑</p><p>不过并非一切都那么糟糕，2020 也有几件值得浓墨重彩记下一笔的事情：</p><ul><li>春节回了趟家，因为疫情哪也没去，妥妥的在家陪了家人两星期，此刻想来甚是难得。</li><li>厨艺有了进步，尤其是晴同学，如今做某几品中华料理的水平可以说是惊为天人。</li><li>在适应了新的生活/工作节奏之后，WFH 的体验变得足够令人愉悦，再加上免于通勤，有了更多悠闲（做饭，洗碗）的时间。</li><li>告别舒适圈，10 月离开了奋斗两年的团队，多亏遇到了一群很棒的同事，过去两年竟然真的觉得工作开心。在新的团队得到了更好的 WLB，下一个阶段希望自己能更有勇气一些。</li><li>赶在东京疫情爆发前跟或许多年都不再见得到的朋友去了一趟轻井泽，打了雪仗，像孩童时期一样开心（尽管孩童时期见过的雪一只手都数得过来）。</li><li>学了几个月韩语，口语稍稍记住了一些，却写不出几个对的单词，我可能是个文盲了，有愧于一直跟我说 Good Job 的老师。</li><li>动森称得上 2020 对我影响最大的游戏，和朋友们在无数个不眠的夜晚一起钓鱼砍树，还有小动物们的陪伴，在出不了门的日子里感受这种由虚拟向真实转换的温暖。</li></ul><h3 id="2021"><a href="#2021" class="headerlink" title="2021"></a>2021</h3><p>前两天看到一个豆瓣话题：你最平静放松的时刻。我想这一刻大概就是吧，可以平静且坦白的思考自己对未来的期许，简言之：</p><ul><li>保持健康良好的心情，早睡</li><li>多跟亲友联络，多交朋友</li><li>投入时间做个人产品</li><li>投资未来，保持学习 </li><li>点亮新技能树（上半年就是韩语了吧）</li><li>思考之余，表达和记录自己的想法</li><li>换驾照</li><li>保持对走街串巷，摄影，料理的热情</li></ul><p>害怕着写太多实现不了明年自己看着尴尬，却还是写了那么多😂</p><p>Anyway，希望每个人都能有得偿所愿的一年。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;blockquote&gt;
+&lt;p&gt; 2020.12.31 / 晴&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&quot;2020&quot;&gt;&lt;a href=&quot;#2020&quot; class=&quot;headerlink&quot; title=&quot;2020&quot;&gt;&lt;/a&gt;2020&lt;/h3&gt;&lt;p&gt;毕业后的几年间，大多数的
+      
+    
+    </summary>
+    
+      <category term="浮生记" scheme="http://ckitakishi.com/categories/%E6%B5%AE%E7%94%9F%E8%AE%B0/"/>
+    
+    
+      <category term="随笔" scheme="http://ckitakishi.com/tags/%E9%9A%8F%E7%AC%94/"/>
+    
+  </entry>
   
   <entry>
     <title>安全且优雅地使用 NSAttributedString - Part.2</title>
@@ -524,32 +552,6 @@
       <category term="思考" scheme="http://ckitakishi.com/tags/%E6%80%9D%E8%80%83/"/>
     
       <category term="生活" scheme="http://ckitakishi.com/tags/%E7%94%9F%E6%B4%BB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Dream Mark的前世今生</title>
-    <link href="http://ckitakishi.com/2014/07/01/dream-mark%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/"/>
-    <id>http://ckitakishi.com/2014/07/01/dream-mark的前世今生/</id>
-    <published>2014-07-01T14:28:10.000Z</published>
-    <updated>2017-10-07T15:57:40.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="DreamMark-的前世"><a href="#DreamMark-的前世" class="headerlink" title="DreamMark 的前世"></a>DreamMark 的前世</h2><p>DreamMark的的简介永远都是 <em>Mark our dream.</em> </p><p>起初，这源于一次激烈的讨论。“生活并不平淡，可很多东西就是记不住”，“我们大概需要借助纸和笔”，“可是，铭心的自然忘不了，其它又记了干嘛”，差一点，就再也没有然后了。“不一样的，记住可以是为了记忆，也可以是提醒”，“做梦！哪有那么神奇。”，“嗯！那就做梦吧！”，“……”。</p><p>于是，我们决定 <em>mark our dream</em> 。让梦境和梦想，为记忆添上那么一点儿不同的东西。</p><a id="more"></a><h2 id="DreamMark-的今生"><a href="#DreamMark-的今生" class="headerlink" title="DreamMark 的今生"></a>DreamMark 的今生</h2><p>半个月，每天约 3 小时，我们完成了 DreamMark 最初版的开发。</p><p>DreamMark 支持两种模式：</p><blockquote><p>涂鸦 — 给你一个画板，你可以绘出你的梦<br>拼图 — 场景 + 人物 + 情节 + 其它 = 你的梦</p></blockquote><p>DreamMark 学会了走路，但还走的不漂亮。无论是设计还是代码，我们会努力做到更好。</p><h2 id="DreamMark-相关"><a href="#DreamMark-相关" class="headerlink" title="DreamMark 相关"></a>DreamMark 相关</h2><p>所有图片均由 <a href="http://chiakiq.com/" target="_blank" rel="noopener">晴</a> 原创。<br>使用 <a href="https://www.parse.com/" target="_blank" rel="noopener">Parse</a> 提供后台服务。<br>更新在 <a href="https://github.com/Ckitakishi/DreamMark" target="_blank" rel="noopener">这里</a>。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;DreamMark-的前世&quot;&gt;&lt;a href=&quot;#DreamMark-的前世&quot; class=&quot;headerlink&quot; title=&quot;DreamMark 的前世&quot;&gt;&lt;/a&gt;DreamMark 的前世&lt;/h2&gt;&lt;p&gt;DreamMark的的简介永远都是 &lt;em&gt;Mark our dream.&lt;/em&gt; &lt;/p&gt;
-&lt;p&gt;起初，这源于一次激烈的讨论。“生活并不平淡，可很多东西就是记不住”，“我们大概需要借助纸和笔”，“可是，铭心的自然忘不了，其它又记了干嘛”，差一点，就再也没有然后了。“不一样的，记住可以是为了记忆，也可以是提醒”，“做梦！哪有那么神奇。”，“嗯！那就做梦吧！”，“……”。&lt;/p&gt;
-&lt;p&gt;于是，我们决定 &lt;em&gt;mark our dream&lt;/em&gt; 。让梦境和梦想，为记忆添上那么一点儿不同的东西。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="求索集" scheme="http://ckitakishi.com/categories/%E6%B1%82%E7%B4%A2%E9%9B%86/"/>
-    
-    
-      <category term="iOS" scheme="http://ckitakishi.com/tags/iOS/"/>
-    
-      <category term="编程" scheme="http://ckitakishi.com/tags/%E7%BC%96%E7%A8%8B/"/>
     
   </entry>
   
