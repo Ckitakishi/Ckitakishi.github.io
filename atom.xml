@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://ckitakishi.com/"/>
-  <updated>2021-01-01T16:21:44.250Z</updated>
+  <updated>2021-05-01T10:40:35.218Z</updated>
   <id>http://ckitakishi.com/</id>
   
   <author>
@@ -15,6 +15,42 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>[2021/04] TIL</title>
+    <link href="http://ckitakishi.com/2021/05/01/2021-04-TIL/"/>
+    <id>http://ckitakishi.com/2021/05/01/2021-04-TIL/</id>
+    <published>2021-05-01T10:29:35.000Z</published>
+    <updated>2021-05-01T10:40:35.218Z</updated>
+    
+    <content type="html"><![CDATA[<p>记录日常开发中遇到的</p><ol><li>新知</li><li>对旧知识的新认知</li><li>重新唤起的记忆</li><li>review 中遇到的一些有趣的问题</li></ol><h1 id="04-23"><a href="#04-23" class="headerlink" title="04/23"></a>04/23</h1><hr><h2 id="UTI-Uniform-Type-Identifier"><a href="#UTI-Uniform-Type-Identifier" class="headerlink" title="UTI - Uniform Type Identifier"></a>UTI - Uniform Type Identifier</h2><p>同事在分享会中详细讲了 UTI，用过很多次，但大概一直都只懂三成吧，听完后对 UTI 的理解明显更系统化了一些XD</p><p>能一瞬间想起来的运用场景有：</p><ol><li>Share Extension</li><li>Drag and Drop</li><li>Pasteboard</li></ol><p>简单来说，对于文本类型而言，扩展名可以是 <code>.txt</code> 或 <code>.text</code>，而 MIME 类型是 <code>text/plain</code>，当我们要处理文本类型时，必须将以上所有类型全部视为对象，这是一件非常缺乏效率的事情，而 UTI 就是用来处理这个问题的，他将所有类型都统一为了 <code>public.text</code>，UTI 类型和其他所有类型相互兼容。</p><p>Ref：关于自定义 UTI 类型，UTI 类型的继承性 — <a href="https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/understanding_utis/understand_utis_conc/understand_utis_conc.html" target="_blank" rel="noopener">https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/understanding_utis/understand_utis_conc/understand_utis_conc.html</a></p><h1 id="04-20"><a href="#04-20" class="headerlink" title="04/20"></a>04/20</h1><hr><h2 id="autoreleasepool"><a href="#autoreleasepool" class="headerlink" title="autoreleasepool"></a>autoreleasepool</h2><p>最近做了一点 Objective-C 转 Swift，在 Objective-C 中我们常常会需要使用 autoreleasepool，但并不意味着遇到 Swift 之后 <code>autoreleasepool</code> 就不再需要考虑。当 Swift 调用 Objective-C 代码，亦或是 Objective-C 调用被标记为 @objc 的 Swift 方法时，如果方法返回的是 autorelease 的值，那 Swift 也会保持这个值的 autorelease 特性。</p><p>在 Objective-C 中，有时候会在循环中写 <code>autoreleasepool</code> 来避免内存爆炸，因为循环的持续会导致没有机会自动释放内存。</p><h1 id="04-15"><a href="#04-15" class="headerlink" title="04/15"></a>04/15</h1><hr><h2 id="ZIPFoundation"><a href="#ZIPFoundation" class="headerlink" title="ZIPFoundation"></a>ZIPFoundation</h2><p><a href="https://thomas.zoechling.me/journal/2017/07/ZIPFoundation.html" target="_blank" rel="noopener">https://thomas.zoechling.me/journal/2017/07/ZIPFoundation.html</a></p><p>A ZIP compression framework don’t based on any 3rd party framework. Almost all of the swift ZIP framework based on minizip.</p><p>尽管这个框架十分简洁甚至无法完全满足要求，但作者的这篇文章还是很值得一读，在设计框架时考虑的一些点很有参考价值。</p><h2 id="ZIP64"><a href="#ZIP64" class="headerlink" title="ZIP64"></a>ZIP64</h2><p><a href="https://en.wikipedia.org/wiki/ZIP_(file_format" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/ZIP_(file_format)#ZIP64</a>#ZIP64)</p><p>标准 ZIP 有一些限制，例如不能容纳超过 65535 个文件（因为 eocd 中只有 2 bytes 用来存 entry 的信息。。），压缩文件大小不能超过 4G 之类，因此出现了 ZIP64 标准。</p><h1 id="04-13"><a href="#04-13" class="headerlink" title="04/13"></a>04/13</h1><hr><h2 id="CRC32-Cyclic-redundancy-check"><a href="#CRC32-Cyclic-redundancy-check" class="headerlink" title="CRC32 (Cyclic redundancy check)"></a>CRC32 (Cyclic redundancy check)</h2><p>ZIP 压缩中使用的校验方式是 CRC32，是 CRC（循环冗余校验）方法中的其中一种。</p><p>记忆中第一次知道 CRC 是在密码学的课本上，奇偶校验，50% 的出错概率，还有校验和，也有不小的出错可能性，此外就是 CRC 了，因为高效且检错力很高，被广泛用在存储，压缩等之中。CRC32 是 CRC 校验中最被广泛使用的之一，但他并不是完美的，即便篡改了内容，用 CRC32 进行校验依然可能会得到相同的值。</p><p>题外话，如何在各种语言中使用 CRC32：<a href="https://rosettacode.org/wiki/CRC-32#Swift" target="_blank" rel="noopener">https://rosettacode.org/wiki/CRC-32#Swift</a>。Swift 的实现法可以说并不一定实用，他选择了直接调用 zlib 中的 crc32 方法w</p><h2 id="Strange-Date-Format"><a href="#Strange-Date-Format" class="headerlink" title="Strange Date Format"></a>Strange Date Format</h2><p>e.g. 04/01, template = “Md”</p><p>en_US ⇒ 4/1</p><p>ja_JP ⇒ 4/1</p><p>en_JP ⇒ 04/01</p><blockquote><p><a href="https://stackoverflow.com/questions/67073224/get-a-unexpected-date-string-when-setting-template-to-md" target="_blank" rel="noopener">https://stackoverflow.com/questions/67073224/get-a-unexpected-date-string-when-setting-template-to-md</a></p></blockquote><p>Still don‘t know why Apple making this design..But we could resolve this <em>unexpected problem</em> by:</p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">formatter.dateFormat = <span class="type">DateFormatter</span>.dateFormat(</span><br><span class="line">    fromTemplate: <span class="string">" Md"</span>,</span><br><span class="line">    options: <span class="number">0</span>,</span><br><span class="line">    locale: <span class="type">Locale</span>(identifier: <span class="string">"en_JP"</span>)</span><br><span class="line">)?</span><br><span class="line">.replacingOccurrences(of: <span class="string">"MM"</span>, with: <span class="string">"M"</span>)</span><br><span class="line">.replacingOccurrences(of: <span class="string">"dd"</span>, with: <span class="string">"d"</span>)</span><br></pre></td></tr></table></figure><h1 id="04-12"><a href="#04-12" class="headerlink" title="04/12"></a>04/12</h1><hr><h2 id="SQL-Prepared-Statement"><a href="#SQL-Prepared-Statement" class="headerlink" title="SQL - Prepared Statement"></a>SQL - Prepared Statement</h2><blockquote><p>INSERT INTO products (name, price) VALUES (?, ?);</p></blockquote><p>通常这么做的优点是：</p><ol><li>防止 SQL 注入</li><li>效率更高，避免了多次解析相同结构的 SQL 语句</li><li>…</li></ol><h1 id="04-08"><a href="#04-08" class="headerlink" title="04/08"></a>04/08</h1><hr><h2 id="Attributes-in-Swift"><a href="#Attributes-in-Swift" class="headerlink" title="Attributes in Swift"></a>Attributes in Swift</h2><p>分为两类，分别是：</p><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>. @<span class="keyword">attribute</span> name</span><br><span class="line"><span class="number">2</span>. @<span class="keyword">attribute</span>(<span class="keyword">attribute</span> arguments)</span><br></pre></td></tr></table></figure><p>今天写了写 @inline，回忆了几个常用的：</p><h3 id="inline-内联"><a href="#inline-内联" class="headerlink" title="@inline 内联"></a>@inline 内联</h3><p>在编译的阶段用函数体去替换函数调用。优点是可以减少函数调用的开销，但作为交换，binary size 会略有增大。</p><ul><li>@inline(_always) 强制内联（不是 100%，也有例外）</li><li>@inline(never) 无论如何都不内联</li></ul><h3 id="inlinable-可内联"><a href="#inlinable-可内联" class="headerlink" title="@inlinable 可内联"></a>@inlinable 可内联</h3><p>和 @inline 看起来很像，但有着本质上的区别。@inlinable 可以用在 public 和 internal 的方法，计算属性等之上，这样在模块外被进行编译的时候，就会进行内联优化。虽然可以被优化，但 internal 依然是不可以被访问的，另外，当且仅但 internal 被标记为 @usableFromInline 的时候才会被作为对象。如果只存在一个模块，并没有只用 @inlinable 的必要。</p><h3 id="discardableResult-可忽略的返回值"><a href="#discardableResult-可忽略的返回值" class="headerlink" title="@discardableResult 可忽略的返回值"></a>@discardableResult 可忽略的返回值</h3><p>允许有返回值的方法不返回任何值</p><h3 id="available"><a href="#available" class="headerlink" title="@available"></a>@available</h3><p>是一个带有参数的 attribute，用于指定最低 swift 版本，platform 的版本之类，例如我们会写 @available(swift 99) 来避免被 swift 调用，@available(iOS 14.0) 来使用 14.0 最新的 API。</p><p>Ref. <a href="https://docs.swift.org/swift-book/ReferenceManual/Attributes.html#" target="_blank" rel="noopener">https://docs.swift.org/swift-book/ReferenceManual/Attributes.html#</a></p><h1 id="04-07"><a href="#04-07" class="headerlink" title="04/07"></a>04/07</h1><hr><h2 id="Access-Photo-Library"><a href="#Access-Photo-Library" class="headerlink" title="Access Photo Library"></a>Access Photo Library</h2><p>Plist</p><ul><li>NSPhotoLibraryAddUsageDescription</li><li>NSPhotoLibraryUsageDescription</li><li>NSCameraUsageDescription</li></ul><h2 id="Render-a-UIView-to-a-UIImage"><a href="#Render-a-UIView-to-a-UIImage" class="headerlink" title="Render a UIView to a UIImage"></a>Render a UIView to a UIImage</h2><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> renderer = <span class="type">UIGraphicsImageRenderer</span>(size: view.bounds.size)</span><br><span class="line"><span class="keyword">let</span> image = renderer.image &#123; context <span class="keyword">in</span></span><br><span class="line">    view.drawHierarchy(<span class="keyword">in</span>: view.bounds, afterScreenUpdates: <span class="literal">true</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="Take-screenshot-programmatically"><a href="#Take-screenshot-programmatically" class="headerlink" title="Take screenshot programmatically"></a>Take screenshot programmatically</h2><p><a href="https://developer.apple.com/library/archive/qa/qa1703/_index.html" target="_blank" rel="noopener">https://developer.apple.com/library/archive/qa/qa1703/_index.html</a> (Outdated..)</p><h1 id="04-06"><a href="#04-06" class="headerlink" title="04/06"></a>04/06</h1><hr><h2 id="Multi-cursor-editing-in-Xcode"><a href="#Multi-cursor-editing-in-Xcode" class="headerlink" title="Multi-cursor editing in Xcode"></a>Multi-cursor editing in Xcode</h2><ul><li>To add a new cursor, hold Control and SHIFT then click.</li><li>Hold Control and SHIFT then ↑ or ↓</li><li>Hold Option then drag cursor around.</li></ul><h2 id="Formatter"><a href="#Formatter" class="headerlink" title="Formatter"></a>Formatter</h2><p><a href="https://nshipster.com/formatter/" target="_blank" rel="noopener">https://nshipster.com/formatter/</a></p><p>当不设置默认 template 的情况下，会按照各 <code>locale</code> 的默认模版来显示日期。</p><p>例如：</p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// JP: 2021/03/01</span></span><br><span class="line"><span class="comment">// KR: 2021.3.1.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> formatter = <span class="type">DateFormatter</span>()</span><br><span class="line">formatter.locale = locale</span><br><span class="line">formatter.calendar = <span class="type">Calendar</span>.autoupdatingCurrent</span><br><span class="line">formatter.dateStyle = .short</span><br><span class="line">formatter.timeStyle = .<span class="keyword">none</span></span><br></pre></td></tr></table></figure><p>这应当被认为是一个好的实践，完全可以当且仅当必要的时候为 <code>formatter</code> 设置 template。</p><h2 id="Detect-user-takes-a-screenshot"><a href="#Detect-user-takes-a-screenshot" class="headerlink" title="Detect user takes a screenshot"></a>Detect user takes a screenshot</h2><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">NotificationCenter</span>.<span class="keyword">default</span>.addObserver(</span><br><span class="line">    <span class="keyword">self</span>,</span><br><span class="line">    selector: #selector(xxxxxx),</span><br><span class="line">    name: <span class="type">UIApplication</span>.userDidTakeScreenshotNotification,</span><br><span class="line">    object: <span class="literal">nil</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure><p>根据文档可以知道，这个通知的 <code>userInfo</code> 中并不包含任何信息，一个有些令人绝望的消息。考虑两个方案来获得图片。</p><ol><li>从相册读取第一张照片，多少有些 workaround 的意味，并且需要相册权限。</li><li>重新截取图片，潜在的问题是截图和系统截图可能存在差异。</li></ol><h1 id="04-05"><a href="#04-05" class="headerlink" title="04/05"></a>04/05</h1><hr><h2 id="Long-polling"><a href="#Long-polling" class="headerlink" title="Long polling"></a>Long polling</h2><p>长轮询，与轮询的区别在于，后者是 client 定期去拉取更新，经常会得到空 response；而长轮询会 hold 住连接，直到 server 有更新才会返回。看似一种 push 的方式，本质上还是 pull。</p><h1 id="04-02"><a href="#04-02" class="headerlink" title="04/02"></a>04/02</h1><hr><h2 id="XCTUnwrap"><a href="#XCTUnwrap" class="headerlink" title="XCTUnwrap()"></a>XCTUnwrap()</h2><p><a href="https://www.hackingwithswift.com/example-code/testing/how-to-check-and-unwrap-optionals-in-tests-using-xctunwrap" target="_blank" rel="noopener">https://www.hackingwithswift.com/example-code/testing/how-to-check-and-unwrap-optionals-in-tests-using-xctunwrap</a></p><p>Easy to read than <code>guard</code> and <code>let</code>..</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;记录日常开发中遇到的&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;新知&lt;/li&gt;
+&lt;li&gt;对旧知识的新认知&lt;/li&gt;
+&lt;li&gt;重新唤起的记忆&lt;/li&gt;
+&lt;li&gt;review 中遇到的一些有趣的问题&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&quot;04-23&quot;&gt;&lt;a href=&quot;#04-23&quot; clas
+      
+    
+    </summary>
+    
+      <category term="求索集" scheme="http://ckitakishi.com/categories/%E6%B1%82%E7%B4%A2%E9%9B%86/"/>
+    
+    
+      <category term="iOS" scheme="http://ckitakishi.com/tags/iOS/"/>
+    
+      <category term="Swift" scheme="http://ckitakishi.com/tags/Swift/"/>
+    
+      <category term="TIL" scheme="http://ckitakishi.com/tags/TIL/"/>
+    
+  </entry>
   
   <entry>
     <title>2020 最后一天我在想什么</title>
@@ -525,33 +561,6 @@
     
     
       <category term="随笔" scheme="http://ckitakishi.com/tags/%E9%9A%8F%E7%AC%94/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>念念不忘</title>
-    <link href="http://ckitakishi.com/2014/10/28/%E5%BF%B5%E5%BF%B5%E4%B8%8D%E5%BF%98/"/>
-    <id>http://ckitakishi.com/2014/10/28/念念不忘/</id>
-    <published>2014-10-28T11:19:18.000Z</published>
-    <updated>2015-08-01T09:11:41.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>大连的冬天如期而至，时光匆匆…实习也马上就要进入第三个月，依然想要去南方…<br>过去的两个月，重新投入到 web 前端开发的怀抱，有种好久不见，你依然美丽的感觉。但是问题依旧是有的，幸好也会感觉到自己确确实实在进步。工作之余的生活特别规律，每天和 Q 一起或蹭网，或乱逛，或购物，偶尔也约上迪迪一起吃喝玩乐。<br>今天开始了写 jQuery 插件的征途，这个还是下一篇再说吧。［：）…］</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;大连的冬天如期而至，时光匆匆…实习也马上就要进入第三个月，依然想要去南方…&lt;br&gt;过去的两个月，重新投入到 web 前端开发的怀抱，有种好久不见，你依然美丽的感觉。但是问题依旧是有的，幸好也会感觉到自己确确实实在进步。工作之余的生活特别规律，每天和 Q 一起或蹭网，或乱逛，
-      
-    
-    </summary>
-    
-      <category term="浮生记" scheme="http://ckitakishi.com/categories/%E6%B5%AE%E7%94%9F%E8%AE%B0/"/>
-    
-    
-      <category term="思考" scheme="http://ckitakishi.com/tags/%E6%80%9D%E8%80%83/"/>
-    
-      <category term="生活" scheme="http://ckitakishi.com/tags/%E7%94%9F%E6%B4%BB/"/>
     
   </entry>
   
