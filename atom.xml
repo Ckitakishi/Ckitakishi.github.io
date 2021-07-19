@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://ckitakishi.com/"/>
-  <updated>2021-06-08T15:29:55.039Z</updated>
+  <updated>2021-07-19T10:10:19.354Z</updated>
   <id>http://ckitakishi.com/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>[TIL] 与西瓜为伴的六月</title>
+    <link href="http://ckitakishi.com/2021/07/01/TIL-%E4%B8%8E%E8%A5%BF%E7%93%9C%E4%B8%BA%E4%BC%B4%E7%9A%84%E5%85%AD%E6%9C%88/"/>
+    <id>http://ckitakishi.com/2021/07/01/TIL-与西瓜为伴的六月/</id>
+    <published>2021-07-01T09:46:42.000Z</published>
+    <updated>2021-07-19T10:10:19.354Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="06-21"><a href="#06-21" class="headerlink" title="06/21"></a>06/21</h1><h2 id="Vacuous-truth-虚真论断"><a href="#Vacuous-truth-虚真论断" class="headerlink" title="Vacuous truth 虚真论断"></a>Vacuous truth 虚真论断</h2><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[].allSatisfy &#123; $<span class="number">0</span> &gt; <span class="number">0</span> &#125;   <span class="comment">// 1</span></span><br><span class="line">[].allSatisfy &#123; $<span class="number">0</span> &lt;= <span class="number">0</span> &#125;  <span class="comment">// 2</span></span><br></pre></td></tr></table></figure><p>请回答，上面两个表达式的值是什么？<br>结果是，它们的值都是 <code>true</code>，不得不承认，这多少有一些违背人的直觉。</p><p>在 swift forums 上也有人对此表示了疑惑： <a href="https://forums.swift.org/t/unexpected-behaviour-of-allsatisfy/20136" target="_blank" rel="noopener">https://forums.swift.org/t/unexpected-behaviour-of-allsatisfy/20136</a></p><blockquote><p>Everything is true of the elements of the empty set.</p></blockquote><p>事实上，其中蕴含了经典的逻辑悖论：实质蕴含悖论。如果转换为中文，就是一种“如果…那么…”的关系。例如：</p><ul><li>（维基百科中记载的经典案例）如果房间里没有手机，那么所有手机都是关机状态。</li><li>（不可能发生的事情）如果回到十年前，那么我要好好学习。</li></ul><p>如果 <code>p</code> 那么 <code>q</code> 被称为 <code>p</code> 与 <code>q</code> 的蕴含式，记作 <code>p → q</code>。其真值表如下：</p><table><thead><tr><th style="text-align:center">p</th><th style="text-align:center">q</th><th style="text-align:center">p → q</th></tr></thead><tbody><tr><td style="text-align:center">T</td><td style="text-align:center">T</td><td style="text-align:center">T</td></tr><tr><td style="text-align:center">T</td><td style="text-align:center">F</td><td style="text-align:center">F</td></tr><tr><td style="text-align:center">F</td><td style="text-align:center">T</td><td style="text-align:center">T</td></tr><tr><td style="text-align:center">F</td><td style="text-align:center">F</td><td style="text-align:center">T</td></tr></tbody></table><p>综上，当集合为空（<code>p == false</code>）时，无论 <code>q</code> 是什么条件它们的蕴含式都一定为真，这也就是需真论断。蕴含式的正确并不意味着生活中一些关系的合理性，将它当作一种既定的逻辑就可以。</p><hr><h1 id="06-xx"><a href="#06-xx" class="headerlink" title="06/xx"></a>06/xx</h1><p>做了自己认为应当有人去做的事情，深入学习了今年 WWDC 的 Accessibility 专题，并写了以下两篇文章：</p><p>为内容丰富的应用量身打造高效 VoiceOver 体验：<a href="https://xiaozhuanlan.com/topic/7392456081" target="_blank" rel="noopener">https://xiaozhuanlan.com/topic/7392456081</a><br>图表的无障碍支持进阶：<a href="https://xiaozhuanlan.com/topic/7904561328" target="_blank" rel="noopener">https://xiaozhuanlan.com/topic/7904561328</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;06-21&quot;&gt;&lt;a href=&quot;#06-21&quot; class=&quot;headerlink&quot; title=&quot;06/21&quot;&gt;&lt;/a&gt;06/21&lt;/h1&gt;&lt;h2 id=&quot;Vacuous-truth-虚真论断&quot;&gt;&lt;a href=&quot;#Vacuous-truth-虚真论断&quot; cla
+      
+    
+    </summary>
+    
+      <category term="求索集" scheme="http://ckitakishi.com/categories/%E6%B1%82%E7%B4%A2%E9%9B%86/"/>
+    
+    
+      <category term="iOS" scheme="http://ckitakishi.com/tags/iOS/"/>
+    
+      <category term="Swift" scheme="http://ckitakishi.com/tags/Swift/"/>
+    
+      <category term="TIL" scheme="http://ckitakishi.com/tags/TIL/"/>
+    
+  </entry>
   
   <entry>
     <title>[TIL] 梅雨提早到來的五月</title>
@@ -548,33 +577,6 @@
     
     
       <category term="随笔" scheme="http://ckitakishi.com/tags/%E9%9A%8F%E7%AC%94/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>轻图像工具－LightImage</title>
-    <link href="http://ckitakishi.com/2015/08/01/%E8%BD%BB%E5%9B%BE%E5%83%8F%E5%B7%A5%E5%85%B7%EF%BC%8DLightImage/"/>
-    <id>http://ckitakishi.com/2015/08/01/轻图像工具－LightImage/</id>
-    <published>2015-08-01T07:58:35.000Z</published>
-    <updated>2017-10-07T15:58:05.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>LightImage 是我的毕业设计项目，但是至今暂时还是一个残次成品，仍需大力的改善。初衷是开发一款轻量级的图像处理工具，后续又扩展了简易的图像分析和像素画绘制等功能。</p><p>项目主要基于 HTML5 中的 Canvas 开发，当提及 Canvas 的时候，常常还会提到 SVG。Canvas 只能通过脚本驱动，适合像素级的图形问题处理；相比较而言 SVG 的驱动方式更加灵活，XML、CSS等都可，所以处理图形是通过元素。对于本项目而言，Canvas 是不二的选择。</p><a id="more"></a><p>项目使用了框架 Vue.js，结合曾经完成的一个数据量较大的应用来看，很优雅，很轻量，很灵活，调试也很棒，不过也遇到一些需要仔细思考的问题，生命周期，路由，页面重载等等。</p><p>答辩完后就一直想把一个多月开发过程中的心得和遇到的有意思的问题总结一下，还好之前有在 trello 上记录。下面想从三个部分来说一说～</p><h2 id="绘画"><a href="#绘画" class="headerlink" title="绘画"></a>绘画</h2><p>关于这个部分，细节的部分集中于事件处理，例如笔迹离开和进入画布需要绑定 mouseleave 和 mouseenter 事件。想要说一说的是，这里添加了我很喜欢的像素画绘制，通过倍率来模拟不同格子数的像素画布，尝试过使用单个像素放大但并适用。在这里不得不提给我带来深刻影响的像素动画作品们 <a href="http://1041uuu.tumblr.com/" target="_blank" rel="noopener">1041uuu</a>。</p><p>未来展望：使用栈保存笔画，完成撤销前进；提供自定义像素数量；以及允许添加多张画布组成动画。</p><h2 id="图像分析"><a href="#图像分析" class="headerlink" title="图像分析"></a>图像分析</h2><p>这个部分也许名不副实？（笑。起初只是想做一个图像的色彩分析，统计色彩的出现频率。依据 rgb 色彩模型，则有256^3种色彩，非常大的数字，于是将相近的色彩归位一类，由大及小最终选定了 6^3 种色彩。使用一个长度为 256 的数组存储出现次数，色彩一一对应下标 0-255，并可反向由下标推导颜色以便在页面渲染。</p><p>后来增添了灰度直方图及均衡化的直方图来表现图像的大体特征。这个部分效率受图像大小影响并不明显。</p><p>未来展望：可导出分析结果；保持效率得到更精确的结果。</p><h2 id="图像处理"><a href="#图像处理" class="headerlink" title="图像处理"></a>图像处理</h2><p>做毕设的两个月中，用于学习图像处理和使用 JavaScript 实现花了不少时间。起初大概看了看《数字图像处理》..的目录、基础和色彩相关章节，有了一点点宏观的理解，后期更具体的理解大多来自于他人文章和《数字图像处理原理与实践：基于Visual C++开发》。实现中，比较深刻的是图像剪切，有几个 jQuery 实现的插件，然而还是强迫自己写了一个纯 JavaScript 的，但至今仍不完善，将来如若有一日能够见人，打算让其作为一个独立的组件存在。</p><p>图像处理的效率随着图像增大而剧降，很 sad，也是一个改善的重点。</p><p>未来展望：结合直方图，添加曲线；可调节亮度，对比度等。</p><h2 id="有话说"><a href="#有话说" class="headerlink" title="有话说"></a>有话说</h2><p>源码完全在 <a href="https://github.com/Ckitakishi/LightImage" target="_blank" rel="noopener">Github</a></p><p>可以在 heroku 上 <a href="https://lightimage.herokuapp.com" target="_blank" rel="noopener">Tye it</a> </p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;LightImage 是我的毕业设计项目，但是至今暂时还是一个残次成品，仍需大力的改善。初衷是开发一款轻量级的图像处理工具，后续又扩展了简易的图像分析和像素画绘制等功能。&lt;/p&gt;
-&lt;p&gt;项目主要基于 HTML5 中的 Canvas 开发，当提及 Canvas 的时候，常常还会提到 SVG。Canvas 只能通过脚本驱动，适合像素级的图形问题处理；相比较而言 SVG 的驱动方式更加灵活，XML、CSS等都可，所以处理图形是通过元素。对于本项目而言，Canvas 是不二的选择。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="求索集" scheme="http://ckitakishi.com/categories/%E6%B1%82%E7%B4%A2%E9%9B%86/"/>
-    
-    
-      <category term="编程" scheme="http://ckitakishi.com/tags/%E7%BC%96%E7%A8%8B/"/>
-    
-      <category term="web" scheme="http://ckitakishi.com/tags/web/"/>
-    
-      <category term="图像" scheme="http://ckitakishi.com/tags/%E5%9B%BE%E5%83%8F/"/>
     
   </entry>
   
