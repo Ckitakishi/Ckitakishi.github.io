@@ -218,6 +218,16 @@ table thead {
     text-align: center;
 }
 
+/* Groupped Item List */
+
+.group-item-list {
+    margin-left: 20px;
+}
+
+.group-item-list > ul, li {
+    list-style-type: none;
+}
+
 /* Code: Syntax Highlight */
 
 pre {
