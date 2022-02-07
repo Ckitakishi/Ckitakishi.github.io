@@ -1,0 +1,23 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"/><meta name="og:site_name" content="Ckitakishi.playground"/><link rel="canonical" href="ckitakishi.com/posts/Swift-App-%E4%B8%80%E4%B8%AA%E6%84%8F%E6%96%99%E4%B9%8B%E5%A4%96%E7%9A%84%E5%B4%A9%E6%BA%83%E7%90%8 ... E7%94%B1"/><meta name="twitter:url" content="ckitakishi.com/posts/Swift-App-%E4%B8%80%E4%B8%AA%E6%84%8F%E6%96%99%E4%B9%8B%E5%A4%96%E7%9A%84%E5%B4%A9%E6%BA%83%E7%90%8 ... E7%94%B1"/><meta name="og:url" content="ckitakishi.com/posts/Swift-App-%E4%B8%80%E4%B8%AA%E6%84%8F%E6%96%99%E4%B9%8B%E5%A4%96%E7%9A%84%E5%B4%A9%E6%BA%83%E7%90%8 ... E7%94%B1"/><title>Swift App: 一个意料之外的崩溃理由 | Ckitakishi.playground</title><meta name="twitter:title" content="Swift App: 一个意料之外的崩溃理由 | Ckitakishi.playground"/><meta name="og:title" content="Swift App: 一个意料之外的崩溃理由 | Ckitakishi.playground"/><meta name="description" content="应用功能本身十分简单，开发测试阶段也比较顺利，几乎没有发生崩溃。然而在更替证书之后，真机测试应用时却陷入了无限崩溃的境地。"/><meta name="twitter:description" content="应用功能本身十分简单，开发测试阶段也比较顺利，几乎没有发生崩溃。然而在更替证书之后，真机测试应用时却陷入了无限崩溃的境地。"/><meta name="og:description" content="应用功能本身十分简单，开发测试阶段也比较顺利，几乎没有发生崩溃。然而在更替证书之后，真机测试应用时却陷入了无限崩溃的境地。"/><meta name="twitter:card" content="summary"/><link rel="stylesheet" href="/styles.css" type="text/css"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><link rel="shortcut icon" href="/images/favicon.png" type="image/png"/><link rel="alternate" href="/feed.rss" type="application/rss+xml" title="Subscribe to Ckitakishi.playground"/></head><body class="item-page"><header><div class="wrapper"><a href="/" class="site-name">Ckitakishi.playground</a><nav><ul><li><a href="/">Home</a></li><li><a href="/posts" class="selected">Writing</a></li><li><a href="https://github.com/Ckitakishi?tab=repositories">Project</a></li><li><a href="/tags/求索集/">求索集</a></li><li><a href="/tags/浮生记/">浮生记</a></li><li><a href="/feed.rss">RSS</a></li></ul></nav></div></header><div class="wrapper"><article><div class="content"><h1>Swift App: 一个意料之外的崩溃理由</h1><p>这是一个发生在去年年底的故事。背景是一个新规 Swift 应用处于准备发布阶段，证书由开发测试用更替为发布用， 这是两份 Team 不同的企业版证书。</p><p>应用功能本身十分简单，开发测试阶段也比较顺利，几乎没有发生崩溃。然而在更替证书之后，真机测试应用时却陷入了无限崩溃的境地。</p><!--more-->
+
+Log 类似下面这样：
+
+```
+dyld: Library not loaded: @rpath/libswiftCore.dylib
+  Referenced from: ...
+  Reason: no suitable image found.  Did find:
+  ...
+```
+
+有很多原因会导致提示这个错误，作为 Trouble Shooting 记录下来：
+
+- 可能存在缓存，**Clean** 工程
+- 很多时候该问题发生在 Swift 与 Objective-C 混编的时候，所以需要检查 *Building Setting* 中 *Embeedded Content Contains Swift Code* 的设置是否已经为 **YES**。
+- 依然是配置，检查 *Building Setting* 中的 *Runpath Search Paths* 是否合适，通常是：**@executable_path/Frameworks**。
+- 重置证书 (注销再新建) 。
+
+实际的生产过程中，首先 check 了前三项，最终强烈怀疑是证书问题。关于 “libswiftCore.dylib 崩溃“这个话题，很容易能看到这篇 [Q&A](https://developer.apple.com/library/content/qa/qa1886/_index.html)，其中提到要运行 Swift 应用必须使用 iOS 8 Released 之后创建的证书。对比手中的两份证书，除了 Team 不同之外，最大的差别在于创建时间，分别为 2016 年夏天，和 2014 年夏天。所以更新证书之后，问题也幸运地解决了。
+
+关于 libswiftCore.dylib 文件还想再多说几句，看名字就能够猜到是 Swift 动态库，具体说来它其实是 Swift 的运行时库，但是该文件和证书有什么关系呢？原因在于目前 Swift 的版本升级还不稳定，如果将这些运行时库直接放到系统中，很可能会导致每次 Swift 升级都导致应用不再能够使用，而作为这个问题的解决方案，Apple 选择将运行时库打包进应用中，这样就保证了开发与应用的 Swift 版本一致。由于 libswiftCore.dylib 属于应用的一部分，所以也是需要签名的，而像上一段所说，能够为 Swift 的运行时库签名的证书必须创建于 iOS 8 Released 之后。这一切，都是为了提高 Swift 的兼容性，关于兼容性，强烈推荐这条 [Tip](http://swifter.tips/compatibility/)。
+
+</div><span>Tagged with: </span><ul class="tag-list"><li><a href="/tags/求索集">求索集</a></li><li><a href="/tags/ios">iOS</a></li></ul></article></div><footer><p>Copyright © 2014-2022 Ckitakishi 🥑 Powered by <a href="https://github.com/johnsundell/publish">Publish</a></p></footer></body></html>

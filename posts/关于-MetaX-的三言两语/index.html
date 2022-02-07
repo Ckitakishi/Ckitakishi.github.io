@@ -1,0 +1,299 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"/><meta name="og:site_name" content="Ckitakishi.playground"/><link rel="canonical" href="ckitakishi.com/posts/%E5%85%B3%E4%BA%8E-MetaX-%E7%9A%84%E4%B8%89%E8%A8%80%E4%B8%A4%E8%AF%AD"/><meta name="twitter:url" content="ckitakishi.com/posts/%E5%85%B3%E4%BA%8E-MetaX-%E7%9A%84%E4%B8%89%E8%A8%80%E4%B8%A4%E8%AF%AD"/><meta name="og:url" content="ckitakishi.com/posts/%E5%85%B3%E4%BA%8E-MetaX-%E7%9A%84%E4%B8%89%E8%A8%80%E4%B8%A4%E8%AF%AD"/><title>关于 MetaX 的三言两语 | Ckitakishi.playground</title><meta name="twitter:title" content="关于 MetaX 的三言两语 | Ckitakishi.playground"/><meta name="og:title" content="关于 MetaX 的三言两语 | Ckitakishi.playground"/><meta name="description" content="常常把相机中的照片传到手机里，但是比较麻烦的一点是没有地理信息，所以就自己动手丰衣足食了。 作为一个总结，下文的主题是照片框架 PhotoKit 和简单的问题解决记录。"/><meta name="twitter:description" content="常常把相机中的照片传到手机里，但是比较麻烦的一点是没有地理信息，所以就自己动手丰衣足食了。 作为一个总结，下文的主题是照片框架 PhotoKit 和简单的问题解决记录。"/><meta name="og:description" content="常常把相机中的照片传到手机里，但是比较麻烦的一点是没有地理信息，所以就自己动手丰衣足食了。 作为一个总结，下文的主题是照片框架 PhotoKit 和简单的问题解决记录。"/><meta name="twitter:card" content="summary"/><link rel="stylesheet" href="/styles.css" type="text/css"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><link rel="shortcut icon" href="/images/favicon.png" type="image/png"/><link rel="alternate" href="/feed.rss" type="application/rss+xml" title="Subscribe to Ckitakishi.playground"/></head><body class="item-page"><header><div class="wrapper"><a href="/" class="site-name">Ckitakishi.playground</a><nav><ul><li><a href="/">Home</a></li><li><a href="/posts" class="selected">Writing</a></li><li><a href="https://github.com/Ckitakishi?tab=repositories">Project</a></li><li><a href="/tags/求索集/">求索集</a></li><li><a href="/tags/浮生记/">浮生记</a></li><li><a href="/feed.rss">RSS</a></li></ul></nav></div></header><div class="wrapper"><article><div class="content"><blockquote><p><strong>Support:</strong> If you have any question or comment for MetaX, please do not hesitate to contact me via the ways on the bottom left of this page.</p></blockquote><p>Source: <a href="https://github.com/Ckitakishi/MetaX">MetaX on Github</a></p><h1>关于 MetaX 的三言两语</h1><h2>初衷</h2><p>常常把相机中的照片传到手机里，但是比较麻烦的一点是没有地理信息，所以就自己动手丰衣足食了。 作为一个总结，下文的主题是照片框架 PhotoKit 和简单的问题解决记录。</p><h2>关于照片框架 - PhotoKit</h2><p>在 <strong>PhotoKit</strong> 之前，AssetsLibrary 是被广泛使用的，由于并没有实际用过，就不再赘述。从 <strong>PhotoKit</strong> 的文档就可以看出来，这是一个十分庞大的框架，包含了相当多的类。<strong>PhotoKit</strong> 可以使得自己的应用与照片库以相同流程工作，此外性能也相当不错。</p><h3>从获取图像开始</h3><h4>相册取得</h4><p>如果以从相册列表选取照片这个流程为例来看，相册列表中的所有对象都是 <code>PHCollection</code>，它是一个抽象父类，拥有两个子类： <code>PHAssetCollection</code> 和 <code>PHCollectionList</code>，前者表示相册，后者表示相册列表也就是文件夹。题外话，在 iOS 设备上创建文件夹几乎可以说是一个隐藏功能，点击追加按钮是相册，而长按则可以选择相册或文件夹。而获取相册的方法是使用上述几个类中的 fetch 方法，返回 <code>PHFetchResult&lt;XXX&gt;</code>，可以用部分与 <code>Foundation</code> 中集合类型相同的接口来处理这个结果，比如用 <code>enumerateObjects(_:)</code> 来进行遍历。该方法默认会取回所有结果，但是可以通过使用 <code>PHFetchOptions</code> 来做一些过滤或是排序处理。例如取回所有智能相册：</p><!--more-->
+
+```swift
+let options = PHFetchOptions()
+options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+let smartAlbums: PHFetchResult<PHAssetCollection>?
+smartAlbums = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .albumRegular, options: options)
+```
+
+智能相册由系统按照图像类型自动生成，所以并不会出现文件夹。然而，如果以系统照片库来说，还有一类相册是用户自定义相册，处理这类相册的时候必须要注意区分文件夹与相册。我选择的处理方法是暴力地用一个递归将文件夹完全平铺展开作为首级相册。
+
+另外，访问图片库需要请求用户权限，在权限未决定的情况下，第一次调用 fetch 方法的时候会自动请求权限。也可以通过 `PHPhotoLibrary` 的类方法 `requestAuthorization:` 显式地发起请求。如果被拒..绝..了，添加一个类似 404 页面的视图并设置一个按钮指向应用的设置页面是 (我认为) 比较优雅的做法：
+
+```swift
+let url = URL(string: UIApplicationOpenSettingsURLString)
+UIApplication.shared.open(url!, options: [:], completionHandler: nil)
+```
+
+#### 照片取得 
+
+照片的取得是一个层层递进的过程，在取得了相册之后，便可以尝试获取 `PHAsset` 对象，小标题说的比较狭隘一些，实际上 `PHAsset` 对象包含图像，视频，和 Live Photo。此时可以通过调用 `fetchAssets(in:options:)` 来取得一个类型为 `PHFetchResult<PHAsset>` 的资源集：
+
+```swift
+let assetCollection = smartAlbums.object(at: 0)
+let fetchResult = PHAsset.fetchAssets(in: assetCollection, options: options)
+```
+
+手握 `PHAsset`，几乎就拥有了一切。此刻 `PHImageManager` 该出场了，这是一个专门用于请求特定 asset 对应的媒体资源的类。以请求图片为例，其中最重要的一个方法是 `requestImage(for:targetSize:contentMode:options:resultHandler:)`，通过参数就会发现，请求的同时就可以确定图片的尺寸，并进行裁剪。
+
+我们还能够为这个请求设定一个类型为 `PHImageRequestOptions` 的 option，借助它的 `isSynchronous` 属性可以决定以同步还是异步的方式来发起请求；而 `deliverryMode` 则是让你们能够在图像的加载时间和质量中做一个权衡或抉择，`.highQualityFormat` 不论耗时多久都会加载原尺寸图片，`.fastFormat` 会舍弃质量来快速加载图像，`.opportunistic` 约等于前两者的和，先 `.fastFormat` 后 `.highQualityFormat`，所以会发生两次请求，但是，如果 `isSynchronous = true`，那么请求一定是 `.highQualityFormat`；还有 `isNetworkAccessAllowed`，表示是否允许从 iCloud 下载图片，如果允许，那 `progressHandler` 也会被同时调用，于是我们可以将进度体现在 UI 上。
+
+```swift
+let options = PHImageRequestOptions()
+options.deliveryMode = .opportunistic
+// options.isSynchronous = true
+options.isNetworkAccessAllowed = true
+options.progressHandler = {(progress: Double, _, _, _) in
+    DispatchQueue.main.async {
+        ...
+    }
+}
+
+imageRequestId = PHImageManager.default().requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFit, options: options, resultHandler: { image, info in
+    ...
+})
+```
+
+到这里基本上一张图片的取得就完成了。不过，如果由于一些原因请求失败或者不完整呢？在上述代码中，`info` 便是一个包含了多条可以帮助我们判断结果的信息的字典。`PHImageResultIsInCloudKey` 可以知道图像是否需要从 iCloud 下载；`PHImageResultIsDegradedKey` 意味着当前的图像是否是低质量版本；以及 `PHImageErrorKey`，顾名思义是表示了错误信息，等等。
+
+#### 缓存 
+
+最后值得一提的是图片取得的缓存机制。
+
+通常，在获取一张具体的图片之前，我们会先获取整个相册的所有图片做成一个列表，比如一个如同系统图片库的 collectionView，为了性能考虑，有时候会需要提前将图片载入内存，而 `PHImageManager` 有一个子类 `PHImageCachingManager` 正好可以用来做这件事。
+
+`PHImageCachingManager` 有两个比较重要的方法，一个是开始缓存：`startCachingImages(for:targetSize:contentMode:options:)`，另一个是停止缓存，`stopCachingImages(for:targetSize:contentMode:options:)`，彻底停止缓存时候可以使用 `stopCachingImagesForAllAssets()`。接受的参数和上面提到了请求图像几乎一样一样，而事实上在取得缓存之后，再次使用 `requestImage` 取得独立图像的时候，如果参数相同，则会从缓存中获取。
+
+那究竟是将所有图像资源都放入缓存以供不时之需呢，还是仅仅是缓存一部分呢？是一开始就缓存所有资源呢，还是一边滑动一边缓存呢？时机，范围等等都是非常重要而必须要考虑的问题。推荐参考一下 Apple 的示例代码 --- [Using Photos Framework](https://developer.apple.com/library/content/samplecode/UsingPhotosFramework/Introduction/Intro.html)，虽然这个示例 bug 有点点多，但是缓存部分的设计还是很妙的～也因此借鉴了这个部分的实现。它的设计策略在于，载入画面及画面滚动两个时机更新缓存，而区域只包括以可见部分为中心，高度为两倍的部分 (例如：可见范围 [0, 0, 768, 1024] 对应缓存区域：[-512, 0, 768, 2048])，随着画面的滑动，不停调用 `startCachingImages` 与 `stopCachingImages`，该区域也会随之改变，就像一个滑动窗口一样。
+
+### 修改图像
+
+按照从上到下的顺序，有关图像的框架依次是：
+
+ - UIKit
+ - CoreImage
+ - CoreGraphics
+ - ImageIO
+
+下面打算讨论两个维度的图片修改，滤镜和 Metadata。接着上一部分的流程继续往下来说，虽然实现滤镜其实又很多方法，但是若选择 **Core Image**，那么不论哪一种，都要先通过 PHAsset 的实例方法 `requestContentEditingInput(with:completionHandler:)` 来获取完整尺寸的 `CIImage` 图像：
+
+```swift
+asset.requestContentEditingInput(with: options, completionHandler: { contentEditingInput, _ in
+    guard let imageURL = contentEditingInput?.fullSizeImageURL else {
+        // error
+        return
+    }
+    
+    let ciImageOfURL = CIImage(contentsOf: imageURL)
+    guard let ciImage = ciImageOfURL else {
+        ...
+        return
+    }
+}
+```
+
+#### 滤镜
+
+在顺利取得 `CIImage` 之后，添加滤镜的流程大致如下。**Core Image** 提供了一些滤镜，如果需要自定的话，看一看 WWDC2014 Session 515 会非常有帮助。
+
+```swift
+// 对过去版本的管理
+let adjustmentData = PHAdjustmentData...
+                                                  
+let contentEditingOutput = PHContentEditingOutput(contentEditingInput: contentEditingInput)
+contentEditingOutput.adjustmentData = adjustmentData
+
+let outputImage = ciImage
+    .applyingOrientation(input.fullSizeImageOrientation)
+    .applyingFilter(filter, withInputParameters: nil)
+    
+CIContext().writeJPEGRepresentation(of: outputImage,
+                                    to: contentEditingOutput.renderedContentURL, 
+                                    colorSpace: ciImage.colorSpace!,
+                                    options: [:])
+
+// 确认修改
+PHPhotoLibrary.shared().performChanges({
+    let request = PHAssetChangeRequest(for: self.asset)
+    request.contentEditingOutput = contentEditingOutput
+}, completionHandler: { success, error in
+    ...
+})
+```
+
+#### Metadata
+
+有了 `CIImage`，读取 Metadata 只需要获取 `CIImage` 的 `properties` 属性即可。但是如果要写入，就需要基于相对底层的 `ImageIO` 框架来完成。
+
+首先，我创建了临时存储，，虽然最初的想法是直接覆盖当前编辑中的图像，这个方案在模拟器竟然成功了，但是真实设备行不通。后来迫不得已选择了迂回的方法，覆盖 => 追加新图像 + (可选)删除旧图像。
+
+```swift
+let context = CIContext(options:nil)
+
+// 创建一个临时存储
+var tmpUrl = NSURL.fileURL(withPath: NSTemporaryDirectory() + imageURL.lastPathComponent)
+```
+
+为了让新创建的图像保持与原始图像相同的类型，通过 `CGImageSource` 来获取。如果获取成功，就可以指定上面的临时 URL 作为位置，尝试创建 `CGImageDestination`，之所以说是尝试，是因为不得不考虑如果当前设备并不支持期待创建的类型，那么我们就会得到 `nil`。这个时候别无选择，只能够再试一次，在当前版本中，这个做法主要是为了解决 **HEIF** 格式在一些较有历史的设备上并不被支持而带来的问题，所以在失败的情况下，默认将目标类型设定为 **JPEG**：
+
+```swift
+// 从 CIImage 创建 CGImage
+let cgImage = context.createCGImage(ciImage, from: ciImage.extent)
+// 根据 CGImageSource 来获取图片类型标识 (UTI)
+let cgImageSource = CGImageSourceCreateWithURL(imageURL as CFURL, nil)
+guard let sourceType = CGImageSourceGetType(cgImageSource!) else {
+    ...
+    return
+}
+// 尝试创建 CGImageDestination
+var createdDestination: CGImageDestination? = CGImageDestinationCreateWithURL(tmpUrl as CFURL, sourceType
+    , 1, nil)
+
+// 该版本暂定方案：无法创建的图像格式就存储为 JPEG
+if createdDestination == nil {
+    // media type is unsupported: delete temp file, create new one with extension [.JPG].
+    let _ = try? FileManager.default.removeItem(at: tmpUrl)
+    tmpUrl = NSURL.fileURL(withPath: NSTemporaryDirectory() + imageURL.deletingPathExtension().lastPathComponent + ".JPG")
+    createdDestination = CGImageDestinationCreateWithURL(tmpUrl as CFURL, "public.jpeg" as CFString
+        , 1, nil)
+}
+
+guard let destination = createdDestination else {
+    ...
+    return
+}
+```
+
+若完成了 `CGImageDestination` 创建，就可以开始向这个目标添加图像了。在上一段代码中，创建时传入的第 3 个参数正是代表着图像的数量，因为只是单张图像，所以是自然是 1；该方法也可以用来创建 GIF。
+
+```swift
+// 向 CGImageDestination 添加图像，以及该图像的 metadata。
+CGImageDestinationAddImage(destination, cgImage!, newProps as CFDictionary)
+if !CGImageDestinationFinalize(destination) {
+    ...
+} else {
+    ...
+}
+```
+
+最后，通过仍在临时存储位置的图像来创建一个新的 asset 追加请求，并将临时存储的图像移除即可：
+
+```swift
+PHPhotoLibrary.shared().performChanges({
+    let request = PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: tempURL)
+    let _ = try? FileManager.default.removeItem(at: tempURL)
+    ...
+})
+```
+
+#### HEIF
+
+**HEIF** 是全新的图片格式，相应的还有视频的 **HEVC**。苹果表示在相同画质下大小能节约 50% 的存储空间。如果想要了解更多，推荐看一看 WWDC 2017 Session 511。
+
+在实际运用中遇到了一个问题，如果我在相对较旧的设备上查看 **.HEIC (HEIF)** 的图片，并尝试去修改它，上面提到的 `CGImageDestination` 会得到一个 `nil` 对象。结果并不意外，毕竟这需要软件与硬件双方面的支持。但是具体来说究竟分界线在哪里呢？可以在 511 找到答案，而[这个支持页](https://support.apple.com/en-us/HT207022)也讲的很详细。基本条件就是运行 iOS 11 的 iPhone 7 等设备以及之后的新设备。
+
+### 监听变化
+
+万事俱备，只欠东风。但，如果此时系统的图片库发生了改变，又该怎么办？
+
+只需要记住四步，就可以解决这个问题了：
+
+1. 让当前的类遵循 `PHPhotoLibraryChangeObserver` 协议。
+
+```swift
+extension DetailInfoViewController: PHPhotoLibraryChangeObserver {
+
+}
+```
+
+2. 在视图即将出现时将当前的类作为观察者注册到 `PHPhotoLibrary` 共享对象上。
+
+```swift
+PHPhotoLibrary.shared().register(self)
+```
+
+3. 实现 `PHPhotoLibraryChangeObserver` 协议的 `photoLibraryDidChange(_:)`
+ 方法。
+ 
+```swift
+func photoLibraryDidChange(_ changeInstance: PHChange) {
+    // changeDetails 方法有接受不同参数的多个版本，可参照文档。
+    guard let curAsset = asset, let details = changeInstance.changeDetails(for: curAsset) else {
+        return
+    }
+    asset = details.objectAfterChanges
+    ...
+}    
+```
+
+4. 最后在 `deinit` 中解除监听。
+
+```swift
+deinit {
+    PHPhotoLibrary.shared().unregisterChangeObserver(self)
+}
+``` 
+
+## 一些笔记
+
+### PromiseKit 6 
+
+PromiseKit 6 对几个比较核心的点做出了修改。说实话，我觉得这个框架的文档可读性其实还有待提升。直接看源码及其中的注释反而是个很好的选择。
+
+其中一点是改变了核心初始化方法：
+
+```swift
+// 之前
+Promise { fulfill, reject in
+    // ...
+}
+
+// 现在
+Promise { seal in
+    // seal.fulfill(foo)
+    // seal.reject(error)
+    // seal.resolve(foo, error)
+}
+```
+
+还有一点是，将万能的 `then` 拆分为了 `then`, `done` 和 `map`。作者的解释是，以前 `then` 做很多事，但是由于依赖 Swift 根据上下文做推断，在用了多个 `then` 之后推断就会发生失败。而且很难判断错误发生在哪。所以就只能选择从比较高的层级就修复这个问题，于是有了现在的方案：
+
+- `then`：返回一个 promise。
+- `done`：返回一个 Void promise (80% 的情况用在 promise 链中)。
+- `map`：返回非 promise 值，比如一个单纯的值。
+
+### 地理位置检索
+
+我需要的是一个根据关键字获取相关地点的一个检索，也就是常说的 POI 检索。因为需要比较简单，所以先考虑了 **MapKit** 的 `MKLocalSearch` 或者 `MKLocalSearchCompleter`。
+
+前者常常会用在地图的检索，通过 `start(completionHandler:)` 可以取得 10 个结果，并且这个 limit 无法自定义，它在主线程工作，而且当发起新的请求时当前即使有正在进行的检索也不会被终止，如果不注意很可能会得到错误的结果：
+
+```swift
+let localSearchRequest = MKLocalSearchRequest()
+let newestLocation = locations.last! as CLLocation
+localSearchRequest.region = MKCoordinateRegion(center: newestLocation.coordinate, span: MKCoordinateSpanMake(5.0, 5.0))
+
+MKLocalSearch(request: localSearchRequest).start(completionHandler: { (localSearchResponse, error) -> Void in
+    guard searchText == searchBar.text else {
+        return
+    }
+    ...
+})
+```
+
+所以这似乎并不是一个理想的选择。辅以后者的 `MKLocalSearchCompleter` 会更好一些：
+
+```swift
+let completer = MKLocalSearchCompleter()
+completer.queryFragment = searchText
+
+// MARK: MKLocalSearchCompleter Delegate
+extension LocationSearchViewController: MKLocalSearchCompleterDelegate {
+
+    // 处理检索结果
+    func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
+        self.resultDataSource = completer.results
+        ...
+    }
+    // 处理错误
+    func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {
+        ...
+    }
+}
+```
+
+这样一来，检索结果列表就可以很简单的表示出来了。当需要取得各个位置的详细信息时，还是无法离开 `MKLocalSearch`，根据检索结果创建请求即可。
+
+不过即使这样也还是有很多制限，比如近邻检索，尝试使用了 Foursquare，虽然这个问题得以解决，但是请求数量的限制又是新的需要考虑的问题，所以，要走的路还很长。另外，由于在中国无法检索海外地点，也无法逆向转换海外经纬度，要走的路不是很长，而是很长很长。
+</div><span>Tagged with: </span><ul class="tag-list"><li><a href="/tags/求索集">求索集</a></li><li><a href="/tags/projects">Projects</a></li><li><a href="/tags/ios">iOS</a></li><li><a href="/tags/摄影">摄影</a></li><li><a href="/tags/图像">图像</a></li></ul></article></div><footer><p>Copyright © 2014-2022 Ckitakishi 🥑 Powered by <a href="https://github.com/johnsundell/publish">Publish</a></p></footer></body></html>

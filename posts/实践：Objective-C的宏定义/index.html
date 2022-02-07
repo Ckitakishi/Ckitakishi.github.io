@@ -1,0 +1,151 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"/><meta name="og:site_name" content="Ckitakishi.playground"/><link rel="canonical" href="ckitakishi.com/posts/%E5%AE%9E%E8%B7%B5%EF%BC%9AObjective-C%E7%9A%84%E5%AE%8F%E5%AE%9A%E4%B9%89"/><meta name="twitter:url" content="ckitakishi.com/posts/%E5%AE%9E%E8%B7%B5%EF%BC%9AObjective-C%E7%9A%84%E5%AE%8F%E5%AE%9A%E4%B9%89"/><meta name="og:url" content="ckitakishi.com/posts/%E5%AE%9E%E8%B7%B5%EF%BC%9AObjective-C%E7%9A%84%E5%AE%8F%E5%AE%9A%E4%B9%89"/><title>实践：Objective-C的宏定义 | Ckitakishi.playground</title><meta name="twitter:title" content="实践：Objective-C的宏定义 | Ckitakishi.playground"/><meta name="og:title" content="实践：Objective-C的宏定义 | Ckitakishi.playground"/><meta name="description" content="宏定义在 Objective-C 中可以说是被广泛使用。就实际来说，目前组内对 Enum, Singeleton, Log 等都使用了宏来进行定义。究其原因，一部分是为了为了减少重复代码，提升开发体验，还有一部分来源于对条件编译的需求。"/><meta name="twitter:description" content="宏定义在 Objective-C 中可以说是被广泛使用。就实际来说，目前组内对 Enum, Singeleton, Log 等都使用了宏来进行定义。究其原因，一部分是为了为了减少重复代码，提升开发体验，还有一部分来源于对条件编译的需求。"/><meta name="og:description" content="宏定义在 Objective-C 中可以说是被广泛使用。就实际来说，目前组内对 Enum, Singeleton, Log 等都使用了宏来进行定义。究其原因，一部分是为了为了减少重复代码，提升开发体验，还有一部分来源于对条件编译的需求。"/><meta name="twitter:card" content="summary"/><link rel="stylesheet" href="/styles.css" type="text/css"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><link rel="shortcut icon" href="/images/favicon.png" type="image/png"/><link rel="alternate" href="/feed.rss" type="application/rss+xml" title="Subscribe to Ckitakishi.playground"/></head><body class="item-page"><header><div class="wrapper"><a href="/" class="site-name">Ckitakishi.playground</a><nav><ul><li><a href="/">Home</a></li><li><a href="/posts" class="selected">Writing</a></li><li><a href="https://github.com/Ckitakishi?tab=repositories">Project</a></li><li><a href="/tags/求索集/">求索集</a></li><li><a href="/tags/浮生记/">浮生记</a></li><li><a href="/feed.rss">RSS</a></li></ul></nav></div></header><div class="wrapper"><article><div class="content"><blockquote><p>之前某一周的 LT 话题。</p></blockquote><h1>实践：Objective-C的宏定义</h1><p>宏定义在 Objective-C 中可以说是被广泛使用。就实际来说，目前组内对 Enum, Singeleton, Log 等都使用了宏来进行定义。究其原因，一部分是为了为了减少重复代码，提升开发体验，还有一部分来源于对条件编译的需求。</p><p>最早知道宏定义是在 C 语言课本上，然后就是笔试时候的各种宏展开。但是直到投入项目开发之后才算是稍微理解了一些宏的强大与脆弱。所以很想简单谈一谈 Objective-C 的宏定义实践。</p><h2>关于宏</h2><p>宏属于 C 预处理的一部分，C++，Objective-C 也一样通用。宏分为两种，对象宏 (<strong>Object-like</strong>) 和函数宏 (<strong>Function-like</strong>)。顾名思义，对象宏类似于数据对象，函数宏类似于函数调用。</p><!--more-->
+
+```objc
+// Object-like
+#define HEIGHT 60
+
+// Function-like
+#define MIN(a, b) a < b ? a : b
+```
+
+函数宏看起来可以说是相当便利，而且执行效率还非常高。但是在实际运用中很多时候并不推荐使用，比如当出现自增自减运算时，上面的最小值就可能会发生错误，你不能说它是陷阱，毕竟宏的强项并不是复杂的逻辑运算。但是艺高人胆大，如果能玩得转用一用也无妨~
+
+扩展阅读：[The C Preprocessor](https://gcc.gnu.org/onlinedocs/cpp/index.html#SEC_Contents)
+
+## 实践
+
+### 单例的宏定义：
+
+使用了条件编译 `#ifndef`，推荐这种写法，尤其是在定义 cell 的高度时最好这么做，防止多重定义。
+这是一个函数宏。
+
+```objc
+#ifndef Singleton_h
+#define Singleton_h
+
+#define SINGLETON_IMPL( classname )\
++ (classname *)sharedInstance\
+{\
+static dispatch_once_t onceToken;\
+static classname *_sharedInstance = nil;\
+dispatch_once(&onceToken, ^{\
+_sharedInstance = [[[self class] alloc] init];\
+});\
+return _sharedInstance;\
+}
+
+#define SINGLETON_DEFINE( classname )\
++ (classname *)sharedInstance;
+
+#endif
+```
+
+利用例：
+
+```
+ClassName.h
+SINGLETON_DEFINE(ClassName)
+
+ClassName.m
+SINGLETON_IMPL(ClassName)
+
+OtherClass:
+[ClassName sharedInstance].property
+```
+
+### 2. enum的宏定义：
+
+```objc
+#ifndef APP_ENUM
+#define APP_ENUM( name_ ) \
+typedef enum name_ : NSInteger name_; \
+enum name_ : NSInteger
+#endif
+```
+
+利用例：
+
+```objc
+APP_ENUM( EnumName ) {
+    EnumNameA,
+    EnumNameB
+};
+```
+
+### 3. LOG的宏定义：
+
+当且仅当版本为开发版或内部测试版时输出 log。这里的 `__PRETTY_FUNCTION__`, `__LINE__` 都是 C 中已定义的函数宏，分别表示函数和行数。
+
+```objc
+#ifdef DEBUG
+#define LOG(A, ...) NSLog(@"DEBUG: %s:%d:%@", __PRETTY_FUNCTION__,__LINE__,[NSString stringWithFormat:A, ## __VA_ARGS__]);
+#elif defined ALPHA
+#define LOG(A, ...) NSLog(@"ALPHA: %s:%d:%@", __PRETTY_FUNCTION__,__LINE__,[NSString stringWithFormat:A, ## __VA_ARGS__]);
+#else
+#define LOG(...)
+#endif
+```
+
+利用例：
+
+```objc
+LOG(@"test");
+```
+
+出力：
+
+[Time] [App Name] [Build Configuration] [File Name + Method] [Line Number] log 
+
+```shell-session
+2017-11-27 09:35:19.099 AppName[59272:2201737] DEBUG: -[ClassName method]:330: test
+```
+
+### 4. TODO&FIX 的宏定义：
+
+参考自 [todo-macro](http://blog.sunnyxx.com/2015/03/01/todo-macro/)，很有意思的一篇文章，通过宏定义将 `#pragma message ("msg")` 进行扩展而作为 TODO 使用：
+
+```objc
+#define STRINGIFY(S) #S
+#define DEFER_STRINGIFY(S) STRINGIFY(S)
+#define PRAGMA_MESSAGE(MSG) _Pragma(STRINGIFY(message(MSG)))
+#define FORMATTED_MESSAGE(MSG) "[TODO-" DEFER_STRINGIFY(__COUNTER__) "]" MSG " Line:" DEFER_STRINGIFY(__LINE__)
+
+#define TODO(MSG) PRAGMA_MESSAGE(FORMATTED_MESSAGE(MSG))
+```
+
+利用例：
+
+```objc
+@TODO("test code 1")
+@TODO("test code 2")
+```
+
+## 杂谈
+
+当要使用宏时，务必要考虑有没有必要，合不合理，会不会有副作用。举个例子来说：当需要定义一个常量时，宏完全可以，但是更好的选择是使用 `const` 关键字。借助宏来定义常量最大的痛点就是不包含类型信息，`const` 不仅弥补了类型信息缺失的问题，而且在访问控制权限这块也表现地更好。
+
+最后还想提一句 `typedef`，人们常常会拿它和 `#define` 相比较，看起来用法很相似，其实本质上有蛮大区别，`typedef` 是在编译期间进行处理的关键字。用途上来说，`typedef` 更多是用于创建类型别名，上述 Enum 的宏定义中为枚举指定别名就依赖于 `typedef`。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div><span>Tagged with: </span><ul class="tag-list"><li><a href="/tags/求索集">求索集</a></li><li><a href="/tags/ios">iOS</a></li><li><a href="/tags/objectivec">Objective-C</a></li><li><a href="/tags/lt">LT</a></li></ul></article></div><footer><p>Copyright © 2014-2022 Ckitakishi 🥑 Powered by <a href="https://github.com/johnsundell/publish">Publish</a></p></footer></body></html>

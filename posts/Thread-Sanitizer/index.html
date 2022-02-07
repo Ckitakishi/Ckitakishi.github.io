@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"/><meta name="og:site_name" content="Ckitakishi.playground"/><link rel="canonical" href="ckitakishi.com/posts/Thread-Sanitizer"/><meta name="twitter:url" content="ckitakishi.com/posts/Thread-Sanitizer"/><meta name="og:url" content="ckitakishi.com/posts/Thread-Sanitizer"/><title>Thread Sanitizer | Ckitakishi.playground</title><meta name="twitter:title" content="Thread Sanitizer | Ckitakishi.playground"/><meta name="og:title" content="Thread Sanitizer | Ckitakishi.playground"/><meta name="description" content="使用 Thread Sanitizer 来解决实际遇到的数据竞争问题。"/><meta name="twitter:description" content="使用 Thread Sanitizer 来解决实际遇到的数据竞争问题。"/><meta name="og:description" content="使用 Thread Sanitizer 来解决实际遇到的数据竞争问题。"/><meta name="twitter:card" content="summary"/><link rel="stylesheet" href="/styles.css" type="text/css"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><link rel="shortcut icon" href="/images/favicon.png" type="image/png"/><link rel="alternate" href="/feed.rss" type="application/rss+xml" title="Subscribe to Ckitakishi.playground"/></head><body class="item-page"><header><div class="wrapper"><a href="/" class="site-name">Ckitakishi.playground</a><nav><ul><li><a href="/">Home</a></li><li><a href="/posts" class="selected">Writing</a></li><li><a href="https://github.com/Ckitakishi?tab=repositories">Project</a></li><li><a href="/tags/求索集/">求索集</a></li><li><a href="/tags/浮生记/">浮生记</a></li><li><a href="/feed.rss">RSS</a></li></ul></nav></div></header><div class="wrapper"><article><div class="content"><h1>Thread Sanitizer</h1><p><em>作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。</em></p><p>之前在修正并优化应用内线程管理的时候用了 <strong>Thread Sanitizer</strong> 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 <a href="https://developer.apple.com/videos/play/wwdc2016/412/">Session 412</a>。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。<strong>TSan</strong> 能够发现一些问题，诸如 Keynote 里提到的：</p><blockquote><p>Use of uninitialized mutexesThread leaks (missing pthred_join)Unsafe calls in signal handlers (ex:malloc)Unlock from wrong threadData races</p></blockquote><p>因为在实际中遇到过，而且感觉发生概率相对较高，所以只展开说一下最后一项：数据竞争。数据竞争发生的基本条件是多个线程在同时访问同一块内存，并且其中至少又一个线程正在进行的是写操作。实际中常常表现为数据不整合，亦或是应用崩溃。比如下面这个例子：</p><!--more-->
+
+```Objective-C
+[context performBlock:^{
+    if (result && context) {
+        result = [self persistentSaveContext:context]; // 1
+    }
+}];
+return result; // 2
+```
+
+`result` 在 1 和 2 两个地方发生了竞争。在 1 进行写操作之前，有可能处于不同线程的 2 早已经返回了，这样数据就发生了不整合。
+
+有很多方法可以解决这个问题，比如说：由异步操作变为同步操作，或是改变写操作的时间点。这里采取了第一个方案，使用同样用途的同步方法 `performBlockAndWait` 来取代 `performBlock`，这样以来，数据竞争的问题也就自然而然解决了。 
+
+```Objective-C
+[context performBlockAndWait:^{
+    if (result && context) {
+        result = [self persistentSaveContext:context]; // 1
+    }
+}];
+return result; // 2
+```
+
+由于 **TSan** 是统合在编译器 (Clang) 层面的，所以当使用 Swift 来编写服务器代码的时候，完全可以在命令行中使用它：
+
+![Tsan command](/images/datarace.png)
+
+P.S.目前 **TSan** 只支持 64bit 的模拟器及 macOS 自身。
+
+
+</div><span>Tagged with: </span><ul class="tag-list"><li><a href="/tags/求索集">求索集</a></li><li><a href="/tags/ios">iOS</a></li><li><a href="/tags/objectivec">Objective-C</a></li><li><a href="/tags/lt">LT</a></li></ul></article></div><footer><p>Copyright © 2014-2022 Ckitakishi 🥑 Powered by <a href="https://github.com/johnsundell/publish">Publish</a></p></footer></body></html>

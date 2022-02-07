@@ -1,0 +1,1253 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Ckitakishi.playground</title><description>Ckitakishi 目前在日本从事 iOS 开发，在此之前是一名前端开发者，对动画和图像感兴趣，正在为写出优美的代码而修炼。初出茅庐的译者，参与译有《函数式 Swift》和《集合类型优化》。</description><link>ckitakishi.com</link><language>zh</language><lastBuildDate>Sun, 6 Feb 2022 18:38:27 +0900</lastBuildDate><pubDate>Sun, 6 Feb 2022 18:38:27 +0900</pubDate><ttl>250</ttl><atom:link href="ckitakishi.com/feed.rss" rel="self" type="application/rss+xml"/><item><guid isPermaLink="true">ckitakishi.com/posts/TIL-%E4%B8%8E%E8%A5%BF%E7%93%9C%E4%B8%BA%E4%BC%B4%E7%9A%84%E5%85%AD%E6%9C%88</guid><title>[TIL] 与西瓜为伴的六月</title><description>六月主题：虚真论断，WWDC</description><link>ckitakishi.com/posts/TIL-%E4%B8%8E%E8%A5%BF%E7%93%9C%E4%B8%BA%E4%BC%B4%E7%9A%84%E5%85%AD%E6%9C%88</link><pubDate>Thu, 1 Jul 2021 18:46:00 +0900</pubDate><content:encoded><![CDATA[<h1>06/21</h1><h2>Vacuous truth 虚真论断</h2><pre><code>[].<span class="call">allSatisfy</span> { $0 &gt; <span class="number">0</span> }   <span class="comment">// 1</span>
+[].<span class="call">allSatisfy</span> { $0 &lt;= <span class="number">0</span> }  <span class="comment">// 2</span>
+</code></pre><p>请回答，上面两个表达式的值是什么？ 结果是，它们的值都是 <code>true</code>，不得不承认，这多少有一些违背人的直觉。</p><p>在 swift forums 上也有人对此表示了疑惑： <a href="https://forums.swift.org/t/unexpected-behaviour-of-allsatisfy/20136">https://forums.swift.org/t/unexpected-behaviour-of-allsatisfy/20136</a></p><blockquote><p>Everything is true of the elements of the empty set.</p></blockquote><p>事实上，其中蕴含了经典的逻辑悖论：实质蕴含悖论。如果转换为中文，就是一种“如果...那么...”的关系。例如：</p><ul><li>（维基百科中记载的经典案例）如果房间里没有手机，那么所有手机都是关机状态。</li><li>（不可能发生的事情）如果回到十年前，那么我要好好学习。</li></ul><p>如果 <code>p</code> 那么 <code>q</code> 被称为 <code>p</code> 与 <code>q</code> 的蕴含式，记作 <code>p → q</code>。其真值表如下：</p><table><thead><tr><th align="center">p</th><th align="center">q</th><th align="center">p → q</th></tr></thead><tbody><tr><td align="center">T</td><td align="center">T</td><td align="center">T</td></tr><tr><td align="center">T</td><td align="center">F</td><td align="center">F</td></tr><tr><td align="center">F</td><td align="center">T</td><td align="center">T</td></tr><tr><td align="center">F</td><td align="center">F</td><td align="center">T</td></tr></tbody></table><p>综上，当集合为空（<code>p == false</code>）时，无论 <code>q</code> 是什么条件它们的蕴含式都一定为真，这也就是需真论断。蕴含式的正确并不意味着生活中一些关系的合理性，将它当作一种既定的逻辑就可以。</p><hr><h1>06/xx</h1><p>做了自己认为应当有人去做的事情，深入学习了今年 WWDC 的 Accessibility 专题，并写了以下两篇文章：</p><p>为内容丰富的应用量身打造高效 VoiceOver 体验：https://xiaozhuanlan.com/topic/7392456081 图表的无障碍支持进阶：https://xiaozhuanlan.com/topic/7904561328</p>]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/TIL-%E6%A2%85%E9%9B%A8%E6%8F%90%E6%97%A9%E5%88%B0%E6%9D%A5%E7%9A%84%E4%BA%94%E6%9C%88</guid><title>[TIL] 梅雨提早到來的五月</title><description>五月主题：byWordWrapping - 孤独的单词，fileSystemRepresentation, stat - st_size 是什么类型, lineHeight and lineSpacing...</description><link>ckitakishi.com/posts/TIL-%E6%A2%85%E9%9B%A8%E6%8F%90%E6%97%A9%E5%88%B0%E6%9D%A5%E7%9A%84%E4%BA%94%E6%9C%88</link><pubDate>Tue, 1 Jun 2021 00:10:00 +0900</pubDate><content:encoded><![CDATA[<p>记录日常开发中遇到的</p><ol><li>新知</li><li>对旧知识的新认知</li><li>重新唤起的记忆</li><li>review 中遇到的一些有趣的问题</li></ol><h1>05/30</h1><h2>byWordWrapping - 孤独的单词</h2><p>有一段类似下面这样的代码，和一个字符串 “This message could not be delivered”，假设 label 的宽度正好会导致字符串在 delivered 前被截断。</p><pre><code>label.<span class="property">numberOfLines</span> = <span class="number">0</span>
+label.<span class="property">lineBreakMode</span> = .<span class="dotAccess">byWordWrapping</span>
+</code></pre><p>这时候，下面这样的换行方式是不会出现的：</p><pre><code><span class="type">This</span> message could not be
+delivered
+</code></pre><p>实际上得到的字符串是以下：</p><pre><code><span class="type">This</span> message could not 
+be delivered
+</code></pre><p>乍一看，多少让人有些摸不着头脑，然而这是一个 Apple 刻意而为之的设计，目的在于避免孤词寡行的出现。参考链接：</p><ul><li><a href="https://stackoverflow.com/questions/46200027/uilabel-wrong-word-wrap-in-ios-11">https://stackoverflow.com/questions/46200027/uilabel-wrong-word-wrap-in-ios-11</a></li></ul><p>个人认为这是一个有趣的设计，然而并没有任何途径可以禁止这种换行方式，这多少会带来一些不便，好在从 iOS 14 开始，终于可以通过设置 <code>lineBreakStrategy</code> 来避免这样的换行。</p><pre><code><span class="keyword">if #available</span>(iOS <span class="number">14.0</span>, *) {
+    label.<span class="property">lineBreakStrategy</span> = []
+}
+</code></pre><hr><h1>05/27</h1><h2>fileSystemRepresentation</h2><p>最近依然在为 ZIPFoundation 做 zip64 的支持，当使用 <code>fopen</code> 打开指定路径的文件时，使用的是类似下述的代码。在 POSIX 系统中直接使用 <code>UTF8String</code> 并不是一个明智的办法，使用 <code>fileSystemRepresentation</code> 先将字符串转换成文件系统的规范形式然后用 <code>UTF-8</code> 编码会比较安全。</p><pre><code><span class="keyword">let</span> representation = <span class="type">FileManager</span>.<span class="property">default</span>.<span class="call">fileSystemRepresentation</span>(withPath: path)
+<span class="keyword">let</span> file: <span class="type">UnsafeMutablePointer</span>&lt;<span class="type">FILE</span>&gt; = <span class="call">fopen</span>(representation, <span class="string">"r+b"</span>)
+</code></pre><p>参考链接：</p><ol><li><a href="https://objccn.io/issue-9-2/">https://objccn.io/issue-9-2/</a></li><li><a href="https://github.com/ZipArchive/ZipArchive/issues/326">https://github.com/ZipArchive/ZipArchive/issues/326</a><ul><li>这其中提到一个真实发生的案例，在 iOS 10.2 中使用 <code>UTF8String</code> 来创建文件名，很有可能在 iOS 10.3 上无法打开。这其中的原因，大概率在于 10.2 的文件系统是 <code>HFS+</code>，而 10.3 是 <code>APFS</code>。</li></ul></li></ol><hr><h1>05/19</h1><h2>stat - st_size 是什么类型</h2><p>获取文件大小的方式：</p><ol><li>FileAttributeKey</li></ol><pre><code><span class="keyword">let</span> attr = <span class="keyword">try</span> <span class="type">FileManager</span>.<span class="property">default</span>.<span class="call">attributesOfItem</span>(atPath: filePath)
+<span class="keyword">let</span> fileSize = attr[<span class="type">FileAttributeKey</span>.<span class="property">size</span>] <span class="keyword">as</span>? <span class="type">UInt64</span>
+</code></pre><ol start="2"><li>stat</li></ol><pre><code><span class="keyword">let</span> representation = <span class="type">FileManager</span>.<span class="property">default</span>.<span class="call">fileSystemRepresentation</span>(withPath: filePath)
+<span class="keyword">var</span> fileStat = <span class="call">stat</span>()
+<span class="call">lstat</span>(representation, &amp;fileStat)
+<span class="keyword">let</span> fileSize = fileStat.<span class="property">st_size</span>
+</code></pre><ul><li>关于 <code>st_size</code> 的类型，根据 link1，它是 <code>off_t</code>；根据 link2，<code>off_t</code> 是 <code>__darwin_off_t</code> ；根据最后一个 link，可以知道其实是 <code>int64</code> 。必须要注意的是，尽管用于表示 size，它并非一个无符号的数。<ol><li><a href="https://opensource.apple.com/source/xnu/xnu-4570.41.2/bsd/sys/stat.h.auto.html">https://opensource.apple.com/source/xnu/xnu-4570.41.2/bsd/sys/stat.h.auto.html</a></li><li><a href="https://opensource.apple.com/source/xnu/xnu-2422.1.72/bsd/sys/_types/_off_t.h.auto.html">https://opensource.apple.com/source/xnu/xnu-2422.1.72/bsd/sys/<em>types/</em>off_t.h.auto.html</a></li><li><a href="https://opensource.apple.com/source/xnu/xnu-2782.30.5/bsd/sys/_types.h.auto.html">https://opensource.apple.com/source/xnu/xnu-2782.30.5/bsd/sys/_types.h.auto.html</a></li></ol></li></ul><hr><h1>05/14</h1><h2>AVPlayer</h2><p>一篇非常简明的阐述如何使用 <code>AVPlayer</code> 的文章：</p><p><a href="https://medium.com/free-code-camp/how-to-set-up-video-streaming-in-your-app-with-avplayer-7dc21bb82f3">https://medium.com/free-code-camp/how-to-set-up-video-streaming-in-your-app-with-avplayer-7dc21bb82f3</a></p><h2>HLS - HTTP Live Streaming</h2><p>HLS 是一个 Apple 定义的流传输协议，基于 HTTP 实现，我们会发现它的后缀是 <code>.m3u8</code>，也就是用 <code>UTF-8</code> 编码的 Unicode 版本 <code>M3U</code> 。对于视频技术知之甚少的我而言又要问，那 M3U 是什么，根据维基，M3U 文件是一种纯文本文件，可以指定一个或多个多媒体文件的位置。</p><p>关于 HLS 是什么，<code>m3u8</code> 的结构是什么样，文档中的图片非常清晰易懂：<a href="https://developer.apple.com/library/archive/referencelibrary/GettingStarted/AboutHTTPLiveStreaming/about/about.html">https://developer.apple.com/library/archive/referencelibrary/GettingStarted/AboutHTTPLiveStreaming/about/about.html</a></p><p>HLS 拥有高性能，高兼容性，作为代价，切片和查询导致了较高的延迟。2019 年，Apple 介绍了</p><p><a href="[https://developer.apple.com/videos/play/wwdc2019/502/](https://developer.apple.com/videos/play/wwdc2019/502/">ILow-Latency HLS</a>)。</p><hr><h1>05/13</h1><h2>lineHeight and lineSpacing</h2><p>无法通过 <code>UILabel</code> 的属性来直接设置行高，但是可以为 Attributed String 来设置这些值。</p><p>除了 lineSpacing，我们还可以使用 lineHeight 相关的几个属性，例如:</p><pre><code>minimumLineHeight
+maximumLineHeight
+lineHeightMultiple
+</code></pre><p>但事实上 iOS 的行高和 CSS Flexbox 中以及通常认知中的行高并不完全相同。参见下图：</p><p>所以如果需要通常意义上的行高，可以通过设置 baselineOffset 来实现。</p><pre><code><span class="keyword">let</span> paragraphStyle = <span class="type">NSMutableParagraphStyle</span>()
+paragraphStyle.<span class="property">lineHeightMultiple</span> = <span class="number">1.6</span>
+
+label.<span class="property">attributedText</span> = <span class="type">NSAttributedString</span>(
+    string: <span class="string">"......"</span>,
+    attributes: [
+        .<span class="dotAccess">baselineOffset</span>: ......,
+        .<span class="dotAccess">paragraphStyle</span>: paragraphStyle
+    ]
+)
+</code></pre><hr><h1>05/07</h1><h2>Apple's Compression Algorithms</h2><p>当讨论一个压缩算法的时候，压缩率和速度是最重要的两个维度。</p><p>Apple 自己的压缩框架也提供了多种算法:</p><blockquote><p>WWDC2015 Session 712</p></blockquote><p>Balanced: <code>zlib</code> and <code>lzfse</code> High compression, slow: <code>lzma</code> Low compression, fast: <code>lz4</code></p><hr><h1>05/06</h1><h2>setUp()/tearDown()</h2><ul><li>instance method: each test method</li><li>class method: all test methods</li></ul><h2>globallyUniqueString</h2><p>一般来说提到唯一标志符我们常常会先想到 <code>UUID</code> ，例如用下述方法来生成独一无二的字符串：</p><pre><code><span class="type">UUID</span>().<span class="property">uuidString</span>
+</code></pre><p>但如果我们需要创建临时文件，那使用进程级别的唯一字符串也不失为一个好办法。其中包含了主机名，进程 ID，时间戳，来保证其唯一性。</p><pre><code><span class="type">ProcessInfo</span>.<span class="property">processInfo</span>.<span class="property">globallyUniqueString</span>
+</code></pre>]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/TIL-%E5%B9%B4%E5%A4%8D%E4%B8%80%E5%B9%B4%E6%84%8F%E8%AF%86%E5%88%B0%E6%88%90%E9%95%BF%E7%9A%84%E5%9B%9B%E6%9C%88</guid><title>[TIL] 年复一年意识到成长的四月</title><description>七月主题：Uniform Type Identifier，autoreleasepool, ZIPFoundation(ZIP64), CRC32 (Cyclic redundancy check), SQL - Prepared Statement, Attributes in Swift...</description><link>ckitakishi.com/posts/TIL-%E5%B9%B4%E5%A4%8D%E4%B8%80%E5%B9%B4%E6%84%8F%E8%AF%86%E5%88%B0%E6%88%90%E9%95%BF%E7%9A%84%E5%9 ... E6%9C%88</link><pubDate>Sat, 1 May 2021 19:29:00 +0900</pubDate><content:encoded><![CDATA[<p>记录日常开发中遇到的 1. 新知 2. 对旧知识的新认知 3. 重新唤起的记忆 4. review 中遇到的一些有趣的问题</p><h1>04/23</h1><hr><h2>UTI - Uniform Type Identifier</h2><p>同事在分享会中详细讲了 UTI，用过很多次，但大概一直都只懂三成吧，听完后对 UTI 的理解明显更系统化了一些XD</p><p>能一瞬间想起来的运用场景有：</p><ol><li>Share Extension</li><li>Drag and Drop</li><li>Pasteboard</li></ol><p>简单来说，对于文本类型而言，扩展名可以是 <code>.txt</code> 或 <code>.text</code>，而 MIME 类型是 <code>text/plain</code>，当我们要处理文本类型时，必须将以上所有类型全部视为对象，这是一件非常缺乏效率的事情，而 UTI 就是用来处理这个问题的，他将所有类型都统一为了 <code>public.text</code>，UTI 类型和其他所有类型相互兼容。</p><p>Ref：关于自定义 UTI 类型，UTI 类型的继承性 — <a href="https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/understanding_utis/understand_utis_conc/understand_utis_conc.html">https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/understanding<em>utis/understand</em>utis<em>conc/understand</em>utis_conc.html</a></p><h1>04/20</h1><hr><h2>autoreleasepool</h2><p>最近做了一点 Objective-C 转 Swift，在 Objective-C 中我们常常会需要使用 autoreleasepool，但并不意味着遇到 Swift 之后 <code>autoreleasepool</code> 就不再需要考虑。当 Swift 调用 Objective-C 代码，亦或是 Objective-C 调用被标记为 @objc 的 Swift 方法时，如果方法返回的是 autorelease 的值，那 Swift 也会保持这个值的 autorelease 特性。</p><p>在 Objective-C 中，有时候会在循环中写 <code>autoreleasepool</code> 来避免内存爆炸，因为循环的持续会导致没有机会自动释放内存。</p><h1>04/15</h1><hr><h2>ZIPFoundation</h2><p><a href="https://thomas.zoechling.me/journal/2017/07/ZIPFoundation.html">https://thomas.zoechling.me/journal/2017/07/ZIPFoundation.html</a></p><p>A ZIP compression framework don't based on any 3rd party framework. Almost all of the swift ZIP framework based on minizip.</p><p>尽管这个框架十分简洁甚至无法完全满足要求，但作者的这篇文章还是很值得一读，在设计框架时考虑的一些点很有参考价值。</p><h2>ZIP64</h2><p><a href="https://en.wikipedia.org/wiki/ZIP_(file_format">https://en.wikipedia.org/wiki/ZIP<em>(file</em>format)#ZIP64</a>#ZIP64)</p><p>标准 ZIP 有一些限制，例如不能容纳超过 65535 个文件（因为 eocd 中只有 2 bytes 用来存 entry 的信息。。），压缩文件大小不能超过 4G 之类，因此出现了 ZIP64 标准。</p><h1>04/13</h1><hr><h2>CRC32 (Cyclic redundancy check)</h2><p>ZIP 压缩中使用的校验方式是 CRC32，是 CRC（循环冗余校验）方法中的其中一种。</p><p>记忆中第一次知道 CRC 是在密码学的课本上，奇偶校验，50% 的出错概率，还有校验和，也有不小的出错可能性，此外就是 CRC 了，因为高效且检错力很高，被广泛用在存储，压缩等之中。CRC32 是 CRC 校验中最被广泛使用的之一，但他并不是完美的，即便篡改了内容，用 CRC32 进行校验依然可能会得到相同的值。</p><p>题外话，如何在各种语言中使用 CRC32：<a href="https://rosettacode.org/wiki/CRC-32#Swift">https://rosettacode.org/wiki/CRC-32#Swift</a>。Swift 的实现法可以说并不一定实用，他选择了直接调用 zlib 中的 crc32 方法w</p><h2>Strange Date Format</h2><p>e.g. 04/01, template = "Md"</p><p>en_US ⇒ 4/1</p><p>ja_JP ⇒ 4/1</p><p>en_JP ⇒ 04/01</p><blockquote><p><a href="https://stackoverflow.com/questions/67073224/get-a-unexpected-date-string-when-setting-template-to-md">https://stackoverflow.com/questions/67073224/get-a-unexpected-date-string-when-setting-template-to-md</a></p></blockquote><p>Still don‘t know why Apple making this design..But we could resolve this <em>unexpected problem</em> by:</p><pre><code>formatter.<span class="property">dateFormat</span> = <span class="type">DateFormatter</span>.<span class="call">dateFormat</span>(
+    fromTemplate: <span class="string">" Md"</span>,
+    options: <span class="number">0</span>,
+    locale: <span class="type">Locale</span>(identifier: <span class="string">"en_JP"</span>)
+)?
+.<span class="call">replacingOccurrences</span>(of: <span class="string">"MM"</span>, with: <span class="string">"M"</span>)
+.<span class="call">replacingOccurrences</span>(of: <span class="string">"dd"</span>, with: <span class="string">"d"</span>)
+</code></pre><h1>04/12</h1><hr><h2>SQL - Prepared Statement</h2><blockquote><p>INSERT INTO products (name, price) VALUES (?, ?);</p></blockquote><p>通常这么做的优点是：</p><ol><li>防止 SQL 注入</li><li>效率更高，避免了多次解析相同结构的 SQL 语句</li><li>...</li></ol><h1>04/08</h1><hr><h2>Attributes in Swift</h2><p>分为两类，分别是：</p><pre><code><span class="number">1</span>. <span class="keyword">@attribute</span> name
+<span class="number">2</span>. <span class="keyword">@attribute</span>(attribute arguments)
+</code></pre><p>今天写了写 @inline，回忆了几个常用的：</p><h3>@inline 内联</h3><p>在编译的阶段用函数体去替换函数调用。优点是可以减少函数调用的开销，但作为交换，binary size 会略有增大。</p><ul><li>@inline(_always) 强制内联（不是 100%，也有例外）</li><li>@inline(never) 无论如何都不内联</li></ul><h3>@inlinable 可内联</h3><p>和 @inline 看起来很像，但有着本质上的区别。@inlinable 可以用在 public 和 internal 的方法，计算属性等之上，这样在模块外被进行编译的时候，就会进行内联优化。虽然可以被优化，但 internal 依然是不可以被访问的，另外，当且仅但 internal 被标记为 @usableFromInline 的时候才会被作为对象。如果只存在一个模块，并没有只用 @inlinable 的必要。</p><h3>@discardableResult 可忽略的返回值</h3><p>允许有返回值的方法不返回任何值</p><h3>@available</h3><p>是一个带有参数的 attribute，用于指定最低 swift 版本，platform 的版本之类，例如我们会写 @available(swift 99) 来避免被 swift 调用，@available(iOS 14.0) 来使用 14.0 最新的 API。</p><p>Ref. <a href="https://docs.swift.org/swift-book/ReferenceManual/Attributes.html#">https://docs.swift.org/swift-book/ReferenceManual/Attributes.html#</a></p><h1>04/07</h1><hr><h2>Access Photo Library</h2><p>Plist</p><ul><li>NSPhotoLibraryAddUsageDescription</li><li>NSPhotoLibraryUsageDescription</li><li>NSCameraUsageDescription</li></ul><h2>Render a UIView to a UIImage</h2><pre><code><span class="keyword">let</span> renderer = <span class="type">UIGraphicsImageRenderer</span>(size: view.<span class="property">bounds</span>.<span class="property">size</span>)
+<span class="keyword">let</span> image = renderer.<span class="call">image</span> { context <span class="keyword">in</span>
+    view.<span class="call">drawHierarchy</span>(in: view.<span class="property">bounds</span>, afterScreenUpdates: <span class="keyword">true</span>)
+}
+</code></pre><h2>Take screenshot programmatically</h2><p><a href="https://developer.apple.com/library/archive/qa/qa1703/_index.html">https://developer.apple.com/library/archive/qa/qa1703/_index.html</a> (Outdated..)</p><h1>04/06</h1><hr><h2>Multi-cursor editing in Xcode</h2><ul><li>To add a new cursor, hold Control and SHIFT then click.</li><li>Hold Control and SHIFT then ↑ or ↓</li><li>Hold Option then drag cursor around.</li></ul><h2>Formatter</h2><p><a href="https://nshipster.com/formatter/">https://nshipster.com/formatter/</a></p><p>当不设置默认 template 的情况下，会按照各 <code>locale</code> 的默认模版来显示日期。</p><p>例如：</p><pre><code><span class="comment">// JP: 2021/03/01
+// KR: 2021.3.1.</span>
+
+<span class="keyword">let</span> formatter = <span class="type">DateFormatter</span>()
+formatter.<span class="property">locale</span> = locale
+formatter.<span class="property">calendar</span> = <span class="type">Calendar</span>.<span class="property">autoupdatingCurrent</span>
+formatter.<span class="property">dateStyle</span> = .<span class="dotAccess">short</span>
+formatter.<span class="property">timeStyle</span> = .<span class="dotAccess">none</span>
+</code></pre><p>这应当被认为是一个好的实践，完全可以当且仅当必要的时候为 <code>formatter</code> 设置 template。</p><h2>Detect user takes a screenshot</h2><pre><code><span class="type">NotificationCenter</span>.<span class="property">default</span>.<span class="call">addObserver</span>(
+    <span class="keyword">self</span>,
+    selector: <span class="keyword">#selector</span>(xxxxxx),
+    name: <span class="type">UIApplication</span>.<span class="property">userDidTakeScreenshotNotification</span>,
+    object: <span class="keyword">nil</span>
+)
+</code></pre><p>根据文档可以知道，这个通知的 <code>userInfo</code> 中并不包含任何信息，一个有些令人绝望的消息。考虑两个方案来获得图片。</p><ol><li>从相册读取第一张照片，多少有些 workaround 的意味，并且需要相册权限。</li><li>重新截取图片，潜在的问题是截图和系统截图可能存在差异。</li></ol><h1>04/05</h1><hr><h2>Long polling</h2><p>长轮询，与轮询的区别在于，后者是 client 定期去拉取更新，经常会得到空 response；而长轮询会 hold 住连接，直到 server 有更新才会返回。看似一种 push 的方式，本质上还是 pull。</p><h1>04/02</h1><hr><h2>XCTUnwrap()</h2><p><a href="https://www.hackingwithswift.com/example-code/testing/how-to-check-and-unwrap-optionals-in-tests-using-xctunwrap">https://www.hackingwithswift.com/example-code/testing/how-to-check-and-unwrap-optionals-in-tests-using-xctunwrap</a></p><p>Easy to read than <code>guard</code> and <code>let</code>..</p>]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/2020-%E6%9C%80%E5%90%8E%E4%B8%80%E5%A4%A9%E6%88%91%E5%9C%A8%E6%83%B3%E4%BB%80%E4%B9%88</guid><title>2020 最后一天我在想什么</title><description>2020 回顾 &amp; 2021 期许</description><link>ckitakishi.com/posts/2020-%E6%9C%80%E5%90%8E%E4%B8%80%E5%A4%A9%E6%88%91%E5%9C%A8%E6%83%B3%E4%BB%80%E4%B9%88</link><pubDate>Fri, 1 Jan 2021 21:43:00 +0900</pubDate><content:encoded><![CDATA[<h1>2020 最后一天我在想什么</h1><blockquote><p>2020.12.31 / 晴</p></blockquote><h2>2020</h2><p>毕业后的几年间，大多数的年末年始都在路上或者即将启程，15 的湘南，17 的北海道，18 的川渝，19 的北陆...在一个个普通的日子里写下珍贵的记忆，让它们有了特别的意义。下午走在街上，日落将近，赶紧随手拍了一张照片来记录 2020 最后的夕日，一瞬间有些恍惚，不确定明年的此刻我是否还会记得这一天。</p><p>关于 2020，大多数人的生活或多或少都受到了一些负面影响，猜想很多人都在心中默默想过，“如果没有疫情...”，“疫情过后...”。我亦是如此，一方面这几年多了一些烦恼和忧虑，再加之长期在家的压抑，有几个月真的不太快乐，切身领会了看似普通的日子其实难能可贵这个道理。好在并不会屈服于生活带来的苦痛，而且很多事都翻篇了，又开始对新的一年有了期待（笑</p><p>不过并非一切都那么糟糕，2020 也有几件值得浓墨重彩记下一笔的事情：</p><ul><li>春节回了趟家，因为疫情哪也没去，妥妥的在家陪了家人两星期，此刻想来甚是难得。</li><li>厨艺有了进步，尤其是晴同学，如今做某几品中华料理的水平可以说是惊为天人。</li><li>在适应了新的生活/工作节奏之后，WFH 的体验变得足够令人愉悦，再加上免于通勤，有了更多悠闲（做饭，洗碗）的时间。</li><li>告别舒适圈，10 月离开了奋斗两年的团队，多亏遇到了一群很棒的同事，过去两年竟然真的觉得工作开心。在新的团队得到了更好的 WLB，下一个阶段希望自己能更有勇气一些。</li><li>赶在东京疫情爆发前跟或许多年都不再见得到的朋友去了一趟轻井泽，打了雪仗，像孩童时期一样开心（尽管孩童时期见过的雪一只手都数得过来）。</li><li>学了几个月韩语，口语稍稍记住了一些，却写不出几个对的单词，我可能是个文盲了，有愧于一直跟我说 Good Job 的老师。</li><li>动森称得上 2020 对我影响最大的游戏，和朋友们在无数个不眠的夜晚一起钓鱼砍树，还有小动物们的陪伴，在出不了门的日子里感受这种由虚拟向真实转换的温暖。</li></ul><h2>2021</h2><p>前两天看到一个豆瓣话题：你最平静放松的时刻。我想这一刻大概就是吧，可以平静且坦白的思考自己对未来的期许，简言之：</p><ul><li>保持健康良好的心情，早睡</li><li>多跟亲友联络，多交朋友</li><li>投入时间做个人产品</li><li>投资未来，保持学习</li><li>点亮新技能树（上半年就是韩语了吧）</li><li>思考之余，表达和记录自己的想法</li><li>换驾照</li><li>保持对走街串巷，摄影，料理的热情</li></ul><p>害怕着写太多实现不了明年自己看着尴尬，却还是写了那么多😂</p><p>Anyway，希望每个人都能有得偿所愿的一年。</p>]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/%E5%AE%89%E5%85%A8%E4%B8%94%E4%BC%98%E9%9B%85%E5%9C%B0%E4%BD%BF%E7%94%A8-NSAttributedString-Part-2</guid><title>安全且优雅地使用 NSAttributedString - Part.2</title><description>在上一篇中，我们讨论了如何安全且优雅地定义一个属性字符串。不过在实际的运用场景中，情况往往会更复杂一些。在 Part.2 中将会针对更优雅地使用 `NSAttributedString` 再向前迈进一步。</description><link>ckitakishi.com/posts/%E5%AE%89%E5%85%A8%E4%B8%94%E4%BC%98%E9%9B%85%E5%9C%B0%E4%BD%BF%E7%94%A8-NSAttributedString-Part-2</link><pubDate>Sat, 27 Jun 2020 22:59:00 +0900</pubDate><content:encoded><![CDATA[<h1>安全且优雅地使用 NSAttributedString - Part.2</h1><p>在上一篇中，我们讨论了如何安全且优雅地定义一个属性字符串。不过在实际的运用场景中，情况往往会更复杂一些。</p><p>例如，当我们需要一个由很多属性不同的部分构成的完整字符串，或者是想要实现图文混排。这个时候，不可避免的需要将所有部分组装在一起，最基础的方法是创建 <code>NSMutableAttributedString</code> ，然后通过 <code>append(_:)</code> 方法来完成字符串的构建。简单易懂是它的有点，然而不知不觉中可能就会写出类似下面这样的代码：</p><pre><code><span class="keyword">let</span> mutableAttributedString = <span class="type">NSMutableAttributedString</span>(attributedString: str1)
+mutableAttributedString.<span class="call">append</span>(str2)
+mutableAttributedString.<span class="call">append</span>(str3)
+mutableAttributedString.<span class="call">append</span>(str4)
+...
+</code></pre><p>这段代码多少有一些繁重感，也不够直观，有很大的优化余地。条条大路通罗马，也许一千个开发者就有一千种改善的思路，接下来想要讨论两种更优雅的方案，分别借力于枚举 (Enum) 和 字符串插值 (StringInterpolation)。</p><h2>枚举</h2><p>和前文类似，我们完全可以再次定义一个枚举来优化代码的可读性。根据自己的需求，定义一些常用的 case，只定义字符串实在是有一些孤独，我们可以再追加一个用于插图的 case：</p><pre><code><span class="keyword">enum</span> AttributedString {
+    <span class="keyword">case</span> string(<span class="type">String</span>, [<span class="type">StringAttribute</span>]?)
+    <span class="keyword">case</span> image(<span class="type">UIImage</span>, offsetX: <span class="type">CGFloat</span> = <span class="number">0.0</span>, offsetY: <span class="type">CGFloat</span> = <span class="number">0.0</span>, scale: <span class="type">CGFloat</span> = <span class="number">1.0</span>)
+    
+    <span class="keyword">static func</span> assemble(<span class="keyword">_</span> attrStrings: [<span class="type">AttributedString</span>]) -&gt; <span class="type">NSAttributedString</span> {
+        <span class="keyword">let</span> mutableAttributedString = <span class="type">NSMutableAttributedString</span>(string: <span class="string">""</span>)
+        attrStrings.<span class="call">forEach</span> { (attrString: <span class="type">AttributedString</span>) <span class="keyword">in
+            switch</span> attrString {
+            <span class="keyword">case</span> .<span class="dotAccess">string</span>(<span class="keyword">let</span> string, <span class="keyword">let</span> attributes):
+                mutableAttributedString.<span class="call">append</span>(.<span class="keyword">init</span>(string: string, attributes: attributes?.<span class="property">attributesDictionary</span>))
+            <span class="keyword">case</span> .<span class="dotAccess">image</span>(<span class="keyword">let</span> image, <span class="keyword">let</span> offsetX, <span class="keyword">let</span> offsetY, <span class="keyword">let</span> scale):
+                mutableAttributedString.<span class="call">append</span>(.<span class="keyword">init</span>(image: image, offsetX: offsetX, offsetY: offsetY, scale: scale))
+            }
+        }
+        <span class="keyword">return</span> mutableAttributedString
+    }
+}
+
+<span class="keyword">extension</span> <span class="type">NSAttributedString</span> {
+    <span class="keyword">convenience init</span>(image: <span class="type">UIImage</span>, offsetX: <span class="type">CGFloat</span>, offsetY: <span class="type">CGFloat</span>, scale: <span class="type">CGFloat</span> = <span class="number">1.0</span>) {
+        <span class="keyword">let</span> attachment = <span class="type">NSTextAttachment</span>()
+        
+        <span class="keyword">let</span> size: <span class="type">CGSize</span> = {
+            <span class="keyword">guard</span> scale != <span class="number">1.0</span> <span class="keyword">else</span> { <span class="keyword">return</span> image.<span class="property">size</span> }
+            <span class="keyword">return</span> image.<span class="property">size</span>.<span class="call">applying</span>(<span class="type">CGAffineTransform</span>(scaleX: scale, y: scale))
+        }()
+        
+        attachment.<span class="property">bounds</span> = .<span class="keyword">init</span>(origin: .<span class="keyword">init</span>(x: offsetX, y: offsetY), size: size)
+        attachment.<span class="property">image</span> = image
+        
+        <span class="keyword">self</span>.<span class="keyword">init</span>(attachment: attachment)
+    }
+}
+</code></pre><p>这样一来，即简单明了，还可以避免很多晦涩且重复的代码。</p><pre><code>xxxxxx.<span class="property">attributedText</span> = <span class="type">AttributedString</span>.<span class="call">assemble</span>([
+    .<span class="call">image</span>(<span class="type">UIImage</span>(named: <span class="string">"stop"</span>) ?? <span class="type">UIImage</span>(), offsetX: <span class="number">0.0</span>, offsetY: -<span class="number">8.0</span>, scale: <span class="number">0.5</span>),
+    .<span class="call">string</span>(<span class="string">"踟蹰不如"</span>, [ .<span class="call">foregroundColor</span>(.<span class="dotAccess">gray</span>) ]),
+    .<span class="call">string</span>(<span class="string">"停止抱歉"</span>, [ .<span class="call">foregroundColor</span>(.<span class="dotAccess">orange</span>) ])
+])
+</code></pre><h2>字符串插值 (StringInterpolation)</h2><p>相较于枚举，借助字符串插值的方法不会那么直观。这是一个 Swift 5 的新特性，初见之时我其实并没有彻底感受到字符串插值的强大，私以为只是能够将一些字符串的共通处理写的更优雅，尽管这也足以令人欣喜。直到很久之后读了 <a href="https://nshipster.com/expressiblebystringinterpolation/">ExpressibleByStringInterpolation</a>，才真是理解了一些字符串插值为我们带来的便利。文中关于字符串插值初级使用所举的例子十分巧妙，很优雅的避开了 <code>DateFormatter</code> 格式定义的坑。但字符串插值的能力更多体现在自定义字符串插值类型中。</p><p>由于我们期待的插值类型是属性字符串，所以我们可以从定义结构体开始着手，首先为该结构体定义一个 <code>NSAttributedString</code> 类型的属性：</p><pre><code><span class="keyword">struct</span> AttributedString {
+    <span class="keyword">var</span> attributedString: <span class="type">NSAttributedString</span>
+}
+</code></pre><p>此时需要了解两个协议：<code>ExpressibleByStringLiteral</code> 和 <code>ExpressibleByStringInterpolation</code>，后者继承于前者，二者分别有一个必须实现的初始化方法：</p><pre><code><span class="keyword">extension</span> <span class="type">AttributedString</span>: <span class="type">ExpressibleByStringLiteral</span> {
+    <span class="keyword">init</span>(stringLiteral: <span class="type">String</span>) {
+        <span class="keyword">self</span>.<span class="property">attributedString</span> = <span class="type">NSAttributedString</span>(string: stringLiteral)
+    }
+}
+
+<span class="comment">// ExpressibleByStringInterpolation inherits from ExpressibleByStringLiteral</span>
+<span class="keyword">extension</span> <span class="type">AttributedString</span>: <span class="type">ExpressibleByStringInterpolation</span> {
+    <span class="keyword">init</span>(stringInterpolation: <span class="type">StringInterpolation</span>) {
+        <span class="keyword">self</span>.<span class="property">attributedString</span> = <span class="type">NSAttributedString</span>(attributedString: stringInterpolation.<span class="property">attributedString</span>)
+    }
+}
+</code></pre><p>字面量部分只需要初始化方法即可，插值的情况下自然会复杂一些，从初始化方法接受的参数是一个关联类型就可以看出来。<code>StringInterpolation</code> 才真正在负责在处理插值。它的工作原理是将各个组成部分通过一系列 append 方法组装起来，再作为参数传给上面的初始化方法 <code>init(stringInterpolation:)</code>。<code>appendLiteral(_:)</code> 的职责是处理普通的字符串字面量，名为 <code>appendInterpolation</code> 的方法们则是承担了处理类型五花八门的插值的任务。</p><p>在我们的例子中，就分别为字符串及其属性，图片定义了不同的 <code>appendInterpolation</code> 方法：</p><pre><code><span class="keyword">extension</span> <span class="type">AttributedString</span>: <span class="type">ExpressibleByStringInterpolation</span> {
+    <span class="comment">// Custom String Interpolation Type</span>
+    <span class="keyword">struct</span> StringInterpolation: <span class="type">StringInterpolationProtocol</span> {
+        <span class="keyword">var</span> attributedString: <span class="type">NSMutableAttributedString</span>
+        
+        <span class="keyword">init</span>(literalCapacity: <span class="type">Int</span>, interpolationCount: <span class="type">Int</span>) {
+            <span class="keyword">self</span>.<span class="property">attributedString</span> = <span class="type">NSMutableAttributedString</span>()
+        }
+
+        <span class="keyword">mutating func</span> appendLiteral(<span class="keyword">_</span> literal: <span class="type">String</span>) {
+            <span class="keyword">let</span> attrString = <span class="type">NSAttributedString</span>(string: literal)
+            <span class="keyword">self</span>.<span class="property">attributedString</span>.<span class="call">append</span>(attrString)
+        }
+        
+        <span class="keyword">mutating func</span> appendInterpolation(<span class="keyword">_</span> string: <span class="type">String</span>, stringAttributes: [<span class="type">StringAttribute</span>]) {
+            <span class="keyword">let</span> attrString = <span class="type">NSAttributedString</span>(string: string,
+                                                stringAttributes: stringAttributes)
+            <span class="keyword">self</span>.<span class="property">attributedString</span>.<span class="call">append</span>(attrString)
+        }
+        
+        <span class="comment">// for UIImage</span>
+        <span class="keyword">mutating func</span> appendInterpolation(image: <span class="type">UIImage</span>, offsetX: <span class="type">CGFloat</span>, offsetY: <span class="type">CGFloat</span>, scale: <span class="type">CGFloat</span> = <span class="number">1.0</span>) {
+            <span class="keyword">let</span> attachment = <span class="type">NSTextAttachment</span>()
+            
+            <span class="keyword">let</span> size: <span class="type">CGSize</span> = {
+                <span class="keyword">guard</span> scale != <span class="number">1.0</span> <span class="keyword">else</span> { <span class="keyword">return</span> image.<span class="property">size</span> }
+                <span class="keyword">return</span> image.<span class="property">size</span>.<span class="call">applying</span>(<span class="type">CGAffineTransform</span>(scaleX: scale, y: scale))
+            }()
+            
+            attachment.<span class="property">bounds</span> = .<span class="keyword">init</span>(origin: .<span class="keyword">init</span>(x: offsetX, y: offsetY), size: size)
+            attachment.<span class="property">image</span> = image
+        
+            <span class="keyword">self</span>.<span class="property">attributedString</span>.<span class="call">append</span>(<span class="type">NSAttributedString</span>(attachment: attachment))
+        }
+    }
+}
+</code></pre><p>关于 <code>appendLiteral(_:)</code> 方法，有一点不得不说，如果想要在其中做除了 append 之外的事，务必要万分小心，除了显然可见的字面量之外，空格，换行，甚至是字符串前后的不可见部分都会受到其影响。</p><p>严格意义上我们已经完成了用字符串插值的方法来组装属性字符串，实在是有些令人激动！不如趁热打铁，顺手添加两个便利方法，一定程度上能够再提升一点点灵活度。</p><pre><code><span class="keyword">struct</span> AttributedString {
+    <span class="keyword">var</span> attributedString: <span class="type">NSAttributedString</span>
+    
+    <span class="keyword">mutating func</span> append(<span class="keyword">_</span> newStr: <span class="type">AttributedString</span>) {
+        <span class="keyword">let</span> mutableAttributedString = <span class="type">NSMutableAttributedString</span>(attributedString: attributedString)
+        mutableAttributedString.<span class="call">append</span>(newStr.<span class="property">attributedString</span>)
+        <span class="keyword">self</span>.<span class="property">attributedString</span> = mutableAttributedString
+    }
+    
+    <span class="keyword">mutating func</span> append(contentsOf newStrs: [<span class="type">AttributedString</span>]) {
+        <span class="keyword">let</span> mutableAttributedString = <span class="type">NSMutableAttributedString</span>(attributedString: attributedString)
+        newStrs.<span class="call">forEach</span> { str <span class="keyword">in</span>
+            mutableAttributedString.<span class="call">append</span>(str.<span class="property">attributedString</span>)
+        }
+        <span class="keyword">self</span>.<span class="property">attributedString</span> = mutableAttributedString
+    }
+}
+</code></pre><p>到这里，组装属性字符串的过程变得优雅且灵活了一些。</p><pre><code><span class="keyword">var</span> attrString1: <span class="type">AttributedString</span> = <span class="string">"""</span>
+\(<span class="string">"踟蹰不如", stringAttributes: [ .foregroundColor(.systemGray), .font(.systemFont(ofSize: 14.0)) ])</span>
+\(<span class="string">"停止抱歉", stringAttributes: [ .foregroundColor(.systemGray2), .font(.systemFont(ofSize: 14.0)) ])
+"""</span>
+
+<span class="keyword">let</span> attrString2: <span class="type">AttributedString</span> = <span class="string">"""</span>
+\(image<span class="string">: UIImage(named: "stop") ?? UIImage(), offsetX: 0.0, offsetY: 0.0, scale: 0.5)</span>
+\(<span class="string">"再过秋天", stringAttributes: [ .foregroundColor(.systemGray3), .font(.systemFont(ofSize: 14.0)) ])</span>
+\(<span class="string">"烂了蜿蜒", stringAttributes: [ .foregroundColor(.systemGray4), .font(.systemFont(ofSize: 14.0)) ])
+"""</span>
+
+attrString1.<span class="call">append</span>(attrString2)
+
+xxxxxlabel.<span class="property">attributedText</span> = attrString1.<span class="property">attributedString</span>
+</code></pre><h2>尾声</h2><p>我想很多人对属性字符串的感情应该是爱恨交织的，希望这两篇文章能为它拉回几张的票...😂</p><blockquote><p>Source Code: https://github.com/Ckitakishi/PlayWithAttributedString</p></blockquote>]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/%E5%AE%89%E5%85%A8%E4%B8%94%E4%BC%98%E9%9B%85%E5%9C%B0%E4%BD%BF%E7%94%A8-NSAttributedString-Part-1</guid><title>安全且优雅地使用 NSAttributedString - Part.1</title><description>Swift 拥有可选类型且类型安全，这些特性帮助开发者避免了很多麻烦问题。然而即便如此，在 `NSAttributedString` 的运用中同样存在着的潜在不安全因素，在 Part.1 中将会围绕如何更安全地使用 `NSAttributedString` 展开讨论。</description><link>ckitakishi.com/posts/%E5%AE%89%E5%85%A8%E4%B8%94%E4%BC%98%E9%9B%85%E5%9C%B0%E4%BD%BF%E7%94%A8-NSAttributedString-Part-1</link><pubDate>Sat, 6 Jun 2020 14:28:00 +0900</pubDate><content:encoded><![CDATA[<h1>安全且优雅地使用 NSAttributedString - Part.1</h1><p>Swift 拥有可选类型且类型安全，这些特性帮助开发者避免了很多麻烦问题。</p><p>然而当涉及到字符串的时候，还是或多或少存在一些瑕疵。例如引用资源文件，图片文字等，一旦拼写错误，是没有办法在编译之前知道的，又或者是继续在代码中引用已经被删除的资源，也不容易被察觉。为了解决这个问题，一些知名的库应运而生，像是 <a href="https://github.com/mac-cain13/R.swift">R.swift</a>, <a href="https://github.com/SwiftGen/SwiftGen">SwiftGen</a> 之类。解决方案的其中一个核心是使得资源引用这个过程变得类型安全，以此来克服潜在的不明了性，例如：</p><pre><code><span class="comment">// normal</span>
+<span class="keyword">let</span> icon = <span class="type">UIImage</span>(named: <span class="string">"settings-icon"</span>)
+
+<span class="comment">// R.swift</span>
+<span class="keyword">let</span> icon = <span class="type">R</span>.<span class="property">image</span>.<span class="call">settingsIcon</span>()
+</code></pre><p>不过这次想讨论的并不是上述问题，而是在 <code>NSAttributedString</code> 的运用中同样存在着的潜在不安全因素。从我的日常体验来说，<code>NSAttributedString</code> 在无数情境之下都会被我们想起，无论是富文本支持还是图文混排，又或者是想实现一个 markdown 组件等等。</p><p>虽然我认为从 Objective-C 到 Swift，在安全问题上已经是迈进了一大步。以下面的代码为例，以往写 Objective-C 的时候，会注意避免一个预期外的 <code>nil</code> 被作为 <code>str</code> 参数传入，而引起不必要的崩溃。</p><pre><code>- (instancetype)initWithString:(<span class="type">NSString</span> *)str
+</code></pre><p>对于 Swift 而言，事情会变得简单很多，可选值的声明让我们更容易做出正确的判断。</p><pre><code><span class="keyword">init</span>(string str: <span class="type">String</span>)
+</code></pre><p>即便如此，关于潜在的不安全因素依然有很多话可以说，例如下面这个极其简单的例子：</p><pre><code><span class="keyword">let</span> paragraphStyle = <span class="type">NSMutableParagraphStyle</span>()
+paragraphStyle.<span class="property">lineSpacing</span> = <span class="number">1.0</span>
+paragraphStyle.<span class="property">lineBreakMode</span> = .<span class="dotAccess">byTruncatingTail</span>
+paragraphStyle.<span class="property">alignment</span> = .<span class="dotAccess">center</span>
+
+xxxxxx.<span class="property">attributedText</span> = <span class="type">NSAttributedString</span>(
+    string: <span class="string">"卮言春天 破碎秋千"</span>,
+    attributes: [
+        .<span class="dotAccess">font</span>: <span class="type">UIFont</span>.<span class="call">systemFont</span>(ofSize: <span class="number">12.0</span>, weight: .<span class="dotAccess">regular</span>),
+        .<span class="dotAccess">foregroundColor</span>: <span class="type">UIColor</span>.<span class="property">gray</span>,
+        .<span class="dotAccess">paragraphStyle</span>: paragraphStyle
+])
+</code></pre><p>看完这段代码，心中应该会很容易浮现几个直击灵魂的问题：</p><ol><li>为什么为 <code>foregroundColor</code> 设置值的时候不能够省略 <code>UIColor</code>？</li><li>如果传入的不是 <code>UIColor</code> 会发生什么事情吗？</li><li><code>paragraphStyle</code> 的初始化和赋值是不是可以写的更 <code>swifty</code>？</li></ol><p>第一个问题比较简单，看值类型各式各样五花八门就会知道这大概是 <code>Any</code>，如果将 <code>attributes</code> 的初始化分离出来，这个原因会更加一目了然。</p><pre><code><span class="keyword">let</span> attributes: [<span class="type">NSAttributedString</span>.<span class="type">Key</span>: <span class="type">Any</span>] = [
+    .<span class="dotAccess">font</span>: <span class="type">UIFont</span>.<span class="call">systemFont</span>(ofSize: <span class="number">12.0</span>, weight: .<span class="dotAccess">regular</span>),
+    .<span class="dotAccess">foregroundColor</span>: <span class="type">UIColor</span>.<span class="property">gray</span>,
+    .<span class="dotAccess">paragraphStyle</span>: paragraphStyle
+]
+</code></pre><p>第二个问题完全是第一问的副作用。对于会不会发生什么事，答案是会。曾经一时失神，为 <code>paragraphStyle</code> 传入了一个 <code>CGColor</code> 的值，最可怕的在于中文和日语都可以顺利呈现出所期待的颜色，但切换成英语后应用直接就崩溃了。若遭遇这个问题，我想为了探寻原因也还是需要花一点点时间的。</p><p>为了消解这不安全感，估计大家都会想要做点什么。要么是为 <code>attributes</code> 写一段类型检查的代码通过输出 log 来避免意外，或者是封装 <code>NSAttributedString</code> 以实现类型安全。方案一略显单薄，但上述最致命的问题二是可以被圆满解决的，唯一的缺憾是在编译后才能知道结果。综上所述，不如就来实现方案二。</p><p>比较直接的想法应该是避免 <code>Any</code> 的存在，这样一来，不妨索性抛弃字典，使各个属性成为一个相对独立的存在，可以选择创建一些函数然后链式调用，但更容易浮现在脑海中的应该是用枚举去做这件事：</p><pre><code><span class="keyword">enum</span> StringAttribute {
+    <span class="keyword">case</span> font(<span class="type">UIFont</span>)
+    <span class="keyword">case</span> foregroundColor(<span class="type">UIColor</span>)
+    <span class="keyword">case</span> underlineColor(<span class="type">UIColor</span>?) <span class="comment">// The default value is nil</span>
+    <span class="keyword">case</span> kern(<span class="type">CGFloat</span>)
+    <span class="comment">// ...</span>
+}
+</code></pre><p>在定义了上述枚举之后，基本上类型不安全的问题就得到了解决。不过作为换取类型安全的代价，需要多一道工序把 <code>StringAttribute</code> 转回 <code>[NSAttributedString.Key: Any]</code>：</p><pre><code><span class="keyword">extension</span> <span class="type">NSAttributedString</span> {
+    <span class="keyword">convenience init</span>(string str: <span class="type">String</span>, stringAttributes attrs: [<span class="type">StringAttribute</span>]) {
+        <span class="keyword">self</span>.<span class="keyword">init</span>(string: str, attributes: attrs.<span class="property">attributesDictionary</span>)
+    }
+}
+
+<span class="keyword">enum</span> StringAttribute {
+    <span class="keyword">case</span> font(<span class="type">UIFont</span>)
+    <span class="keyword">case</span> foregroundColor(<span class="type">UIColor</span>)
+    <span class="keyword">case</span> underlineColor(<span class="type">UIColor</span>?) <span class="comment">// The default value is nil</span>
+    <span class="keyword">case</span> kern(<span class="type">CGFloat</span>)
+    <span class="comment">// ...</span>
+    
+    <span class="keyword">var</span> keyAndValue: (<span class="type">NSAttributedString</span>.<span class="type">Key</span>, <span class="type">Any</span>?) {
+        <span class="keyword">switch self</span> {
+        <span class="keyword">case</span> .<span class="dotAccess">font</span>(<span class="keyword">let</span> value):
+            <span class="keyword">return</span> (.<span class="dotAccess">font</span>, value)
+        <span class="keyword">case</span> .<span class="dotAccess">foregroundColor</span>(<span class="keyword">let</span> value):
+            <span class="keyword">return</span> (.<span class="dotAccess">foregroundColor</span>, value)
+        <span class="keyword">case</span> .<span class="dotAccess">underlineColor</span>(<span class="keyword">let</span> optionalValue):
+            <span class="keyword">return</span> (.<span class="dotAccess">underlineColor</span>, optionalValue)
+        <span class="keyword">case</span> .<span class="dotAccess">kern</span>(<span class="keyword">let</span> value):
+            <span class="keyword">return</span> (.<span class="dotAccess">kern</span>, value <span class="keyword">as</span> <span class="type">NSNumber</span>)
+        }
+        <span class="comment">// ...</span>
+    }
+}
+
+<span class="keyword">extension</span> <span class="type">Array</span> <span class="keyword">where</span> <span class="type">Element</span> == <span class="type">StringAttribute</span> {
+    <span class="comment">// StringAttribute =&gt; [NSAttributedString.Key: Any]</span>
+    <span class="keyword">var</span> attributesDictionary: [<span class="type">NSAttributedString</span>.<span class="type">Key</span>: <span class="type">Any</span>] {
+        <span class="keyword">var</span> attributesDict: [<span class="type">NSAttributedString</span>.<span class="type">Key</span>: <span class="type">Any</span>] = [:]
+        
+        <span class="keyword">self</span>.<span class="call">forEach</span> { attribute <span class="keyword">in
+            let</span> (key, value) = attribute.<span class="property">keyAndValue</span>
+            attributesDict[key] = value
+        }
+        
+        <span class="keyword">return</span> attributesDict
+    }
+}
+</code></pre><p>到这里就大功告成了！我们可以尝试把上面的代码改写一下：</p><pre><code><span class="keyword">let</span> attributes: [<span class="type">StringAttribute</span>] = [
+    .<span class="call">font</span>(.<span class="call">systemFont</span>(ofSize: <span class="number">12.0</span>, weight: .<span class="dotAccess">regular</span>)),
+    .<span class="call">foregroundColor</span>(.<span class="dotAccess">gray</span>),
+    .<span class="call">paragraphStyle</span>(paragraphStyle)
+]
+</code></pre><p>如果完整实现了 <code>StringAttribute</code> 的话，一定会留意到 <code>NSAttributedString</code> 中有一个相对特殊的属性：<code>.paragraphStyle</code>。使用它之前需要先完成一系列的初始化赋值，正是上面代码块中出现的 <code>paragraphStyle</code>。作为一个代码风格优化的可选项，这里我选择用与 <code>StringAttribute</code> 相似的手段来封装 <code>NSMutableParagraphStyle</code>。</p><pre><code><span class="keyword">enum</span> ParagraphAttribute {
+    <span class="keyword">case</span> alignment(<span class="type">NSTextAlignment</span>)
+    <span class="keyword">case</span> lineSpacing(<span class="type">CGFloat</span>)
+    <span class="keyword">case</span> lineBreakMode(<span class="type">NSLineBreakMode</span>)
+}
+
+<span class="keyword">enum</span> StringAttribute {
+    <span class="keyword">case</span> paragraphStyle([<span class="type">ParagraphAttribute</span>])
+    
+    <span class="keyword">var</span> keyAndValue: (<span class="type">NSAttributedString</span>.<span class="type">Key</span>, <span class="type">Any</span>?) {
+        <span class="keyword">switch self</span> {
+        <span class="keyword">case</span> .<span class="dotAccess">paragraphStyle</span>(<span class="keyword">let</span> value):
+            <span class="keyword">return</span> (.<span class="dotAccess">paragraphStyle</span>, <span class="keyword">self</span>.<span class="call">configureParagraphStyle</span>(value))
+        }
+    }
+    
+    <span class="comment">// [ParagraphAttribute] =&gt; NSMutableParagraphStyle</span>
+    <span class="keyword">private func</span> configureParagraphStyle(<span class="keyword">_</span> attributes: [<span class="type">ParagraphAttribute</span>]) -&gt; <span class="type">NSMutableParagraphStyle</span> {
+        
+        <span class="keyword">let</span> paragraphStyle = <span class="type">NSMutableParagraphStyle</span>()
+
+        attributes.<span class="call">forEach</span> {
+            <span class="keyword">switch</span> $0 {
+            <span class="keyword">case</span> .<span class="dotAccess">alignment</span>(<span class="keyword">let</span> value):
+                paragraphStyle.<span class="property">alignment</span> = value
+            <span class="keyword">case</span> .<span class="dotAccess">lineSpacing</span>(<span class="keyword">let</span> value):
+                paragraphStyle.<span class="property">lineSpacing</span> = value
+            <span class="keyword">case</span> .<span class="dotAccess">lineBreakMode</span>(<span class="keyword">let</span> value):
+                paragraphStyle.<span class="property">lineBreakMode</span> = value
+            }
+        }
+        
+        <span class="keyword">return</span> paragraphStyle
+    }
+}
+</code></pre><p>于是，最初的代码就可以用一种更 <code>Swifty</code> 的方式来重写了。 代码风格各有所爱，就我个人来说，安全与优雅的代码着实令人感动：P</p><pre><code>xxxxxx.<span class="property">attributedText</span> = <span class="type">NSAttributedString</span>(
+    string: <span class="string">"卮言春天 破碎秋千"</span>,
+    stringAttributes: [
+        .<span class="call">font</span>(.<span class="call">systemFont</span>(ofSize: <span class="number">12.0</span>, weight: .<span class="dotAccess">regular</span>)),
+        .<span class="call">foregroundColor</span>(.<span class="dotAccess">gray</span>),
+	      .<span class="call">paragraphStyle</span>([
+	          .<span class="call">lineSpacing</span>(<span class="number">1.0</span>),
+	          .<span class="call">lineBreakMode</span>(.<span class="dotAccess">byTruncatingTail</span>),
+	          .<span class="call">alignment</span>(.<span class="dotAccess">center</span>)
+	      ])
+
+])
+</code></pre><p>至此，我们就拥有了一个类型安全的 <code>NSAttributedString</code> 初始化方法。不过条条大路通罗马，伴随着 <code>SwiftUI</code> 的诞生，Swift 5.1 中新增加了 <code>Function Builder</code>，用它来达成我们最初的目标也不失为一个好方法。读一读这篇 <a href="https://medium.com/@carson.katri/create-your-first-function-builder-in-5-minutes-b4a717390671">Create Your First Function Builder in 10 Minutes</a> 应该会有不少启发。</p><h2>TBC</h2><p>(下一篇计划讲一讲在其它一些场景中，如何更优雅地使用 <code>NSAttributedString</code>)</p><blockquote><p>Source Code: https://github.com/Ckitakishi/PlayWithAttributedString</p></blockquote>]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/Memory-warning-%E5%A4%A7%E9%9A%90%E9%9A%90%E4%BA%8E%E5%B8%82</guid><title>Memory warning: 大隐隐于市</title><description>对 memory warning (内存警告) 的处理是一个在开发中极其容易被忽略的问题，究其原因，最重要莫过于 warning 并不那么容易发生，开发中尤其如此。即使发生了，在我们分析崩溃日志的时候，也未必能够明察与之是否有关，再进一步说，就算知道了十有八九是 memory warning 导致了崩溃，有时候要准确定位根源仍需耗费一番功夫。</description><link>ckitakishi.com/posts/Memory-warning-%E5%A4%A7%E9%9A%90%E9%9A%90%E4%BA%8E%E5%B8%82</link><pubDate>Sat, 23 Feb 2019 12:32:00 +0900</pubDate><content:encoded><![CDATA[<h1>Memory warning: 大隐隐于市</h1><p>对 memory warning (内存警告) 的处理是一个在开发中极其容易被忽略的问题，究其原因，最重要莫过于 warning 并不那么容易发生<s>，开发中尤其如此</s>。即使发生了，在我们分析崩溃日志的时候，也未必能够明察与之是否有关，再进一步说，就算知道了十有八九是 memory warning 导致了崩溃，有时候要准确定位根源仍需耗费一番功夫。</p><h2>常见原因</h2><p>由内存原因导致的崩溃类型多不胜数，不过在这里只打算讨论内存不足导致应用被强制终结这一种。比较常见的是下述几种：</p><ul><li>自然消耗，处理媒体资源尤其容易消耗内存。<ul><li>未处理 memory warning</li><li>对 memory warning 的处理不正确</li><li>memory leak (内存泄漏)，确切来说 memory leak 不是直接原因，而是一个加速器。</li></ul></li></ul><h2>实例</h2><p>之所以认识到这个问题的重要性，是因为最近在看崩溃日志的时候，发现有很多个原因近似，但发生场所不太相同的崩溃，不过总体来说发生率只有 0.0X%。因为夹杂着一些 RxSwift 的代码，真正发生崩溃的位置变得很难判断，真实原因更是扑朔迷离。所谓家家有本难念的经，相似的，短短代码都有说不尽的故事，所以就事论事，来说说到底发生了什么。</p><!--more-->
+
+首先，我们有一个封装了 `UICollectionView` 的 `UIViewController`，也就是 `BaseCollectionViewController`，在其中定义了一个可以“保证”不是 `nil` 且不为 `weak` 的 `collectionVIew`：
+
+```Swift
+// BaseCollectionViewController.swift
+fileprivate(set) var collectionView: UICollectionView!
+// ...
+override func didReceiveMemoryWarning() {
+    if isViewLoaded && view.window == nil && collectionView.isDescendant(of: view) {
+        collectionView.removeFromSuperview()
+        collectionView.delegate = nil
+        collectionView.dataSource = nil
+        collectionView = nil
+    }
+    super.didReceiveMemoryWarning()
+}
+
+override func loadView() {
+    super.loadView()
+    // init collectionView in code
+}
+```
+
+此外，还拥有一个继承自 BaseCollectionViewController 的 XXViewController：
+
+```Swift
+// XXViewController
+class XXViewController: BaseCollectionViewController {
+    override func didReceiveMemoryWarning() {
+        if isViewLoaded && view.window == nil {
+            // ...
+        }
+        super.didReceiveMemoryWarning()
+    }
+
+    private func reloadData() {
+        // fetch data from server then reload collection view
+        // ...
+        collectionView.reloadData()
+    }
+}
+```
+
+实际的运用情景是，在 `XXViewController`` 中存在 pop 一个新 ViewController 的情况，这个时候，XXViewController` 需要重新获取数据来刷新页面并更新 collectionView 的 `contentOffset`。按道理来说，刷新数据在下一次 view will appear 的时候进行会更保险，但是由于被强烈要求调整 `contentOffset` 这个过程不可见，所以…这样一来，bug 就“应运而生”了。
+
+当新 ViewController 位于最顶端的时候，XXViewController 就不再被 window 所持有。由于它继承自 BaseCollectionViewController，`didReceiveMemoryWarning` 发生时 collectionView 会在不知不觉中被置为 nil，如果这一切发生在 collectionView.reloadData() 之前，那噩梦就诞生了。
+
+这个时候，或许会反思 controller view 之间的继承关系到底合理么，调整 `contentOffset` 不可见到底合理么，`collectionView = nil` 到底有没有意义。我认为这些都是合理的着手点，对于这类问题，找到原因其实就已经解决了 80% 了。
+
+## 实践
+
+未雨绸缪这句话在这里非常适用，提前去思考一些问题有助于我们规避 memory warning 带来的麻烦：
+
+-  当接收到 memery warning 时我们该做什么？
+- view controller  不被 window 持有的时候需要做什么？
+- 当一个 view controller 被恢复的时候，`loadView`, `viewDidLoad` 会默认被调用，但是自定义的 `init` 方法们就不一定了，这样仍能顺利完成初始化吗？
+- 是否存在显著的内存泄漏？
+
+当这些问题都梳理清楚的时候，也就大大减少了后顾之忧。
+
+除了上面提到过的 `didReceiveMemoryWarning`，还有一个比较常用的方法： `applicationDidReceiveMemoryWarning`，后者是 App delegate 的方法，所以我认为可以用来管理一些全局对象，或是缓存之类的。除此之外，还可以在必要的时候监听名为 `UIApplicationDidReceiveMemoryWarningNotification` 的通知来做一些特殊的处理。
+
+## 触发 memory warning
+
+那么，当准备就绪的时候，我们就可以通过触发 memory warning 来进行测试了。
+
+1. 模拟器 --> Debug --> Simulate Memory Warning (`Shift + Command + M`): 模拟器调试选项，结合断点模拟 warning
+2. `UIApplication.shared.perform(Selector(("_performMemoryWarning")))`: 在代码中指定位置触发 warning
+
+## 最后
+
+内存管理着实不是一个简单的问题，上述内容不过浮于浅表。如果想要稍微再多了解一点，推荐看一看 WWDC 2018 的 [Session 416](https://developer.apple.com/videos/play/wwdc2018/416/) ，有很多内容刷新了我的既存认知...
+
+]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/%E5%85%B3%E4%BA%8E-MetaX-%E7%9A%84%E4%B8%89%E8%A8%80%E4%B8%A4%E8%AF%AD</guid><title>关于 MetaX 的三言两语</title><description>常常把相机中的照片传到手机里，但是比较麻烦的一点是没有地理信息，所以就自己动手丰衣足食了。 作为一个总结，下文的主题是照片框架 PhotoKit 和简单的问题解决记录。</description><link>ckitakishi.com/posts/%E5%85%B3%E4%BA%8E-MetaX-%E7%9A%84%E4%B8%89%E8%A8%80%E4%B8%A4%E8%AF%AD</link><pubDate>Sun, 29 Apr 2018 20:47:00 +0900</pubDate><content:encoded><![CDATA[<blockquote><p><strong>Support:</strong> If you have any question or comment for MetaX, please do not hesitate to contact me via the ways on the bottom left of this page.</p></blockquote><p>Source: <a href="https://github.com/Ckitakishi/MetaX">MetaX on Github</a></p><h1>关于 MetaX 的三言两语</h1><h2>初衷</h2><p>常常把相机中的照片传到手机里，但是比较麻烦的一点是没有地理信息，所以就自己动手丰衣足食了。 作为一个总结，下文的主题是照片框架 PhotoKit 和简单的问题解决记录。</p><h2>关于照片框架 - PhotoKit</h2><p>在 <strong>PhotoKit</strong> 之前，AssetsLibrary 是被广泛使用的，由于并没有实际用过，就不再赘述。从 <strong>PhotoKit</strong> 的文档就可以看出来，这是一个十分庞大的框架，包含了相当多的类。<strong>PhotoKit</strong> 可以使得自己的应用与照片库以相同流程工作，此外性能也相当不错。</p><h3>从获取图像开始</h3><h4>相册取得</h4><p>如果以从相册列表选取照片这个流程为例来看，相册列表中的所有对象都是 <code>PHCollection</code>，它是一个抽象父类，拥有两个子类： <code>PHAssetCollection</code> 和 <code>PHCollectionList</code>，前者表示相册，后者表示相册列表也就是文件夹。题外话，在 iOS 设备上创建文件夹几乎可以说是一个隐藏功能，点击追加按钮是相册，而长按则可以选择相册或文件夹。而获取相册的方法是使用上述几个类中的 fetch 方法，返回 <code>PHFetchResult&lt;XXX&gt;</code>，可以用部分与 <code>Foundation</code> 中集合类型相同的接口来处理这个结果，比如用 <code>enumerateObjects(_:)</code> 来进行遍历。该方法默认会取回所有结果，但是可以通过使用 <code>PHFetchOptions</code> 来做一些过滤或是排序处理。例如取回所有智能相册：</p><!--more-->
+
+```swift
+let options = PHFetchOptions()
+options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+let smartAlbums: PHFetchResult<PHAssetCollection>?
+smartAlbums = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .albumRegular, options: options)
+```
+
+智能相册由系统按照图像类型自动生成，所以并不会出现文件夹。然而，如果以系统照片库来说，还有一类相册是用户自定义相册，处理这类相册的时候必须要注意区分文件夹与相册。我选择的处理方法是暴力地用一个递归将文件夹完全平铺展开作为首级相册。
+
+另外，访问图片库需要请求用户权限，在权限未决定的情况下，第一次调用 fetch 方法的时候会自动请求权限。也可以通过 `PHPhotoLibrary` 的类方法 `requestAuthorization:` 显式地发起请求。如果被拒..绝..了，添加一个类似 404 页面的视图并设置一个按钮指向应用的设置页面是 (我认为) 比较优雅的做法：
+
+```swift
+let url = URL(string: UIApplicationOpenSettingsURLString)
+UIApplication.shared.open(url!, options: [:], completionHandler: nil)
+```
+
+#### 照片取得 
+
+照片的取得是一个层层递进的过程，在取得了相册之后，便可以尝试获取 `PHAsset` 对象，小标题说的比较狭隘一些，实际上 `PHAsset` 对象包含图像，视频，和 Live Photo。此时可以通过调用 `fetchAssets(in:options:)` 来取得一个类型为 `PHFetchResult<PHAsset>` 的资源集：
+
+```swift
+let assetCollection = smartAlbums.object(at: 0)
+let fetchResult = PHAsset.fetchAssets(in: assetCollection, options: options)
+```
+
+手握 `PHAsset`，几乎就拥有了一切。此刻 `PHImageManager` 该出场了，这是一个专门用于请求特定 asset 对应的媒体资源的类。以请求图片为例，其中最重要的一个方法是 `requestImage(for:targetSize:contentMode:options:resultHandler:)`，通过参数就会发现，请求的同时就可以确定图片的尺寸，并进行裁剪。
+
+我们还能够为这个请求设定一个类型为 `PHImageRequestOptions` 的 option，借助它的 `isSynchronous` 属性可以决定以同步还是异步的方式来发起请求；而 `deliverryMode` 则是让你们能够在图像的加载时间和质量中做一个权衡或抉择，`.highQualityFormat` 不论耗时多久都会加载原尺寸图片，`.fastFormat` 会舍弃质量来快速加载图像，`.opportunistic` 约等于前两者的和，先 `.fastFormat` 后 `.highQualityFormat`，所以会发生两次请求，但是，如果 `isSynchronous = true`，那么请求一定是 `.highQualityFormat`；还有 `isNetworkAccessAllowed`，表示是否允许从 iCloud 下载图片，如果允许，那 `progressHandler` 也会被同时调用，于是我们可以将进度体现在 UI 上。
+
+```swift
+let options = PHImageRequestOptions()
+options.deliveryMode = .opportunistic
+// options.isSynchronous = true
+options.isNetworkAccessAllowed = true
+options.progressHandler = {(progress: Double, _, _, _) in
+    DispatchQueue.main.async {
+        ...
+    }
+}
+
+imageRequestId = PHImageManager.default().requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFit, options: options, resultHandler: { image, info in
+    ...
+})
+```
+
+到这里基本上一张图片的取得就完成了。不过，如果由于一些原因请求失败或者不完整呢？在上述代码中，`info` 便是一个包含了多条可以帮助我们判断结果的信息的字典。`PHImageResultIsInCloudKey` 可以知道图像是否需要从 iCloud 下载；`PHImageResultIsDegradedKey` 意味着当前的图像是否是低质量版本；以及 `PHImageErrorKey`，顾名思义是表示了错误信息，等等。
+
+#### 缓存 
+
+最后值得一提的是图片取得的缓存机制。
+
+通常，在获取一张具体的图片之前，我们会先获取整个相册的所有图片做成一个列表，比如一个如同系统图片库的 collectionView，为了性能考虑，有时候会需要提前将图片载入内存，而 `PHImageManager` 有一个子类 `PHImageCachingManager` 正好可以用来做这件事。
+
+`PHImageCachingManager` 有两个比较重要的方法，一个是开始缓存：`startCachingImages(for:targetSize:contentMode:options:)`，另一个是停止缓存，`stopCachingImages(for:targetSize:contentMode:options:)`，彻底停止缓存时候可以使用 `stopCachingImagesForAllAssets()`。接受的参数和上面提到了请求图像几乎一样一样，而事实上在取得缓存之后，再次使用 `requestImage` 取得独立图像的时候，如果参数相同，则会从缓存中获取。
+
+那究竟是将所有图像资源都放入缓存以供不时之需呢，还是仅仅是缓存一部分呢？是一开始就缓存所有资源呢，还是一边滑动一边缓存呢？时机，范围等等都是非常重要而必须要考虑的问题。推荐参考一下 Apple 的示例代码 --- [Using Photos Framework](https://developer.apple.com/library/content/samplecode/UsingPhotosFramework/Introduction/Intro.html)，虽然这个示例 bug 有点点多，但是缓存部分的设计还是很妙的～也因此借鉴了这个部分的实现。它的设计策略在于，载入画面及画面滚动两个时机更新缓存，而区域只包括以可见部分为中心，高度为两倍的部分 (例如：可见范围 [0, 0, 768, 1024] 对应缓存区域：[-512, 0, 768, 2048])，随着画面的滑动，不停调用 `startCachingImages` 与 `stopCachingImages`，该区域也会随之改变，就像一个滑动窗口一样。
+
+### 修改图像
+
+按照从上到下的顺序，有关图像的框架依次是：
+
+ - UIKit
+ - CoreImage
+ - CoreGraphics
+ - ImageIO
+
+下面打算讨论两个维度的图片修改，滤镜和 Metadata。接着上一部分的流程继续往下来说，虽然实现滤镜其实又很多方法，但是若选择 **Core Image**，那么不论哪一种，都要先通过 PHAsset 的实例方法 `requestContentEditingInput(with:completionHandler:)` 来获取完整尺寸的 `CIImage` 图像：
+
+```swift
+asset.requestContentEditingInput(with: options, completionHandler: { contentEditingInput, _ in
+    guard let imageURL = contentEditingInput?.fullSizeImageURL else {
+        // error
+        return
+    }
+    
+    let ciImageOfURL = CIImage(contentsOf: imageURL)
+    guard let ciImage = ciImageOfURL else {
+        ...
+        return
+    }
+}
+```
+
+#### 滤镜
+
+在顺利取得 `CIImage` 之后，添加滤镜的流程大致如下。**Core Image** 提供了一些滤镜，如果需要自定的话，看一看 WWDC2014 Session 515 会非常有帮助。
+
+```swift
+// 对过去版本的管理
+let adjustmentData = PHAdjustmentData...
+                                                  
+let contentEditingOutput = PHContentEditingOutput(contentEditingInput: contentEditingInput)
+contentEditingOutput.adjustmentData = adjustmentData
+
+let outputImage = ciImage
+    .applyingOrientation(input.fullSizeImageOrientation)
+    .applyingFilter(filter, withInputParameters: nil)
+    
+CIContext().writeJPEGRepresentation(of: outputImage,
+                                    to: contentEditingOutput.renderedContentURL, 
+                                    colorSpace: ciImage.colorSpace!,
+                                    options: [:])
+
+// 确认修改
+PHPhotoLibrary.shared().performChanges({
+    let request = PHAssetChangeRequest(for: self.asset)
+    request.contentEditingOutput = contentEditingOutput
+}, completionHandler: { success, error in
+    ...
+})
+```
+
+#### Metadata
+
+有了 `CIImage`，读取 Metadata 只需要获取 `CIImage` 的 `properties` 属性即可。但是如果要写入，就需要基于相对底层的 `ImageIO` 框架来完成。
+
+首先，我创建了临时存储，，虽然最初的想法是直接覆盖当前编辑中的图像，这个方案在模拟器竟然成功了，但是真实设备行不通。后来迫不得已选择了迂回的方法，覆盖 => 追加新图像 + (可选)删除旧图像。
+
+```swift
+let context = CIContext(options:nil)
+
+// 创建一个临时存储
+var tmpUrl = NSURL.fileURL(withPath: NSTemporaryDirectory() + imageURL.lastPathComponent)
+```
+
+为了让新创建的图像保持与原始图像相同的类型，通过 `CGImageSource` 来获取。如果获取成功，就可以指定上面的临时 URL 作为位置，尝试创建 `CGImageDestination`，之所以说是尝试，是因为不得不考虑如果当前设备并不支持期待创建的类型，那么我们就会得到 `nil`。这个时候别无选择，只能够再试一次，在当前版本中，这个做法主要是为了解决 **HEIF** 格式在一些较有历史的设备上并不被支持而带来的问题，所以在失败的情况下，默认将目标类型设定为 **JPEG**：
+
+```swift
+// 从 CIImage 创建 CGImage
+let cgImage = context.createCGImage(ciImage, from: ciImage.extent)
+// 根据 CGImageSource 来获取图片类型标识 (UTI)
+let cgImageSource = CGImageSourceCreateWithURL(imageURL as CFURL, nil)
+guard let sourceType = CGImageSourceGetType(cgImageSource!) else {
+    ...
+    return
+}
+// 尝试创建 CGImageDestination
+var createdDestination: CGImageDestination? = CGImageDestinationCreateWithURL(tmpUrl as CFURL, sourceType
+    , 1, nil)
+
+// 该版本暂定方案：无法创建的图像格式就存储为 JPEG
+if createdDestination == nil {
+    // media type is unsupported: delete temp file, create new one with extension [.JPG].
+    let _ = try? FileManager.default.removeItem(at: tmpUrl)
+    tmpUrl = NSURL.fileURL(withPath: NSTemporaryDirectory() + imageURL.deletingPathExtension().lastPathComponent + ".JPG")
+    createdDestination = CGImageDestinationCreateWithURL(tmpUrl as CFURL, "public.jpeg" as CFString
+        , 1, nil)
+}
+
+guard let destination = createdDestination else {
+    ...
+    return
+}
+```
+
+若完成了 `CGImageDestination` 创建，就可以开始向这个目标添加图像了。在上一段代码中，创建时传入的第 3 个参数正是代表着图像的数量，因为只是单张图像，所以是自然是 1；该方法也可以用来创建 GIF。
+
+```swift
+// 向 CGImageDestination 添加图像，以及该图像的 metadata。
+CGImageDestinationAddImage(destination, cgImage!, newProps as CFDictionary)
+if !CGImageDestinationFinalize(destination) {
+    ...
+} else {
+    ...
+}
+```
+
+最后，通过仍在临时存储位置的图像来创建一个新的 asset 追加请求，并将临时存储的图像移除即可：
+
+```swift
+PHPhotoLibrary.shared().performChanges({
+    let request = PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: tempURL)
+    let _ = try? FileManager.default.removeItem(at: tempURL)
+    ...
+})
+```
+
+#### HEIF
+
+**HEIF** 是全新的图片格式，相应的还有视频的 **HEVC**。苹果表示在相同画质下大小能节约 50% 的存储空间。如果想要了解更多，推荐看一看 WWDC 2017 Session 511。
+
+在实际运用中遇到了一个问题，如果我在相对较旧的设备上查看 **.HEIC (HEIF)** 的图片，并尝试去修改它，上面提到的 `CGImageDestination` 会得到一个 `nil` 对象。结果并不意外，毕竟这需要软件与硬件双方面的支持。但是具体来说究竟分界线在哪里呢？可以在 511 找到答案，而[这个支持页](https://support.apple.com/en-us/HT207022)也讲的很详细。基本条件就是运行 iOS 11 的 iPhone 7 等设备以及之后的新设备。
+
+### 监听变化
+
+万事俱备，只欠东风。但，如果此时系统的图片库发生了改变，又该怎么办？
+
+只需要记住四步，就可以解决这个问题了：
+
+1. 让当前的类遵循 `PHPhotoLibraryChangeObserver` 协议。
+
+```swift
+extension DetailInfoViewController: PHPhotoLibraryChangeObserver {
+
+}
+```
+
+2. 在视图即将出现时将当前的类作为观察者注册到 `PHPhotoLibrary` 共享对象上。
+
+```swift
+PHPhotoLibrary.shared().register(self)
+```
+
+3. 实现 `PHPhotoLibraryChangeObserver` 协议的 `photoLibraryDidChange(_:)`
+ 方法。
+ 
+```swift
+func photoLibraryDidChange(_ changeInstance: PHChange) {
+    // changeDetails 方法有接受不同参数的多个版本，可参照文档。
+    guard let curAsset = asset, let details = changeInstance.changeDetails(for: curAsset) else {
+        return
+    }
+    asset = details.objectAfterChanges
+    ...
+}    
+```
+
+4. 最后在 `deinit` 中解除监听。
+
+```swift
+deinit {
+    PHPhotoLibrary.shared().unregisterChangeObserver(self)
+}
+``` 
+
+## 一些笔记
+
+### PromiseKit 6 
+
+PromiseKit 6 对几个比较核心的点做出了修改。说实话，我觉得这个框架的文档可读性其实还有待提升。直接看源码及其中的注释反而是个很好的选择。
+
+其中一点是改变了核心初始化方法：
+
+```swift
+// 之前
+Promise { fulfill, reject in
+    // ...
+}
+
+// 现在
+Promise { seal in
+    // seal.fulfill(foo)
+    // seal.reject(error)
+    // seal.resolve(foo, error)
+}
+```
+
+还有一点是，将万能的 `then` 拆分为了 `then`, `done` 和 `map`。作者的解释是，以前 `then` 做很多事，但是由于依赖 Swift 根据上下文做推断，在用了多个 `then` 之后推断就会发生失败。而且很难判断错误发生在哪。所以就只能选择从比较高的层级就修复这个问题，于是有了现在的方案：
+
+- `then`：返回一个 promise。
+- `done`：返回一个 Void promise (80% 的情况用在 promise 链中)。
+- `map`：返回非 promise 值，比如一个单纯的值。
+
+### 地理位置检索
+
+我需要的是一个根据关键字获取相关地点的一个检索，也就是常说的 POI 检索。因为需要比较简单，所以先考虑了 **MapKit** 的 `MKLocalSearch` 或者 `MKLocalSearchCompleter`。
+
+前者常常会用在地图的检索，通过 `start(completionHandler:)` 可以取得 10 个结果，并且这个 limit 无法自定义，它在主线程工作，而且当发起新的请求时当前即使有正在进行的检索也不会被终止，如果不注意很可能会得到错误的结果：
+
+```swift
+let localSearchRequest = MKLocalSearchRequest()
+let newestLocation = locations.last! as CLLocation
+localSearchRequest.region = MKCoordinateRegion(center: newestLocation.coordinate, span: MKCoordinateSpanMake(5.0, 5.0))
+
+MKLocalSearch(request: localSearchRequest).start(completionHandler: { (localSearchResponse, error) -> Void in
+    guard searchText == searchBar.text else {
+        return
+    }
+    ...
+})
+```
+
+所以这似乎并不是一个理想的选择。辅以后者的 `MKLocalSearchCompleter` 会更好一些：
+
+```swift
+let completer = MKLocalSearchCompleter()
+completer.queryFragment = searchText
+
+// MARK: MKLocalSearchCompleter Delegate
+extension LocationSearchViewController: MKLocalSearchCompleterDelegate {
+
+    // 处理检索结果
+    func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
+        self.resultDataSource = completer.results
+        ...
+    }
+    // 处理错误
+    func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {
+        ...
+    }
+}
+```
+
+这样一来，检索结果列表就可以很简单的表示出来了。当需要取得各个位置的详细信息时，还是无法离开 `MKLocalSearch`，根据检索结果创建请求即可。
+
+不过即使这样也还是有很多制限，比如近邻检索，尝试使用了 Foursquare，虽然这个问题得以解决，但是请求数量的限制又是新的需要考虑的问题，所以，要走的路还很长。另外，由于在中国无法检索海外地点，也无法逆向转换海外经纬度，要走的路不是很长，而是很长很长。
+]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/%E5%9B%9E%E9%A1%BEtryswift-2018</guid><title>回顾 Try!Swift Tokyo 2018</title><description>拖延症很可怕，过了快两周终于开始着手写 Try!Swift Tokyo 2018 的感想。受到了前同事的影响，今年的大会我是做为志愿者参加的，玩得很开心，然而只听到了一半的演讲T.T。所以之后会从听众和志愿者两个角度来简短的写一写让我印象深刻的一些事儿。</description><link>ckitakishi.com/posts/%E5%9B%9E%E9%A1%BEtryswift-2018</link><pubDate>Wed, 14 Mar 2018 19:37:00 +0900</pubDate><content:encoded><![CDATA[<h1>回顾 Try!Swift Tokyo 2018</h1><p>拖延症很可怕，过了快两周终于开始着手写 Try!Swift Tokyo 2018 的感想。受到了前同事的影响，今年的大会我是做为志愿者参加的，玩得很开心，然而只听到了一半的演讲T.T。所以之后会从听众和志愿者两个角度来简短的写一写让我印象深刻的一些事儿。</p><img src="ckitakishi.com/images/tryswift1.jpg" alt="集合写真"/><blockquote><p><a href="https://www.tryswift.co/events/2018/tokyo/jp">Try!Swift 官网</a></p></blockquote><p>久闻不如一见，各种机缘巧合终于和<a href="https://onevcat.com">喵神</a>碰面了，一路学习 iOS 可能读的最多的就是喵神写的文章了，真的是受益匪浅。虽然因为比较忙只聊了一会儿还都是杂谈www，但是有种成就达成的激动感(`･∀･)</p><p>第一天早晨还遇到了 <a href="http://smoozapp.com/">Smooz</a> 的创始人 Kato 桑，人很和善且健谈，回忆起第一次知道 Smooz 是 16 年的年初，那时候还在测试阶段，只有 iOS 版本，也还没有成立公司运营，类似于独立开发者项目。Smooz 拥有类似 web 浏览器的多 tab 置顶让人眼前一亮，各种手势的便利性也增色不少，另外颜色还相当可爱。当时 (很失礼地) 暗自想会不会渐渐又成为一个换肤浏览器？事实胜于一切，后来 Smooz 获得了 App Store Best of 2016，现在常常可以在电车上看到用户，总之是一款很不一样的移动端浏览器，值得一试。</p><!--more-->
+
+## 听众视角
+
+缺席了几场想听的演讲，像是 Charlse for iOS..泪目。下面所写的大多是临场感受。
+
+> 这是一份日语的[资料总结](https://qiita.com/ozwio/items/71fb765b48905d6a2193)。
+
+### 代码优化：Optimizing Swift code for separation of concerns and simplicity
+
+代码的优化是一个老生常谈的话题，不过有些东西越老越能凸显它的价值所在。我个人对这个话题比较感兴趣，一方面是如讲者所说：代码通常读比写更多；还有一个原因就是团队合作，简洁明确再重要不过了。听完这个“最佳编程实践”之后，我觉得对于我这样段位不高的开发者来说还是颇有收获的，也许今后能把代码写的更 Swifty 一些？。另外，扩展给 Swift 带来的便利在这些例子中也是体现的淋漓尽致。
+
+很多例子都深有同感，比如说下面这种模型：
+
+```swift
+// before
+api.requestReplies(postID: 4815162342) { [weak self] result in
+   switch result {
+   case .success(let replies):
+     var filteredReplies: [Reply] = []
+     for reply in replies {
+       if !user.isBlocking(reply.author) {
+         filteredReplies.append(reply)
+       }
+     }
+
+     self?.replies = filteredReplies
+   case .failure:
+       // ...
+   }
+}
+```
+
+作为一个写 Objective-C 多于 Swift 的人，私以为这样的写法在大家的 Objc 代码中可是说是十分常见了～即使能优化，感觉也只能加入一个 filter 写成下面这样？
+
+```objc
+NSArray *filteredArray = [replies filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(Reply *reply, NSDictionary *bindings) {
+    return [user isBlocking:reply.author];
+}]];
+```
+
+讲者提到的 Swift 优化方案是：1. 将核心逻辑抽象出来作为一个 Collection 的扩展；2. 活用 `var` 和 `filter`。这样一来，代码的“信噪比”会得到不少提升，写法也比较优雅：
+
+```swift
+// After
+extension Collection where Element == Reply {
+  var filteringBlockedContent: [Reply] {
+    return filter { !user.isBlocking($0.author) }
+  }
+}
+
+api.requestReplies(postID: 4815162342) { [weak self] result in
+   switch result {
+   case .success(let replies):
+     self?.replies = replies.filteringBlockedContent
+   case .failure:
+       // ...
+   }
+}
+```
+
+真心希望以后写的代码都是 "After"。
+
+> 更多例子在[这里](https://github.com/JaviSoto/Talks/tree/master/TrySwiftTokyo2018)
+
+### SwiftNIO
+
+还在演讲前大家一起聊天时就推测这可能是当日最火？毕竟能在 WWDC 以外和 Apple 工程师交流的机会少之又少，因此还为 Q&A 环节增派了志愿者～而发表的内容也没有让人失望，，在介绍了一些有关异步，以及 IO 事件的发生其实可能并没有我们想的那么频繁之后，表示不如打造一个 Swift 版的 Netty 来让性能得到一个飞跃吧，于是 SwiftNIO 就诞生了。后来的内容陷入了一种云里雾里，还是暂且先跳过吧😂。在意料之外的是最后直接宣布了 SwiftNIO 的开源。随着它的开源，服务器端 Swift 算是又迈出了重要一步。
+
+最近有人担心 Norman 会不会因为 SwiftNIO 的开源而导致维护 Netty 的时间变少，他表示不用担心噢大家，我已经同时维护它们超过一年了～
+
+> 前两天视频已经公开了：[Youtube Link](https://www.youtube.com/watch?v=QJ3WG9kRLMo&feature=youtu.be)
+
+### 用 Swift 进行游戏开发👾
+
+演讲者 [giginet](https://twitter.com/giginet) 去年是 Lightning Talk，发表了用 SprireKit 在 AppleWatch 上开发超级玛丽的种种，并在此后的 Hackthon 中开发了一个 Touch Bar 小游戏，花样挖掘苹果家设备的潜能，很会玩。
+
+今年再次卷土重来，上来就表示其实 Xcode 是一个游戏开发工具，并展示了在 Xcode 里绘制的世界地图…言归正传，开始着重介绍了一下 SprireKit 和 GameplayKit 的基本用法和示例。最后再把 SprireKit 与 Unity 进行了一波比较，几乎在所有平台全军覆没的 SprireKit 在 WatchOS 独占了一块阵地。。所以 Swift 开发者们都行动起来吧！
+
+虽然开了很多玩笑，不过如果想着手游戏开发，也许还真可以用 Swift 一试呢？
+
+> [资料](https://speakerdeck.com/giginet/-11)
+
+### 算法可视化：Using Swift to Visualize Algorithms
+
+没有听到演讲前以为会是一个借算法可视化来介绍 Swift 在图形绘制上的优势之类的。比较意外真正的核心主题是贝塞尔曲线。这个演讲在现场得到了相当好的反响，大概凭借的是讲解比较清晰易懂，像是给定任意点如何绘制，多阶贝塞尔曲线如何绘制都能从中找到答案。如果对动画有兴趣但不了解贝塞尔曲线的绘制方法不妨看一看～
+
+> [资料](https://speakerdeck.com/subdigital/bezier-curves)
+
+### Open Source Swift Workshop
+
+最后一天有几场 workshop，我只去了 Open Source Swift Workshop ( BY [Nicholas Maccharoli](https://twitter.com/din0sr) & [ikesyo](https://twitter.com/ikesyo)  )。大概可以概括为 “如何通过改 bug 或优化为 Swift 贡献力量”。应该有很多人都想过，除了用 Swift 写代码，我们是不是能做的更多呢。现实的残酷在于，实际上手有时候并不是那么容易，也许是需要一个契机，也许是需要一个人引导。而这个 workshop 便成为了一个很好的机会，结束后有不止一个人提了 pr...
+
+鉴于自身学识浅薄，当天向 ikesyo 桑请教了最初该如何着手，作为入门我觉得很细致很清晰：
+
+0. build 最新的 Swift 源码。
+1. https://bugs.swift.org ：在这里会有很多待解决的 issue, 属于 Compiler,  LLDB for Swift, Package Manager, Standard  Library 等模块，第一次上手选择自己相对了解的会比较好，例如：Standard Library 和 Foundation。正确使用 Filter  也有助于找到适合自己的 issue，比如说检索带有入门级标签的 Standard Library 或 Foundation issue: `labels = StarterBug AND status = Open AND component in ("Standard Library", Foundation)`。
+2. https://forums.swift.org/ ：在这里和大家愉快的讨论问题。
+3. 也可以通过从源码中查找 `FIXME`, `TODO` 这些关键字来查找可以改进的地方，这其中甚至有一些是文本层面的修正～
+
+**扩展阅读：**
+
+- https://swift.org/compiler-stdlib/#compiler-architecture
+- https://swift.org/community/
+- https://academy.realm.io/posts/tryswift-jesse-squires-contributing-open-source-swift/
+- https://www.uraimo.com/2016/02/09/a-short-swift-gyb-tutorial/
+- https://www.youtube.com/watch?v=e18uipMmEoo
+
+## 志愿者视角
+
+今年的参会人数包括 Sponsor 和 Speaker 达到了 800 人，来自日本以外的参加者也超过了 200 人，志愿者的数量约为 30 人。阴差阳错，我主要担当的是 global support，引导演讲者与同传事前会面，按时上台，之后 Q&A。很有意思的一个细节是，英语同声译日语其实很痛苦，因为日语真的很啰嗦，尤其是这种场合基本都是敬语，英语 10 个音节日语可能需要 20 个，每次同传们都会千叮咛万嘱咐演讲者慢一点再慢一点😂，事后再吐槽“你怎么越讲越快呢～～”。很大的收获是意识到了自己的语言是有多么差。。。
+
+这次有一个很特殊的志愿者，80 多岁了仍然在学习写代码，有自己的主页及上架应用，听说之后觉得唯有敬佩，没能直接交流真是太遗憾了。有时候休会时间会看到一些人盒饭放一边，坐在走廊和墙边就噼里啪啦写代码，由衷的觉得：能如此热爱一件事真是太好了！
+
+日本很多 iOS 活跃的企业都作为 Sponsor 有自己的展区，（主要还是为了招聘，到处看被塞了好几份介绍）。像是 Yahoo Japan 的 live coding 得到了很好的反响。于企业于个人这都是一个不错的机会。
+
+P.S. Party 的蛋糕真的是太可爱了...
+
+![Cake](/images/tryswift2.jpg)
+
+## 写在最后
+
+于我而言，大概就是意识到了自己在很多方面都还差很远的事实，不管是技术还是日语英语。前路漫漫，继续加油。明年再见。
+]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/%E6%83%B3%E8%A6%81%E5%9D%9A%E6%8C%81%E4%B8%8B%E5%8E%BB%E7%9A%842018</guid><title>想要坚持下去的2018</title><description>2018 回顾 &amp; 2019 期许</description><link>ckitakishi.com/posts/%E6%83%B3%E8%A6%81%E5%9D%9A%E6%8C%81%E4%B8%8B%E5%8E%BB%E7%9A%842018</link><pubDate>Mon, 8 Jan 2018 21:30:00 +0900</pubDate><content:encoded><![CDATA[<h1>想要坚持下去的2018</h1><p>前两天终于看了电视剧版《火花》，久久无法释怀。很喜欢的一幕是 sparks 的谢幕演出，不再为了迎合潮流而讲段子，泪流满面说反话，哭着笑，笑着哭，最后的绽放啊。坚持与努力是因为还有梦想，可妥协与放弃并不是结束，还能平凡的活着，就总还会有平凡的奇迹。</p><h2>==== 题外话的分割线 ====</h2><p>过去这一年，常常感觉好无奈。坚持运动，很大程度保持健康饮食，可身体状况却意外的差。可是除了坚持下去还能有什么办法呢？工作内容没有太大的变化，依然担当着几个应用的开发，只不过多了和客户的接洽，然鹅我这样的渣日语什么时候才能和客户谈笑风生啊。没有什么惊喜，不过感性的用心情来评价的话，其实真的也不太坏，还是很容易感动很容易开心。</p><p>2018 年最想要的在一些事情上坚持下去，纵然也许什么也改变不了，哈哈。颤抖着立个 flag 吧：</p><ul><li>日语和英语进阶</li><li>和更多人交流和沟通</li><li>在 test 和 project manage 方面有进步，分享知识，拥抱开源</li><li>拍不错的照片，做好吃的饭，坚持运动，去旅行</li><li>读 24 本书</li><li>上架 2～3 个小应用</li><li>换工作</li></ul>]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/%E5%AE%9E%E8%B7%B5%EF%BC%9AObjective-C%E7%9A%84%E5%AE%8F%E5%AE%9A%E4%B9%89</guid><title>实践：Objective-C的宏定义</title><description>宏定义在 Objective-C 中可以说是被广泛使用。就实际来说，目前组内对 Enum, Singeleton, Log 等都使用了宏来进行定义。究其原因，一部分是为了为了减少重复代码，提升开发体验，还有一部分来源于对条件编译的需求。</description><link>ckitakishi.com/posts/%E5%AE%9E%E8%B7%B5%EF%BC%9AObjective-C%E7%9A%84%E5%AE%8F%E5%AE%9A%E4%B9%89</link><pubDate>Thu, 30 Nov 2017 22:17:00 +0900</pubDate><content:encoded><![CDATA[<blockquote><p>之前某一周的 LT 话题。</p></blockquote><h1>实践：Objective-C的宏定义</h1><p>宏定义在 Objective-C 中可以说是被广泛使用。就实际来说，目前组内对 Enum, Singeleton, Log 等都使用了宏来进行定义。究其原因，一部分是为了为了减少重复代码，提升开发体验，还有一部分来源于对条件编译的需求。</p><p>最早知道宏定义是在 C 语言课本上，然后就是笔试时候的各种宏展开。但是直到投入项目开发之后才算是稍微理解了一些宏的强大与脆弱。所以很想简单谈一谈 Objective-C 的宏定义实践。</p><h2>关于宏</h2><p>宏属于 C 预处理的一部分，C++，Objective-C 也一样通用。宏分为两种，对象宏 (<strong>Object-like</strong>) 和函数宏 (<strong>Function-like</strong>)。顾名思义，对象宏类似于数据对象，函数宏类似于函数调用。</p><!--more-->
+
+```objc
+// Object-like
+#define HEIGHT 60
+
+// Function-like
+#define MIN(a, b) a < b ? a : b
+```
+
+函数宏看起来可以说是相当便利，而且执行效率还非常高。但是在实际运用中很多时候并不推荐使用，比如当出现自增自减运算时，上面的最小值就可能会发生错误，你不能说它是陷阱，毕竟宏的强项并不是复杂的逻辑运算。但是艺高人胆大，如果能玩得转用一用也无妨~
+
+扩展阅读：[The C Preprocessor](https://gcc.gnu.org/onlinedocs/cpp/index.html#SEC_Contents)
+
+## 实践
+
+### 单例的宏定义：
+
+使用了条件编译 `#ifndef`，推荐这种写法，尤其是在定义 cell 的高度时最好这么做，防止多重定义。
+这是一个函数宏。
+
+```objc
+#ifndef Singleton_h
+#define Singleton_h
+
+#define SINGLETON_IMPL( classname )\
++ (classname *)sharedInstance\
+{\
+static dispatch_once_t onceToken;\
+static classname *_sharedInstance = nil;\
+dispatch_once(&onceToken, ^{\
+_sharedInstance = [[[self class] alloc] init];\
+});\
+return _sharedInstance;\
+}
+
+#define SINGLETON_DEFINE( classname )\
++ (classname *)sharedInstance;
+
+#endif
+```
+
+利用例：
+
+```
+ClassName.h
+SINGLETON_DEFINE(ClassName)
+
+ClassName.m
+SINGLETON_IMPL(ClassName)
+
+OtherClass:
+[ClassName sharedInstance].property
+```
+
+### 2. enum的宏定义：
+
+```objc
+#ifndef APP_ENUM
+#define APP_ENUM( name_ ) \
+typedef enum name_ : NSInteger name_; \
+enum name_ : NSInteger
+#endif
+```
+
+利用例：
+
+```objc
+APP_ENUM( EnumName ) {
+    EnumNameA,
+    EnumNameB
+};
+```
+
+### 3. LOG的宏定义：
+
+当且仅当版本为开发版或内部测试版时输出 log。这里的 `__PRETTY_FUNCTION__`, `__LINE__` 都是 C 中已定义的函数宏，分别表示函数和行数。
+
+```objc
+#ifdef DEBUG
+#define LOG(A, ...) NSLog(@"DEBUG: %s:%d:%@", __PRETTY_FUNCTION__,__LINE__,[NSString stringWithFormat:A, ## __VA_ARGS__]);
+#elif defined ALPHA
+#define LOG(A, ...) NSLog(@"ALPHA: %s:%d:%@", __PRETTY_FUNCTION__,__LINE__,[NSString stringWithFormat:A, ## __VA_ARGS__]);
+#else
+#define LOG(...)
+#endif
+```
+
+利用例：
+
+```objc
+LOG(@"test");
+```
+
+出力：
+
+[Time] [App Name] [Build Configuration] [File Name + Method] [Line Number] log 
+
+```shell-session
+2017-11-27 09:35:19.099 AppName[59272:2201737] DEBUG: -[ClassName method]:330: test
+```
+
+### 4. TODO&FIX 的宏定义：
+
+参考自 [todo-macro](http://blog.sunnyxx.com/2015/03/01/todo-macro/)，很有意思的一篇文章，通过宏定义将 `#pragma message ("msg")` 进行扩展而作为 TODO 使用：
+
+```objc
+#define STRINGIFY(S) #S
+#define DEFER_STRINGIFY(S) STRINGIFY(S)
+#define PRAGMA_MESSAGE(MSG) _Pragma(STRINGIFY(message(MSG)))
+#define FORMATTED_MESSAGE(MSG) "[TODO-" DEFER_STRINGIFY(__COUNTER__) "]" MSG " Line:" DEFER_STRINGIFY(__LINE__)
+
+#define TODO(MSG) PRAGMA_MESSAGE(FORMATTED_MESSAGE(MSG))
+```
+
+利用例：
+
+```objc
+@TODO("test code 1")
+@TODO("test code 2")
+```
+
+## 杂谈
+
+当要使用宏时，务必要考虑有没有必要，合不合理，会不会有副作用。举个例子来说：当需要定义一个常量时，宏完全可以，但是更好的选择是使用 `const` 关键字。借助宏来定义常量最大的痛点就是不包含类型信息，`const` 不仅弥补了类型信息缺失的问题，而且在访问控制权限这块也表现地更好。
+
+最后还想提一句 `typedef`，人们常常会拿它和 `#define` 相比较，看起来用法很相似，其实本质上有蛮大区别，`typedef` 是在编译期间进行处理的关键字。用途上来说，`typedef` 更多是用于创建类型别名，上述 Enum 的宏定义中为枚举指定别名就依赖于 `typedef`。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/Storyboard-%E4%B8%8E-Xib-%E7%9A%84%E2%80%9C%E6%8A%89%E6%8B%A9%E2%80%9D</guid><title>Storyboard 和 Xib 的“抉择”</title><description>比起手写 UI，“拖控件”的 Storyboard 和 Xib 似乎一直都更投我所好。不过即使是 Storyboard 和 Xib 之间，似乎也还是多多少少有一些纷争。</description><link>ckitakishi.com/posts/Storyboard-%E4%B8%8E-Xib-%E7%9A%84%E2%80%9C%E6%8A%89%E6%8B%A9%E2%80%9D</link><pubDate>Sun, 24 Sep 2017 22:33:00 +0900</pubDate><content:encoded><![CDATA[<blockquote><p>近期开始进行一个新项目的原型制作及其结构设计，打算把一些心路历程记录下来，随便先给它取个名字叫做：<strong>P-OOP</strong>。</p></blockquote><h1>Storyboard 和 Xib 的“抉择”</h1><p>比起手写 UI，“拖控件”的 Storyboard 和 Xib 似乎一直都更投我所好。不过即使是 Storyboard 和 Xib 之间，似乎也还是多多少少有一些纷争。</p><h2>Storyboard &amp; Xib</h2><p>公司 (年久失修) 的 iOS Guidelines 中写着一句话：</p><blockquote><p>进行源码管理时 Storyboard 极易导致冲突，团队开发时，各画面与各组件尽可能使用 Xib 进行实现。</p></blockquote><p>对此我一直抱着赞否两论的观点。在实际工作时，同一 Storyboard 中存在大量 ViewController 十分容易冲突是一个不争的事实，掉进这个坑的人有可能还进行过 xml 修正。但是这个锅 Storyboard 不背。一部分人可能因此选择了弃 Storyboard 从 Xib 之路，我也一度徘徊是否这才是正道。但是很显然的是，Storyboard 从一开始就不是为了代替 Xib 而来。</p><p>除了 UI 设置的相似部分以外，Storyboard 更重视画面之间的关联和迁移，而 Xib 作为通用组件的模版应该是不二的选择。</p><!--more-->
+
+在 P-OOP 中，将会存在大量的 dialog，尽管可以很容易的使用 Present Modally 来实现，不过为了保持系列产品的风格一致性，需要考虑如何以比较好的方式来实现共通的 header 和 footer 样式。考虑过很多方案，比如：
+
+1. 将 footer 和 header 集成在同一个 view 中，并添加一个 content view，最终在某 controlelr view 中将上述 view 与实际从另一个 xib 中载入的 content view 组合，完成组装。但是存在一个比较显著的缺点，实际可见的 controller view 所呈现的内容并不是很直观，果然还是必须看代码才能梳理清楚。 
+2. 将 footer 和 header 以及一个 content view 集成在同一个 controller view 中。在代码中按照要求载入 content，代理方法之类变得容易管理了一些，但是更糟糕的是这个 controller 的代码终将成为垃圾场的。。。那加入继承呢？有些小题大做？
+
+果然简洁才是最高的，将 footer 和 header 完全独立为两个 view，按需载入。结合 @IBInspectable 和 @IBDesignable 可以说是比较完美了，从画面设计到迁移等都很清晰。不足一提的小缺点是使用时候的 auto layout 的设置可能存在一些重复操作 (比如 Auto Layout 之类的)，若考虑 Model 除了 form sheet 以外可以是 full screen，后者需要在顶部额外预留 20px，这样一来反而变得巧妙了。
+
+也许过几天自己的想法又发生了细微变化，但简洁清晰无论何时都不会太坏。
+
+## 心得
+
+### Storyboard Reference
+
+Storyboard 容易引发冲突，这句话在 Storyboard Reference 面前是不成立的。
+
+**Storyboard Reference** 第一次出现在 Xcode 7，可以从组件库中找到它，并自行进行配置和关联，十分简单，无需赘述。即使是一个已经完成且十分繁杂的 Storyboard，也可以选中想要分离的 Storyboard，通过 **Editor -> Refactor to Storyboard** 来实现。比如，使用了两个 Container View，默认情况下此时画面中存在三个 controller，对其进行分离之后，变成了这样：
+
+![Storyboard Reference](/images/Storyboard_reference.png)
+
+### Loadable Nib
+
+将 Xib 组件的载入协议化，其中一个目的是为了类型安全，另一个目的是为了减少重复代码。
+
+```swift
+protocol Loadable: class {
+    static var nibName: String { get }
+}
+
+extension Loadable {
+    static var nibName: String { return String(describing: Self.self) }
+}
+```
+
+对 `UIView` 进行扩展，要求被载入的 view 遵循 `Loadable` 协议：
+
+```swift
+extension UIView {
+    func instantiateFromNib<T: UIView>(_:T.Type) -> T where T: Loadable {
+        if let nib = UINib(nibName: T.nibName, bundle: nil).instantiate(withOwner: nil, options: nil).first as? T {
+            return nib
+        } else {
+            fatalError("Nib \(T.nibName) is not exist ?!")
+        }
+    }
+    
+    func instantiateFromNibOwner<T: UIView>(_:T.Type) where T: Loadable {
+        let bundle = Bundle(for: type(of: self))
+        if let nib = UINib(nibName: T.nibName, bundle: bundle).instantiate(withOwner: self, options: nil).first as? UIView {
+            nib.frame = self.bounds
+            nib.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            self.addSubview(nib)
+        } else {
+            fatalError("Nib \(T.nibName) is not exist ?!")
+        }
+    }
+}
+```
+
+简洁的初始化：
+
+```swift
+let view:ClassName = self.instantiateFromNib(ClassName.self)
+self.instantiateFromNibOwner(ClassName.self)
+```
+
+后来发现一个名为 [Reusable](https://github.com/AliSoftware/Reusable) 的库，其中除了这一部分的实现之外，还有对 Cell 甚至是 Storyboard 和 ViewController 的重用，十分强大。
+
+回到这一部分的实现，略有区别的地方在于：
+
+1. *Reusable* 在初始化 nib 的时候选择了扩展协议。
+2. 在 *File's Owner* 的情况下，*Reusable* 使用了 Auto Layout。由于我们的 **P-OOP** 项目对应的设备尺寸不多，所以像是部分弹出框就没有对应 Auto Layout，所以就直接从 frame 的尺寸下手了。。
+
+> 追记：把这部分实现和例子提了出来放在了 [Github](https://github.com/Ckitakishi/LoadableNib) 上～
+
+### @IBDesignable 和 @IBInspectable
+
+**@IBDesignable** 可以用于视图的实时渲染，**@IBInspectable** 可以用于定义运行时属性。
+
+举个例子来说：首先在定义一个 `DialogHeaderView`，标记为 `@IBDesignable`，将它的 `headerTitle` 属性设置为 `@IBInspectable`：
+
+```swift
+@IBDesignable class DialogHeaderView: UIView {
+
+    @IBInspectable var headerTitle: String = "" {
+        didSet {
+            navigationBar.topItem?.title = self.headerTitle
+        }
+    }
+    ...   
+}
+```
+
+然后向目标视图添加一个 UIView，并将类定义为 `DialogHeaderView`，此时在 *Attribuite Inspector* 中可以直接设置属性：
+
+![IB1](/images/IB1.png)
+
+之后即会反映在运行时属性栏中：
+
+![IB2](/images/IB2.png)
+
+不过构建失败的时候还是挺多的，不妨通过 **Editor -> Debug Selected Views** 来调试一下选中的视图。
+
+### 类型安全
+
+除了定义上面的 `Loadable` 协议，在类型安全这个问题上还可以进一步再做一些工作。
+
+存在 Storyboard，Segue 的定义也就会有存在，由于 identifier 的定义是字符串，防不胜防，不匹配的情况还是会时而发生。这时候使用 [R.swift](https://github.com/mac-cain13/R.swift) 就能够完全解消这个担忧了。
+
+*R.swift* 被广泛使用于解决类型安全的问题，图片、字体、本地化等等都受益于此。
+
+
+
+]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/viewWillAppear-%E6%9D%82%E8%B0%88</guid><title>viewWillAppear 杂谈</title><description>细说对 `viewWillAppear` 的常见误解之一</description><link>ckitakishi.com/posts/viewWillAppear-%E6%9D%82%E8%B0%88</link><pubDate>Wed, 26 Jul 2017 23:48:00 +0900</pubDate><content:encoded><![CDATA[<h1>viewWillAppear 杂谈</h1><p>作为 view 的状态之一，<code>viewWillAppear</code> 的关注率极高，所以其实并没有什么好说的...我们都知道它会在 view 每一次将要准备出现之前被调用，所以常常可以用来初始化一些基本数据。</p><p>前两周花了一点点时间重构了组里的某个小应用，前开发者新手上路，感觉不少代码值得推敲。在 debug 的时候发现应用一到后台就自动退出了，根本无法看它在后台的活动，震惊之余发现 info.plist 的 <code>Application does not run in background</code> 被设置为了 <code>YES</code>...反复揣摩整个应用的功能也不知道这么做目的何在，于是果断将其改为了 <code>NO</code>。</p><p>不过事情并没有那么简单，毕竟这是一段关于 viewWillAppear 的杂谈。</p><!--more-->
+
+后来随着时间的推移，总算发现禁止后台运行的“用处”了。某个 view 有一个相对特殊的需求，应用从后台回到前台时需要重新初始化它的数据，尽管在 `viewWillAppear` 中准备了完备的初始化代码，但是这个状态的迁移并不能认为是 view 即将出现，毕竟 view 并没有消失，一直都是显示状态。所以自然 `viewWillAppear` 就不会被调用，为了解决这个问题，于是这位同学想了这个办法。
+
+不得不承认这个思路还是很清奇的，但是为了避免一些不必要的麻烦，我还是决定改用常规解决方案。在应用重回前台的时候发一个通知，告诉 view 可以重新初始化数据了。这种情况下，在 `viewWillAppear` 中添加一个对 `.UIApplicationWillEnterForeground` 通知的观察应该是一个不二的选择，它也常常被用于处理像是电话强制中断之类的需求：
+
+``` swift
+NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: .UIApplicationWillEnterForeground, object: nil)
+```
+
+这个方案可是说是比较优雅的，不过不可以忘记移除通知。关于声明周期这些事儿，有时候真是操碎了心~
+
+
+
+
+
+]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/Thread-Sanitizer</guid><title>Thread Sanitizer</title><description>使用 Thread Sanitizer 来解决实际遇到的数据竞争问题。</description><link>ckitakishi.com/posts/Thread-Sanitizer</link><pubDate>Sat, 13 May 2017 14:39:00 +0900</pubDate><content:encoded><![CDATA[<h1>Thread Sanitizer</h1><p><em>作为一项惯例，周五早晨，组内每个人都要进行三分钟的 LT，将自己感兴趣的话题分享给大家。</em></p><p>之前在修正并优化应用内线程管理的时候用了 <strong>Thread Sanitizer</strong> 功能，于是以此为机给大家简单介绍了一下。更多详细的内容，可以看一看 2016 WWDC 的 <a href="https://developer.apple.com/videos/play/wwdc2016/412/">Session 412</a>。线程问题发生的时候一般还是挺焦虑的，因为时间敏感，有时候再现很困难，自然就不易调适。<strong>TSan</strong> 能够发现一些问题，诸如 Keynote 里提到的：</p><blockquote><p>Use of uninitialized mutexesThread leaks (missing pthred_join)Unsafe calls in signal handlers (ex:malloc)Unlock from wrong threadData races</p></blockquote><p>因为在实际中遇到过，而且感觉发生概率相对较高，所以只展开说一下最后一项：数据竞争。数据竞争发生的基本条件是多个线程在同时访问同一块内存，并且其中至少又一个线程正在进行的是写操作。实际中常常表现为数据不整合，亦或是应用崩溃。比如下面这个例子：</p><!--more-->
+
+```Objective-C
+[context performBlock:^{
+    if (result && context) {
+        result = [self persistentSaveContext:context]; // 1
+    }
+}];
+return result; // 2
+```
+
+`result` 在 1 和 2 两个地方发生了竞争。在 1 进行写操作之前，有可能处于不同线程的 2 早已经返回了，这样数据就发生了不整合。
+
+有很多方法可以解决这个问题，比如说：由异步操作变为同步操作，或是改变写操作的时间点。这里采取了第一个方案，使用同样用途的同步方法 `performBlockAndWait` 来取代 `performBlock`，这样以来，数据竞争的问题也就自然而然解决了。 
+
+```Objective-C
+[context performBlockAndWait:^{
+    if (result && context) {
+        result = [self persistentSaveContext:context]; // 1
+    }
+}];
+return result; // 2
+```
+
+由于 **TSan** 是统合在编译器 (Clang) 层面的，所以当使用 Swift 来编写服务器代码的时候，完全可以在命令行中使用它：
+
+![Tsan command](/images/datarace.png)
+
+P.S.目前 **TSan** 只支持 64bit 的模拟器及 macOS 自身。
+
+
+]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/Swift-App-%E4%B8%80%E4%B8%AA%E6%84%8F%E6%96%99%E4%B9%8B%E5%A4%96%E7%9A%84%E5%B4%A9%E6%BA%83%E7%90%86%E7%94%B1</guid><title>Swift App: 一个意料之外的崩溃理由</title><description>应用功能本身十分简单，开发测试阶段也比较顺利，几乎没有发生崩溃。然而在更替证书之后，真机测试应用时却陷入了无限崩溃的境地。</description><link>ckitakishi.com/posts/Swift-App-%E4%B8%80%E4%B8%AA%E6%84%8F%E6%96%99%E4%B9%8B%E5%A4%96%E7%9A%84%E5%B4%A9%E6%BA%83%E7%90%8 ... E7%94%B1</link><pubDate>Mon, 13 Feb 2017 23:10:00 +0900</pubDate><content:encoded><![CDATA[<h1>Swift App: 一个意料之外的崩溃理由</h1><p>这是一个发生在去年年底的故事。背景是一个新规 Swift 应用处于准备发布阶段，证书由开发测试用更替为发布用， 这是两份 Team 不同的企业版证书。</p><p>应用功能本身十分简单，开发测试阶段也比较顺利，几乎没有发生崩溃。然而在更替证书之后，真机测试应用时却陷入了无限崩溃的境地。</p><!--more-->
+
+Log 类似下面这样：
+
+```
+dyld: Library not loaded: @rpath/libswiftCore.dylib
+  Referenced from: ...
+  Reason: no suitable image found.  Did find:
+  ...
+```
+
+有很多原因会导致提示这个错误，作为 Trouble Shooting 记录下来：
+
+- 可能存在缓存，**Clean** 工程
+- 很多时候该问题发生在 Swift 与 Objective-C 混编的时候，所以需要检查 *Building Setting* 中 *Embeedded Content Contains Swift Code* 的设置是否已经为 **YES**。
+- 依然是配置，检查 *Building Setting* 中的 *Runpath Search Paths* 是否合适，通常是：**@executable_path/Frameworks**。
+- 重置证书 (注销再新建) 。
+
+实际的生产过程中，首先 check 了前三项，最终强烈怀疑是证书问题。关于 “libswiftCore.dylib 崩溃“这个话题，很容易能看到这篇 [Q&A](https://developer.apple.com/library/content/qa/qa1886/_index.html)，其中提到要运行 Swift 应用必须使用 iOS 8 Released 之后创建的证书。对比手中的两份证书，除了 Team 不同之外，最大的差别在于创建时间，分别为 2016 年夏天，和 2014 年夏天。所以更新证书之后，问题也幸运地解决了。
+
+关于 libswiftCore.dylib 文件还想再多说几句，看名字就能够猜到是 Swift 动态库，具体说来它其实是 Swift 的运行时库，但是该文件和证书有什么关系呢？原因在于目前 Swift 的版本升级还不稳定，如果将这些运行时库直接放到系统中，很可能会导致每次 Swift 升级都导致应用不再能够使用，而作为这个问题的解决方案，Apple 选择将运行时库打包进应用中，这样就保证了开发与应用的 Swift 版本一致。由于 libswiftCore.dylib 属于应用的一部分，所以也是需要签名的，而像上一段所说，能够为 Swift 的运行时库签名的证书必须创建于 iOS 8 Released 之后。这一切，都是为了提高 Swift 的兼容性，关于兼容性，强烈推荐这条 [Tip](http://swifter.tips/compatibility/)。
+
+]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/%E9%87%8D%E6%96%B0%E5%90%AF%E7%A8%8B%E7%9A%84-2016</guid><title>重新启程的 2016</title><description>转眼一月都已过半...如果说 2015 于我而言是承前启后的一年，那 2016 大概算是重新启程的一年</description><link>ckitakishi.com/posts/%E9%87%8D%E6%96%B0%E5%90%AF%E7%A8%8B%E7%9A%84-2016</link><pubDate>Sat, 14 Jan 2017 19:23:00 +0900</pubDate><content:encoded><![CDATA[<h1>重新启程的 2016</h1><p>转眼一月都已过半...如果说 2015 于我而言是承前启后的一年，那 2016 大概算是重新启程的一年。</p><h2>第一个完整的工作年</h2><p>2016 是我的第一个完整工作年，有吐不完的槽，也有说不尽的感谢。</p><!--more-->
+
+远离家乡，薪水不可观，事多，责任重，没有靠谱的工作搭档，无数次质疑自己为什么不早点做个了断，但是无法否认自己在成长，也得到了一定程度上的回报。曾一夜无眠的想过，好多事，时候未到。
+
+年初，工作重心正式从前端转回 iOS，充满了期待。然而如果知道注定我会一个人孤独奋斗一整年，我还会这么想么～没有答案。从比 0 多一点的基础开始，搞了好多事儿，被嘲笑过日语说的烂，被以经验不足为由甩过锅...很喜欢一个词，「賛否両論」，本意是赞成与反对并存，不分优劣。我并不害怕被反对，被嘲笑（反正没人能在我的 bgm 里打败我哈哈哈，只怕 10 年后还像某些人一样活在自己的嘴里，活在自己的 yy 中（摊手。
+
+一年的勤勉工作换来了「奨励賞」，开心，但是更期待优秀的团队，优秀的自己。
+
+## 认真的生活
+
+这一年来对时间管理还是没有什么清晰的概念，很遗憾，很遗憾。
+
+做了一些时间投入与金钱回报并不是那么成正比事，但是于我而言绝对是这一年最棒的事情之一。能够有幸参与《函数式 Swift》的翻译，于我而言绝不是能够衡量的财富，和优秀的人一起，总会想把事情做的更好一点。
+
+认识了一群爱读书的人，文学素养浅薄的我，也算是读了一些书。
+
+
+
+生活过得挺不错，（觉得）做饭进阶啦，游泳进阶啦，拍照也进阶啦～
+
+## 新年愿望
+
+为开源社区贡献力量
+合适的时机换工作
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/Swift%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%89%8D%E5%90%8E%E7%BC%80%E5%8C%B9%E9%85%8D</guid><title>Swift 的字符串前后缀匹配</title><description>之前修改了项目中一个 increment search 的组件，最近刚好又看到下题，于是想说一说前后缀匹配的事</description><link>ckitakishi.com/posts/Swift%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%89%8D%E5%90%8E%E7%BC%80%E5%8C%B9%E9%85%8D</link><pubDate>Wed, 9 Nov 2016 00:18:00 +0900</pubDate><content:encoded><![CDATA[<h1>Swift 的字符串前后缀匹配</h1><p>之前修改了项目中一个 increment search 的组件，最近刚好又看到下题，于是想说一说前后缀匹配的事。</p><p><a href="https://leetcode.com/problems/longest-common-prefix/">14. Longest Common Prefix</a></p><p>这是一个给定字符串数组，求所有字符串最长公有前缀的问题。</p><p>直接用 <code>O(1)</code> 的额外空间来存储一个最长公有前缀，一次遍历后返回前缀字符串。这个想法自然到不需要多加解释，然而这么一写竟然击败了 100% 的 Swift 提交结果...</p><p>所以不得不提一下十分高效的 <code>hasPrefix(_:)</code> 方法，它接受一个 <code>String</code> 类型的参数并返回 <code>Bool</code> 值，这里字符串大小写敏感，且基于 Unicode 标准等价。此外，与之对应用于比较后缀字符串的方法是 <code>hasSuffix(_:)</code>。</p><pre><code><span class="comment">// Unicode 标准等价</span>
+<span class="keyword">let</span> composedCafe = <span class="string">"Café"</span>
+<span class="keyword">let</span> decomposedCafe = <span class="string">"Cafe\u{0301}"</span>
+<span class="call">print</span>(cafe.<span class="call">hasPrefix</span>(composedCafe))
+<span class="comment">// Prints "true"</span>
+<span class="call">print</span>(cafe.<span class="call">hasPrefix</span>(decomposedCafe))
+<span class="comment">// Prints "true"</span>
+</code></pre><p><a href="https://github.com/Ckitakishi/Daily/blob/master/LeetCode14_LongestCommonPrefix.swift"></a><br><br><br><br><br><br></p>]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/WatchDog-%E6%9C%BA%E5%88%B6</guid><title>iOS 的看门狗机制</title><description>错误代码 “8badf00d”</description><link>ckitakishi.com/posts/WatchDog-%E6%9C%BA%E5%88%B6</link><pubDate>Wed, 17 Aug 2016 23:34:00 +0900</pubDate><content:encoded><![CDATA[<h1>iOS 的看门狗机制</h1><h2>背景</h2><p>当应用的网络状况极差 (100% Loss) 时完全无法启动，一直崩溃。彻底切断网络连接正常启动，调试模式状态下等待时间非常久，但可以启动，并伴随 UI 微卡。强烈的预感这是线程阻塞。前一段时间被 Core Data Concurrency 折腾的够呛，看见线程问题就略有些心慌。</p><!--more-->
+
+## 原因
+
+首先看了 crash log，一如猜测，的确是卡在了主线程；意料之外的是，无数次闪退只留下了一份崩溃日志，如下所示：
+
+![WatchDog](/images/watchdog.png)
+
+第一次见，读了一些资料大概才算是明白了这是怎么一回事。为了避免应用陷入错误状态导致界面无响应，Apple 设计了看门狗 (WatchDog) 机制。一旦超时，强制杀死进程。在不同的生命周期，触发看门狗机制的超时时间有所不同：
+
+| 生命周期         |超时时间 |
+|----------------|--------|
+| 启动 Launch     | 20 s   |
+| 恢复 Resume     | 10 s   |
+| 悬挂 Suspend    | 10 s   |
+| 退出 Quit       | 6 s    |
+| 后台 Background | 10 min |
+
+首先说一说异常编码，也是寓意颇深。8badf00d = ate bad food，大概是在说看门狗吃了坏的食物所以暴走了？！异常记录则表示这并不是一次崩溃（邪魅一笑：强制退出而已）。信息一栏指出时间限制为 20 s。结合应用业务来看，表层原因在于：每次启动应用，首先进行一次模版同步，在此之前需要检测登录状况，通过 RunLoop 反复尝试直到收到响应为止。然而不幸的是，这一些都发生在主线程。
+
+同步网络请求，主线程，超长超时时间，满足这三点，一定场景下几乎必然会触发看门狗机制。
+
+## 对策
+
+合理解决方案：
+
+1. 异步网络请求：优点很多，最重要的是可以让你无忧无虑安全地访问网络，而无需担心线程。
+2. 在非主线程中使用同步网络请求：如果异步运行你的网络代码比登天还难的话(也许你的应用是一个基于同步网络请求的大型移植项目)，退而求次，你也可以在次级线程中运行同步代码，也可以避免触发看门狗机制。
+
+此外，一部分情况下，例如这次遇到登录和模版同步时触发看门狗，事实上，即使在运用到模版时再次请求也是勉强可行的，因此姑且先跳过网络请求也可以。此时，还以使用一种我认为是相对比较差的方案：
+
+3. 通过 RunLoop 来操控一切，一旦超过既定的超时时间，就提示用户重试或者暂时先跳过网络请求。
+
+应用的网络部分基于公司的通用框架，因此优先考虑在非主线程中进行网络请求来避免触发看门狗。
+
+至于调试模式下为什么可以正常启动应用，完全是因为该模式下看门狗机制处于禁用状态。
+
+此外，除了网络操作，I/O 读写文件和大规模运算等耗时任务也极有可能触发看门狗机制。合理处理线程，优化耗时任务，很大程度能避免不佳用户体验。
+
+## 参考：
+
+1. [主线程上的同步网络请求](https://developer.apple.com/library/ios/qa/qa1693/_index.html)
+2. [调试模式不发生崩溃](https://developer.apple.com/library/ios/qa/qa1592/_index.html)
+
+]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/%E6%B2%96%E7%B8%84%E4%B8%89%E6%97%A5</guid><title>沖縄三日</title><description>期待已久的冲绳之行和不那么期待的马拉松如此而至。</description><link>ckitakishi.com/posts/%E6%B2%96%E7%B8%84%E4%B8%89%E6%97%A5</link><pubDate>Tue, 8 Dec 2015 22:56:00 +0900</pubDate><content:encoded><![CDATA[<h1>沖縄三日</h1><p>期待已久的冲绳之行和不那么期待的马拉松如此而至。出发的早晨阳光特别温暖，モノレール窗子上映出身影，好暖～</p><p>到达当晚和晴儿一起吃了冲绳そば，终于吃到本土的了（笑...</p><img src="ckitakishi.com/images/soba.jpg" alt="沖縄ぞば"/><p>为了这次的马拉松的平安..从 7 月渐渐开始了不科学的练习，第一次早晨出去跑了 2km 就累成狗，恢复了好几天。8 月底参加了昆马 10km，幸运的达成！来日后，跑过小道，跑过荒川沿岸，跑过皇居，慢慢喜欢上了跑步的感觉。</p><p>每一次跑都是坚持再坚持，也许跟自己说过一万遍再，没有完赛好遗憾...也许是练习不足，也许是 FREE 4.0 FLYKNIT 并不太适合超长距离...不管怎么说，对得起自己了。</p><p>当日，起初天高气爽，后来风雨大作。一路上吃，跑，吃，跑，冲绳黑糖是真的很好吃。赛程最后阶段，遇到热心的大叔带我跑了一段，一直跟我说坚持跑还能赶得上哟～然而弱爆了的我还是在最终［还剩 1km］的地方听到了结束的信号。运动场入口的的志愿者们夹道给了我们［最后的击掌］，6:15，今天跑了这么久～</p><img src="ckitakishi.com/images/marathon.jpg" alt="那覇マラソン"/><p>赛后第二天，逛水族馆，看海。词穷的我只说得出一个形容词：美。</p><p>来馆必看的ジンベエザメ，后来才知是鲸鲨。一瞬间感到自己的渺小。</p><img src="ckitakishi.com/images/aquarium.jpg" alt="美ら海水族館"/><p>三面环海的岛上，自己拍婚纱照的情侣。</p><img src="ckitakishi.com/images/sea.jpg" alt="海"/><p>曾经的参天大树，如今又是另一种风韵。一起，任海风吹～</p><img src="ckitakishi.com/images/sea2.jpg" alt="海"/><p>于我而言，这三天又是一场洗礼，只想一生努力，一生被爱。用一句广告语作结吧，<strong>「苦しいけど、幸せ」</strong>。</p>]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/%E8%BD%BB%E5%9B%BE%E5%83%8F%E5%B7%A5%E5%85%B7%EF%BC%8DLightImage</guid><title>轻图像工具－LightImage</title><description>LightImage 是我的毕业设计项目，但是至今暂时还是一个残次成品，仍需大力的改善。初衷是开发一款轻量级的图像处理工具，后续又扩展了简易的图像分析和像素画绘制等功能。</description><link>ckitakishi.com/posts/%E8%BD%BB%E5%9B%BE%E5%83%8F%E5%B7%A5%E5%85%B7%EF%BC%8DLightImage</link><pubDate>Sat, 1 Aug 2015 16:58:00 +0900</pubDate><content:encoded><![CDATA[<h1>轻图像工具－LightImage</h1><p>LightImage 是我的毕业设计项目，但是至今暂时还是一个残次成品，仍需大力的改善。初衷是开发一款轻量级的图像处理工具，后续又扩展了简易的图像分析和像素画绘制等功能。</p><p>项目主要基于 HTML5 中的 Canvas 开发，当提及 Canvas 的时候，常常还会提到 SVG。Canvas 只能通过脚本驱动，适合像素级的图形问题处理；相比较而言 SVG 的驱动方式更加灵活，XML、CSS等都可，所以处理图形是通过元素。对于本项目而言，Canvas 是不二的选择。</p><p>项目使用了框架 Vue.js，结合曾经完成的一个数据量较大的应用来看，很优雅，很轻量，很灵活，调试也很棒，不过也遇到一些需要仔细思考的问题，生命周期，路由，页面重载等等。</p><p>答辩完后就一直想把一个多月开发过程中的心得和遇到的有意思的问题总结一下，还好之前有在 trello 上记录。下面想从三个部分来说一说～</p><h2>绘画</h2><p>关于这个部分，细节的部分集中于事件处理，例如笔迹离开和进入画布需要绑定 mouseleave 和 mouseenter 事件。想要说一说的是，这里添加了我很喜欢的像素画绘制，通过倍率来模拟不同格子数的像素画布，尝试过使用单个像素放大但并适用。在这里不得不提给我带来深刻影响的像素动画作品们 <a href="http://1041uuu.tumblr.com/">1041uuu</a>。</p><p>未来展望：使用栈保存笔画，完成撤销前进；提供自定义像素数量；以及允许添加多张画布组成动画。</p><h2>图像分析</h2><p>这个部分也许名不副实？（笑。起初只是想做一个图像的色彩分析，统计色彩的出现频率。依据 rgb 色彩模型，则有256^3种色彩，非常大的数字，于是将相近的色彩归位一类，由大及小最终选定了 6^3 种色彩。使用一个长度为 256 的数组存储出现次数，色彩一一对应下标 0-255，并可反向由下标推导颜色以便在页面渲染。</p><p>后来增添了灰度直方图及均衡化的直方图来表现图像的大体特征。这个部分效率受图像大小影响并不明显。</p><p>未来展望：可导出分析结果；保持效率得到更精确的结果。</p><h2>图像处理</h2><p>做毕设的两个月中，用于学习图像处理和使用 JavaScript 实现花了不少时间。起初大概看了看《数字图像处理》..的目录、基础和色彩相关章节，有了一点点宏观的理解，后期更具体的理解大多来自于他人文章和《数字图像处理原理与实践：基于Visual C++开发》。实现中，比较深刻的是图像剪切，有几个 jQuery 实现的插件，然而还是强迫自己写了一个纯 JavaScript 的，但至今仍不完善，将来如若有一日能够见人，打算让其作为一个独立的组件存在。</p><p>图像处理的效率随着图像增大而剧降，很 sad，也是一个改善的重点。</p><p>未来展望：结合直方图，添加曲线；可调节亮度，对比度等。</p><h2>有话说</h2><p>源码完全在 <a href="https://github.com/Ckitakishi/LightImage">Github</a></p><p>可以在 heroku 上 <a href="https://lightimage.herokuapp.com">Try it</a></p>]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/%E8%AF%B4%E8%AF%B4%E8%BF%87%E5%8E%BB%E8%BF%99%E5%8D%8A%E5%B9%B4</guid><title>说说过去这半年</title><description>过去这半年，说实话过的蛮不错。确定了工作，结束了实习，带着不舍顺利毕业，毕业旅行。每一件事都那么难忘。</description><link>ckitakishi.com/posts/%E8%AF%B4%E8%AF%B4%E8%BF%87%E5%8E%BB%E8%BF%99%E5%8D%8A%E5%B9%B4</link><pubDate>Fri, 31 Jul 2015 23:58:00 +0900</pubDate><content:encoded><![CDATA[<h1>说说过去这半年</h1><p>过去这半年，说实话过的蛮不错。确定了工作，结束了实习，带着不舍顺利毕业，毕业旅行。每一件事都那么难忘。</p><p>年初，犹豫和纠结最终还是没能阻挡一个小小的梦想，决定去霓虹工作。大三以前还信誓旦旦的说过就算去日本也只可能是旅行，亲爱的日语老师们估计怎么也想不到当年那个日语下手的学生尽然要去工作了～</p><p>四月底，结束了八个月的实习，最想说的是感谢，身边的人都充满了正能量。最幸福的是开发主线由 iOS 重新回到了 web 前端开发，框架开发，新产品研发，案件对应...。</p><p>六月底，毕业设计 [<a href="https://lightimage.herokuapp.com">lightimage</a>] 和学位授予为大学划上了句号，带着满满的祝福和好几十G的毕业照跟最爱的 DUT 说再见了。</p><p>七月，伴随着江南烟雨的毕业旅行，每天早晨醒来都会想又少了一天相伴，真的舍不得。同一个屋檐下生活了四年，你们给我带来了太多，一起努力一起玩耍互相吐槽互相打击...</p><p>窗外大雨滂沱，赶在七月的尾巴，流水账一样的梳理了这半年来的发生的事情和心情。我就要带着梦想重新起航啦～</p>]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/%E5%BF%B5%E5%BF%B5%E4%B8%8D%E5%BF%98</guid><title>念念不忘</title><description>碎碎念而已...</description><link>ckitakishi.com/posts/%E5%BF%B5%E5%BF%B5%E4%B8%8D%E5%BF%98</link><pubDate>Tue, 28 Oct 2014 20:19:00 +0900</pubDate><content:encoded><![CDATA[<h1>念念不忘</h1><p>大连的冬天如期而至，时光匆匆...实习也马上就要进入第三个月，依然想要去南方... 过去的两个月，重新投入到 web 前端开发的怀抱，有种好久不见，你依然美丽的感觉。但是问题依旧是有的，幸好也会感觉到自己确确实实在进步。工作之余的生活特别规律，每天和 Q 一起或蹭网，或乱逛，或购物，偶尔也约上迪迪一起吃喝玩乐。 今天开始了写 jQuery 插件的征途，这个还是下一篇再说吧。［：）...］</p>]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/dream-mark%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F</guid><title>Dream Mark的前世今生</title><description>Dream Mark 是一款图片合成 App （Note: 练手项目）</description><link>ckitakishi.com/posts/dream-mark%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F</link><pubDate>Tue, 1 Jul 2014 23:28:00 +0900</pubDate><content:encoded><![CDATA[<h1>Dream Mark的前世今生</h1><h2>DreamMark 的前世</h2><p>DreamMark的的简介永远都是 <em>Mark our dream.</em></p><p>起初，这源于一次激烈的讨论。“生活并不平淡，可很多东西就是记不住”，“我们大概需要借助纸和笔”，“可是，铭心的自然忘不了，其它又记了干嘛”，差一点，就再也没有然后了。“不一样的，记住可以是为了记忆，也可以是提醒”，“做梦！哪有那么神奇。”，“嗯！那就做梦吧！”，“......”。</p><p>于是，我们决定 <em>mark our dream</em> 。让梦境和梦想，为记忆添上那么一点儿不同的东西。</p><h2>DreamMark 的今生</h2><p>半个月，每天约 3 小时，我们完成了 DreamMark 最初版的开发。</p><p>DreamMark 支持两种模式： &gt; 涂鸦 --- 给你一个画板，你可以绘出你的梦 &gt; 拼图 --- 场景 + 人物 + 情节 + 其它 = 你的梦</p><p>DreamMark 学会了走路，但还走的不漂亮。无论是设计还是代码，我们会努力做到更好。</p><h2>DreamMark 相关</h2><p>所有图片均由 <a href="http://chiakiq.com/">晴</a> 原创。 使用 <a href="https://www.parse.com/">Parse</a> 提供后台服务。 更新在 <a href="https://github.com/Ckitakishi/DreamMark">这里</a>。</p>]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/uikit-dynamics--ios7</guid><title>UIKit Dynamics--iOS7</title><description>Dynamic Items 为我们带来更丰富的动画体验。</description><link>ckitakishi.com/posts/uikit-dynamics--ios7</link><pubDate>Sat, 22 Mar 2014 22:17:00 +0900</pubDate><content:encoded><![CDATA[<h1>UIKit Dynamics--iOS7</h1><h2>Dynamic Items 简介</h2><p><a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIDynamicItem_Protocol/Reference/Reference.html">Apple Library相关的</a> UIKit Dynamics 的焦点都是关于 items 之间相互的作用及其动画。有一个要求，为了在一个 item 上使用 dynamic behavior，item必须满足 <code>UIDynamicItem</code> 协议。该协议定义了三个重要的属性，<code>bounds</code>，<code>center</code>，<code>transform</code>。<code>bounds</code>属性是readonly的,<code>center</code>,<code>transform</code> 属性是read/write的，<code>center</code> 需要更新动画的进度,<code>transform</code> 属性返回一个 <code>CGAffineTransform</code> 的对象。</p><p>从 iOS7 开始，默认的只有 <code>UIView</code> 和 <code>UICollectionViewLayoutAttributes</code> 类可实现该协议。但是，仍然可以自己创建类去实现之。</p><pre><code><span class="keyword">@property</span>(nonatomic, readonly) <span class="type">CGRect</span> bounds
+<span class="keyword">@property</span>(nonatomic, readwrite) <span class="type">CGPoint</span> center
+<span class="keyword">@property</span>(nonatomic, readwrite) <span class="type">CGAffineTransform</span> transform
+</code></pre><h3>Dynamic Behaviors</h3><p>在 UIKit Dynamics 中，一个 Dynamic Behavior 模拟的是真实世界的物理行为。包含以下六个类： <em> UIAttachmentBehavior </em> UICollisionBehavior <em> UIGravityBehavior </em> UIPushBehavior <em> UISnapBehavior </em> UIDynamicItemBehavior</p><p>前五个分别是--附着、碰撞、重力、推力、捕捉。最后一个不是一个具体的行为，但是也很有用~按我的理解就是可以设置一个物体的本质属性，不依赖于外界而存在的。</p><p>最近写代码用到 UIDynamicItemBehavior，感觉太棒了！ <em> allowsRotation 是否可以旋转；默认YES； </em> density 密度；默认1.0; <em> elasticity 弹性系数；默认0.0； </em> friction 摩擦系数；默认0.0； * resistance 阻力；默认0.0；</p><p>当时想要让一个球能够一开始就有方向有速度的运动，以下两个函数不能再赞，很简便。</p><pre><code>  – <span class="call">addAngularVelocity</span>(<span class="type">CGFloat</span>):<span class="call">forItem</span>(id[<span class="type">UIDynamicItem</span>])<span class="comment">//设置角速度</span>
+ – <span class="call">addLinearVelocity</span>(<span class="type">CGPoint</span>):<span class="call">forItem</span>(id[<span class="type">UIDynamicItem</span>])<span class="comment">//设置线速度
+//angularResistance角度阻力系数</span>
+</code></pre><h3>UIDynamicAnimator</h3><p>UIDynamicBehavior 需要添加到 animator 上才能发生作用；</p><h3>ReferenceView</h3><p>等同于力学参考系。</p>]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95</guid><title>遇到的一些问题与解决办法</title><description>基于 Hexo 搭建个人博客过程中遇到的一些问题和解决方案</description><link>ckitakishi.com/posts/%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3%E5%8A%9E ... E6%B3%95</link><pubDate>Mon, 6 Jan 2014 22:30:00 +0900</pubDate><content:encoded><![CDATA[<h1>遇到的一些问题与解决办法</h1><p>一直有些博客写记录的习惯，但是越来越觉得定制的博客们很多时候无法满足需求，了解了一些框架后，最终选择了 <a href="http://zespia.tw/hexo/">hexo</a>，甚至打开主页的瞬间就认定它了。hexo 由 Node.js 驱动，迅速，简洁。</p><p>这两天也遇到了一些问题，简单地记录下来。</p><h2>1.无法成功 deploy</h2><p>此时已经完成了 <a href="http://nodejs.org/">node.js</a> 的安装，并在 <a href="https://github.com/">github</a> 创建了名为 <code>username.github.io</code> 的 repository 。部署完成之后，</p><pre><code>hexo generate 
+hexo server  
+</code></pre><p>此时已经可以通过 <code>localhost:4000</code> 查看页面，landscape 的主题觉得很深沉。</p><pre><code>hexo deploy
+</code></pre><p>竟然没有成功。出现了好几个 <code>fetal:......</code>，提示文件不存在。赶紧关掉 bash，用管理员权限打开，终于没有 fetal 了。windows 总是这样.....就在我得意的笑时，仔细一看，竟然没有成功 push 到 github。搜索良久，猜想也许是重装系统后 ssh key 出问题，重新生成了一个，依然未能解决。看到有网友说 github 名字有大写可能导致问题，一想自己的名儿，于是联系了 github 的工作人员，人家很快回邮件，开头就是 NO！往来了两封邮件，查看密钥可用性，以及我的命令和错误。结果第二天，就好了......是的，就好了。个人认为可能真的和 ssh key 有关吧。</p><h2>2.ico图标的添加</h2><p>关于小图标的添加，参考了 <a href="http://zipperary.com/2013/05/30/hexo-guide-4/">zippera</a> 所写。</p><pre><code>&lt;% <span class="keyword">if</span> (config.<span class="property">root</span>){ %&gt;
+  &lt;link href=<span class="string">"/favicon.ico"</span> rel=<span class="string">"shortcut icon"</span> type=<span class="string">"image/x-icon"</span> /&gt; #这段是faviconer提供的通用代码。
+&lt;% } %&gt;
+</code></pre><p>我的做法是直接将以上代码添加到 <code>head.ejs</code>。</p><p>特别感谢 <a href="http://chiakiq.com/">Qing</a> 设计的 A，B 图标，在自己在操作过程中，只能在 localhost 查看到图标。查看了 github 的 repo，发现反复 deploy B 图标但是依然存在的是 A 图标，纠其原因，放弃 A 图标之后缓存还在。查看了文档，根目录下的 <strong>db.json</strong> 即为缓存，删除之，重新 deploy，就成功了。</p><p>此后，如果由于缓存而导致的无法更新内容，删除 <strong>db.json</strong> 即可。</p><h2>3.域名的解析</h2><p>选择了 <a href="https://www.dnspod.cn/">DNSPod</a> 解析域名，添加 A 记录时，记录值填了个二级域名的 ip，坐等~吃过饭后依然不行，参考了一些人的经历，又添加了一条 A 记录，ip 写了 <code>pages.github.com</code> 的 <code>204.232.175.78</code>；很奇怪，自己 ping 的 ip 地址是一个澳大利亚的地址 <code>103.***.***.***</code>。经过一番折腾，验证了 <code>204.232.175.78</code> 和 ping 的 ip 地址都是可以用的。而且后者更快。</p><h2>4.hexo generate 无法解析</h2><p>在本文修改再提交时又遇到问题，<code>hexo g</code> 出现了一下 log：</p><pre><code>rawMessage: '<span class="type">Unable</span> to parse.',
+parsedLine: <span class="number">8</span>,
+snippet: '  hexo generate ',
+parsedFile: null,
+message: '<span class="type">Unable</span> to parse.',
+domain: 
+{ domain: null,
+ _events: { error: [<span class="type">Function</span>] },
+ _maxListeners: <span class="number">10</span>,
+ members: [],
+ _disposed: <span class="keyword">true</span> },
+domainThrown: <span class="keyword">true</span> }
+</code></pre><p>去查看了 hexo 项目的 <a href="https://github.com/tommy351/hexo/issues?page=1&state=open">Issues</a>，有人遇到类似的一些问题，原因是markdown语法不太对，发现是因为汉字之间用了 <code>----</code>。</p><h2>尾声</h2><p>(*^^)v路漫漫其修远兮，吾将上下而求索。</p>]]></content:encoded></item></channel></rss>
