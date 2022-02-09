@@ -1,6 +1,6 @@
 :root {
     --primary-color: #ddd;
-    --background-color: #222;
+    --background-color: #1e1e1e;
 }
 
 * {
@@ -26,28 +26,28 @@ body {
     text-align: left;
 }
 
-header {
-    background-color: #eee;
-}
-
 header .wrapper {
+    max-width: 1000px;
     padding-top: 30px;
     padding-bottom: 30px;
-    text-align: center;
 }
 
 header a {
+    overflow: hidden;
     text-decoration: none;
 }
 
 header .site-name {
+    float: left;
+    display: block;
     font-size: 1.5em;
     color: #000;
     font-weight: bold;
 }
 
 nav {
-    margin-top: 20px;
+    float: right;
+    display: block;
 }
 
 nav li {
@@ -224,7 +224,7 @@ table thead {
     margin-left: 20px;
 }
 
-.group-item-list > ul, li {
+.section-wrapper > ul, ol, li {
     list-style-type: none;
 }
 
@@ -293,7 +293,7 @@ pre code .preprocessing {
 
 @media (prefers-color-scheme: dark) {
     body {
-        background-color: #222;
+        background-color: var(--background-color);
     }
 
     body,
@@ -304,14 +304,28 @@ pre code .preprocessing {
     .item-list > li {
         background-color: #333;
     }
-
-    header {
-        background-color: #000;
-    }
 }
 
-@media(max-width: 600px) {
+@media(max-width: 768px) {
     .wrapper {
         padding: 40px 20px;
+    }
+
+    header .wrapper {
+        max-width: 600px;
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
+
+    header .site-name {
+        display: flex;
+        justify-content: center;
+        float: none;
+    }
+
+    nav {
+        display: flex;
+        justify-content: center;
+        float: none;
     }
 }
