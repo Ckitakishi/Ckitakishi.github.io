@@ -1,115 +1,39 @@
-<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"/><meta name="og:site_name" content=""Ckitakishi...""/><link rel="canonical" href="ckitakishi.com/posts/Storyboard-%E4%B8%8E-Xib-%E7%9A%84%E2%80%9C%E6%8A%89%E6%8B%A9%E2%80%9D"/><meta name="twitter:url" content="ckitakishi.com/posts/Storyboard-%E4%B8%8E-Xib-%E7%9A%84%E2%80%9C%E6%8A%89%E6%8B%A9%E2%80%9D"/><meta name="og:url" content="ckitakishi.com/posts/Storyboard-%E4%B8%8E-Xib-%E7%9A%84%E2%80%9C%E6%8A%89%E6%8B%A9%E2%80%9D"/><title>Storyboard 和 Xib 的“抉择” | "Ckitakishi..."</title><meta name="twitter:title" content="Storyboard 和 Xib 的“抉择” | "Ckitakishi...""/><meta name="og:title" content="Storyboard 和 Xib 的“抉择” | "Ckitakishi...""/><meta name="description" content="比起手写 UI，“拖控件”的 Storyboard 和 Xib 似乎一直都更投我所好。不过即使是 Storyboard 和 Xib 之间，似乎也还是多多少少有一些纷争。"/><meta name="twitter:description" content="比起手写 UI，“拖控件”的 Storyboard 和 Xib 似乎一直都更投我所好。不过即使是 Storyboard 和 Xib 之间，似乎也还是多多少少有一些纷争。"/><meta name="og:description" content="比起手写 UI，“拖控件”的 Storyboard 和 Xib 似乎一直都更投我所好。不过即使是 Storyboard 和 Xib 之间，似乎也还是多多少少有一些纷争。"/><meta name="twitter:card" content="summary"/><link rel="stylesheet" href="/styles.css" type="text/css"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/><link rel="alternate" href="/feed.rss" type="application/rss+xml" title="Subscribe to "Ckitakishi...""/></head><body class="item-page"><header class="flex justify-center p-4 text-zinc-900 dark:text-zinc-50"><div class="flex flex-wrap justify-between my-4 gap-x-16 max-w-screen-lg w-full"><a href="/" class="font-extrabold text-3xl">"Ckitakishi..."</a><nav class="my-auto"><ul class="flex flex-wrap gap-4"><li><a href="/" class="hover:underline underline-offset-4">Home</a></li><li><a href="/posts" class="hover:underline underline-offset-4">Writing</a></li><li><a href="/tags/求索集/" class="hover:underline underline-offset-4">求索集</a></li><li><a href="/tags/浮生记/" class="hover:underline underline-offset-4">浮生记</a></li><li><a href="/feed.rss" class="hover:underline underline-offset-4">RSS</a></li></ul></nav></div></header><div class="flex justify-center min-h-full text-zinc-900 dark:text-zinc-50 m-4"><div class="max-w-screen-md w-full m-4 flex flex-col"><div class="flex text-zinc-600 dark:text-zinc-50"><p class="flex shrink-0">Sep 24, 2017</p><p class="mx-3 text-lg -mt-0.5">|</p><ul class="flex flex-wrap gap-2"><li><a href="/tags/求索集" class="hashtag link-underline">求索集</a></li><li><a href="/tags/ios" class="hashtag link-underline">iOS</a></li><li><a href="/tags/swift" class="hashtag link-underline">Swift</a></li></ul></div><article class="prose prose-zinc min-w-full dark:prose-invert"><div class="content"><h1>Storyboard 和 Xib 的“抉择”</h1><blockquote><p>近期开始进行一个新项目的原型制作及其结构设计，打算把一些心路历程记录下来，随便先给它取个名字叫做：<strong>P-OOP</strong>。</p></blockquote><p>比起手写 UI，“拖控件”的 Storyboard 和 Xib 似乎一直都更投我所好。不过即使是 Storyboard 和 Xib 之间，似乎也还是多多少少有一些纷争。</p><h2>Storyboard &amp; Xib</h2><p>公司 (年久失修) 的 iOS Guidelines 中写着一句话：</p><blockquote><p>进行源码管理时 Storyboard 极易导致冲突，团队开发时，各画面与各组件尽可能使用 Xib 进行实现。</p></blockquote><p>对此我一直抱着赞否两论的观点。在实际工作时，同一 Storyboard 中存在大量 ViewController 十分容易冲突是一个不争的事实，掉进这个坑的人有可能还进行过 xml 修正。但是这个锅 Storyboard 不背。一部分人可能因此选择了弃 Storyboard 从 Xib 之路，我也一度徘徊是否这才是正道。但是很显然的是，Storyboard 从一开始就不是为了代替 Xib 而来。</p><p>除了 UI 设置的相似部分以外，Storyboard 更重视画面之间的关联和迁移，而 Xib 作为通用组件的模版应该是不二的选择。</p><!--more-->
-
-在 P-OOP 中，将会存在大量的 dialog，尽管可以很容易的使用 Present Modally 来实现，不过为了保持系列产品的风格一致性，需要考虑如何以比较好的方式来实现共通的 header 和 footer 样式。考虑过很多方案，比如：
-
-1. 将 footer 和 header 集成在同一个 view 中，并添加一个 content view，最终在某 controlelr view 中将上述 view 与实际从另一个 xib 中载入的 content view 组合，完成组装。但是存在一个比较显著的缺点，实际可见的 controller view 所呈现的内容并不是很直观，果然还是必须看代码才能梳理清楚。 
-2. 将 footer 和 header 以及一个 content view 集成在同一个 controller view 中。在代码中按照要求载入 content，代理方法之类变得容易管理了一些，但是更糟糕的是这个 controller 的代码终将成为垃圾场的。。。那加入继承呢？有些小题大做？
-
-果然简洁才是最高的，将 footer 和 header 完全独立为两个 view，按需载入。结合 @IBInspectable 和 @IBDesignable 可以说是比较完美了，从画面设计到迁移等都很清晰。不足一提的小缺点是使用时候的 auto layout 的设置可能存在一些重复操作 (比如 Auto Layout 之类的)，若考虑 Model 除了 form sheet 以外可以是 full screen，后者需要在顶部额外预留 20px，这样一来反而变得巧妙了。
-
-也许过几天自己的想法又发生了细微变化，但简洁清晰无论何时都不会太坏。
-
-## 心得
-
-### Storyboard Reference
-
-Storyboard 容易引发冲突，这句话在 Storyboard Reference 面前是不成立的。
-
-**Storyboard Reference** 第一次出现在 Xcode 7，可以从组件库中找到它，并自行进行配置和关联，十分简单，无需赘述。即使是一个已经完成且十分繁杂的 Storyboard，也可以选中想要分离的 Storyboard，通过 **Editor -> Refactor to Storyboard** 来实现。比如，使用了两个 Container View，默认情况下此时画面中存在三个 controller，对其进行分离之后，变成了这样：
-
-![Storyboard Reference](/images/Storyboard_reference.png)
-
-### Loadable Nib
-
-将 Xib 组件的载入协议化，其中一个目的是为了类型安全，另一个目的是为了减少重复代码。
-
-```swift
-protocol Loadable: class {
-    static var nibName: String { get }
+<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"/><meta name="og:site_name" content=""Ckitakishi...""/><link rel="canonical" href="ckitakishi.com/posts/Storyboard-%E4%B8%8E-Xib-%E7%9A%84%E2%80%9C%E6%8A%89%E6%8B%A9%E2%80%9D"/><meta name="twitter:url" content="ckitakishi.com/posts/Storyboard-%E4%B8%8E-Xib-%E7%9A%84%E2%80%9C%E6%8A%89%E6%8B%A9%E2%80%9D"/><meta name="og:url" content="ckitakishi.com/posts/Storyboard-%E4%B8%8E-Xib-%E7%9A%84%E2%80%9C%E6%8A%89%E6%8B%A9%E2%80%9D"/><title>Storyboard 和 Xib 的“抉择” | "Ckitakishi..."</title><meta name="twitter:title" content="Storyboard 和 Xib 的“抉择” | "Ckitakishi...""/><meta name="og:title" content="Storyboard 和 Xib 的“抉择” | "Ckitakishi...""/><meta name="description" content="比起手写 UI，“拖控件”的 Storyboard 和 Xib 似乎一直都更投我所好。不过即使是 Storyboard 和 Xib 之间，似乎也还是多多少少有一些纷争。"/><meta name="twitter:description" content="比起手写 UI，“拖控件”的 Storyboard 和 Xib 似乎一直都更投我所好。不过即使是 Storyboard 和 Xib 之间，似乎也还是多多少少有一些纷争。"/><meta name="og:description" content="比起手写 UI，“拖控件”的 Storyboard 和 Xib 似乎一直都更投我所好。不过即使是 Storyboard 和 Xib 之间，似乎也还是多多少少有一些纷争。"/><meta name="twitter:card" content="summary"/><link rel="stylesheet" href="/styles.css" type="text/css"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/><link rel="alternate" href="/feed.rss" type="application/rss+xml" title="Subscribe to "Ckitakishi...""/></head><body class="item-page"><div class="flex flex-col min-h-full text-zinc-900 dark:text-zinc-50"><div class="grid grid-cols-8 w-full h-[8px]"><div class="bg-[#ab4642]"></div><div class="bg-[#dc9656]"></div><div class="bg-[#f7ca88]"></div><div class="bg-[#a1b56c]"></div><div class="bg-[#86c1b9]"></div><div class="bg-[#7cafc2]"></div><div class="bg-[#ba8baf]"></div><div class="bg-[#a16946]"></div></div><header class="flex justify-center p-4 text-zinc-900 dark:text-zinc-50"><div class="flex flex-wrap justify-between my-4 gap-x-16 max-w-screen-lg w-full"><a href="/" class="font-extrabold text-3xl">"Ckitakishi..."</a><nav class="my-auto"><ul class="flex flex-wrap gap-4"><li><a href="/" class="hover:underline underline-offset-4">Home</a></li><li><a href="/posts" class="hover:underline underline-offset-4">Writing</a></li><li><a href="/tags/求索集/" class="hover:underline underline-offset-4">求索集</a></li><li><a href="/tags/浮生记/" class="hover:underline underline-offset-4">浮生记</a></li><li><a href="/feed.rss" class="hover:underline underline-offset-4">RSS</a></li></ul></nav></div></header><div class="flex justify-center mx-4"><div class="max-w-screen-md w-full m-4"><div class="flex text-zinc-600 dark:text-zinc-50 mb-1"><p class="flex shrink-0">Sep 24, 2017</p><p class="mx-3 text-lg -mt-0.5">|</p><ul class="flex flex-wrap gap-2"><li><a href="/tags/求索集" class="hashtag link-underline">求索集</a></li><li><a href="/tags/ios" class="hashtag link-underline">iOS</a></li><li><a href="/tags/swift" class="hashtag link-underline">Swift</a></li></ul></div><article class="prose prose-zinc min-w-full dark:prose-invert"><div class="content"><h1>Storyboard 和 Xib 的“抉择”</h1><blockquote><p>近期开始进行一个新项目的原型制作及其结构设计，打算把一些心路历程记录下来，随便先给它取个名字叫做：<strong>P-OOP</strong>。</p></blockquote><p>比起手写 UI，“拖控件”的 Storyboard 和 Xib 似乎一直都更投我所好。不过即使是 Storyboard 和 Xib 之间，似乎也还是多多少少有一些纷争。</p><h2>Storyboard &amp; Xib</h2><p>公司 (年久失修) 的 iOS Guidelines 中写着一句话：</p><blockquote><p>进行源码管理时 Storyboard 极易导致冲突，团队开发时，各画面与各组件尽可能使用 Xib 进行实现。</p></blockquote><p>对此我一直抱着赞否两论的观点。在实际工作时，同一 Storyboard 中存在大量 ViewController 十分容易冲突是一个不争的事实，掉进这个坑的人有可能还进行过 xml 修正。但是这个锅 Storyboard 不背。一部分人可能因此选择了弃 Storyboard 从 Xib 之路，我也一度徘徊是否这才是正道。但是很显然的是，Storyboard 从一开始就不是为了代替 Xib 而来。</p><p>除了 UI 设置的相似部分以外，Storyboard 更重视画面之间的关联和迁移，而 Xib 作为通用组件的模版应该是不二的选择。</p><p>在 P-OOP 中，将会存在大量的 dialog，尽管可以很容易的使用 Present Modally 来实现，不过为了保持系列产品的风格一致性，需要考虑如何以比较好的方式来实现共通的 header 和 footer 样式。考虑过很多方案，比如：</p><ol><li>将 footer 和 header 集成在同一个 view 中，并添加一个 content view，最终在某 controlelr view 中将上述 view 与实际从另一个 xib 中载入的 content view 组合，完成组装。但是存在一个比较显著的缺点，实际可见的 controller view 所呈现的内容并不是很直观，果然还是必须看代码才能梳理清楚。</li><li>将 footer 和 header 以及一个 content view 集成在同一个 controller view 中。在代码中按照要求载入 content，代理方法之类变得容易管理了一些，但是更糟糕的是这个 controller 的代码终将成为垃圾场的。。。那加入继承呢？有些小题大做？</li></ol><p>果然简洁才是最高的，将 footer 和 header 完全独立为两个 view，按需载入。结合 @IBInspectable 和 @IBDesignable 可以说是比较完美了，从画面设计到迁移等都很清晰。不足一提的小缺点是使用时候的 auto layout 的设置可能存在一些重复操作 (比如 Auto Layout 之类的)，若考虑 Model 除了 form sheet 以外可以是 full screen，后者需要在顶部额外预留 20px，这样一来反而变得巧妙了。</p><p>也许过几天自己的想法又发生了细微变化，但简洁清晰无论何时都不会太坏。</p><h2>心得</h2><h3>Storyboard Reference</h3><p>Storyboard 容易引发冲突，这句话在 Storyboard Reference 面前是不成立的。</p><p><strong>Storyboard Reference</strong> 第一次出现在 Xcode 7，可以从组件库中找到它，并自行进行配置和关联，十分简单，无需赘述。即使是一个已经完成且十分繁杂的 Storyboard，也可以选中想要分离的 Storyboard，通过 <strong>Editor -&gt; Refactor to Storyboard</strong> 来实现。比如，使用了两个 Container View，默认情况下此时画面中存在三个 controller，对其进行分离之后，变成了这样：</p><img src="/images/Storyboard_reference.png" alt="Storyboard Reference"/><h3>Loadable Nib</h3><p>将 Xib 组件的载入协议化，其中一个目的是为了类型安全，另一个目的是为了减少重复代码。</p><pre><code><span class="keyword">protocol</span> Loadable: <span class="keyword">class</span> {
+    <span class="keyword">static var</span> nibName: <span class="type">String</span> { <span class="keyword">get</span> }
 }
 
-extension Loadable {
-    static var nibName: String { return String(describing: Self.self) }
+<span class="keyword">extension</span> <span class="type">Loadable</span> {
+    <span class="keyword">static var</span> nibName: <span class="type">String</span> { <span class="keyword">return</span> <span class="type">String</span>(describing: <span class="type">Self</span>.<span class="keyword">self</span>) }
 }
-```
-
-对 `UIView` 进行扩展，要求被载入的 view 遵循 `Loadable` 协议：
-
-```swift
-extension UIView {
-    func instantiateFromNib<T: UIView>(_:T.Type) -> T where T: Loadable {
-        if let nib = UINib(nibName: T.nibName, bundle: nil).instantiate(withOwner: nil, options: nil).first as? T {
-            return nib
-        } else {
-            fatalError("Nib \(T.nibName) is not exist ?!")
+</code></pre><p>对 <code>UIView</code> 进行扩展，要求被载入的 view 遵循 <code>Loadable</code> 协议：</p><pre><code><span class="keyword">extension</span> <span class="type">UIView</span> {
+    <span class="keyword">func</span> instantiateFromNib&lt;T: <span class="type">UIView</span>&gt;(<span class="keyword">_</span>:<span class="type">T</span>.<span class="type">Type</span>) -&gt; <span class="type">T</span> <span class="keyword">where</span> <span class="type">T</span>: <span class="type">Loadable</span> {
+        <span class="keyword">if let</span> nib = <span class="type">UINib</span>(nibName: <span class="type">T</span>.<span class="property">nibName</span>, bundle: <span class="keyword">nil</span>).<span class="call">instantiate</span>(withOwner: <span class="keyword">nil</span>, options: <span class="keyword">nil</span>).<span class="property">first</span> <span class="keyword">as</span>? <span class="type">T</span> {
+            <span class="keyword">return</span> nib
+        } <span class="keyword">else</span> {
+            <span class="call">fatalError</span>(<span class="string">"Nib</span> \(<span class="type">T</span>.<span class="property">nibName</span>) <span class="string">is not exist ?!"</span>)
         }
     }
     
-    func instantiateFromNibOwner<T: UIView>(_:T.Type) where T: Loadable {
-        let bundle = Bundle(for: type(of: self))
-        if let nib = UINib(nibName: T.nibName, bundle: bundle).instantiate(withOwner: self, options: nil).first as? UIView {
-            nib.frame = self.bounds
-            nib.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            self.addSubview(nib)
-        } else {
-            fatalError("Nib \(T.nibName) is not exist ?!")
+    <span class="keyword">func</span> instantiateFromNibOwner&lt;T: <span class="type">UIView</span>&gt;(<span class="keyword">_</span>:<span class="type">T</span>.<span class="type">Type</span>) <span class="keyword">where</span> <span class="type">T</span>: <span class="type">Loadable</span> {
+        <span class="keyword">let</span> bundle = <span class="type">Bundle</span>(for: <span class="call">type</span>(of: <span class="keyword">self</span>))
+        <span class="keyword">if let</span> nib = <span class="type">UINib</span>(nibName: <span class="type">T</span>.<span class="property">nibName</span>, bundle: bundle).<span class="call">instantiate</span>(withOwner: <span class="keyword">self</span>, options: <span class="keyword">nil</span>).<span class="property">first</span> <span class="keyword">as</span>? <span class="type">UIView</span> {
+            nib.<span class="property">frame</span> = <span class="keyword">self</span>.<span class="property">bounds</span>
+            nib.<span class="property">autoresizingMask</span> = [.<span class="dotAccess">flexibleWidth</span>, .<span class="dotAccess">flexibleHeight</span>]
+            <span class="keyword">self</span>.<span class="call">addSubview</span>(nib)
+        } <span class="keyword">else</span> {
+            <span class="call">fatalError</span>(<span class="string">"Nib</span> \(<span class="type">T</span>.<span class="property">nibName</span>) <span class="string">is not exist ?!"</span>)
         }
     }
 }
-```
+</code></pre><p>简洁的初始化：</p><pre><code><span class="keyword">let</span> view:<span class="type">ClassName</span> = <span class="keyword">self</span>.<span class="call">instantiateFromNib</span>(<span class="type">ClassName</span>.<span class="keyword">self</span>)
+<span class="keyword">self</span>.<span class="call">instantiateFromNibOwner</span>(<span class="type">ClassName</span>.<span class="keyword">self</span>)
+</code></pre><p>后来发现一个名为 <a href="https://github.com/AliSoftware/Reusable">Reusable</a> 的库，其中除了这一部分的实现之外，还有对 Cell 甚至是 Storyboard 和 ViewController 的重用，十分强大。</p><p>回到这一部分的实现，略有区别的地方在于：</p><ol><li><em>Reusable</em> 在初始化 nib 的时候选择了扩展协议。</li><li>在 <em>File's Owner</em> 的情况下，<em>Reusable</em> 使用了 Auto Layout。由于我们的 <strong>P-OOP</strong> 项目对应的设备尺寸不多，所以像是部分弹出框就没有对应 Auto Layout，所以就直接从 frame 的尺寸下手了。。</li></ol><blockquote><p>追记：把这部分实现和例子提了出来放在了 <a href="https://github.com/Ckitakishi/LoadableNib">Github</a> 上～</p></blockquote><h3>@IBDesignable 和 @IBInspectable</h3><p><strong>@IBDesignable</strong> 可以用于视图的实时渲染，<strong>@IBInspectable</strong> 可以用于定义运行时属性。</p><p>举个例子来说：首先在定义一个 <code>DialogHeaderView</code>，标记为 <code>@IBDesignable</code>，将它的 <code>headerTitle</code> 属性设置为 <code>@IBInspectable</code>：</p><pre><code><span class="keyword">@IBDesignable class</span> DialogHeaderView: <span class="type">UIView</span> {
 
-简洁的初始化：
-
-```swift
-let view:ClassName = self.instantiateFromNib(ClassName.self)
-self.instantiateFromNibOwner(ClassName.self)
-```
-
-后来发现一个名为 [Reusable](https://github.com/AliSoftware/Reusable) 的库，其中除了这一部分的实现之外，还有对 Cell 甚至是 Storyboard 和 ViewController 的重用，十分强大。
-
-回到这一部分的实现，略有区别的地方在于：
-
-1. *Reusable* 在初始化 nib 的时候选择了扩展协议。
-2. 在 *File's Owner* 的情况下，*Reusable* 使用了 Auto Layout。由于我们的 **P-OOP** 项目对应的设备尺寸不多，所以像是部分弹出框就没有对应 Auto Layout，所以就直接从 frame 的尺寸下手了。。
-
-> 追记：把这部分实现和例子提了出来放在了 [Github](https://github.com/Ckitakishi/LoadableNib) 上～
-
-### @IBDesignable 和 @IBInspectable
-
-**@IBDesignable** 可以用于视图的实时渲染，**@IBInspectable** 可以用于定义运行时属性。
-
-举个例子来说：首先在定义一个 `DialogHeaderView`，标记为 `@IBDesignable`，将它的 `headerTitle` 属性设置为 `@IBInspectable`：
-
-```swift
-@IBDesignable class DialogHeaderView: UIView {
-
-    @IBInspectable var headerTitle: String = "" {
-        didSet {
-            navigationBar.topItem?.title = self.headerTitle
+    <span class="keyword">@IBInspectable var</span> headerTitle: <span class="type">String</span> = <span class="string">""</span> {
+        <span class="keyword">didSet</span> {
+            navigationBar.<span class="property">topItem</span>?.<span class="property">title</span> = <span class="keyword">self</span>.<span class="property">headerTitle</span>
         }
     }
     ...   
 }
-```
-
-然后向目标视图添加一个 UIView，并将类定义为 `DialogHeaderView`，此时在 *Attribuite Inspector* 中可以直接设置属性：
-
-![IB1](/images/IB1.png)
-
-之后即会反映在运行时属性栏中：
-
-![IB2](/images/IB2.png)
-
-不过构建失败的时候还是挺多的，不妨通过 **Editor -> Debug Selected Views** 来调试一下选中的视图。
-
-### 类型安全
-
-除了定义上面的 `Loadable` 协议，在类型安全这个问题上还可以进一步再做一些工作。
-
-存在 Storyboard，Segue 的定义也就会有存在，由于 identifier 的定义是字符串，防不胜防，不匹配的情况还是会时而发生。这时候使用 [R.swift](https://github.com/mac-cain13/R.swift) 就能够完全解消这个担忧了。
-
-*R.swift* 被广泛使用于解决类型安全的问题，图片、字体、本地化等等都受益于此。
-
-
-
-</div></article><footer class="flex flex-col mb-4 text-sm font-light mt-auto text-zinc-500 dark:text-zinc-400"><p class="text-center mt-16">Copyright © 2014-2022 Ckitakishi</p><p class="text-center mt-1">Powered by <a href="https://github.com/johnsundell/publish" class="link-underline">Publish</a> &amp; <a href="https://github.com/Ckitakishi/PaletteTheme" class="link-underline">Palette</a></p></footer></div></div></body></html>
+</code></pre><p>然后向目标视图添加一个 UIView，并将类定义为 <code>DialogHeaderView</code>，此时在 <em>Attribuite Inspector</em> 中可以直接设置属性：</p><img src="/images/IB1.png" alt="IB1"/><p>之后即会反映在运行时属性栏中：</p><img src="/images/IB2.png" alt="IB2"/><p>不过构建失败的时候还是挺多的，不妨通过 <strong>Editor -&gt; Debug Selected Views</strong> 来调试一下选中的视图。</p><h3>类型安全</h3><p>除了定义上面的 <code>Loadable</code> 协议，在类型安全这个问题上还可以进一步再做一些工作。</p><p>存在 Storyboard，Segue 的定义也就会有存在，由于 identifier 的定义是字符串，防不胜防，不匹配的情况还是会时而发生。这时候使用 <a href="https://github.com/mac-cain13/R.swift">R.swift</a> 就能够完全解消这个担忧了。</p><p><em>R.swift</em> 被广泛使用于解决类型安全的问题，图片、字体、本地化等等都受益于此。</p></div></article></div></div><footer class="flex flex-col text-sm font-light mt-auto text-zinc-500 dark:text-zinc-400"><p class="text-center mt-16">Copyright © 2014-2022 Ckitakishi</p><p class="text-center mt-1">Powered by <a href="https://github.com/johnsundell/publish" class="link-underline">Publish</a> &amp; <a href="https://github.com/Ckitakishi/PaletteTheme" class="link-underline">Palette</a></p><div class="grid grid-cols-8 w-full h-[8px] mt-6"><div class="bg-[#ab4642]"></div><div class="bg-[#dc9656]"></div><div class="bg-[#f7ca88]"></div><div class="bg-[#a1b56c]"></div><div class="bg-[#86c1b9]"></div><div class="bg-[#7cafc2]"></div><div class="bg-[#ba8baf]"></div><div class="bg-[#a16946]"></div></div></footer></div></body></html>

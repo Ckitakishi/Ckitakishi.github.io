@@ -1,75 +1,33 @@
-<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"/><meta name="og:site_name" content=""Ckitakishi...""/><link rel="canonical" href="ckitakishi.com/posts/Memory-warning-%E5%A4%A7%E9%9A%90%E9%9A%90%E4%BA%8E%E5%B8%82"/><meta name="twitter:url" content="ckitakishi.com/posts/Memory-warning-%E5%A4%A7%E9%9A%90%E9%9A%90%E4%BA%8E%E5%B8%82"/><meta name="og:url" content="ckitakishi.com/posts/Memory-warning-%E5%A4%A7%E9%9A%90%E9%9A%90%E4%BA%8E%E5%B8%82"/><title>Memory warning: 大隐隐于市 | "Ckitakishi..."</title><meta name="twitter:title" content="Memory warning: 大隐隐于市 | "Ckitakishi...""/><meta name="og:title" content="Memory warning: 大隐隐于市 | "Ckitakishi...""/><meta name="description" content="对 memory warning (内存警告) 的处理是一个在开发中极其容易被忽略的问题，究其原因，最重要莫过于 warning 并不那么容易发生，开发中尤其如此。即使发生了，在我们分析崩溃日志的时候，也未必能够明察与之是否有关，再进一步说，就算知道了十有八九是 memory warning 导致了崩溃，有时候要准确定位根源仍需耗费一番功夫。"/><meta name="twitter:description" content="对 memory warning (内存警告) 的处理是一个在开发中极其容易被忽略的问题，究其原因，最重要莫过于 warning 并不那么容易发生，开发中尤其如此。即使发生了，在我们分析崩溃日志的时候，也未必能够明察与之是否有关，再进一步说，就算知道了十有八九是 memory warning 导致了崩溃，有时候要准确定位根源仍需耗费一番功夫。"/><meta name="og:description" content="对 memory warning (内存警告) 的处理是一个在开发中极其容易被忽略的问题，究其原因，最重要莫过于 warning 并不那么容易发生，开发中尤其如此。即使发生了，在我们分析崩溃日志的时候，也未必能够明察与之是否有关，再进一步说，就算知道了十有八九是 memory warning 导致了崩溃，有时候要准确定位根源仍需耗费一番功夫。"/><meta name="twitter:card" content="summary"/><link rel="stylesheet" href="/styles.css" type="text/css"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/><link rel="alternate" href="/feed.rss" type="application/rss+xml" title="Subscribe to "Ckitakishi...""/></head><body class="item-page"><header class="flex justify-center p-4 text-zinc-900 dark:text-zinc-50"><div class="flex flex-wrap justify-between my-4 gap-x-16 max-w-screen-lg w-full"><a href="/" class="font-extrabold text-3xl">"Ckitakishi..."</a><nav class="my-auto"><ul class="flex flex-wrap gap-4"><li><a href="/" class="hover:underline underline-offset-4">Home</a></li><li><a href="/posts" class="hover:underline underline-offset-4">Writing</a></li><li><a href="/tags/求索集/" class="hover:underline underline-offset-4">求索集</a></li><li><a href="/tags/浮生记/" class="hover:underline underline-offset-4">浮生记</a></li><li><a href="/feed.rss" class="hover:underline underline-offset-4">RSS</a></li></ul></nav></div></header><div class="flex justify-center min-h-full text-zinc-900 dark:text-zinc-50 m-4"><div class="max-w-screen-md w-full m-4 flex flex-col"><div class="flex text-zinc-600 dark:text-zinc-50"><p class="flex shrink-0">Feb 23, 2019</p><p class="mx-3 text-lg -mt-0.5">|</p><ul class="flex flex-wrap gap-2"><li><a href="/tags/求索集" class="hashtag link-underline">求索集</a></li><li><a href="/tags/ios" class="hashtag link-underline">iOS</a></li></ul></div><article class="prose prose-zinc min-w-full dark:prose-invert"><div class="content"><h1>Memory warning: 大隐隐于市</h1><p>对 memory warning (内存警告) 的处理是一个在开发中极其容易被忽略的问题，究其原因，最重要莫过于 warning 并不那么容易发生<s>，开发中尤其如此</s>。即使发生了，在我们分析崩溃日志的时候，也未必能够明察与之是否有关，再进一步说，就算知道了十有八九是 memory warning 导致了崩溃，有时候要准确定位根源仍需耗费一番功夫。</p><h2>常见原因</h2><p>由内存原因导致的崩溃类型多不胜数，不过在这里只打算讨论内存不足导致应用被强制终结这一种。比较常见的是下述几种：</p><ul><li>自然消耗，处理媒体资源尤其容易消耗内存。<ul><li>未处理 memory warning</li><li>对 memory warning 的处理不正确</li><li>memory leak (内存泄漏)，确切来说 memory leak 不是直接原因，而是一个加速器。</li></ul></li></ul><h2>实例</h2><p>之所以认识到这个问题的重要性，是因为最近在看崩溃日志的时候，发现有很多个原因近似，但发生场所不太相同的崩溃，不过总体来说发生率只有 0.0X%。因为夹杂着一些 RxSwift 的代码，真正发生崩溃的位置变得很难判断，真实原因更是扑朔迷离。所谓家家有本难念的经，相似的，短短代码都有说不尽的故事，所以就事论事，来说说到底发生了什么。</p><!--more-->
-
-首先，我们有一个封装了 `UICollectionView` 的 `UIViewController`，也就是 `BaseCollectionViewController`，在其中定义了一个可以“保证”不是 `nil` 且不为 `weak` 的 `collectionVIew`：
-
-```Swift
-// BaseCollectionViewController.swift
-fileprivate(set) var collectionView: UICollectionView!
-// ...
-override func didReceiveMemoryWarning() {
-    if isViewLoaded && view.window == nil && collectionView.isDescendant(of: view) {
-        collectionView.removeFromSuperview()
-        collectionView.delegate = nil
-        collectionView.dataSource = nil
-        collectionView = nil
+<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"/><meta name="og:site_name" content=""Ckitakishi...""/><link rel="canonical" href="ckitakishi.com/posts/Memory-warning-%E5%A4%A7%E9%9A%90%E9%9A%90%E4%BA%8E%E5%B8%82"/><meta name="twitter:url" content="ckitakishi.com/posts/Memory-warning-%E5%A4%A7%E9%9A%90%E9%9A%90%E4%BA%8E%E5%B8%82"/><meta name="og:url" content="ckitakishi.com/posts/Memory-warning-%E5%A4%A7%E9%9A%90%E9%9A%90%E4%BA%8E%E5%B8%82"/><title>Memory warning: 大隐隐于市 | "Ckitakishi..."</title><meta name="twitter:title" content="Memory warning: 大隐隐于市 | "Ckitakishi...""/><meta name="og:title" content="Memory warning: 大隐隐于市 | "Ckitakishi...""/><meta name="description" content="对 memory warning (内存警告) 的处理是一个在开发中极其容易被忽略的问题，究其原因，最重要莫过于 warning 并不那么容易发生，开发中尤其如此。即使发生了，在我们分析崩溃日志的时候，也未必能够明察与之是否有关，再进一步说，就算知道了十有八九是 memory warning 导致了崩溃，有时候要准确定位根源仍需耗费一番功夫。"/><meta name="twitter:description" content="对 memory warning (内存警告) 的处理是一个在开发中极其容易被忽略的问题，究其原因，最重要莫过于 warning 并不那么容易发生，开发中尤其如此。即使发生了，在我们分析崩溃日志的时候，也未必能够明察与之是否有关，再进一步说，就算知道了十有八九是 memory warning 导致了崩溃，有时候要准确定位根源仍需耗费一番功夫。"/><meta name="og:description" content="对 memory warning (内存警告) 的处理是一个在开发中极其容易被忽略的问题，究其原因，最重要莫过于 warning 并不那么容易发生，开发中尤其如此。即使发生了，在我们分析崩溃日志的时候，也未必能够明察与之是否有关，再进一步说，就算知道了十有八九是 memory warning 导致了崩溃，有时候要准确定位根源仍需耗费一番功夫。"/><meta name="twitter:card" content="summary"/><link rel="stylesheet" href="/styles.css" type="text/css"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/><link rel="alternate" href="/feed.rss" type="application/rss+xml" title="Subscribe to "Ckitakishi...""/></head><body class="item-page"><div class="flex flex-col min-h-full text-zinc-900 dark:text-zinc-50"><div class="grid grid-cols-8 w-full h-[8px]"><div class="bg-[#ab4642]"></div><div class="bg-[#dc9656]"></div><div class="bg-[#f7ca88]"></div><div class="bg-[#a1b56c]"></div><div class="bg-[#86c1b9]"></div><div class="bg-[#7cafc2]"></div><div class="bg-[#ba8baf]"></div><div class="bg-[#a16946]"></div></div><header class="flex justify-center p-4 text-zinc-900 dark:text-zinc-50"><div class="flex flex-wrap justify-between my-4 gap-x-16 max-w-screen-lg w-full"><a href="/" class="font-extrabold text-3xl">"Ckitakishi..."</a><nav class="my-auto"><ul class="flex flex-wrap gap-4"><li><a href="/" class="hover:underline underline-offset-4">Home</a></li><li><a href="/posts" class="hover:underline underline-offset-4">Writing</a></li><li><a href="/tags/求索集/" class="hover:underline underline-offset-4">求索集</a></li><li><a href="/tags/浮生记/" class="hover:underline underline-offset-4">浮生记</a></li><li><a href="/feed.rss" class="hover:underline underline-offset-4">RSS</a></li></ul></nav></div></header><div class="flex justify-center mx-4"><div class="max-w-screen-md w-full m-4"><div class="flex text-zinc-600 dark:text-zinc-50 mb-1"><p class="flex shrink-0">Feb 23, 2019</p><p class="mx-3 text-lg -mt-0.5">|</p><ul class="flex flex-wrap gap-2"><li><a href="/tags/求索集" class="hashtag link-underline">求索集</a></li><li><a href="/tags/ios" class="hashtag link-underline">iOS</a></li></ul></div><article class="prose prose-zinc min-w-full dark:prose-invert"><div class="content"><h1>Memory warning: 大隐隐于市</h1><p>对 memory warning (内存警告) 的处理是一个在开发中极其容易被忽略的问题，究其原因，最重要莫过于 warning 并不那么容易发生<s>，开发中尤其如此</s>。即使发生了，在我们分析崩溃日志的时候，也未必能够明察与之是否有关，再进一步说，就算知道了十有八九是 memory warning 导致了崩溃，有时候要准确定位根源仍需耗费一番功夫。</p><h2>常见原因</h2><p>由内存原因导致的崩溃类型多不胜数，不过在这里只打算讨论内存不足导致应用被强制终结这一种。比较常见的是下述几种：</p><ul><li>自然消耗，处理媒体资源尤其容易消耗内存。<ul><li>未处理 memory warning</li><li>对 memory warning 的处理不正确</li><li>memory leak (内存泄漏)，确切来说 memory leak 不是直接原因，而是一个加速器。</li></ul></li></ul><h2>实例</h2><p>之所以认识到这个问题的重要性，是因为最近在看崩溃日志的时候，发现有很多个原因近似，但发生场所不太相同的崩溃，不过总体来说发生率只有 0.0X%。因为夹杂着一些 RxSwift 的代码，真正发生崩溃的位置变得很难判断，真实原因更是扑朔迷离。所谓家家有本难念的经，相似的，短短代码都有说不尽的故事，所以就事论事，来说说到底发生了什么。</p><p>首先，我们有一个封装了 <code>UICollectionView</code> 的 <code>UIViewController</code>，也就是 <code>BaseCollectionViewController</code>，在其中定义了一个可以“保证”不是 <code>nil</code> 且不为 <code>weak</code> 的 <code>collectionVIew</code>：</p><pre><code><span class="comment">// BaseCollectionViewController.swift</span>
+<span class="keyword">fileprivate(set) var</span> collectionView: <span class="type">UICollectionView</span>!
+<span class="comment">// ...</span>
+<span class="keyword">override func</span> didReceiveMemoryWarning() {
+    <span class="keyword">if</span> isViewLoaded &amp;&amp; view.<span class="property">window</span> == <span class="keyword">nil</span> &amp;&amp; collectionView.<span class="call">isDescendant</span>(of: view) {
+        collectionView.<span class="call">removeFromSuperview</span>()
+        collectionView.<span class="property">delegate</span> = <span class="keyword">nil</span>
+        collectionView.<span class="property">dataSource</span> = <span class="keyword">nil</span>
+        collectionView = <span class="keyword">nil</span>
     }
-    super.didReceiveMemoryWarning()
+    <span class="keyword">super</span>.<span class="call">didReceiveMemoryWarning</span>()
 }
 
-override func loadView() {
-    super.loadView()
-    // init collectionView in code
+<span class="keyword">override func</span> loadView() {
+    <span class="keyword">super</span>.<span class="call">loadView</span>()
+    <span class="comment">// init collectionView in code</span>
 }
-```
-
-此外，还拥有一个继承自 BaseCollectionViewController 的 XXViewController：
-
-```Swift
-// XXViewController
-class XXViewController: BaseCollectionViewController {
-    override func didReceiveMemoryWarning() {
-        if isViewLoaded && view.window == nil {
-            // ...
+</code></pre><p>此外，还拥有一个继承自 <code>BaseCollectionViewController</code> 的 <code>XXViewController</code>：</p><pre><code><span class="comment">// XXViewController</span>
+<span class="keyword">class</span> XXViewController: <span class="type">BaseCollectionViewController</span> {
+    <span class="keyword">override func</span> didReceiveMemoryWarning() {
+        <span class="keyword">if</span> isViewLoaded &amp;&amp; view.<span class="property">window</span> == <span class="keyword">nil</span> {
+            <span class="comment">// ...</span>
         }
-        super.didReceiveMemoryWarning()
+        <span class="keyword">super</span>.<span class="call">didReceiveMemoryWarning</span>()
     }
 
-    private func reloadData() {
-        // fetch data from server then reload collection view
-        // ...
-        collectionView.reloadData()
+    <span class="keyword">private func</span> reloadData() {
+        <span class="comment">// fetch data from server then reload collection view
+        // ...</span>
+        collectionView.<span class="call">reloadData</span>()
     }
 }
-```
-
-实际的运用情景是，在 `XXViewController`` 中存在 pop 一个新 ViewController 的情况，这个时候，XXViewController` 需要重新获取数据来刷新页面并更新 collectionView 的 `contentOffset`。按道理来说，刷新数据在下一次 view will appear 的时候进行会更保险，但是由于被强烈要求调整 `contentOffset` 这个过程不可见，所以…这样一来，bug 就“应运而生”了。
-
-当新 ViewController 位于最顶端的时候，XXViewController 就不再被 window 所持有。由于它继承自 BaseCollectionViewController，`didReceiveMemoryWarning` 发生时 collectionView 会在不知不觉中被置为 nil，如果这一切发生在 collectionView.reloadData() 之前，那噩梦就诞生了。
-
-这个时候，或许会反思 controller view 之间的继承关系到底合理么，调整 `contentOffset` 不可见到底合理么，`collectionView = nil` 到底有没有意义。我认为这些都是合理的着手点，对于这类问题，找到原因其实就已经解决了 80% 了。
-
-## 实践
-
-未雨绸缪这句话在这里非常适用，提前去思考一些问题有助于我们规避 memory warning 带来的麻烦：
-
--  当接收到 memery warning 时我们该做什么？
-- view controller  不被 window 持有的时候需要做什么？
-- 当一个 view controller 被恢复的时候，`loadView`, `viewDidLoad` 会默认被调用，但是自定义的 `init` 方法们就不一定了，这样仍能顺利完成初始化吗？
-- 是否存在显著的内存泄漏？
-
-当这些问题都梳理清楚的时候，也就大大减少了后顾之忧。
-
-除了上面提到过的 `didReceiveMemoryWarning`，还有一个比较常用的方法： `applicationDidReceiveMemoryWarning`，后者是 App delegate 的方法，所以我认为可以用来管理一些全局对象，或是缓存之类的。除此之外，还可以在必要的时候监听名为 `UIApplicationDidReceiveMemoryWarningNotification` 的通知来做一些特殊的处理。
-
-## 触发 memory warning
-
-那么，当准备就绪的时候，我们就可以通过触发 memory warning 来进行测试了。
-
-1. 模拟器 --> Debug --> Simulate Memory Warning (`Shift + Command + M`): 模拟器调试选项，结合断点模拟 warning
-2. `UIApplication.shared.perform(Selector(("_performMemoryWarning")))`: 在代码中指定位置触发 warning
-
-## 最后
-
-内存管理着实不是一个简单的问题，上述内容不过浮于浅表。如果想要稍微再多了解一点，推荐看一看 WWDC 2018 的 [Session 416](https://developer.apple.com/videos/play/wwdc2018/416/) ，有很多内容刷新了我的既存认知...
-
-</div></article><footer class="flex flex-col mb-4 text-sm font-light mt-auto text-zinc-500 dark:text-zinc-400"><p class="text-center mt-16">Copyright © 2014-2022 Ckitakishi</p><p class="text-center mt-1">Powered by <a href="https://github.com/johnsundell/publish" class="link-underline">Publish</a> &amp; <a href="https://github.com/Ckitakishi/PaletteTheme" class="link-underline">Palette</a></p></footer></div></div></body></html>
+</code></pre><p>实际的运用情景是，在 <code>XXViewController</code> 中存在 pop 一个新 ViewController 的情况，这个时候，<code>XXViewController</code> 需要重新获取数据来刷新页面并更新 <code>collectionView</code> 的 <code>contentOffset</code>。按道理来说，刷新数据在下一次 view will appear 的时候进行会更保险，但是由于我们会在更早的阶段就更新 <code>contentOffset</code>，bug 就这样不幸地产生了。</p><p>当新 <code>ViewController</code> 位于最顶端的时候，<code>XXViewController</code> 就不再被 window 所持有。由于它继承自 <code>BaseCollectionViewController</code>，<code>didReceiveMemoryWarning</code> 发生时 <code>collectionView</code> 会在不知不觉中被置为 <code>nil</code>，如果这一切发生在 <code>collectionView.reloadData()</code> 之前，那噩梦就诞生了。</p><p>这个时候，或许会反思 controller view 之间的继承关系到底合理么，调整 <code>contentOffset</code> 不可见到底合理么，<code>collectionView = nil</code> 到底有没有意义。我认为这些都是合理的着手点，对于这类问题，找到原因其实就已经解决了 80% 了。</p><h2>实践</h2><p>未雨绸缪这句话在这里非常适用，提前去思考一些问题有助于我们规避 memory warning 带来的麻烦：</p><ul><li>当接收到 memery warning 时我们该做什么？</li><li>view controller 不被 window 持有的时候需要做什么？</li><li>当一个 view controller 被恢复的时候，<code>loadView</code>, <code>viewDidLoad</code> 会默认被调用，但是自定义的 <code>init</code> 方法们就不一定了，这样仍能顺利完成初始化吗？</li><li>是否存在显著的内存泄漏？</li></ul><p>当这些问题都梳理清楚的时候，也就大大减少了后顾之忧。</p><p>除了上面提到过的 <code>didReceiveMemoryWarning</code>，还有一个比较常用的方法： <code>applicationDidReceiveMemoryWarning</code>，后者是 App delegate 的方法，所以我认为可以用来管理一些全局对象，或是缓存之类的。除此之外，还可以在必要的时候监听名为 <code>UIApplicationDidReceiveMemoryWarningNotification</code> 的通知来做一些特殊的处理。</p><h2>触发 memory warning</h2><p>那么，当准备就绪的时候，我们就可以通过触发 memory warning 来进行测试了。</p><ol><li>模拟器 --&gt; Debug --&gt; Simulate Memory Warning (<code>Shift + Command + M</code>): 模拟器调试选项，结合断点模拟 warning</li><li><code>UIApplication.shared.perform(Selector(("_performMemoryWarning")))</code>: 在代码中指定位置触发 warning</li></ol><h2>最后</h2><p>内存管理着实不是一个简单的问题，上述内容不过浮于浅表。如果想要稍微再多了解一点，推荐看一看 WWDC 2018 的 <a href="https://developer.apple.com/videos/play/wwdc2018/416/">Session 416</a> ，有很多内容刷新了我的既存认知...</p></div></article></div></div><footer class="flex flex-col text-sm font-light mt-auto text-zinc-500 dark:text-zinc-400"><p class="text-center mt-16">Copyright © 2014-2022 Ckitakishi</p><p class="text-center mt-1">Powered by <a href="https://github.com/johnsundell/publish" class="link-underline">Publish</a> &amp; <a href="https://github.com/Ckitakishi/PaletteTheme" class="link-underline">Palette</a></p><div class="grid grid-cols-8 w-full h-[8px] mt-6"><div class="bg-[#ab4642]"></div><div class="bg-[#dc9656]"></div><div class="bg-[#f7ca88]"></div><div class="bg-[#a1b56c]"></div><div class="bg-[#86c1b9]"></div><div class="bg-[#7cafc2]"></div><div class="bg-[#ba8baf]"></div><div class="bg-[#a16946]"></div></div></footer></div></body></html>
