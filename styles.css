@@ -1043,8 +1043,8 @@ a {
   margin-bottom: 0.25rem;
 }
 
-.mt-12 {
-  margin-top: 3rem;
+.mt-20 {
+  margin-top: 5rem;
 }
 
 .mt-16 {
@@ -1069,10 +1069,6 @@ a {
 
 .-mt-0 {
   margin-top: -0px;
-}
-
-.mt-20 {
-  margin-top: 5rem;
 }
 
 .flex {
@@ -1328,6 +1324,11 @@ svg {
 
 .hashtag::before {
   content: "#"
+}
+
+.header-title::before, 
+.header-title::after {
+  content: "\"";
 }
 
 /* Code: Syntax Highlight */
