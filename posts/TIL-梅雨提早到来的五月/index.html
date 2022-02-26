@@ -38,17 +38,7 @@ label.<span class="property">attributedText</span> = <span class="type">NSAttrib
 )
 </code></pre><hr><h1>05/07</h1><h2>Apple's Compression Algorithms</h2><p>当讨论一个压缩算法的时候，压缩率和速度是最重要的两个维度。</p><p>Apple 自己的压缩框架也提供了多种算法:</p><blockquote><p>WWDC2015 Session 712</p></blockquote><p>Balanced: <code>zlib</code> and <code>lzfse</code> High compression, slow: <code>lzma</code> Low compression, fast: <code>lz4</code></p><hr><h1>05/06</h1><h2>setUp()/tearDown()</h2><ul><li>instance method: each test method</li><li>class method: all test methods</li></ul><h2>globallyUniqueString</h2><p>一般来说提到唯一标志符我们常常会先想到 <code>UUID</code> ，例如用下述方法来生成独一无二的字符串：</p><pre><code><span class="type">UUID</span>().<span class="property">uuidString</span>
 </code></pre><p>但如果我们需要创建临时文件，那使用进程级别的唯一字符串也不失为一个好办法。其中包含了主机名，进程 ID，时间戳，来保证其唯一性。</p><pre><code><span class="type">ProcessInfo</span>.<span class="property">processInfo</span>.<span class="property">globallyUniqueString</span>
-</code></pre></div></article><div class="giscus mt-20"></div></div></div><footer class="flex flex-col text-sm font-light mt-auto text-zinc-500 dark:text-zinc-400"><p class="text-center mt-16">Copyright © 2014-2022 Ckitakishi</p><p class="text-center mt-1">Powered by <a href="https://github.com/johnsundell/publish" class="link-underline">Publish</a> &amp; <a href="https://github.com/Ckitakishi/PaletteTheme" class="link-underline">Palette</a></p><div class="grid grid-cols-8 w-full h-[8px] mt-6"><div class="bg-[#ab4642]"></div><div class="bg-[#dc9656]"></div><div class="bg-[#f7ca88]"></div><div class="bg-[#a1b56c]"></div><div class="bg-[#86c1b9]"></div><div class="bg-[#7cafc2]"></div><div class="bg-[#ba8baf]"></div><div class="bg-[#a16946]"></div></div></footer><!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-107870195-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-107870195-1');
-</script>
-
-</div><script src="https://giscus.app/client.js"
+</code></pre></div></article><div class="giscus mt-20"></div></div></div><footer class="flex flex-col text-sm font-light mt-auto text-zinc-500 dark:text-zinc-400"><p class="text-center mt-16">Copyright © 2014-2022 Ckitakishi</p><p class="text-center mt-1">Powered by <a href="https://github.com/johnsundell/publish" class="link-underline">Publish</a> &amp; <a href="https://github.com/Ckitakishi/PaletteTheme" class="link-underline">Palette</a></p><div class="grid grid-cols-8 w-full h-[8px] mt-6"><div class="bg-[#ab4642]"></div><div class="bg-[#dc9656]"></div><div class="bg-[#f7ca88]"></div><div class="bg-[#a1b56c]"></div><div class="bg-[#86c1b9]"></div><div class="bg-[#7cafc2]"></div><div class="bg-[#ba8baf]"></div><div class="bg-[#a16946]"></div></div></footer></div><script src="https://giscus.app/client.js"
         data-repo="Ckitakishi/Ckitakishi.github.io"
         data-repo-id="MDEwOlJlcG9zaXRvcnkxNTU4Njk1OQ=="
         data-category="General"
