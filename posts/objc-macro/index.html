@@ -1,0 +1,78 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"/><meta property="og:site_name" content="Ckitakishi"/><link rel="canonical" href="ckitakishi.com/posts/objc-macro"/><meta name="twitter:url" content="ckitakishi.com/posts/objc-macro"/><meta property="og:url" content="ckitakishi.com/posts/objc-macro"/><title>实践：Objective-C的宏定义 | Ckitakishi</title><meta name="twitter:title" content="实践：Objective-C的宏定义 | Ckitakishi"/><meta property="og:title" content="实践：Objective-C的宏定义 | Ckitakishi"/><meta name="description" content="宏定义在 Objective-C 中可以说是被广泛使用。就实际来说，目前组内对 Enum, Singeleton, Log 等都使用了宏来进行定义。究其原因，一部分是为了为了减少重复代码，提升开发体验，还有一部分来源于对条件编译的需求。"/><meta name="twitter:description" content="宏定义在 Objective-C 中可以说是被广泛使用。就实际来说，目前组内对 Enum, Singeleton, Log 等都使用了宏来进行定义。究其原因，一部分是为了为了减少重复代码，提升开发体验，还有一部分来源于对条件编译的需求。"/><meta property="og:description" content="宏定义在 Objective-C 中可以说是被广泛使用。就实际来说，目前组内对 Enum, Singeleton, Log 等都使用了宏来进行定义。究其原因，一部分是为了为了减少重复代码，提升开发体验，还有一部分来源于对条件编译的需求。"/><meta name="twitter:card" content="summary"/><link rel="stylesheet" href="/styles.css" type="text/css"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/><link rel="alternate" href="/feed.rss" type="application/rss+xml" title="Subscribe to Ckitakishi"/><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-107870195-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-107870195-1');
+</script></head><body><div class="flex flex-col min-h-full text-zinc-900 dark:text-zinc-50"><div class="grid grid-cols-8 w-full h-[8px]"><div class="bg-[#ab4642]"></div><div class="bg-[#dc9656]"></div><div class="bg-[#f7ca88]"></div><div class="bg-[#a1b56c]"></div><div class="bg-[#86c1b9]"></div><div class="bg-[#7cafc2]"></div><div class="bg-[#ba8baf]"></div><div class="bg-[#a16946]"></div></div><header class="flex justify-center p-4 text-zinc-900 dark:text-zinc-50"><div class="flex flex-wrap justify-between my-4 gap-x-16 max-w-screen-lg w-full"><a href="/" class="header-title font-extrabold text-3xl">Ckitakishi</a><nav class="my-auto"><ul class="flex flex-wrap gap-4"><li><a href="/" class="hover:underline underline-offset-4">Home</a></li><li><a href="/posts" class="hover:underline underline-offset-4">Writing</a></li><li><a href="/tags/求索集/" class="hover:underline underline-offset-4">求索集</a></li><li><a href="/tags/浮生记/" class="hover:underline underline-offset-4">浮生记</a></li><li><a href="/feed.rss" class="hover:underline underline-offset-4">RSS</a></li></ul></nav></div></header><div class="flex justify-center mx-4"><div class="max-w-screen-md w-full m-4"><div class="flex text-zinc-600 dark:text-zinc-50 mb-1"><p class="flex shrink-0">Nov 30, 2017</p><p class="mx-3 text-lg -mt-0.5">|</p><ul class="flex flex-wrap gap-2"><li><a href="/tags/求索集" class="hashtag link-underline">求索集</a></li><li><a href="/tags/ios" class="hashtag link-underline">iOS</a></li><li><a href="/tags/objectivec" class="hashtag link-underline">Objective-C</a></li><li><a href="/tags/lt" class="hashtag link-underline">LT</a></li></ul></div><article class="prose prose-zinc min-w-full dark:prose-invert"><div class="content"><blockquote><p>之前某一周的 LT 话题。</p></blockquote><h1>实践：Objective-C的宏定义</h1><p>宏定义在 Objective-C 中可以说是被广泛使用。就实际来说，目前组内对 Enum, Singeleton, Log 等都使用了宏来进行定义。究其原因，一部分是为了为了减少重复代码，提升开发体验，还有一部分来源于对条件编译的需求。</p><p>最早知道宏定义是在 C 语言课本上，然后就是笔试时候的各种宏展开。但是直到投入项目开发之后才算是稍微理解了一些宏的强大与脆弱。所以很想简单谈一谈 Objective-C 的宏定义实践。</p><h2>关于宏</h2><p>宏属于 C 预处理的一部分，C++，Objective-C 也一样通用。宏分为两种，对象宏 (<strong>Object-like</strong>) 和函数宏 (<strong>Function-like</strong>)。顾名思义，对象宏类似于数据对象，函数宏类似于函数调用。</p><pre><code><span class="comment">// Object-like</span>
+#define <span class="type">HEIGHT</span> <span class="number">60</span>
+
+<span class="comment">// Function-like</span>
+#define <span class="type">MIN</span>(a, b) a &lt; b ? a : b
+</code></pre><p>函数宏看起来可以说是相当便利，而且执行效率还非常高。但是在实际运用中很多时候并不推荐使用，比如当出现自增自减运算时，上面的最小值就可能会发生错误，你不能说它是陷阱，毕竟宏的强项并不是复杂的逻辑运算。但是艺高人胆大，如果能玩得转用一用也无妨~</p><p>扩展阅读：<a href="https://gcc.gnu.org/onlinedocs/cpp/index.html#SEC_Contents">The C Preprocessor</a></p><h2>实践</h2><h3>单例的宏定义：</h3><p>使用了条件编译 <code>#ifndef</code>，推荐这种写法，尤其是在定义 cell 的高度时最好这么做，防止多重定义。 这是一个函数宏。</p><pre><code>#ifndef <span class="type">Singleton_h</span>
+#define <span class="type">Singleton_h</span>
+
+#define <span class="type">SINGLETON_IMPL</span>( classname )\
++ (classname *)sharedInstance\
+{\
+<span class="keyword">static</span> dispatch_once_t onceToken;\
+<span class="keyword">static</span> classname *_sharedInstance = <span class="keyword">nil</span>;\
+<span class="call">dispatch_once</span>(&amp;onceToken, ^{\
+_sharedInstance = [[[<span class="keyword">self class</span>] alloc] <span class="keyword">init</span>];\
+});\
+<span class="keyword">return</span> _sharedInstance;\
+}
+
+#define <span class="type">SINGLETON_DEFINE</span>( classname )\
++ (classname *)sharedInstance;
+
+<span class="preprocessing">#endif</span>
+</code></pre><p>利用例：</p><pre><code><span class="type">ClassName</span>.<span class="property">h</span>
+<span class="type">SINGLETON_DEFINE</span>(<span class="type">ClassName</span>)
+
+<span class="type">ClassName</span>.<span class="property">m</span>
+<span class="type">SINGLETON_IMPL</span>(<span class="type">ClassName</span>)
+
+<span class="type">OtherClass</span>:
+[<span class="type">ClassName</span> sharedInstance].property
+</code></pre><h3>2. enum的宏定义：</h3><pre><code>#ifndef <span class="type">APP_ENUM</span>
+#define <span class="type">APP_ENUM</span>( name_ ) \
+typedef <span class="keyword">enum</span> name_ : <span class="type">NSInteger</span> name_; \
+<span class="keyword">enum</span> name_ : <span class="type">NSInteger</span>
+<span class="preprocessing">#endif</span>
+</code></pre><p>利用例：</p><pre><code><span class="type">APP_ENUM</span>( <span class="type">EnumName</span> ) {
+    <span class="type">EnumNameA</span>,
+    <span class="type">EnumNameB</span>
+};
+</code></pre><h3>3. LOG的宏定义：</h3><p>当且仅当版本为开发版或内部测试版时输出 log。这里的 <code>__PRETTY_FUNCTION__</code>, <code>__LINE__</code> 都是 C 中已定义的函数宏，分别表示函数和行数。</p><pre><code>#ifdef <span class="type">DEBUG</span>
+#define <span class="type">LOG</span>(<span class="type">A</span>, ...) <span class="type">NSLog</span>(<span class="keyword">@"DEBUG</span>: %s:%d:%<span class="string">@", __PRETTY_FUNCTION__,__LINE__,[NSString stringWithFormat:A, ## __VA_ARGS__]);</span>
+#elif defined <span class="type">ALPHA</span>
+#define <span class="type">LOG</span>(<span class="type">A</span>, ...) <span class="type">NSLog</span>(<span class="keyword">@"ALPHA</span>: %s:%d:%<span class="string">@", __PRETTY_FUNCTION__,__LINE__,[NSString stringWithFormat:A, ## __VA_ARGS__]);</span>
+<span class="preprocessing">#else</span>
+#define <span class="type">LOG</span>(...)
+<span class="preprocessing">#endif</span>
+</code></pre><p>利用例：</p><pre><code><span class="type">LOG</span>(<span class="string">@"test");</span>
+</code></pre><p>出力：</p><p>[Time] [App Name] [Build Configuration] [File Name + Method] [Line Number] log</p><pre><code><span class="number">2017</span>-<span class="number">11</span>-<span class="number">27 09</span>:<span class="number">35</span>:<span class="number">19.099</span> <span class="type">AppName</span>[<span class="number">59272</span>:<span class="number">2201737</span>] <span class="type">DEBUG</span>: -[<span class="type">ClassName</span> method]:<span class="number">330</span>: test
+</code></pre><h3>4. TODO&amp;FIX 的宏定义：</h3><p>参考自 <a href="http://blog.sunnyxx.com/2015/03/01/todo-macro/">todo-macro</a>，很有意思的一篇文章，通过宏定义将 <code>#pragma message ("msg")</code> 进行扩展而作为 TODO 使用：</p><pre><code>#define <span class="type">STRINGIFY</span>(<span class="type">S</span>) #S
+#define <span class="type">DEFER_STRINGIFY</span>(<span class="type">S</span>) <span class="type">STRINGIFY</span>(<span class="type">S</span>)
+#define <span class="type">PRAGMA_MESSAGE</span>(<span class="type">MSG</span>) <span class="type">_Pragma</span>(<span class="type">STRINGIFY</span>(<span class="call">message</span>(<span class="type">MSG</span>)))
+#define <span class="type">FORMATTED_MESSAGE</span>(<span class="type">MSG</span>) <span class="string">"[TODO-"</span> <span class="type">DEFER_STRINGIFY</span>(<span class="type">__COUNTER__</span>) <span class="string">"]"</span> <span class="type">MSG</span> <span class="string">" Line:"</span> <span class="type">DEFER_STRINGIFY</span>(<span class="type">__LINE__</span>)
+
+#define <span class="type">TODO</span>(<span class="type">MSG</span>) <span class="type">PRAGMA_MESSAGE</span>(<span class="type">FORMATTED_MESSAGE</span>(<span class="type">MSG</span>))
+</code></pre><p>利用例：</p><pre><code><span class="keyword">@TODO</span>(<span class="string">"test code 1"</span>)
+<span class="keyword">@TODO</span>(<span class="string">"test code 2"</span>)
+</code></pre><h2>杂谈</h2><p>当要使用宏时，务必要考虑有没有必要，合不合理，会不会有副作用。举个例子来说：当需要定义一个常量时，宏完全可以，但是更好的选择是使用 <code>const</code> 关键字。借助宏来定义常量最大的痛点就是不包含类型信息，<code>const</code> 不仅弥补了类型信息缺失的问题，而且在访问控制权限这块也表现地更好。</p><p>最后还想提一句 <code>typedef</code>，人们常常会拿它和 <code>#define</code> 相比较，看起来用法很相似，其实本质上有蛮大区别，<code>typedef</code> 是在编译期间进行处理的关键字。用途上来说，<code>typedef</code> 更多是用于创建类型别名，上述 Enum 的宏定义中为枚举指定别名就依赖于 <code>typedef</code>。</p></div></article><div class="flex justify-between text-xl mt-16"><div class="flex gap-2 w-5/12 self-center"><div class="self-center">←</div><a href="/posts/storyboard-or-xib" class="font-medium text-lg underline underline-offset-4 text-xl">Storyboard 和 Xib 的“抉择”</a></div><div class="flex flex-row-reverse gap-2 w-5/12 self-center"><div class="self-center">→</div><a href="/posts/2018-new-year" class="font-medium text-lg underline underline-offset-4 text-xl">想要坚持下去的2018</a></div></div><div class="giscus mt-20"></div></div></div><footer class="flex flex-col text-sm font-light mt-auto text-zinc-500 dark:text-zinc-400"><p class="text-center mt-16">Copyright © 2014-2024 Ckitakishi</p><p class="text-center mt-1">Powered by <a href="https://github.com/johnsundell/publish" class="link-underline">Publish</a> &amp; <a href="https://github.com/Ckitakishi/PaletteTheme" class="link-underline">Palette</a></p><div class="grid grid-cols-8 w-full h-[8px] mt-6"><div class="bg-[#ab4642]"></div><div class="bg-[#dc9656]"></div><div class="bg-[#f7ca88]"></div><div class="bg-[#a1b56c]"></div><div class="bg-[#86c1b9]"></div><div class="bg-[#7cafc2]"></div><div class="bg-[#ba8baf]"></div><div class="bg-[#a16946]"></div></div></footer></div><script src="https://giscus.app/client.js"
+        data-repo="Ckitakishi/Ckitakishi.github.io"
+        data-repo-id="MDEwOlJlcG9zaXRvcnkxNTU4Njk1OQ=="
+        data-category="General"
+        data-category-id="DIC_kwDOAO3Wj84CBSR7"
+        data-mapping="title"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="preferred_color_scheme"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+</script></body></html>

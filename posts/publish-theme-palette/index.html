@@ -1,0 +1,205 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"/><meta property="og:site_name" content="Ckitakishi"/><link rel="canonical" href="ckitakishi.com/posts/publish-theme-palette"/><meta name="twitter:url" content="ckitakishi.com/posts/publish-theme-palette"/><meta property="og:url" content="ckitakishi.com/posts/publish-theme-palette"/><title>为 Publish 打造一款全新的主题 | Ckitakishi</title><meta name="twitter:title" content="为 Publish 打造一款全新的主题 | Ckitakishi"/><meta property="og:title" content="为 Publish 打造一款全新的主题 | Ckitakishi"/><meta name="description" content="最近我将博客从 Hexo 迁移到了 Publish，整个过程十分顺利，以及 Publish 本身可玩度很高，唯一美中不足的是生态系统的成长度相对较低，主题和插件的数量并不多，不过也正因如此，懒惰的我才选择了从零开始实现一款简单易扩展的主题。本文我将会围绕如何开发一款 Publish 主题进行简单讨论和 tips 分享。"/><meta name="twitter:description" content="最近我将博客从 Hexo 迁移到了 Publish，整个过程十分顺利，以及 Publish 本身可玩度很高，唯一美中不足的是生态系统的成长度相对较低，主题和插件的数量并不多，不过也正因如此，懒惰的我才选择了从零开始实现一款简单易扩展的主题。本文我将会围绕如何开发一款 Publish 主题进行简单讨论和 tips 分享。"/><meta property="og:description" content="最近我将博客从 Hexo 迁移到了 Publish，整个过程十分顺利，以及 Publish 本身可玩度很高，唯一美中不足的是生态系统的成长度相对较低，主题和插件的数量并不多，不过也正因如此，懒惰的我才选择了从零开始实现一款简单易扩展的主题。本文我将会围绕如何开发一款 Publish 主题进行简单讨论和 tips 分享。"/><meta name="twitter:card" content="summary"/><link rel="stylesheet" href="/styles.css" type="text/css"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/><link rel="alternate" href="/feed.rss" type="application/rss+xml" title="Subscribe to Ckitakishi"/><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-107870195-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-107870195-1');
+</script></head><body><div class="flex flex-col min-h-full text-zinc-900 dark:text-zinc-50"><div class="grid grid-cols-8 w-full h-[8px]"><div class="bg-[#ab4642]"></div><div class="bg-[#dc9656]"></div><div class="bg-[#f7ca88]"></div><div class="bg-[#a1b56c]"></div><div class="bg-[#86c1b9]"></div><div class="bg-[#7cafc2]"></div><div class="bg-[#ba8baf]"></div><div class="bg-[#a16946]"></div></div><header class="flex justify-center p-4 text-zinc-900 dark:text-zinc-50"><div class="flex flex-wrap justify-between my-4 gap-x-16 max-w-screen-lg w-full"><a href="/" class="header-title font-extrabold text-3xl">Ckitakishi</a><nav class="my-auto"><ul class="flex flex-wrap gap-4"><li><a href="/" class="hover:underline underline-offset-4">Home</a></li><li><a href="/posts" class="hover:underline underline-offset-4">Writing</a></li><li><a href="/tags/求索集/" class="hover:underline underline-offset-4">求索集</a></li><li><a href="/tags/浮生记/" class="hover:underline underline-offset-4">浮生记</a></li><li><a href="/feed.rss" class="hover:underline underline-offset-4">RSS</a></li></ul></nav></div></header><div class="flex justify-center mx-4"><div class="max-w-screen-md w-full m-4"><div class="flex text-zinc-600 dark:text-zinc-50 mb-1"><p class="flex shrink-0">Mar 21, 2022</p><p class="mx-3 text-lg -mt-0.5">|</p><ul class="flex flex-wrap gap-2"><li><a href="/tags/求索集" class="hashtag link-underline">求索集</a></li><li><a href="/tags/ios" class="hashtag link-underline">iOS</a></li><li><a href="/tags/publish" class="hashtag link-underline">Publish</a></li></ul></div><article class="prose prose-zinc min-w-full dark:prose-invert"><div class="content"><h1>为 Publish 打造一款全新的主题</h1><p>最近我将博客从 Hexo 迁移到了 Publish，整个过程十分顺利，以及 Publish 本身可玩度很高，唯一美中不足的是生态系统的成长度相对较低，主题和插件的数量并不多，不过也正因如此，懒惰的我才选择了从零开始实现一款简单易扩展的主题。本文我将会围绕如何开发一款 Publish 主题进行简单讨论和 tips 分享。</p><h2>关于 Publish</h2><p><a href="https://github.com/JohnSundell/Publish">Publish</a> 是一款由 John Sundell 开发的纯 Swift 实现的静态页面生成框架。如果你熟悉 Node.js 驱动的 Hexo，或是 Go 实现的 Hugo 等框架，应该会非常欣喜于 Publish 为我们带来了用 Swift 搭建一个静态站点的可能性。</p><p>我们都知道构建网页并不是 Swift 擅长的领域，实现一个这样的框架绝非一件易事，至少需要考虑如何生成 HTML，如何解析 Markdown 等等。事实上，Publish 本身更像是一个骨架，它依赖于其他几个功能强大的库，例如生成 HTML 和 RSS 是 <a href="https://github.com/johnsundell/plot">Plot</a> 的工作，而 Markdown 的解析则全靠 <a href="https://github.com/johnsundell/ink">Ink</a>，其余开源库也都是非常有用的轮子。你可以在 Package.swift 中找到 Publish 的所有的依赖：</p><pre><code><span class="comment">// Package.swift</span>
+dependencies: [
+    <span class="string">"Ink"</span>, <span class="string">"Plot"</span>, <span class="string">"Files"</span>, <span class="string">"Codextended"</span>, <span class="string">"ShellOut"</span>, <span class="string">"Sweep"</span>
+]
+</code></pre><p>从工程角度来看，Publish 同样是极其出色的，它由可复用的组件构成而非不可拆分的一个整体，有充足的测试，也有完备的注释，瞬间就可以生成 DocC。这一切完全是理想中的框架该有的形态。</p><h2>快速上手 Publish</h2><p>如果你已经拥有一个由 Publish 生成的站点，可以直接跳过这一章节。即便没有也完全不用担心，差的仅仅只是三五行命令，第一步，我们需要安装 Publish 的命令行工具，最简单的方法如下：</p><pre><code class="language-no-highlight">$ git clone https://github.com/JohnSundell/Publish.git
+$ cd Publish
+$ make
+</code></pre><p>如果你更倾向于 Homebrew，也可以通过 <code>brew install publish</code> 来完成上述步骤。命令行工具默认提供了四个可用命令：</p><pre><code class="language-no-highlight">- new: Set up a new website in the current folder.
+- generate: Generate the website in the current folder.
+- run: Generate and run a localhost server on default port 8000
+       for the website in the current folder. Use the "-p"
+       or "--port" option for customizing the default port.
+- deploy: Generate and deploy the website in the current
+       folder, according to its deployment method.
+</code></pre><p>第二步，在指定文件夹下执行 <code>publish new</code> 来完成剩下的配置。</p><pre><code class="language-no-highlight">$ mkdir MyWebsite
+$ cd MyWebsite
+$ publish new
+</code></pre><p>准备就绪，接着执行 <code>publish run</code>，随后就可以在 <a href="http://localhost:8000，section">http://localhost:8000</a> 看到网站的初貌啦！</p><h2>自定义主题</h2><p>读到这里你或许会感到疑惑，接下来是要开始讲述如何写 CSS 了吗？尽管以前曾短暂与 Frontend 为伴，然而时过境迁，此刻的我是如此想拥有一本《面向 iOS 开发者的 CSS 指南》。</p><p>在接下来的章节中，CSS 是一个无法跳过的话题，除此之外，我还想分享一些个人在实践中的思考和收获。下文无数次提到的 PaletteTheme 在这里～: <a href="https://github.com/Ckitakishi/PaletteTheme">https://github.com/Ckitakishi/PaletteTheme</a>。</p><h3>用 Swift Package 管理主题</h3><p>在实际开始开发之前，首先需要考虑的是用何种方式管理主题，关注点在于今后的扩展性，版本迭代和可复用与否。</p><p>这样一来，直接基于上述的 MyWebsite 进行下一步开发就不再可行。一方面，如果主题属于站点的一部分，那不容易复用和难以进行版本管理就是它与生俱来的特点。另一方面，不太恰当的开端有一定几率会诱致更多不合理的实现，以下述代码为例，<code>section</code> 是各个站点自由定义的内容，因此主题并不该知道，在主题代码中为具体的站点元素提供服务是一种本末倒置：</p><pre><code><span class="comment">// 主题模版</span>
+<span class="keyword">func</span> makeSectionHTML(for section: <span class="type">Section</span>&lt;<span class="type">Site</span>&gt;,
+                        context: <span class="type">PublishingContext</span>&lt;<span class="type">Site</span>&gt;) <span class="keyword">throws</span> -&gt; <span class="type">HTML</span> {
+    <span class="type">HTML</span>(
+        .<span class="call">lang</span>(context.<span class="property">site</span>.<span class="property">language</span>),
+        .<span class="call">head</span>(for: section, on: context.<span class="property">site</span>),
+        .<span class="call">body</span> {
+            <span class="type">SiteHeader</span>(context: context, selectedSelectionID: section.<span class="property">id</span>)
+            <span class="keyword">if</span> section.<span class="property">id</span> == xxx { 
+                <span class="comment">// 特定 section 的式样</span>
+            }
+            ...
+        }
+    )
+}
+</code></pre><p>换个角度来说，将主题作为一个库进行管理会是一个更加合理的方向。而站点本身是一个 Swift Package，将主题也作为一个 Swift Package 来开发可是说是不二之选。</p><p>首先，让我们来创建一个新 Package (Xcode &gt; File &gt; New &gt; Package)，并在 <code>Package.swift</code> 的 <code>dependencies</code> 中追加 Publish。</p><pre><code><span class="keyword">let</span> package = <span class="type">Package</span>(
+    name: <span class="string">"PaletteTheme"</span>,
+    ...
+    dependencies: [
+        .<span class="call">package</span>(
+            name: <span class="string">"Publish"</span>,
+            url: <span class="string">"https://github.com/johnsundell/publish.git"</span>,
+            from: <span class="string">"0.7.0"</span>
+        ),
+    ],
+    ...
+)
+</code></pre><p>然后将刚创建的主题包作为本地依赖添加到 MyWebsite 中，这么做的理由是为了即时预览和调试主题。就像下面这样：</p><pre><code><span class="keyword">let</span> package = <span class="type">Package</span>(
+    name: <span class="string">"MyWebsite"</span>,
+    ...
+    dependencies: [
+        .<span class="call">package</span>(name: <span class="string">"Publish"</span>, url: <span class="string">"https://github.com/johnsundell/publish.git"</span>, from: <span class="string">"0.7.0"</span>),
+        .<span class="call">package</span>(path: <span class="string">"../PaletteTheme"</span>), <span class="comment">// 本地依赖</span>
+    ],
+    targets: [
+        .<span class="call">target</span>(
+            name: <span class="string">"MyWebsite"</span>,
+            dependencies: [<span class="string">"Publish"</span>, <span class="string">"PaletteTheme"</span>]
+        )
+    ]
+)
+</code></pre><h3>构建主题</h3><p>一切准备就绪，接下来就可以着手于主题的构建了。本着知其然也要知其所以然的精神，首先需要了解 <code>Website</code> 协议，它定义了一些站点 URL 和名字之类的基础属性，以及构建整个站点的 pipeline 等等，任何 Publish 的站点都需要遵循该协议，在 <code>Website.swift</code> 中可以找到更多细节。</p><pre><code><span class="keyword">public protocol</span> Website {
+    <span class="comment">/// The enum type used to represent the website's section IDs.</span>
+    <span class="keyword">associatedtype</span> SectionID: <span class="type">WebsiteSectionID</span>
+    <span class="comment">/// The type that defines any custom metadata for the website.</span>
+    <span class="keyword">associatedtype</span> ItemMetadata: <span class="type">WebsiteItemMetadata</span>
+
+    <span class="comment">/// The absolute URL that the website will be hosted at.</span>
+    <span class="keyword">var</span> url: <span class="type">URL</span> { <span class="keyword">get</span> }
+    <span class="comment">/// The name of the website.</span>
+    <span class="keyword">var</span> name: <span class="type">String</span> { <span class="keyword">get</span> }
+    ...
+}
+</code></pre><p><code>Website</code> 非常基础，为了在此基础上添加更多属性和功能，显而易见我们需要扩展 <code>Website</code>。这里我选择的方案是定义一个类型别名 <code>PaletteWebsite</code>，用它来表示同时遵循 <code>Website</code> 和主题自定义协议 <code>PaletteCustomizable</code> 的类型。当然了，条条大路通罗马，比如说定义一个同时继承于 <code>Website</code> 和 <code>PaletteCustomizable</code> 的新协议也是完全可行的。</p><pre><code><span class="comment">// 类型别名</span>
+<span class="keyword">public typealias</span> PaletteWebsite = <span class="type">Website</span> &amp; <span class="type">PaletteCustomizable</span>
+
+<span class="comment">// 协议</span>
+<span class="keyword">public protocol</span> PaletteWebsite: <span class="type">Website</span>, <span class="type">PaletteCustomizable</span> { }
+</code></pre><p>你大概已经猜到，<code>PaletteCustomizable</code> 正是定义了主题扩充属性的协议。如果 <code>Website</code> 被称为基础模块，那我们可以将 <code>PaletteCustomizable</code> 视为扩展模组，也就是说，如果你喜欢，可以定义无数个扩展模组来让事情变得更有趣（和复杂）。</p><pre><code><span class="keyword">public protocol</span> PaletteCustomizable {
+    <span class="comment">/// The self-introduction that will be displayed on the home page. Support Markdown syntax.</span>
+    <span class="keyword">var</span> aboutMe: <span class="type">String</span> { <span class="keyword">get</span> }
+    <span class="comment">/// The `PalettePage`s that the website will include.</span>
+    <span class="keyword">var</span> pages: [<span class="type">PalettePage</span>] { <span class="keyword">get</span> }
+    <span class="comment">/// The path to profile icon.</span>
+    <span class="keyword">var</span> profileIconPath: <span class="type">URLRepresentable</span>? { <span class="keyword">get</span> }
+    ...
+}
+
+<span class="comment">/// Default implementation</span>
+<span class="keyword">public extension</span> <span class="type">PaletteCustomizable</span> {
+    <span class="keyword">var</span> profileIconPath: <span class="type">URLRepresentable</span>? { <span class="keyword">nil</span> }
+    ...
+}
+</code></pre><p>到这里 <code>PaletteWebsite</code> 的大框架就差不多完成了，进展很令人开心，下一步则是要将它运用到主题上。再度回到 Publish 源码，其中有一个名为 <code>Theme</code> 的泛型结构体定义了 Publish 主题，这里需要留意的是初始化参数 <code>htmlFactory</code>，它的类型是一个同样支持泛型的协议 <code>HTMLFactory</code>:</p><pre><code><span class="comment">// Theme</span>
+<span class="keyword">public struct</span> Theme&lt;Site: <span class="type">Website</span>&gt; {
+    <span class="keyword">public init</span>&lt;T: <span class="type">HTMLFactory</span>&gt;(
+        htmlFactory factory: <span class="type">T</span>,
+        resourcePaths resources: <span class="type">Set</span>&lt;<span class="type">Path</span>&gt; = [],
+        file: <span class="type">StaticString</span> = <span class="keyword">#file</span>
+    ) <span class="keyword">where</span> <span class="type">T</span>.<span class="type">Site</span> == <span class="type">Site</span> {
+        ...
+    }
+}
+
+<span class="comment">// HTMLFactory</span>
+<span class="keyword">public protocol</span> HTMLFactory {
+    <span class="keyword">associatedtype</span> Site: <span class="type">Website</span>
+    ...
+}
+</code></pre><p>顾名思义，<code>HTMLFactory</code> 和 HTML 的生成息息相关，它定义了六个必须实现的方法，分别用于构建六种类型的页面，例如主页，section 页面，tag 一览画面等。接下来，我们需要依次实现这六个工厂方法，在 PaletteTheme 中我定义了一个名为 <code>PaletteThemeHTMLFactory</code> 的结构体来完成这件事。</p><p>在上文中曾经提到过我们将会使用 Plot 来生成 HTML 代码，和 HTML 一样，Plot 也是一个 DSL (领域特定语言)，毕竟 Plot 算是为 HTML/XML 而生，它们的写法可是说是如出一辙。如果你对 HTML 有些许了解，那看到下述 Plot 代码一定会很自然地联想到它对应的 HTML。</p><pre><code><span class="keyword">struct</span> PaletteThemeHTMLFactory&lt;Site: <span class="type">PaletteWebsite</span>&gt;: <span class="type">HTMLFactory</span> {
+    <span class="comment">// 实现所有六个方法</span>
+    ...
+    <span class="keyword">func</span> makePageHTML(for page: <span class="type">Page</span>,
+                      context: <span class="type">PublishingContext</span>&lt;<span class="type">Site</span>&gt;) <span class="keyword">throws</span> -&gt; <span class="type">HTML</span> {
+        <span class="type">HTML</span>(
+            .<span class="call">lang</span>(context.<span class="property">site</span>.<span class="property">language</span>),
+            .<span class="call">head</span>(for: page, on: context.<span class="property">site</span>),
+            .<span class="call">body</span> {
+                <span class="type">SiteHeader</span>(context: context, selectedSelectionID: <span class="keyword">nil</span>)
+                <span class="type">Wrapper</span>(page.<span class="property">body</span>)
+                <span class="type">SiteFooter</span>()
+            }
+        )
+    }
+    ...
+}
+</code></pre><p>尽管看起来相似，但是 Plot 在运用了 Swift 特点的基础上还提供了更灵活的玩法，例如类型安全，流程控制和组件化。其中最重要的非组件化莫属，提到组件化就必须知道两个概念，<code>Node</code> 和 <code>Component</code>。在版本 0.9.0 之前，Plot 只提供了基于 <code>Node</code> 的方式来构建组件，<code>Node</code> 可以代表元素和属性，上一段示例代码中的 <code>.lang</code>， <code>.head</code> 和 <code>.body</code> 就是三个 <code>Node</code>。而 <code>Component</code> 则是比 <code>Node</code> 更高层次的 API，例如上述的 <code>SiteHeader</code>， 根据文档推测，这个 API 的诞生是为了提供更接近于 SwiftUI 的写法，需要留意的一点是，<code>Component</code> 目前只可以被用于定义出现在 body 之内的元素，其他 HTML 元素和非 HTML 元素需要继续使用 <code>Node</code> 来生成。</p><p><code>Node</code> 较于 <code>Component</code> 在性能方面有细微的优势，但从偏好来说我个人更喜欢后者的写法。不过无论哪种都可以帮助我们达成目的，以及，我们可以非常自由地混用二者：</p><pre><code><span class="comment">// 将 Component 集成到基于 Node 的层次结构中</span>
+<span class="keyword">func</span> newsArticlePage(for article: <span class="type">NewsComponent</span>) -&gt; <span class="type">HTML</span> {
+    <span class="keyword">return</span> <span class="type">HTML</span>(.<span class="call">body</span>(
+        .<span class="call">div</span>(
+            .<span class="call">component</span>(article)
+        )
+    ))
+}
+
+<span class="comment">// 在 Component 内部使用基于 Node 的元素</span>
+<span class="keyword">struct</span> Banner: <span class="type">Component</span> {
+    <span class="keyword">var</span> body: <span class="type">Component</span> {
+        <span class="type">Div</span> {
+            <span class="type">Node</span>.<span class="call">h2</span>(.<span class="call">text</span>(<span class="string">"title"</span>))
+        }
+        .<span class="call">class</span>(<span class="string">"banner"</span>)
+    }
+}
+</code></pre><p>关于 Plot，以上内容只不过是皮毛，文档中列举了更丰富的功能和示例：<a href="https://github.com/JohnSundell/Plot">https://github.com/JohnSundell/Plot</a>。</p><p>最后，将遵循 <code>HTMLFactory</code> 协议的 <code>PaletteThemeHTMLFactory</code> 运用到主题上即可。</p><pre><code><span class="comment">// Theme extension</span>
+<span class="keyword">public extension</span> <span class="type">Theme</span> <span class="keyword">where</span> <span class="type">Site</span>: <span class="type">PaletteWebsite</span> {
+    <span class="keyword">static var</span> palette: <span class="type">Self</span> {
+        <span class="type">Theme</span>(
+            htmlFactory: <span class="type">PaletteThemeHTMLFactory</span>(),
+            resourcePaths: [<span class="string">"Resources/styles.css"</span>]
+        )
+    }
+}
+</code></pre><h3>CSS 怎么写@@</h3><p>相信此刻你应该已经拥有了一个稍显乏味的 HTML 站点，正准备开始改造页面的布局和样式。</p><p>当我还在日常与前端为伴时就觉得 CSS 完全是看似简单，实践起来不仅坑很多且有时难以顾周全，仅仅是处理多浏览器兼容这一项就足够辛苦。基于这个原因，这次我基本放弃了自己从零开始写 CSS 的想法，转而寻找一个简单易上手，能够提供多浏览器支持，响应式设计，flex 和 grid 布局等的框架。</p><p>在我的认知中，有很多框架的核心理念是提供组件，例如 Bootstrap，用户可以简单的将组件拼在一起组成一个完整的页面。在我的计划中，对特别复杂的组件并不是很有需求，反而更倾向于细粒度的框架，因此最终选择了一个以 Utility-First 为理念的框架 -- Tailwind CSS。</p><p>你可以在 <a href="https://tailwindcss.com/docs/installation">Tailwind CSS 的文档</a> 中找到导入方法。这里要注意的是，Tailwind CSS 会通过扫描文件来搜寻正在使用的 class 以生成目标 CSS 文件，这个过程不仅对 HTML 和 JavaScript 有效，即便是 Swift 也完全没有问题，务必要正确配置 <code>tailwind.config.js</code> 文件：</p><pre><code class="language-no-highlight">module.exports = {
+  content: ['../Sources/**/*.swift'],
+  ...
+}
+</code></pre><p>此外，Tailwind CSS 官方提供了一个名为 typography 的插件，用于为无法控制的 HTML 添加默认式样，例如 Markdown。其配置方法如下：</p><pre><code class="language-no-highlight">module.exports = {
+  ...
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
+}
+</code></pre><p>如果想要修改默认的 typography 样式，可以参照 <a href="https://github.com/tailwindlabs/tailwindcss-typography/blob/34097e0b4ec0f3124cab4a28ff0e6f4da67a5f54/src/styles.js">styles.js</a> 文件并覆盖对应属性，例如将 <code>h1</code> 标签的默认字号改为 <code>1.875rem</code>：</p><pre><code class="language-no-highlight">module.exports = {
+  ...
+  theme: {
+    extend: {
+      typography: {
+        DEFAULT: {
+          css: {
+            h1: {
+              fontSize: '1.875rem',
+            },
+          },
+        },
+      },
+    },
+  },
+}
+</code></pre><h3>代码高亮</h3><p>Tailwind CSS 的排版插件为 Markdown 生成的 HTML 提供了默认式样，不过其中并不包括代码语法高亮。Publish 列举了三种高亮代码的工具，分别是 Splash，Pygments 和 highlight.js。它们的简介和详细安装方法都可以在 Publish 的 <a href="https://github.com/JohnSundell/Publish/tree/master/Documentation/HowTo/SyntaxHighlighting">HowTo 文档</a>中找到。</p><p>最终我选择了 Splash 为 PaletteTheme 的代码块加高亮，这是一个优秀的 Swift 原生代码高亮框架，同样出自 John Sundel 之手，说不上是缺憾，不过它只支持 Swift 代码，如果你是一名多栖开发者，那这未必是一个好的选择。Pygments 和 highlight.js 都拥有更全面的语言支持，但是对 Swift 的支持相对更弱一些。</p><p>以 Splash 为例，为了灵活性，框架本身并不包含任何颜色定义，因此还需要在 CSS 文件中追加自定义的颜色代码，如下所示：</p><pre><code class="language-no-highlight">// Monokai color scheme 
+pre code .keyword {
+    color: #f92672;
+}
+
+pre code .type {
+    color: #a6e22e;
+}
+</code></pre><h2>尾声</h2><p>至此，一个全新的主题就大功告成啦，这是漫漫长路上的第一步，今后可以继续为它创造更丰富的功能和插件。目前 Publish 社区比较沉寂，很多人或许还对 Publish 是否是一款可用的博客生成框架持有怀态度，希望通过这篇文章，带给了你切实的帮助亦或是一个崭新的视角。</p></div></article><div class="flex justify-between text-xl mt-16"><div class="flex gap-2 w-5/12 self-center"><div class="self-center">←</div><a href="/posts/markdown-syntax-preview" class="font-medium text-lg underline underline-offset-4 text-xl">Markdown Syntax Sample</a></div></div><div class="giscus mt-20"></div></div></div><footer class="flex flex-col text-sm font-light mt-auto text-zinc-500 dark:text-zinc-400"><p class="text-center mt-16">Copyright © 2014-2024 Ckitakishi</p><p class="text-center mt-1">Powered by <a href="https://github.com/johnsundell/publish" class="link-underline">Publish</a> &amp; <a href="https://github.com/Ckitakishi/PaletteTheme" class="link-underline">Palette</a></p><div class="grid grid-cols-8 w-full h-[8px] mt-6"><div class="bg-[#ab4642]"></div><div class="bg-[#dc9656]"></div><div class="bg-[#f7ca88]"></div><div class="bg-[#a1b56c]"></div><div class="bg-[#86c1b9]"></div><div class="bg-[#7cafc2]"></div><div class="bg-[#ba8baf]"></div><div class="bg-[#a16946]"></div></div></footer></div><script src="https://giscus.app/client.js"
+        data-repo="Ckitakishi/Ckitakishi.github.io"
+        data-repo-id="MDEwOlJlcG9zaXRvcnkxNTU4Njk1OQ=="
+        data-category="General"
+        data-category-id="DIC_kwDOAO3Wj84CBSR7"
+        data-mapping="title"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="preferred_color_scheme"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+</script></body></html>

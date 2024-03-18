@@ -1,0 +1,145 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"/><meta property="og:site_name" content="Ckitakishi"/><link rel="canonical" href="ckitakishi.com/posts/nsattributedstring-pt-1"/><meta name="twitter:url" content="ckitakishi.com/posts/nsattributedstring-pt-1"/><meta property="og:url" content="ckitakishi.com/posts/nsattributedstring-pt-1"/><title>安全且优雅地使用 NSAttributedString - Part.1 | Ckitakishi</title><meta name="twitter:title" content="安全且优雅地使用 NSAttributedString - Part.1 | Ckitakishi"/><meta property="og:title" content="安全且优雅地使用 NSAttributedString - Part.1 | Ckitakishi"/><meta name="description" content="Swift 拥有可选类型且类型安全，这些特性帮助开发者避免了很多麻烦问题。然而即便如此，在 `NSAttributedString` 的运用中同样存在着的潜在不安全因素，在 Part.1 中将会围绕如何更安全地使用 `NSAttributedString` 展开讨论。"/><meta name="twitter:description" content="Swift 拥有可选类型且类型安全，这些特性帮助开发者避免了很多麻烦问题。然而即便如此，在 `NSAttributedString` 的运用中同样存在着的潜在不安全因素，在 Part.1 中将会围绕如何更安全地使用 `NSAttributedString` 展开讨论。"/><meta property="og:description" content="Swift 拥有可选类型且类型安全，这些特性帮助开发者避免了很多麻烦问题。然而即便如此，在 `NSAttributedString` 的运用中同样存在着的潜在不安全因素，在 Part.1 中将会围绕如何更安全地使用 `NSAttributedString` 展开讨论。"/><meta name="twitter:card" content="summary"/><link rel="stylesheet" href="/styles.css" type="text/css"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/><link rel="alternate" href="/feed.rss" type="application/rss+xml" title="Subscribe to Ckitakishi"/><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-107870195-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-107870195-1');
+</script></head><body><div class="flex flex-col min-h-full text-zinc-900 dark:text-zinc-50"><div class="grid grid-cols-8 w-full h-[8px]"><div class="bg-[#ab4642]"></div><div class="bg-[#dc9656]"></div><div class="bg-[#f7ca88]"></div><div class="bg-[#a1b56c]"></div><div class="bg-[#86c1b9]"></div><div class="bg-[#7cafc2]"></div><div class="bg-[#ba8baf]"></div><div class="bg-[#a16946]"></div></div><header class="flex justify-center p-4 text-zinc-900 dark:text-zinc-50"><div class="flex flex-wrap justify-between my-4 gap-x-16 max-w-screen-lg w-full"><a href="/" class="header-title font-extrabold text-3xl">Ckitakishi</a><nav class="my-auto"><ul class="flex flex-wrap gap-4"><li><a href="/" class="hover:underline underline-offset-4">Home</a></li><li><a href="/posts" class="hover:underline underline-offset-4">Writing</a></li><li><a href="/tags/求索集/" class="hover:underline underline-offset-4">求索集</a></li><li><a href="/tags/浮生记/" class="hover:underline underline-offset-4">浮生记</a></li><li><a href="/feed.rss" class="hover:underline underline-offset-4">RSS</a></li></ul></nav></div></header><div class="flex justify-center mx-4"><div class="max-w-screen-md w-full m-4"><div class="flex text-zinc-600 dark:text-zinc-50 mb-1"><p class="flex shrink-0">Jun 6, 2020</p><p class="mx-3 text-lg -mt-0.5">|</p><ul class="flex flex-wrap gap-2"><li><a href="/tags/求索集" class="hashtag link-underline">求索集</a></li><li><a href="/tags/ios" class="hashtag link-underline">iOS</a></li><li><a href="/tags/swift" class="hashtag link-underline">Swift</a></li></ul></div><article class="prose prose-zinc min-w-full dark:prose-invert"><div class="content"><h1>安全且优雅地使用 NSAttributedString - Part.1</h1><p>Swift 拥有可选类型且类型安全，这些特性帮助开发者避免了很多麻烦问题。</p><p>然而当涉及到字符串的时候，还是或多或少存在一些瑕疵。例如引用资源文件，图片文字等，一旦拼写错误，是没有办法在编译之前知道的，又或者是继续在代码中引用已经被删除的资源，也不容易被察觉。为了解决这个问题，一些知名的库应运而生，像是 <a href="https://github.com/mac-cain13/R.swift">R.swift</a>, <a href="https://github.com/SwiftGen/SwiftGen">SwiftGen</a> 之类。解决方案的其中一个核心是使得资源引用这个过程变得类型安全，以此来克服潜在的不明了性，例如：</p><pre><code><span class="comment">// normal</span>
+<span class="keyword">let</span> icon = <span class="type">UIImage</span>(named: <span class="string">"settings-icon"</span>)
+
+<span class="comment">// R.swift</span>
+<span class="keyword">let</span> icon = <span class="type">R</span>.<span class="property">image</span>.<span class="call">settingsIcon</span>()
+</code></pre><p>不过这次想讨论的并不是上述问题，而是在 <code>NSAttributedString</code> 的运用中同样存在着的潜在不安全因素。从我的日常体验来说，<code>NSAttributedString</code> 在无数情境之下都会被我们想起，无论是富文本支持还是图文混排，又或者是想实现一个 markdown 组件等等。</p><p>虽然我认为从 Objective-C 到 Swift，在安全问题上已经是迈进了一大步。以下面的代码为例，以往写 Objective-C 的时候，会注意避免一个预期外的 <code>nil</code> 被作为 <code>str</code> 参数传入，而引起不必要的崩溃。</p><pre><code>- (instancetype)initWithString:(<span class="type">NSString</span> *)str
+</code></pre><p>对于 Swift 而言，事情会变得简单很多，可选值的声明让我们更容易做出正确的判断。</p><pre><code><span class="keyword">init</span>(string str: <span class="type">String</span>)
+</code></pre><p>即便如此，关于潜在的不安全因素依然有很多话可以说，例如下面这个极其简单的例子：</p><pre><code><span class="keyword">let</span> paragraphStyle = <span class="type">NSMutableParagraphStyle</span>()
+paragraphStyle.<span class="property">lineSpacing</span> = <span class="number">1.0</span>
+paragraphStyle.<span class="property">lineBreakMode</span> = .<span class="dotAccess">byTruncatingTail</span>
+paragraphStyle.<span class="property">alignment</span> = .<span class="dotAccess">center</span>
+
+xxxxxx.<span class="property">attributedText</span> = <span class="type">NSAttributedString</span>(
+    string: <span class="string">"卮言春天 破碎秋千"</span>,
+    attributes: [
+        .<span class="dotAccess">font</span>: <span class="type">UIFont</span>.<span class="call">systemFont</span>(ofSize: <span class="number">12.0</span>, weight: .<span class="dotAccess">regular</span>),
+        .<span class="dotAccess">foregroundColor</span>: <span class="type">UIColor</span>.<span class="property">gray</span>,
+        .<span class="dotAccess">paragraphStyle</span>: paragraphStyle
+])
+</code></pre><p>看完这段代码，心中应该会很容易浮现几个直击灵魂的问题：</p><ol><li>为什么为 <code>foregroundColor</code> 设置值的时候不能够省略 <code>UIColor</code>？</li><li>如果传入的不是 <code>UIColor</code> 会发生什么事情吗？</li><li><code>paragraphStyle</code> 的初始化和赋值是不是可以写的更 <code>swifty</code>？</li></ol><p>第一个问题比较简单，看值类型各式各样五花八门就会知道这大概是 <code>Any</code>，如果将 <code>attributes</code> 的初始化分离出来，这个原因会更加一目了然。</p><pre><code><span class="keyword">let</span> attributes: [<span class="type">NSAttributedString</span>.<span class="type">Key</span>: <span class="type">Any</span>] = [
+    .<span class="dotAccess">font</span>: <span class="type">UIFont</span>.<span class="call">systemFont</span>(ofSize: <span class="number">12.0</span>, weight: .<span class="dotAccess">regular</span>),
+    .<span class="dotAccess">foregroundColor</span>: <span class="type">UIColor</span>.<span class="property">gray</span>,
+    .<span class="dotAccess">paragraphStyle</span>: paragraphStyle
+]
+</code></pre><p>第二个问题完全是第一问的副作用。对于会不会发生什么事，答案是会。曾经一时失神，为 <code>paragraphStyle</code> 传入了一个 <code>CGColor</code> 的值，最可怕的在于中文和日语都可以顺利呈现出所期待的颜色，但切换成英语后应用直接就崩溃了。若遭遇这个问题，我想为了探寻原因也还是需要花一点点时间的。</p><p>为了消解这不安全感，估计大家都会想要做点什么。要么是为 <code>attributes</code> 写一段类型检查的代码通过输出 log 来避免意外，或者是封装 <code>NSAttributedString</code> 以实现类型安全。方案一略显单薄，但上述最致命的问题二是可以被圆满解决的，唯一的缺憾是在编译后才能知道结果。综上所述，不如就来实现方案二。</p><p>比较直接的想法应该是避免 <code>Any</code> 的存在，这样一来，不妨索性抛弃字典，使各个属性成为一个相对独立的存在，可以选择创建一些函数然后链式调用，但更容易浮现在脑海中的应该是用枚举去做这件事：</p><pre><code><span class="keyword">enum</span> StringAttribute {
+    <span class="keyword">case</span> font(<span class="type">UIFont</span>)
+    <span class="keyword">case</span> foregroundColor(<span class="type">UIColor</span>)
+    <span class="keyword">case</span> underlineColor(<span class="type">UIColor</span>?) <span class="comment">// The default value is nil</span>
+    <span class="keyword">case</span> kern(<span class="type">CGFloat</span>)
+    <span class="comment">// ...</span>
+}
+</code></pre><p>在定义了上述枚举之后，基本上类型不安全的问题就得到了解决。不过作为换取类型安全的代价，需要多一道工序把 <code>StringAttribute</code> 转回 <code>[NSAttributedString.Key: Any]</code>：</p><pre><code><span class="keyword">extension</span> <span class="type">NSAttributedString</span> {
+    <span class="keyword">convenience init</span>(string str: <span class="type">String</span>, stringAttributes attrs: [<span class="type">StringAttribute</span>]) {
+        <span class="keyword">self</span>.<span class="keyword">init</span>(string: str, attributes: attrs.<span class="property">attributesDictionary</span>)
+    }
+}
+
+<span class="keyword">enum</span> StringAttribute {
+    <span class="keyword">case</span> font(<span class="type">UIFont</span>)
+    <span class="keyword">case</span> foregroundColor(<span class="type">UIColor</span>)
+    <span class="keyword">case</span> underlineColor(<span class="type">UIColor</span>?) <span class="comment">// The default value is nil</span>
+    <span class="keyword">case</span> kern(<span class="type">CGFloat</span>)
+    <span class="comment">// ...</span>
+    
+    <span class="keyword">var</span> keyAndValue: (<span class="type">NSAttributedString</span>.<span class="type">Key</span>, <span class="type">Any</span>?) {
+        <span class="keyword">switch self</span> {
+        <span class="keyword">case</span> .<span class="dotAccess">font</span>(<span class="keyword">let</span> value):
+            <span class="keyword">return</span> (.<span class="dotAccess">font</span>, value)
+        <span class="keyword">case</span> .<span class="dotAccess">foregroundColor</span>(<span class="keyword">let</span> value):
+            <span class="keyword">return</span> (.<span class="dotAccess">foregroundColor</span>, value)
+        <span class="keyword">case</span> .<span class="dotAccess">underlineColor</span>(<span class="keyword">let</span> optionalValue):
+            <span class="keyword">return</span> (.<span class="dotAccess">underlineColor</span>, optionalValue)
+        <span class="keyword">case</span> .<span class="dotAccess">kern</span>(<span class="keyword">let</span> value):
+            <span class="keyword">return</span> (.<span class="dotAccess">kern</span>, value <span class="keyword">as</span> <span class="type">NSNumber</span>)
+        }
+        <span class="comment">// ...</span>
+    }
+}
+
+<span class="keyword">extension</span> <span class="type">Array</span> <span class="keyword">where</span> <span class="type">Element</span> == <span class="type">StringAttribute</span> {
+    <span class="comment">// StringAttribute =&gt; [NSAttributedString.Key: Any]</span>
+    <span class="keyword">var</span> attributesDictionary: [<span class="type">NSAttributedString</span>.<span class="type">Key</span>: <span class="type">Any</span>] {
+        <span class="keyword">var</span> attributesDict: [<span class="type">NSAttributedString</span>.<span class="type">Key</span>: <span class="type">Any</span>] = [:]
+        
+        <span class="keyword">self</span>.<span class="call">forEach</span> { attribute <span class="keyword">in
+            let</span> (key, value) = attribute.<span class="property">keyAndValue</span>
+            attributesDict[key] = value
+        }
+        
+        <span class="keyword">return</span> attributesDict
+    }
+}
+</code></pre><p>到这里就大功告成了！我们可以尝试把上面的代码改写一下：</p><pre><code><span class="keyword">let</span> attributes: [<span class="type">StringAttribute</span>] = [
+    .<span class="call">font</span>(.<span class="call">systemFont</span>(ofSize: <span class="number">12.0</span>, weight: .<span class="dotAccess">regular</span>)),
+    .<span class="call">foregroundColor</span>(.<span class="dotAccess">gray</span>),
+    .<span class="call">paragraphStyle</span>(paragraphStyle)
+]
+</code></pre><p>如果完整实现了 <code>StringAttribute</code> 的话，一定会留意到 <code>NSAttributedString</code> 中有一个相对特殊的属性：<code>.paragraphStyle</code>。使用它之前需要先完成一系列的初始化赋值，正是上面代码块中出现的 <code>paragraphStyle</code>。作为一个代码风格优化的可选项，这里我选择用与 <code>StringAttribute</code> 相似的手段来封装 <code>NSMutableParagraphStyle</code>。</p><pre><code><span class="keyword">enum</span> ParagraphAttribute {
+    <span class="keyword">case</span> alignment(<span class="type">NSTextAlignment</span>)
+    <span class="keyword">case</span> lineSpacing(<span class="type">CGFloat</span>)
+    <span class="keyword">case</span> lineBreakMode(<span class="type">NSLineBreakMode</span>)
+}
+
+<span class="keyword">enum</span> StringAttribute {
+    <span class="keyword">case</span> paragraphStyle([<span class="type">ParagraphAttribute</span>])
+    
+    <span class="keyword">var</span> keyAndValue: (<span class="type">NSAttributedString</span>.<span class="type">Key</span>, <span class="type">Any</span>?) {
+        <span class="keyword">switch self</span> {
+        <span class="keyword">case</span> .<span class="dotAccess">paragraphStyle</span>(<span class="keyword">let</span> value):
+            <span class="keyword">return</span> (.<span class="dotAccess">paragraphStyle</span>, <span class="keyword">self</span>.<span class="call">configureParagraphStyle</span>(value))
+        }
+    }
+    
+    <span class="comment">// [ParagraphAttribute] =&gt; NSMutableParagraphStyle</span>
+    <span class="keyword">private func</span> configureParagraphStyle(<span class="keyword">_</span> attributes: [<span class="type">ParagraphAttribute</span>]) -&gt; <span class="type">NSMutableParagraphStyle</span> {
+        
+        <span class="keyword">let</span> paragraphStyle = <span class="type">NSMutableParagraphStyle</span>()
+
+        attributes.<span class="call">forEach</span> {
+            <span class="keyword">switch</span> $0 {
+            <span class="keyword">case</span> .<span class="dotAccess">alignment</span>(<span class="keyword">let</span> value):
+                paragraphStyle.<span class="property">alignment</span> = value
+            <span class="keyword">case</span> .<span class="dotAccess">lineSpacing</span>(<span class="keyword">let</span> value):
+                paragraphStyle.<span class="property">lineSpacing</span> = value
+            <span class="keyword">case</span> .<span class="dotAccess">lineBreakMode</span>(<span class="keyword">let</span> value):
+                paragraphStyle.<span class="property">lineBreakMode</span> = value
+            }
+        }
+        
+        <span class="keyword">return</span> paragraphStyle
+    }
+}
+</code></pre><p>于是，最初的代码就可以用一种更 <code>Swifty</code> 的方式来重写了。 代码风格各有所爱，就我个人来说，安全与优雅的代码着实令人感动：P</p><pre><code>xxxxxx.<span class="property">attributedText</span> = <span class="type">NSAttributedString</span>(
+    string: <span class="string">"卮言春天 破碎秋千"</span>,
+    stringAttributes: [
+        .<span class="call">font</span>(.<span class="call">systemFont</span>(ofSize: <span class="number">12.0</span>, weight: .<span class="dotAccess">regular</span>)),
+        .<span class="call">foregroundColor</span>(.<span class="dotAccess">gray</span>),
+	      .<span class="call">paragraphStyle</span>([
+	          .<span class="call">lineSpacing</span>(<span class="number">1.0</span>),
+	          .<span class="call">lineBreakMode</span>(.<span class="dotAccess">byTruncatingTail</span>),
+	          .<span class="call">alignment</span>(.<span class="dotAccess">center</span>)
+	      ])
+
+])
+</code></pre><p>至此，我们就拥有了一个类型安全的 <code>NSAttributedString</code> 初始化方法。不过条条大路通罗马，伴随着 <code>SwiftUI</code> 的诞生，Swift 5.1 中新增加了 <code>Function Builder</code>，用它来达成我们最初的目标也不失为一个好方法。读一读这篇 <a href="https://medium.com/@carson.katri/create-your-first-function-builder-in-5-minutes-b4a717390671">Create Your First Function Builder in 10 Minutes</a> 应该会有不少启发。</p><h2>TBC</h2><p>(下一篇计划讲一讲在其它一些场景中，如何更优雅地使用 <code>NSAttributedString</code>)</p><blockquote><p>Source Code: https://github.com/Ckitakishi/PlayWithAttributedString</p></blockquote></div></article><div class="flex justify-between text-xl mt-16"><div class="flex gap-2 w-5/12 self-center"><div class="self-center">←</div><a href="/posts/memory-warning" class="font-medium text-lg underline underline-offset-4 text-xl">Memory warning: 大隐隐于市</a></div><div class="flex flex-row-reverse gap-2 w-5/12 self-center"><div class="self-center">→</div><a href="/posts/nsattributedstring-pt-2" class="font-medium text-lg underline underline-offset-4 text-xl">安全且优雅地使用 NSAttributedString - Part.2</a></div></div><div class="giscus mt-20"></div></div></div><footer class="flex flex-col text-sm font-light mt-auto text-zinc-500 dark:text-zinc-400"><p class="text-center mt-16">Copyright © 2014-2024 Ckitakishi</p><p class="text-center mt-1">Powered by <a href="https://github.com/johnsundell/publish" class="link-underline">Publish</a> &amp; <a href="https://github.com/Ckitakishi/PaletteTheme" class="link-underline">Palette</a></p><div class="grid grid-cols-8 w-full h-[8px] mt-6"><div class="bg-[#ab4642]"></div><div class="bg-[#dc9656]"></div><div class="bg-[#f7ca88]"></div><div class="bg-[#a1b56c]"></div><div class="bg-[#86c1b9]"></div><div class="bg-[#7cafc2]"></div><div class="bg-[#ba8baf]"></div><div class="bg-[#a16946]"></div></div></footer></div><script src="https://giscus.app/client.js"
+        data-repo="Ckitakishi/Ckitakishi.github.io"
+        data-repo-id="MDEwOlJlcG9zaXRvcnkxNTU4Njk1OQ=="
+        data-category="General"
+        data-category-id="DIC_kwDOAO3Wj84CBSR7"
+        data-mapping="title"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="preferred_color_scheme"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+</script></body></html>
