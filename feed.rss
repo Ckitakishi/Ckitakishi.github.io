@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Ckitakishi</title><description>Ckitakishi 的个人博客，多为关于 iOS 开发的所得所感与浮生杂记。</description><link>ckitakishi.com</link><language>zh</language><lastBuildDate>Thu, 8 May 2025 00:07:01 +0900</lastBuildDate><pubDate>Thu, 8 May 2025 00:07:01 +0900</pubDate><ttl>250</ttl><atom:link href="ckitakishi.com/feed.rss" rel="self" type="application/rss+xml"/><item><guid isPermaLink="true">ckitakishi.com/posts/exploring_best_practices_for_core_data%20_from_sqlite_perspective</guid><title>Exploring Best Practices for Core Data from SQLite Perspective</title><description>Exploring best practices for Core Data from a SQLite perspective can help us understand what's happening behind the scenes. This can be incredibly useful when creating high-performing, scalable, and reliable applications.</description><link>ckitakishi.com/posts/exploring_best_practices_for_core_data%20_from_sqlite_perspective</link><pubDate>Wed, 7 May 2025 23:30:00 +0900</pubDate><content:encoded><![CDATA[<h1>Exploring Best Practices for Core Data from SQLite Perspective</h1><p>This article was originally published at:</p><blockquote><p><a href="https://techblog.lycorp.co.jp/en/exploring-best-practices-for-core-data-from-the-sqlite-perspective">https://techblog.lycorp.co.jp/en/exploring-best-practices-for-core-data-from-the-sqlite-perspective</a></p></blockquote><h2>Introduction</h2><p>The application I'm currently working on uses Core Data for local data persistence. Core Data provides four store types by default: SQLite, Binary, XML, and In-Memory (the XML store is not available on iOS). Throughout the development process, we've gained valuable experience about using Core Data correctly and efficiently, especially from the SQLite perspective.</p><p>If you're using Core Data and want to learn more about how to maximize the underlying SQLite database, this post is for you.</p><h2>1. Properly storing BLOB</h2><h3>1.1 SQLite Team's perspective</h3><p>When I first started learning about relational databases, I wondered whether the BLOB (Binary Large OBject) should be stored in the database, as an external file, or in a hybrid way? This is a common question, and the SQLite documentation provides two insightful discussions on this topic: <a href="https://www.sqlite.org/intern-v-extern-blob.html">Internal Versus External BLOBs in SQLite</a> and <a href="https://www.sqlite.org/fasterthanfs.html">35% Faster Than The Filesystem</a>.</p><p>What surprised me the most is the following comparison：</p><blockquote><p>SQLite reads and writes small blobs (for example, thumbnail images) 35% faster than the same blobs can be read from or written to individual files on disk using fread() or fwrite(). Furthermore, a single SQLite database holding 10-kilobyte blobs uses about 20% less disk space than storing the blobs in individual files.</p></blockquote><p>Additionally, the SQLite team shared an interesting benchmark result of BLOBs' reading performance with different page sizes (Just for your information: the default page size of SQLite used in Core Data is 4096).</p><blockquote><p>The matrix below shows the time needed to read BLOBs stored in separate files divided by the time needed to read BLOBs stored entirely in the database</p></blockquote><img src="ckitakishi.com/images/exploring_best_practices_for_core_data_from_sqlite_perspective/1-1.png" alt="1-1"/><p>In their test environments, storing BLOBs up to 20k always have better reading performance, on the other hand, for the BLOBs over 200k, storing them as external files would be more efficient.</p><p>While these benchmark results may not be directly applicable to us, we can still glean some important insights from them:</p><ul><li>As a rule of thumb, it's wise to store small BLOBs in the database and large BLOBs as external files.aking, it's wise to store small BLOBs in the database and large BLOBs as external files.</li><li>When it's difficult to choose between internal and external storage, conducting a benchmark could be helpful.</li></ul><h3>1.2 Returning to our Core Data world</h3><p>Now, let's apply our SQLite knowledge to the world of Core Data!</p><p>You may already be familiar with a property called <code>allowsExternalBinaryDataStorage</code>, which can be used to let Core Data decide how to store binary objects. When the BLOBs are stored as external files, they're placed in a hidden subdirectory within the same directory as the database files. In the database fields, only the filenames (UUID) corresponding to the external files are stored.</p><pre><code><span class="type">Database</span>/
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Ckitakishi</title><description>Ckitakishi 的个人博客，多为关于 iOS 开发的所得所感与浮生杂记。</description><link>ckitakishi.com</link><language>zh</language><lastBuildDate>Mon, 2 Mar 2026 22:31:09 +0900</lastBuildDate><pubDate>Mon, 2 Mar 2026 22:31:09 +0900</pubDate><ttl>250</ttl><atom:link href="ckitakishi.com/feed.rss" rel="self" type="application/rss+xml"/><item><guid isPermaLink="true">ckitakishi.com/posts/2025_05_exploring_best_practices_for_core_data_from_sqlite_perspective</guid><title>Exploring Best Practices for Core Data from SQLite Perspective</title><description>Exploring best practices for Core Data from a SQLite perspective can help us understand what's happening behind the scenes. This can be incredibly useful when creating high-performing, scalable, and reliable applications.</description><link>ckitakishi.com/posts/2025_05_exploring_best_practices_for_core_data_from_sqlite_perspective</link><pubDate>Wed, 7 May 2025 23:30:00 +0900</pubDate><content:encoded><![CDATA[<h1>Exploring Best Practices for Core Data from SQLite Perspective</h1><p>This article was originally published at:</p><blockquote><p><a href="https://techblog.lycorp.co.jp/en/exploring-best-practices-for-core-data-from-the-sqlite-perspective">https://techblog.lycorp.co.jp/en/exploring-best-practices-for-core-data-from-the-sqlite-perspective</a></p></blockquote><h2>Introduction</h2><p>The application I'm currently working on uses Core Data for local data persistence. Core Data provides four store types by default: SQLite, Binary, XML, and In-Memory (the XML store is not available on iOS). Throughout the development process, we've gained valuable experience about using Core Data correctly and efficiently, especially from the SQLite perspective.</p><p>If you're using Core Data and want to learn more about how to maximize the underlying SQLite database, this post is for you.</p><h2>1. Properly storing BLOB</h2><h3>1.1 SQLite Team's perspective</h3><p>When I first started learning about relational databases, I wondered whether the BLOB (Binary Large OBject) should be stored in the database, as an external file, or in a hybrid way? This is a common question, and the SQLite documentation provides two insightful discussions on this topic: <a href="https://www.sqlite.org/intern-v-extern-blob.html">Internal Versus External BLOBs in SQLite</a> and <a href="https://www.sqlite.org/fasterthanfs.html">35% Faster Than The Filesystem</a>.</p><p>What surprised me the most is the following comparison：</p><blockquote><p>SQLite reads and writes small blobs (for example, thumbnail images) 35% faster than the same blobs can be read from or written to individual files on disk using fread() or fwrite(). Furthermore, a single SQLite database holding 10-kilobyte blobs uses about 20% less disk space than storing the blobs in individual files.</p></blockquote><p>Additionally, the SQLite team shared an interesting benchmark result of BLOBs' reading performance with different page sizes (Just for your information: the default page size of SQLite used in Core Data is 4096).</p><blockquote><p>The matrix below shows the time needed to read BLOBs stored in separate files divided by the time needed to read BLOBs stored entirely in the database</p></blockquote><img src="ckitakishi.com/images/exploring_best_practices_for_core_data_from_sqlite_perspective/1-1.png" alt="1-1"/><p>In their test environments, storing BLOBs up to 20k always have better reading performance, on the other hand, for the BLOBs over 200k, storing them as external files would be more efficient.</p><p>While these benchmark results may not be directly applicable to us, we can still glean some important insights from them:</p><ul><li>As a rule of thumb, it's wise to store small BLOBs in the database and large BLOBs as external files.aking, it's wise to store small BLOBs in the database and large BLOBs as external files.</li><li>When it's difficult to choose between internal and external storage, conducting a benchmark could be helpful.</li></ul><h3>1.2 Returning to our Core Data world</h3><p>Now, let's apply our SQLite knowledge to the world of Core Data!</p><p>You may already be familiar with a property called <code>allowsExternalBinaryDataStorage</code>, which can be used to let Core Data decide how to store binary objects. When the BLOBs are stored as external files, they're placed in a hidden subdirectory within the same directory as the database files. In the database fields, only the filenames (UUID) corresponding to the external files are stored.</p><pre><code><span class="type">Database</span>/
 ├─ {sqlite-file-name}<span class="type">_SUPPORT</span>/
 │  ├─ <span class="type">_EXTERNAL_DATA</span>/
 │  │  ├─ file1
@@ -635,305 +635,135 @@ xxxxxx.<span class="property">attributedText</span> = <span class="type">NSAttri
         collectionView.<span class="call">reloadData</span>()
     }
 }
-</code></pre><p>实际的运用情景是，在 <code>XXViewController</code> 中存在 pop 一个新 ViewController 的情况，这个时候，<code>XXViewController</code> 需要重新获取数据来刷新页面并更新 <code>collectionView</code> 的 <code>contentOffset</code>。按道理来说，刷新数据在下一次 view will appear 的时候进行会更保险，但是由于我们会在更早的阶段就更新 <code>contentOffset</code>，bug 就这样不幸地产生了。</p><p>当新 <code>ViewController</code> 位于最顶端的时候，<code>XXViewController</code> 就不再被 window 所持有。由于它继承自 <code>BaseCollectionViewController</code>，<code>didReceiveMemoryWarning</code> 发生时 <code>collectionView</code> 会在不知不觉中被置为 <code>nil</code>，如果这一切发生在 <code>collectionView.reloadData()</code> 之前，那噩梦就诞生了。</p><p>这个时候，或许会反思 controller view 之间的继承关系到底合理么，调整 <code>contentOffset</code> 不可见到底合理么，<code>collectionView = nil</code> 到底有没有意义。我认为这些都是合理的着手点，对于这类问题，找到原因其实就已经解决了 80% 了。</p><h2>实践</h2><p>未雨绸缪这句话在这里非常适用，提前去思考一些问题有助于我们规避 memory warning 带来的麻烦：</p><ul><li>当接收到 memery warning 时我们该做什么？</li><li>view controller 不被 window 持有的时候需要做什么？</li><li>当一个 view controller 被恢复的时候，<code>loadView</code>, <code>viewDidLoad</code> 会默认被调用，但是自定义的 <code>init</code> 方法们就不一定了，这样仍能顺利完成初始化吗？</li><li>是否存在显著的内存泄漏？</li></ul><p>当这些问题都梳理清楚的时候，也就大大减少了后顾之忧。</p><p>除了上面提到过的 <code>didReceiveMemoryWarning</code>，还有一个比较常用的方法： <code>applicationDidReceiveMemoryWarning</code>，后者是 App delegate 的方法，所以我认为可以用来管理一些全局对象，或是缓存之类的。除此之外，还可以在必要的时候监听名为 <code>UIApplicationDidReceiveMemoryWarningNotification</code> 的通知来做一些特殊的处理。</p><h2>触发 memory warning</h2><p>那么，当准备就绪的时候，我们就可以通过触发 memory warning 来进行测试了。</p><ol><li>模拟器 --&gt; Debug --&gt; Simulate Memory Warning (<code>Shift + Command + M</code>): 模拟器调试选项，结合断点模拟 warning</li><li><code>UIApplication.shared.perform(Selector(("_performMemoryWarning")))</code>: 在代码中指定位置触发 warning</li></ol><h2>最后</h2><p>内存管理着实不是一个简单的问题，上述内容不过浮于浅表。如果想要稍微再多了解一点，推荐看一看 WWDC 2018 的 <a href="https://developer.apple.com/videos/play/wwdc2018/416/">Session 416</a> ，有很多内容刷新了我的既存认知...</p>]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/metax</guid><title>关于 MetaX 的三言两语</title><description>常常把相机中的照片传到手机里，但是比较麻烦的一点是没有地理信息，所以就自己动手丰衣足食了。 作为一个总结，下文的主题是照片框架 PhotoKit 和简单的问题解决记录。</description><link>ckitakishi.com/posts/metax</link><pubDate>Sun, 29 Apr 2018 20:47:00 +0900</pubDate><content:encoded><![CDATA[<blockquote><p><strong>Support:</strong> If you have any question or comment for MetaX, please do not hesitate to contact me via the ways on the bottom left of this page.</p></blockquote><p>Source: <a href="https://github.com/Ckitakishi/MetaX">MetaX on Github</a></p><h1>关于 MetaX 的三言两语</h1><h2>初衷</h2><p>常常把相机中的照片传到手机里，但是比较麻烦的一点是没有地理信息，所以就自己动手丰衣足食了。 作为一个总结，下文的主题是照片框架 PhotoKit 和简单的问题解决记录。</p><h2>关于照片框架 - PhotoKit</h2><p>在 <strong>PhotoKit</strong> 之前，AssetsLibrary 是被广泛使用的，由于并没有实际用过，就不再赘述。从 <strong>PhotoKit</strong> 的文档就可以看出来，这是一个十分庞大的框架，包含了相当多的类。<strong>PhotoKit</strong> 可以使得自己的应用与照片库以相同流程工作，此外性能也相当不错。</p><h3>从获取图像开始</h3><h4>相册取得</h4><p>如果以从相册列表选取照片这个流程为例来看，相册列表中的所有对象都是 <code>PHCollection</code>，它是一个抽象父类，拥有两个子类： <code>PHAssetCollection</code> 和 <code>PHCollectionList</code>，前者表示相册，后者表示相册列表也就是文件夹。题外话，在 iOS 设备上创建文件夹几乎可以说是一个隐藏功能，点击追加按钮是相册，而长按则可以选择相册或文件夹。而获取相册的方法是使用上述几个类中的 fetch 方法，返回 <code>PHFetchResult&lt;XXX&gt;</code>，可以用部分与 <code>Foundation</code> 中集合类型相同的接口来处理这个结果，比如用 <code>enumerateObjects(_:)</code> 来进行遍历。该方法默认会取回所有结果，但是可以通过使用 <code>PHFetchOptions</code> 来做一些过滤或是排序处理。例如取回所有智能相册：</p><!--more-->
-
-```swift
-let options = PHFetchOptions()
-options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-let smartAlbums: PHFetchResult<PHAssetCollection>?
-smartAlbums = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .albumRegular, options: options)
-```
-
-智能相册由系统按照图像类型自动生成，所以并不会出现文件夹。然而，如果以系统照片库来说，还有一类相册是用户自定义相册，处理这类相册的时候必须要注意区分文件夹与相册。我选择的处理方法是暴力地用一个递归将文件夹完全平铺展开作为首级相册。
-
-另外，访问图片库需要请求用户权限，在权限未决定的情况下，第一次调用 fetch 方法的时候会自动请求权限。也可以通过 `PHPhotoLibrary` 的类方法 `requestAuthorization:` 显式地发起请求。如果被拒..绝..了，添加一个类似 404 页面的视图并设置一个按钮指向应用的设置页面是 (我认为) 比较优雅的做法：
-
-```swift
-let url = URL(string: UIApplicationOpenSettingsURLString)
-UIApplication.shared.open(url!, options: [:], completionHandler: nil)
-```
-
-#### 照片取得 
-
-照片的取得是一个层层递进的过程，在取得了相册之后，便可以尝试获取 `PHAsset` 对象，小标题说的比较狭隘一些，实际上 `PHAsset` 对象包含图像，视频，和 Live Photo。此时可以通过调用 `fetchAssets(in:options:)` 来取得一个类型为 `PHFetchResult<PHAsset>` 的资源集：
-
-```swift
-let assetCollection = smartAlbums.object(at: 0)
-let fetchResult = PHAsset.fetchAssets(in: assetCollection, options: options)
-```
-
-手握 `PHAsset`，几乎就拥有了一切。此刻 `PHImageManager` 该出场了，这是一个专门用于请求特定 asset 对应的媒体资源的类。以请求图片为例，其中最重要的一个方法是 `requestImage(for:targetSize:contentMode:options:resultHandler:)`，通过参数就会发现，请求的同时就可以确定图片的尺寸，并进行裁剪。
-
-我们还能够为这个请求设定一个类型为 `PHImageRequestOptions` 的 option，借助它的 `isSynchronous` 属性可以决定以同步还是异步的方式来发起请求；而 `deliverryMode` 则是让你们能够在图像的加载时间和质量中做一个权衡或抉择，`.highQualityFormat` 不论耗时多久都会加载原尺寸图片，`.fastFormat` 会舍弃质量来快速加载图像，`.opportunistic` 约等于前两者的和，先 `.fastFormat` 后 `.highQualityFormat`，所以会发生两次请求，但是，如果 `isSynchronous = true`，那么请求一定是 `.highQualityFormat`；还有 `isNetworkAccessAllowed`，表示是否允许从 iCloud 下载图片，如果允许，那 `progressHandler` 也会被同时调用，于是我们可以将进度体现在 UI 上。
-
-```swift
-let options = PHImageRequestOptions()
-options.deliveryMode = .opportunistic
-// options.isSynchronous = true
-options.isNetworkAccessAllowed = true
-options.progressHandler = {(progress: Double, _, _, _) in
-    DispatchQueue.main.async {
-        ...
+</code></pre><p>实际的运用情景是，在 <code>XXViewController</code> 中存在 pop 一个新 ViewController 的情况，这个时候，<code>XXViewController</code> 需要重新获取数据来刷新页面并更新 <code>collectionView</code> 的 <code>contentOffset</code>。按道理来说，刷新数据在下一次 view will appear 的时候进行会更保险，但是由于我们会在更早的阶段就更新 <code>contentOffset</code>，bug 就这样不幸地产生了。</p><p>当新 <code>ViewController</code> 位于最顶端的时候，<code>XXViewController</code> 就不再被 window 所持有。由于它继承自 <code>BaseCollectionViewController</code>，<code>didReceiveMemoryWarning</code> 发生时 <code>collectionView</code> 会在不知不觉中被置为 <code>nil</code>，如果这一切发生在 <code>collectionView.reloadData()</code> 之前，那噩梦就诞生了。</p><p>这个时候，或许会反思 controller view 之间的继承关系到底合理么，调整 <code>contentOffset</code> 不可见到底合理么，<code>collectionView = nil</code> 到底有没有意义。我认为这些都是合理的着手点，对于这类问题，找到原因其实就已经解决了 80% 了。</p><h2>实践</h2><p>未雨绸缪这句话在这里非常适用，提前去思考一些问题有助于我们规避 memory warning 带来的麻烦：</p><ul><li>当接收到 memery warning 时我们该做什么？</li><li>view controller 不被 window 持有的时候需要做什么？</li><li>当一个 view controller 被恢复的时候，<code>loadView</code>, <code>viewDidLoad</code> 会默认被调用，但是自定义的 <code>init</code> 方法们就不一定了，这样仍能顺利完成初始化吗？</li><li>是否存在显著的内存泄漏？</li></ul><p>当这些问题都梳理清楚的时候，也就大大减少了后顾之忧。</p><p>除了上面提到过的 <code>didReceiveMemoryWarning</code>，还有一个比较常用的方法： <code>applicationDidReceiveMemoryWarning</code>，后者是 App delegate 的方法，所以我认为可以用来管理一些全局对象，或是缓存之类的。除此之外，还可以在必要的时候监听名为 <code>UIApplicationDidReceiveMemoryWarningNotification</code> 的通知来做一些特殊的处理。</p><h2>触发 memory warning</h2><p>那么，当准备就绪的时候，我们就可以通过触发 memory warning 来进行测试了。</p><ol><li>模拟器 --&gt; Debug --&gt; Simulate Memory Warning (<code>Shift + Command + M</code>): 模拟器调试选项，结合断点模拟 warning</li><li><code>UIApplication.shared.perform(Selector(("_performMemoryWarning")))</code>: 在代码中指定位置触发 warning</li></ol><h2>最后</h2><p>内存管理着实不是一个简单的问题，上述内容不过浮于浅表。如果想要稍微再多了解一点，推荐看一看 WWDC 2018 的 <a href="https://developer.apple.com/videos/play/wwdc2018/416/">Session 416</a> ，有很多内容刷新了我的既存认知...</p>]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/metax</guid><title>关于 MetaX 的三言两语</title><description>关于照片框架 PhotoKit 和简单的问题解决记录。</description><link>ckitakishi.com/posts/metax</link><pubDate>Sun, 29 Apr 2018 20:47:00 +0900</pubDate><content:encoded><![CDATA[<h1>关于 MetaX 的三言两语</h1><h2>初衷</h2><p>常常把相机中的照片传到手机里，但是比较麻烦的一点是没有地理信息，所以就自己动手丰衣足食了。 作为一个总结，下文的主题是照片框架 PhotoKit 和简单的问题解决记录。</p><h2>关于照片框架 - PhotoKit</h2><p>在 <strong>PhotoKit</strong> 之前，AssetsLibrary 是被广泛使用的，由于并没有实际用过，就不再赘述。从 <strong>PhotoKit</strong> 的文档就可以看出来，这是一个十分庞大的框架，包含了相当多的类。<strong>PhotoKit</strong> 可以使得自己的应用与照片库以相同流程工作，此外性能也相当不错.</p><h3>从获取图像开始</h3><h4>相册取得</h4><p>如果以从相册列表选取照片这个流程为例来看，相册列表中的所有对象都是 <code>PHCollection</code>，它是一个抽象父类，拥有两个子类： <code>PHAssetCollection</code> 和 <code>PHCollectionList</code>，前者表示相册，后者表示相册列表也就是文件夹。题外话，在 iOS 设备上创建文件夹几乎可以说是一个隐藏功能，点击追加按钮是相册，而长按则可以选择相册或文件夹。而获取相册的方法是使用上述几个类中的 fetch 方法，返回 <code>PHFetchResult&lt;XXX&gt;</code>，可以用部分 with <code>Foundation</code> 中集合类型相同的接口来处理这个结果，比如用 <code>enumerateObjects(_:)</code> 来进行遍历。该方法默认会取回所有结果，但是可以通过使用 <code>PHFetchOptions</code> 来做一些过滤或是排序处理。例如取回所有智能相册：</p><pre><code><span class="keyword">let</span> options = <span class="type">PHFetchOptions</span>()
+options.<span class="property">sortDescriptors</span> = [<span class="type">NSSortDescriptor</span>(key: <span class="string">"creationDate"</span>, ascending: <span class="keyword">false</span>)]
+<span class="keyword">let</span> smartAlbums: <span class="type">PHFetchResult</span>&lt;<span class="type">PHAssetCollection</span>&gt;?
+smartAlbums = <span class="type">PHAssetCollection</span>.<span class="call">fetchAssetCollections</span>(with: .<span class="dotAccess">smartAlbum</span>, subtype: .<span class="dotAccess">albumRegular</span>, options: options)
+</code></pre><p>另外，访问图片库需要请求用户权限，在权限未决定的情况下，第一次调用 fetch 方法的时候会自动请求权限。也可以通过 <code>PHPhotoLibrary</code> 的类方法 <code>requestAuthorization:</code> 显式地发起请求。如果被拒绝了，添加一个类似 404 页面的视图并设置一个按钮指向应用的设置页面是（我认为）比较优雅的做法：</p><pre><code><span class="keyword">let</span> url = <span class="type">URL</span>(string: <span class="type">UIApplicationOpenSettingsURLString</span>)
+<span class="type">UIApplication</span>.<span class="property">shared</span>.<span class="call">open</span>(url!, options: [:], completionHandler: <span class="keyword">nil</span>)
+</code></pre><h4>照片取得</h4><p>照片的取得是一个层层递进的过程，在取得了相册之后，便可以尝试获取 <code>PHAsset</code> 对象，小标题说的比较狭隘一些，实际上 <code>PHAsset</code> 对象包含图像，视频，和 Live Photo。此时可以通过调用 <code>fetchAssets(in:options:)</code> 来取得一个类型为 <code>PHFetchResult&lt;PHAsset&gt;</code> 的资源集：</p><pre><code><span class="keyword">let</span> assetCollection = smartAlbums.<span class="call">object</span>(at: <span class="number">0</span>)
+<span class="keyword">let</span> fetchResult = <span class="type">PHAsset</span>.<span class="call">fetchAssets</span>(in: assetCollection, options: options)
+</code></pre><p>手握 <code>PHAsset</code>，几乎就拥有了一切。此刻 <code>PHImageManager</code> 该出场了，这是一个专门用于请求特定 asset 对应的媒体资源的类.</p><h3>修改图像</h3><p>按照从上到下的顺序，有关图像的框架依次是：</p><ul><li>UIKit</li><li>CoreImage</li><li>CoreGraphics</li><li>ImageIO</li></ul><p>下面打算讨论两个维度的图片修改，滤镜和 Metadata。接着上一部分的流程继续往下来说，虽然实现滤镜其实又很多方法，但是若选择 <strong>Core Image</strong>，那么不论哪一种，都要先通过 PHAsset 的实例方法 <code>requestContentEditingInput(with:completionHandler:)</code> 来获取完整尺寸的 <code>CIImage</code> 图像：</p><pre><code>asset.<span class="call">requestContentEditingInput</span>(with: options, completionHandler: { contentEditingInput, <span class="keyword">_ in
+    guard let</span> imageURL = contentEditingInput?.<span class="property">fullSizeImageURL</span> <span class="keyword">else</span> {
+        <span class="comment">// error</span>
+        <span class="keyword">return</span>
     }
-}
-
-imageRequestId = PHImageManager.default().requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFit, options: options, resultHandler: { image, info in
-    ...
+    
+    <span class="keyword">let</span> ciImageOfURL = <span class="type">CIImage</span>(contentsOf: imageURL)
+    <span class="keyword">guard let</span> ciImage = ciImageOfURL <span class="keyword">else</span> {
+        <span class="keyword">return</span>
+    }
 })
-```
-
-到这里基本上一张图片的取得就完成了。不过，如果由于一些原因请求失败或者不完整呢？在上述代码中，`info` 便是一个包含了多条可以帮助我们判断结果的信息的字典。`PHImageResultIsInCloudKey` 可以知道图像是否需要从 iCloud 下载；`PHImageResultIsDegradedKey` 意味着当前的图像是否是低质量版本；以及 `PHImageErrorKey`，顾名思义是表示了错误信息，等等。
-
-#### 缓存 
-
-最后值得一提的是图片取得的缓存机制。
-
-通常，在获取一张具体的图片之前，我们会先获取整个相册的所有图片做成一个列表，比如一个如同系统图片库的 collectionView，为了性能考虑，有时候会需要提前将图片载入内存，而 `PHImageManager` 有一个子类 `PHImageCachingManager` 正好可以用来做这件事。
-
-`PHImageCachingManager` 有两个比较重要的方法，一个是开始缓存：`startCachingImages(for:targetSize:contentMode:options:)`，另一个是停止缓存，`stopCachingImages(for:targetSize:contentMode:options:)`，彻底停止缓存时候可以使用 `stopCachingImagesForAllAssets()`。接受的参数和上面提到了请求图像几乎一样一样，而事实上在取得缓存之后，再次使用 `requestImage` 取得独立图像的时候，如果参数相同，则会从缓存中获取。
-
-那究竟是将所有图像资源都放入缓存以供不时之需呢，还是仅仅是缓存一部分呢？是一开始就缓存所有资源呢，还是一边滑动一边缓存呢？时机，范围等等都是非常重要而必须要考虑的问题。推荐参考一下 Apple 的示例代码 --- [Using Photos Framework](https://developer.apple.com/library/content/samplecode/UsingPhotosFramework/Introduction/Intro.html)，虽然这个示例 bug 有点点多，但是缓存部分的设计还是很妙的～也因此借鉴了这个部分的实现。它的设计策略在于，载入画面及画面滚动两个时机更新缓存，而区域只包括以可见部分为中心，高度为两倍的部分 (例如：可见范围 [0, 0, 768, 1024] 对应缓存区域：[-512, 0, 768, 2048])，随着画面的滑动，不停调用 `startCachingImages` 与 `stopCachingImages`，该区域也会随之改变，就像一个滑动窗口一样。
-
-### 修改图像
-
-按照从上到下的顺序，有关图像的框架依次是：
-
- - UIKit
- - CoreImage
- - CoreGraphics
- - ImageIO
-
-下面打算讨论两个维度的图片修改，滤镜和 Metadata。接着上一部分的流程继续往下来说，虽然实现滤镜其实又很多方法，但是若选择 **Core Image**，那么不论哪一种，都要先通过 PHAsset 的实例方法 `requestContentEditingInput(with:completionHandler:)` 来获取完整尺寸的 `CIImage` 图像：
-
-```swift
-asset.requestContentEditingInput(with: options, completionHandler: { contentEditingInput, _ in
-    guard let imageURL = contentEditingInput?.fullSizeImageURL else {
-        // error
-        return
-    }
-    
-    let ciImageOfURL = CIImage(contentsOf: imageURL)
-    guard let ciImage = ciImageOfURL else {
-        ...
-        return
-    }
-}
-```
-
-#### 滤镜
-
-在顺利取得 `CIImage` 之后，添加滤镜的流程大致如下。**Core Image** 提供了一些滤镜，如果需要自定的话，看一看 WWDC2014 Session 515 会非常有帮助。
-
-```swift
-// 对过去版本的管理
-let adjustmentData = PHAdjustmentData...
+</code></pre><h4>滤镜</h4><p>在顺利取得 <code>CIImage</code> 之后，添加滤镜的流程大致如下。<strong>Core Image</strong> 提供了一些滤镜，如果需要自定的话，看一看 WWDC2014 Session 515 会非常有帮助。</p><pre><code><span class="comment">// 对过去版本的管理</span>
+<span class="keyword">let</span> data = <span class="type">PHAdjustmentData</span>(<span class="comment">/* ... */</span>)
                                                   
-let contentEditingOutput = PHContentEditingOutput(contentEditingInput: contentEditingInput)
-contentEditingOutput.adjustmentData = adjustmentData
+<span class="keyword">let</span> output = <span class="type">PHContentEditingOutput</span>(contentEditingInput: contentEditingInput)
+output.<span class="property">adjustmentData</span> = data
 
-let outputImage = ciImage
-    .applyingOrientation(input.fullSizeImageOrientation)
-    .applyingFilter(filter, withInputParameters: nil)
+<span class="keyword">let</span> outputImage = ciImage
+    .<span class="call">applyingOrientation</span>(input.<span class="property">fullSizeImageOrientation</span>)
+    .<span class="call">applyingFilter</span>(filter, withInputParameters: <span class="keyword">nil</span>)
     
-CIContext().writeJPEGRepresentation(of: outputImage,
-                                    to: contentEditingOutput.renderedContentURL, 
-                                    colorSpace: ciImage.colorSpace!,
+<span class="type">CIContext</span>().<span class="call">writeJPEGRepresentation</span>(of: outputImage,
+                                    to: output.<span class="property">renderedContentURL</span>, 
+                                    colorSpace: ciImage.<span class="property">colorSpace</span>!,
                                     options: [:])
 
-// 确认修改
-PHPhotoLibrary.shared().performChanges({
-    let request = PHAssetChangeRequest(for: self.asset)
-    request.contentEditingOutput = contentEditingOutput
-}, completionHandler: { success, error in
-    ...
+<span class="comment">// 确认修改</span>
+<span class="type">PHPhotoLibrary</span>.<span class="call">shared</span>().<span class="call">performChanges</span>({
+    <span class="keyword">let</span> request = <span class="type">PHAssetChangeRequest</span>(for: <span class="keyword">self</span>.<span class="property">asset</span>)
+    request.<span class="property">contentEditingOutput</span> = output
+}, completionHandler: { success, error <span class="keyword">in</span>
+    <span class="comment">// ...</span>
 })
-```
+</code></pre><h4>Metadata</h4><p>有了 <code>CIImage</code>，读取 Metadata 只需要获取 <code>CIImage</code> 的 <code>properties</code> 属性即可。但是如果要写入，就需要基于相对底层的 <code>ImageIO</code> 框架来完成。</p><p>首先，我创建了临时存储，虽然最初的想法是直接覆盖当前编辑中的图像，这个方案在模拟器竟然成功了，但是真实设备行不通。后来迫不得已选择了迂回的方法，覆盖 =&gt; 追加新图像 + (可选)删除旧图像。</p><pre><code><span class="keyword">let</span> context = <span class="type">CIContext</span>(options:<span class="keyword">nil</span>)
 
-#### Metadata
-
-有了 `CIImage`，读取 Metadata 只需要获取 `CIImage` 的 `properties` 属性即可。但是如果要写入，就需要基于相对底层的 `ImageIO` 框架来完成。
-
-首先，我创建了临时存储，，虽然最初的想法是直接覆盖当前编辑中的图像，这个方案在模拟器竟然成功了，但是真实设备行不通。后来迫不得已选择了迂回的方法，覆盖 => 追加新图像 + (可选)删除旧图像。
-
-```swift
-let context = CIContext(options:nil)
-
-// 创建一个临时存储
-var tmpUrl = NSURL.fileURL(withPath: NSTemporaryDirectory() + imageURL.lastPathComponent)
-```
-
-为了让新创建的图像保持与原始图像相同的类型，通过 `CGImageSource` 来获取。如果获取成功，就可以指定上面的临时 URL 作为位置，尝试创建 `CGImageDestination`，之所以说是尝试，是因为不得不考虑如果当前设备并不支持期待创建的类型，那么我们就会得到 `nil`。这个时候别无选择，只能够再试一次，在当前版本中，这个做法主要是为了解决 **HEIF** 格式在一些较有历史的设备上并不被支持而带来的问题，所以在失败的情况下，默认将目标类型设定为 **JPEG**：
-
-```swift
-// 从 CIImage 创建 CGImage
-let cgImage = context.createCGImage(ciImage, from: ciImage.extent)
-// 根据 CGImageSource 来获取图片类型标识 (UTI)
-let cgImageSource = CGImageSourceCreateWithURL(imageURL as CFURL, nil)
-guard let sourceType = CGImageSourceGetType(cgImageSource!) else {
-    ...
-    return
+<span class="comment">// 创建一个临时存储</span>
+<span class="keyword">var</span> tmpUrl = <span class="type">NSURL</span>.<span class="call">fileURL</span>(withPath: <span class="type">NSTemporaryDirectory</span>() + imageURL.<span class="property">lastPathComponent</span>)
+</code></pre><p>为了让新创建的图像保持与原始图像相同的类型，通过 <code>CGImageSource</code> 来获取。如果获取成功，就可以指定上面的临时 URL 作为位置，尝试创建 <code>CGImageDestination</code>，之所以说是尝试，是因为不得不考虑如果当前设备并不支持期待创建的类型，那么我们就会得到 <code>nil</code>。这个时候别无选择，只能够再试一次，在当前版本中，这个做法主要是为了解决 <strong>HEIF</strong> 格式在一些较有历史的设备上并不被支持而带来的问题，所以在失败的情况下，默认将目标类型设定为 <strong>JPEG</strong>：</p><pre><code><span class="comment">// 从 CIImage 创建 CGImage</span>
+<span class="keyword">let</span> cgImage = context.<span class="call">createCGImage</span>(ciImage, from: ciImage.<span class="property">extent</span>)
+<span class="comment">// 根据 CGImageSource 来获取图片类型标识 (UTI)</span>
+<span class="keyword">let</span> cgImageSource = <span class="type">CGImageSourceCreateWithURL</span>(imageURL <span class="keyword">as</span> <span class="type">CFURL</span>, <span class="keyword">nil</span>)
+<span class="keyword">guard let</span> sourceType = <span class="type">CGImageSourceGetType</span>(cgImageSource!) <span class="keyword">else</span> {
+    <span class="keyword">return</span>
 }
-// 尝试创建 CGImageDestination
-var createdDestination: CGImageDestination? = CGImageDestinationCreateWithURL(tmpUrl as CFURL, sourceType
-    , 1, nil)
+<span class="comment">// 尝试创建 CGImageDestination</span>
+<span class="keyword">var</span> createdDestination: <span class="type">CGImageDestination</span>? = <span class="type">CGImageDestinationCreateWithURL</span>(tmpUrl <span class="keyword">as</span> <span class="type">CFURL</span>, sourceType, <span class="number">1</span>, <span class="keyword">nil</span>)
 
-// 该版本暂定方案：无法创建的图像格式就存储为 JPEG
-if createdDestination == nil {
-    // media type is unsupported: delete temp file, create new one with extension [.JPG].
-    let _ = try? FileManager.default.removeItem(at: tmpUrl)
-    tmpUrl = NSURL.fileURL(withPath: NSTemporaryDirectory() + imageURL.deletingPathExtension().lastPathComponent + ".JPG")
-    createdDestination = CGImageDestinationCreateWithURL(tmpUrl as CFURL, "public.jpeg" as CFString
-        , 1, nil)
+<span class="comment">// 该版本暂定方案：无法创建的图像格式就存储为 JPEG</span>
+<span class="keyword">if</span> createdDestination == <span class="keyword">nil</span> {
+    <span class="comment">// media type is unsupported: delete temp file, create new one with extension [.JPG].</span>
+    <span class="keyword">let _</span> = <span class="keyword">try</span>? <span class="type">FileManager</span>.<span class="property">default</span>.<span class="call">removeItem</span>(at: tmpUrl)
+    tmpUrl = <span class="type">NSURL</span>.<span class="call">fileURL</span>(withPath: <span class="type">NSTemporaryDirectory</span>() + imageURL.<span class="call">deletingPathExtension</span>().<span class="property">lastPathComponent</span> + <span class="string">".JPG"</span>)
+    createdDestination = <span class="type">CGImageDestinationCreateWithURL</span>(tmpUrl <span class="keyword">as</span> <span class="type">CFURL</span>, <span class="string">"public.jpeg"</span> <span class="keyword">as</span> <span class="type">CFString</span>, <span class="number">1</span>, <span class="keyword">nil</span>)
 }
 
-guard let destination = createdDestination else {
-    ...
-    return
+<span class="keyword">guard let</span> destination = createdDestination <span class="keyword">else</span> {
+    <span class="keyword">return</span>
 }
-```
-
-若完成了 `CGImageDestination` 创建，就可以开始向这个目标添加图像了。在上一段代码中，创建时传入的第 3 个参数正是代表着图像的数量，因为只是单张图像，所以是自然是 1；该方法也可以用来创建 GIF。
-
-```swift
-// 向 CGImageDestination 添加图像，以及该图像的 metadata。
-CGImageDestinationAddImage(destination, cgImage!, newProps as CFDictionary)
-if !CGImageDestinationFinalize(destination) {
-    ...
-} else {
-    ...
+</code></pre><p>若完成了 <code>CGImageDestination</code> 创建，就可以开始向这个目标添加图像了。在上一段代码中，创建时传入的第 3 个参数正是代表着图像的数量，因为只是单张图像，所以是自然是 1；该方法也可以用来创建 GIF。</p><pre><code><span class="comment">// 向 CGImageDestination 添加图像，以及该图像的 metadata。</span>
+<span class="type">CGImageDestinationAddImage</span>(destination, cgImage!, newProps <span class="keyword">as</span> <span class="type">CFDictionary</span>)
+<span class="keyword">if</span> !<span class="type">CGImageDestinationFinalize</span>(destination) {
+    <span class="comment">// ...</span>
+} <span class="keyword">else</span> {
+    <span class="comment">// ...</span>
 }
-```
-
-最后，通过仍在临时存储位置的图像来创建一个新的 asset 追加请求，并将临时存储的图像移除即可：
-
-```swift
-PHPhotoLibrary.shared().performChanges({
-    let request = PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: tempURL)
-    let _ = try? FileManager.default.removeItem(at: tempURL)
-    ...
+</code></pre><p>最后，通过仍在临时存储位置的图像来创建一个新的 asset 追加请求，并将临时存储的图像移除即可：</p><pre><code><span class="type">PHPhotoLibrary</span>.<span class="call">shared</span>().<span class="call">performChanges</span>({
+    <span class="keyword">let</span> request = <span class="type">PHAssetChangeRequest</span>.<span class="call">creationRequestForAssetFromImage</span>(atFileURL: tempURL)
+    <span class="keyword">let _</span> = <span class="keyword">try</span>? <span class="type">FileManager</span>.<span class="property">default</span>.<span class="call">removeItem</span>(at: tempURL)
+}, completionHandler: { success, error <span class="keyword">in</span>
+    <span class="comment">// ...</span>
 })
-```
-
-#### HEIF
-
-**HEIF** 是全新的图片格式，相应的还有视频的 **HEVC**。苹果表示在相同画质下大小能节约 50% 的存储空间。如果想要了解更多，推荐看一看 WWDC 2017 Session 511。
-
-在实际运用中遇到了一个问题，如果我在相对较旧的设备上查看 **.HEIC (HEIF)** 的图片，并尝试去修改它，上面提到的 `CGImageDestination` 会得到一个 `nil` 对象。结果并不意外，毕竟这需要软件与硬件双方面的支持。但是具体来说究竟分界线在哪里呢？可以在 511 找到答案，而[这个支持页](https://support.apple.com/en-us/HT207022)也讲的很详细。基本条件就是运行 iOS 11 的 iPhone 7 等设备以及之后的新设备。
-
-### 监听变化
-
-万事俱备，只欠东风。但，如果此时系统的图片库发生了改变，又该怎么办？
-
-只需要记住四步，就可以解决这个问题了：
-
-1. 让当前的类遵循 `PHPhotoLibraryChangeObserver` 协议。
-
-```swift
-extension DetailInfoViewController: PHPhotoLibraryChangeObserver {
+</code></pre><h4>HEIF</h4><p><strong>HEIF</strong> 是全新的图片格式，相应的还有视频的 <strong>HEVC</strong>。苹果表示在相同画质下大小能节约 50% 的存储空间。如果想要了解更多，推荐看一看 WWDC 2017 Session 511。</p><p>在实际运用中遇到了一个问题，如果我在相对较旧的设备上查看 <strong>.HEIC (HEIF)</strong> 的图片，并尝试去修改它，上面提到的 <code>CGImageDestination</code> 会得到一个 <code>nil</code> 对象。结果并不意外，毕竟这需要软件与硬件双方面的支持。但是具体来说究竟分界线在哪里呢？可以在 511 找到答案，而<a href="https://support.apple.com/en-us/HT207022">这个支持页</a>也讲的很详细。基本条件就是运行 iOS 11 的 iPhone 7 等设备以及之后的新设备。</p><h3>监听变化</h3><p>万事俱备，只欠东风。但，如果此时系统的图片库发生了改变，又该怎么办？</p><p>只需要记住四步，就可以解决这个问题了：</p><ol><li>让当前的类遵循 <code>PHPhotoLibraryChangeObserver</code> 协议。</li></ol><pre><code><span class="keyword">extension</span> <span class="type">DetailInfoViewController</span>: <span class="type">PHPhotoLibraryChangeObserver</span> {
 
 }
-```
-
-2. 在视图即将出现时将当前的类作为观察者注册到 `PHPhotoLibrary` 共享对象上。
-
-```swift
-PHPhotoLibrary.shared().register(self)
-```
-
-3. 实现 `PHPhotoLibraryChangeObserver` 协议的 `photoLibraryDidChange(_:)`
- 方法。
- 
-```swift
-func photoLibraryDidChange(_ changeInstance: PHChange) {
-    // changeDetails 方法有接受不同参数的多个版本，可参照文档。
-    guard let curAsset = asset, let details = changeInstance.changeDetails(for: curAsset) else {
-        return
+</code></pre><ol start="2"><li>在视图即将出现时将当前的类作为观察者注册到 <code>PHPhotoLibrary</code> 共享对象上。</li></ol><pre><code><span class="type">PHPhotoLibrary</span>.<span class="call">shared</span>().<span class="call">register</span>(<span class="keyword">self</span>)
+</code></pre><ol start="3"><li>实现 <code>PHPhotoLibraryChangeObserver</code> 协议的 <code>photoLibraryDidChange(_:)</code> 方法。</li></ol><pre><code><span class="keyword">func</span> photoLibraryDidChange(<span class="keyword">_</span> changeInstance: <span class="type">PHChange</span>) {
+    <span class="comment">// changeDetails 方法有接受不同参数的多个版本，可参照文档。</span>
+    <span class="keyword">guard let</span> curAsset = asset, <span class="keyword">let</span> details = changeInstance.<span class="call">changeDetails</span>(for: curAsset) <span class="keyword">else</span> {
+        <span class="keyword">return</span>
     }
-    asset = details.objectAfterChanges
-    ...
-}    
-```
-
-4. 最后在 `deinit` 中解除监听。
-
-```swift
-deinit {
-    PHPhotoLibrary.shared().unregisterChangeObserver(self)
+    asset = details.<span class="property">objectAfterChanges</span>
 }
-``` 
-
-## 一些笔记
-
-### PromiseKit 6 
-
-PromiseKit 6 对几个比较核心的点做出了修改。说实话，我觉得这个框架的文档可读性其实还有待提升。直接看源码及其中的注释反而是个很好的选择。
-
-其中一点是改变了核心初始化方法：
-
-```swift
-// 之前
-Promise { fulfill, reject in
-    // ...
+</code></pre><ol start="4"><li>最后在 <code>deinit</code> 中解除监听。</li></ol><pre><code><span class="keyword">deinit</span> {
+    <span class="type">PHPhotoLibrary</span>.<span class="call">shared</span>().<span class="call">unregisterChangeObserver</span>(<span class="keyword">self</span>)
+}
+</code></pre><h2>一些笔记</h2><h3>PromiseKit 6</h3><p>PromiseKit 6 对几个比较核心的点做出了修改。说实话，我觉得这个框架的文档可读性其实还有待提升。直接看源码及其中的注释反而是个很好的选择。</p><p>其中一点是改变了核心初始化方法：</p><pre><code><span class="comment">// 之前</span>
+<span class="type">Promise</span> { fulfill, reject <span class="keyword">in</span>
+    <span class="comment">// ...</span>
 }
 
-// 现在
-Promise { seal in
-    // seal.fulfill(foo)
+<span class="comment">// 现在</span>
+<span class="type">Promise</span> { seal <span class="keyword">in</span>
+    <span class="comment">// seal.fulfill(foo)
     // seal.reject(error)
-    // seal.resolve(foo, error)
+    // seal.resolve(foo, error)</span>
 }
-```
+</code></pre><p>还有一点是，将万能的 <code>then</code> 拆分为了 <code>then</code>, <code>done</code> 和 <code>map</code>。作者的解释是，以前 <code>then</code> 做很多事，但是由于依赖 Swift 根据上下文做推断，在用了多个 <code>then</code> 之后推断就会发生失败。而且很难判断错误发生在哪。所以就只能选择从比较高的层级就修复这个问题，于是有了现在的方案：</p><ul><li><code>then</code>：返回一个 promise。</li><li><code>done</code>：返回一个 Void promise (80% 的情况用在 promise 链中)。</li><li><code>map</code>：返回非 promise 值，比如一个单纯的值。</li></ul><h3>地理位置检索</h3><p>我需要的是一个根据关键字获取相关地点的一个检索，也就是常说的 POI 检索。因为需要比较简单，所以先考虑了 <strong>MapKit</strong> 的 <code>MKLocalSearch</code> 或者 <code>MKLocalSearchCompleter</code>。</p><p>前者常常会用在地图的检索，通过 <code>start(completionHandler:)</code> 可以取得 10 个结果，并且这个 limit 无法自定义，它在主线程工作，而且当发起新的请求时当前即使有正在进行的检索也不会被终止，如果不注意很可能会得到错误的结果：</p><pre><code><span class="keyword">let</span> localSearchRequest = <span class="type">MKLocalSearchRequest</span>()
+<span class="keyword">let</span> newestLocation = locations.<span class="property">last</span>! <span class="keyword">as</span> <span class="type">CLLocation</span>
+localSearchRequest.<span class="property">region</span> = <span class="type">MKCoordinateRegion</span>(center: newestLocation.<span class="property">coordinate</span>, span: <span class="type">MKCoordinateSpanMake</span>(<span class="number">5.0</span>, <span class="number">5.0</span>))
 
-还有一点是，将万能的 `then` 拆分为了 `then`, `done` 和 `map`。作者的解释是，以前 `then` 做很多事，但是由于依赖 Swift 根据上下文做推断，在用了多个 `then` 之后推断就会发生失败。而且很难判断错误发生在哪。所以就只能选择从比较高的层级就修复这个问题，于是有了现在的方案：
-
-- `then`：返回一个 promise。
-- `done`：返回一个 Void promise (80% 的情况用在 promise 链中)。
-- `map`：返回非 promise 值，比如一个单纯的值。
-
-### 地理位置检索
-
-我需要的是一个根据关键字获取相关地点的一个检索，也就是常说的 POI 检索。因为需要比较简单，所以先考虑了 **MapKit** 的 `MKLocalSearch` 或者 `MKLocalSearchCompleter`。
-
-前者常常会用在地图的检索，通过 `start(completionHandler:)` 可以取得 10 个结果，并且这个 limit 无法自定义，它在主线程工作，而且当发起新的请求时当前即使有正在进行的检索也不会被终止，如果不注意很可能会得到错误的结果：
-
-```swift
-let localSearchRequest = MKLocalSearchRequest()
-let newestLocation = locations.last! as CLLocation
-localSearchRequest.region = MKCoordinateRegion(center: newestLocation.coordinate, span: MKCoordinateSpanMake(5.0, 5.0))
-
-MKLocalSearch(request: localSearchRequest).start(completionHandler: { (localSearchResponse, error) -> Void in
-    guard searchText == searchBar.text else {
-        return
+<span class="type">MKLocalSearch</span>(request: localSearchRequest).<span class="call">start</span>(completionHandler: { (localSearchResponse, error) -&gt; <span class="type">Void</span> <span class="keyword">in
+    guard</span> searchText == searchBar.<span class="property">text</span> <span class="keyword">else</span> {
+        <span class="keyword">return</span>
     }
-    ...
 })
-```
+</code></pre><p>所以这似乎并不是一个理想的选择。辅以后者的 <code>MKLocalSearchCompleter</code> 会更好一些：</p><pre><code><span class="keyword">let</span> completer = <span class="type">MKLocalSearchCompleter</span>()
+completer.<span class="property">queryFragment</span> = searchText
 
-所以这似乎并不是一个理想的选择。辅以后者的 `MKLocalSearchCompleter` 会更好一些：
+<span class="comment">// MARK: MKLocalSearchCompleter Delegate</span>
+<span class="keyword">extension</span> <span class="type">LocationSearchViewController</span>: <span class="type">MKLocalSearchCompleterDelegate</span> {
 
-```swift
-let completer = MKLocalSearchCompleter()
-completer.queryFragment = searchText
-
-// MARK: MKLocalSearchCompleter Delegate
-extension LocationSearchViewController: MKLocalSearchCompleterDelegate {
-
-    // 处理检索结果
-    func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
-        self.resultDataSource = completer.results
-        ...
+    <span class="comment">// 处理检索结果</span>
+    <span class="keyword">func</span> completerDidUpdateResults(<span class="keyword">_</span> completer: <span class="type">MKLocalSearchCompleter</span>) {
+        <span class="keyword">self</span>.<span class="property">resultDataSource</span> = completer.<span class="property">results</span>
     }
-    // 处理错误
-    func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {
-        ...
+    <span class="comment">// 处理错误</span>
+    <span class="keyword">func</span> completer(<span class="keyword">_</span> completer: <span class="type">MKLocalSearchCompleter</span>, didFailWithError error: <span class="type">Error</span>) {
+        <span class="comment">// ...</span>
     }
 }
-```
-
-这样一来，检索结果列表就可以很简单的表示出来了。当需要取得各个位置的详细信息时，还是无法离开 `MKLocalSearch`，根据检索结果创建请求即可。
-
-不过即使这样也还是有很多制限，比如近邻检索，尝试使用了 Foursquare，虽然这个问题得以解决，但是请求数量的限制又是新的需要考虑的问题，所以，要走的路还很长。另外，由于在中国无法检索海外地点，也无法逆向转换海外经纬度，要走的路不是很长，而是很长很长。
-]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/tryswift-2018</guid><title>回顾 Try!Swift Tokyo 2018</title><description>拖延症很可怕，过了快两周终于开始着手写 Try!Swift Tokyo 2018 的感想。受到了前同事的影响，今年的大会我是做为志愿者参加的，玩得很开心，然而只听到了一半的演讲T.T。所以之后会从听众和志愿者两个角度来简短的写一写让我印象深刻的一些事儿。</description><link>ckitakishi.com/posts/tryswift-2018</link><pubDate>Wed, 14 Mar 2018 19:37:00 +0900</pubDate><content:encoded><![CDATA[<h1>回顾 Try!Swift Tokyo 2018</h1><p>拖延症很可怕，过了快两周终于开始着手写 Try!Swift Tokyo 2018 的感想。受到了前同事的影响，今年的大会我是做为志愿者参加的，玩得很开心，然而只听到了一半的演讲T.T。所以之后会从听众和志愿者两个角度来简短的写一写让我印象深刻的一些事儿。</p><img src="ckitakishi.com/images/tryswift1.jpg" alt="集合写真"/><blockquote><p><a href="https://www.tryswift.co/events/2018/tokyo/jp">Try!Swift 官网</a></p></blockquote><p>久闻不如一见，各种机缘巧合终于和<a href="https://onevcat.com">喵神</a>碰面了，一路学习 iOS 可能读的最多的就是喵神写的文章了，真的是受益匪浅。虽然因为比较忙只聊了一会儿还都是杂谈www，但是有种成就达成的激动感(`･∀･)</p><p>第一天早晨还遇到了 <a href="http://smoozapp.com/">Smooz</a> 的创始人 Kato 桑，人很和善且健谈，回忆起第一次知道 Smooz 是 16 年的年初，那时候还在测试阶段，只有 iOS 版本，也还没有成立公司运营，类似于独立开发者项目。Smooz 拥有类似 web 浏览器的多 tab 置顶让人眼前一亮，各种手势的便利性也增色不少，另外颜色还相当可爱。当时 (很失礼地) 暗自想会不会渐渐又成为一个换肤浏览器？事实胜于一切，后来 Smooz 获得了 App Store Best of 2016，现在常常可以在电车上看到用户，总之是一款很不一样的移动端浏览器，值得一试。</p><h2>听众视角</h2><p>缺席了几场想听的演讲，像是 Charlse for iOS..泪目。下面所写的大多是临场感受。</p><blockquote><p>这是一份日语的<a href="https://qiita.com/ozwio/items/71fb765b48905d6a2193">资料总结</a>。</p></blockquote><h3>代码优化：Optimizing Swift code for separation of concerns and simplicity</h3><p>代码的优化是一个老生常谈的话题，不过有些东西越老越能凸显它的价值所在。我个人对这个话题比较感兴趣，一方面是如讲者所说：代码通常读比写更多；还有一个原因就是团队合作，简洁明确再重要不过了。听完这个“最佳编程实践”之后，我觉得对于我这样段位不高的开发者来说还是颇有收获的，也许今后能把代码写的更 Swifty 一些？。另外，扩展给 Swift 带来的便利在这些例子中也是体现的淋漓尽致。</p><p>很多例子都深有同感，比如说下面这种模型：</p><pre><code><span class="comment">// before</span>
+</code></pre><p>这样一来，检索结果列表就可以很简单的表示出来了。当需要取得各个位置的详细信息时，还是无法离开 <code>MKLocalSearch</code>，根据检索结果创建请求即可。</p><p>不过即使这样也还是有很多制限，比如近邻检索，尝试使用了 Foursquare，虽然这个问题得以解决，但是请求数量的限制又是新的需要考虑的问题，所以，要走的路还很长。另外，由于在中国无法检索海外地点，也无法逆向转换海外经纬度，要走的路不是很长，而是很长很长。</p>]]></content:encoded></item><item><guid isPermaLink="true">ckitakishi.com/posts/tryswift-2018</guid><title>回顾 Try!Swift Tokyo 2018</title><description>拖延症很可怕，过了快两周终于开始着手写 Try!Swift Tokyo 2018 的感想。受到了前同事的影响，今年的大会我是做为志愿者参加的，玩得很开心，然而只听到了一半的演讲T.T。所以之后会从听众和志愿者两个角度来简短的写一写让我印象深刻的一些事儿。</description><link>ckitakishi.com/posts/tryswift-2018</link><pubDate>Wed, 14 Mar 2018 19:37:00 +0900</pubDate><content:encoded><![CDATA[<h1>回顾 Try!Swift Tokyo 2018</h1><p>拖延症很可怕，过了快两周终于开始着手写 Try!Swift Tokyo 2018 的感想。受到了前同事的影响，今年的大会我是做为志愿者参加的，玩得很开心，然而只听到了一半的演讲T.T。所以之后会从听众和志愿者两个角度来简短的写一写让我印象深刻的一些事儿。</p><img src="ckitakishi.com/images/tryswift1.jpg" alt="集合写真"/><blockquote><p><a href="https://www.tryswift.co/events/2018/tokyo/jp">Try!Swift 官网</a></p></blockquote><p>久闻不如一见，各种机缘巧合终于和<a href="https://onevcat.com">喵神</a>碰面了，一路学习 iOS 可能读的最多的就是喵神写的文章了，真的是受益匪浅。虽然因为比较忙只聊了一会儿还都是杂谈www，但是有种成就达成的激动感(`･∀･)</p><p>第一天早晨还遇到了 <a href="http://smoozapp.com/">Smooz</a> 的创始人 Kato 桑，人很和善且健谈，回忆起第一次知道 Smooz 是 16 年的年初，那时候还在测试阶段，只有 iOS 版本，也还没有成立公司运营，类似于独立开发者项目。Smooz 拥有类似 web 浏览器的多 tab 置顶让人眼前一亮，各种手势的便利性也增色不少，另外颜色还相当可爱。当时 (很失礼地) 暗自想会不会渐渐又成为一个换肤浏览器？事实胜于一切，后来 Smooz 获得了 App Store Best of 2016，现在常常可以在电车上看到用户，总之是一款很不一样的移动端浏览器，值得一试。</p><h2>听众视角</h2><p>缺席了几场想听的演讲，像是 Charlse for iOS..泪目。下面所写的大多是临场感受。</p><blockquote><p>这是一份日语的<a href="https://qiita.com/ozwio/items/71fb765b48905d6a2193">资料总结</a>。</p></blockquote><h3>代码优化：Optimizing Swift code for separation of concerns and simplicity</h3><p>代码的优化是一个老生常谈的话题，不过有些东西越老越能凸显它的价值所在。我个人对这个话题比较感兴趣，一方面是如讲者所说：代码通常读比写更多；还有一个原因就是团队合作，简洁明确再重要不过了。听完这个“最佳编程实践”之后，我觉得对于我这样段位不高的开发者来说还是颇有收获的，也许今后能把代码写的更 Swifty 一些？。另外，扩展给 Swift 带来的便利在这些例子中也是体现的淋漓尽致。</p><p>很多例子都深有同感，比如说下面这种模型：</p><pre><code><span class="comment">// before</span>
 api.<span class="call">requestReplies</span>(postID: <span class="number">4815162342</span>) { [<span class="keyword">weak self</span>] result <span class="keyword">in
    switch</span> result {
    <span class="keyword">case</span> .<span class="dotAccess">success</span>(<span class="keyword">let</span> replies):
