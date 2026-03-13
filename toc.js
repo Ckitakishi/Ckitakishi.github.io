@@ -23,18 +23,17 @@
                 --toc-zinc-500: #71717a;
                 --toc-zinc-800: #27272a;
                 --toc-zinc-900: #18181b;
-                --header-height: 80px; 
-            }
-
-            /* --- 1. Global Base Styles --- */
-            h2, h3 {
-                scroll-margin-top: calc(var(--header-height) + 1.5rem);
             }
 
             #toc-container {
                 margin: 2rem 0;
                 padding: 1rem 0;
                 transition: opacity 0.3s ease;
+            }
+
+            /* --- 1. Global Base Styles --- */
+            h2, h3 {
+                scroll-margin-top: 16px;
             }
 
             #toc-container.hidden { display: none; }
@@ -48,7 +47,10 @@
                 text-transform: uppercase;
                 letter-spacing: 0.15em;
                 color: var(--toc-zinc-400);
-                margin: 0; 
+                margin: 0;
+                padding: 0;
+                background: none;
+                border: none;
                 user-select: none;
             }
 
@@ -106,10 +108,14 @@
             }
 
             /* --- 3. Desktop Specific Styles --- */
+            @media (min-width: 1366px) and (max-height: 400px) {
+                #toc-container { display: none; }
+            }
+
             @media (min-width: 1366px) {
                 #toc-container {
                     position: fixed;
-                    top: 8.5rem; 
+                    top: 10rem; 
                     left: calc(50% + 25rem); 
                     width: 250px;
                     margin: 0;
@@ -173,7 +179,9 @@
                 }
             }
 
-            html { scroll-behavior: smooth; }
+            @media (prefers-reduced-motion: no-preference) {
+                html { scroll-behavior: smooth; }
+            }
         `;
         document.head.appendChild(style);
     };
@@ -200,9 +208,10 @@
         injectTOCStyles();
         container.innerHTML = '';
 
-        const title = document.createElement('div');
+        const title = document.createElement('button');
         title.className = 'toc-title';
         title.innerText = 'Contents';
+        title.setAttribute('aria-expanded', 'false');
         container.appendChild(title);
 
         const list = document.createElement('ul');
@@ -210,9 +219,18 @@
 
         const tocItems = [];
 
+        const usedIds = new Set(headings.filter(h => h.id).map(h => h.id));
+
         headings.forEach((heading) => {
             if (!heading.id) {
-                heading.id = generateId(heading.innerText);
+                let baseId = generateId(heading.innerText) || 'section';
+                let uniqueId = baseId;
+                let counter = 2;
+                while (usedIds.has(uniqueId)) {
+                    uniqueId = `${baseId}-${counter++}`;
+                }
+                heading.id = uniqueId;
+                usedIds.add(uniqueId);
             }
 
             const item = document.createElement('li');
@@ -234,30 +252,28 @@
         container.appendChild(list);
 
         /**
-         * Dynamically align TOC with the first heading of the content.
+         * Dynamically align TOC with the article meta (date/tags).
          */
         const alignTOCToContent = () => {
             if (window.innerWidth >= 1366) {
-                const firstHeading = content.querySelector('h1, h2') || document.querySelector('h1');
-                if (firstHeading) {
-                    const headingRect = firstHeading.getBoundingClientRect();
-                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                    const headingAbsoluteTop = headingRect.top + scrollTop;
-                    
-                    if (scrollTop === 0) {
-                        container.style.top = `${headingRect.top}px`;
-                    } else {
-                        container.style.top = `${headingAbsoluteTop}px`;
-                    }
+                const meta = document.querySelector('.article-meta');
+                if (meta) {
+                    const metaDocTop = meta.getBoundingClientRect().top + window.scrollY;
+                    const headerHeight = 80;
+                    const topValue = Math.max(headerHeight, metaDocTop);
+                    container.style.top = `${topValue}px`;
+                    container.style.maxHeight = `calc(100vh - ${topValue}px - 48px)`;
                 }
             } else {
-                container.style.top = ''; 
+                container.style.top = '';
+                container.style.maxHeight = '';
             }
         };
 
         title.addEventListener('click', () => {
             if (window.innerWidth < 1366) {
-                container.classList.toggle('expanded');
+                const expanded = container.classList.toggle('expanded');
+                title.setAttribute('aria-expanded', String(expanded));
             }
         });
 
@@ -267,7 +283,8 @@
 
             let activeIndex = -1;
             for (let i = 0; i < tocItems.length; i++) {
-                if (tocItems[i].heading.offsetTop <= scrollPos + headerOffset) {
+                const headingDocTop = tocItems[i].heading.getBoundingClientRect().top + window.scrollY;
+                if (headingDocTop <= scrollPos + headerOffset) {
                     activeIndex = i;
                 } else {
                     break;
@@ -277,13 +294,31 @@
             tocItems.forEach((item, index) => {
                 if (index === activeIndex) {
                     item.tocItem.classList.add('active');
+                    if (window.innerWidth >= 1366) {
+                        const itemTop = item.tocItem.offsetTop;
+                        const itemBottom = itemTop + item.tocItem.offsetHeight;
+                        if (itemTop < container.scrollTop) {
+                            container.scrollTop = itemTop;
+                        } else if (itemBottom > container.scrollTop + container.clientHeight) {
+                            container.scrollTop = itemBottom - container.clientHeight;
+                        }
+                    }
                 } else {
                     item.tocItem.classList.remove('active');
                 }
             });
         };
 
-        window.addEventListener('scroll', updateActiveState);
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    updateActiveState();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
         window.addEventListener('resize', () => {
             updateActiveState();
             alignTOCToContent();
